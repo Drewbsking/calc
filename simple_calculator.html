@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taper Lengths</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f7f7f7;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .calculator {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        .calculator input {
+            width: calc(100% - 22px); /* Adjust for border and padding */
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            -moz-appearance: textfield;
+        }
+        .calculator input[type=number]::-webkit-outer-spin-button,
+        .calculator input[type=number]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .speed-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+        }
+        .speed-button {
+            width: calc(50% - 10px);
+            padding: 10px;
+            margin: 5px 0;
+            background: #007bff;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .speed-button:hover {
+            background: #0056b3;
+        }
+        .calculate-button {
+            width: 100%;
+            padding: 10px;
+            background: #28a745;
+            border: none;
+            border-radius: 4px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .calculate-button:hover {
+            background: #218838;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .references {
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        .note {
+            font-size: 14px;
+            margin-top: 20px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Taper Lengths</h1>
+
+        <div class="calculator">
+            <h2>Calculate Taper Length</h2>
+            <label for="W">Enter W (width):</label>
+            <input type="number" id="W" min="0" placeholder="Enter W">
+            <label>Select S (speed):</label><br>
+            <div class="speed-buttons">
+                <button class="speed-button" onclick="setSpeed(25)">25</button>
+            </div>
+            <div class="speed-buttons">
+                <button class="speed-button" onclick="setSpeed(30)">30</button>
+                <button class="speed-button" onclick="setSpeed(35)">35</button>
+                <button class="speed-button" onclick="setSpeed(40)">40</button>
+                <button class="speed-button" onclick="setSpeed(45)">45</button>
+                <button class="speed-button" onclick="setSpeed(50)">50</button>
+                <button class="speed-button" onclick="setSpeed(55)">55</button>
+            </div>
+            <div class="speed-buttons">
+                <button class="speed-button" onclick="setSpeed(60)">60</button>
+            </div>
+            <input type="hidden" id="S" value="0">
+            <button class="calculate-button" onclick="calculateTaperLength()">Calculate</button>
+            <div class="result" id="result"></div>
+            <div class="note hidden" id="note">
+                <p>* L/2 Shift only is rounded to the nearest multiple of 5.</p>
+            </div>
+        </div>
+
+        <div class="references">
+            <h2>References</h2>
+            <p>For more information on taper lengths, please visit the <a href="https://rcoc.miraheze.org/wiki/Taper_Length" target="_blank">Taper Length Wiki</a>.</p>
+        </div>
+    </div>
+
+    <script>
+        function setSpeed(speed) {
+            document.getElementById('S').value = speed;
+            const buttons = document.querySelectorAll('.speed-button');
+            buttons.forEach(button => button.style.backgroundColor = '#007bff');
+            event.target.style.backgroundColor = '#0056b3';
+        }
+
+        function calculateTaperLength() {
+            const w = parseFloat(document.getElementById('W').value);
+            const s = parseFloat(document.getElementById('S').value);
+            let formula, l, designL, halfDesignL, l2ShiftOnly;
+
+            if (isNaN(w) || isNaN(s) || w < 0 || s < 0) {
+                alert('Please enter valid non-negative numbers for W and S');
+                return;
+            }
+
+            if (s <= 40) {
+                formula = 'Formula Used: L = (W * S^2) / 60 (Short)';
+                l = (w * s * s) / 60;
+            } else if (s >= 45) {
+                formula = 'Formula Used: L = W * S (Long)';
+                l = w * s;
+            }
+
+            designL = Math.ceil(l);
+            halfDesignL = designL / 2;
+            l2ShiftOnly = Math.round(halfDesignL / 5) * 5;
+
+            document.getElementById('result').innerHTML = `
+                ${formula}<br>
+                Calculated L = ${l.toFixed(2)}<br>
+                Design L = ${designL}<br>
+                L/2 Shift only* = ${l2ShiftOnly}
+            `;
+            document.getElementById('note').classList.remove('hidden');
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('W').addEventListener('keypress', function(event) {
+                if (event.key === 'Enter') {
+                    calculateTaperLength();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

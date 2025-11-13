@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taper Lengths</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Taper Lengths</h1>
+        <div class="calculator">
+            <h2>Calculate Taper Length</h2>
+            <label for="W">Enter W (width):</label>
+            <input type="number" id="W" min="0" placeholder="Enter W">
+            <label>Select S (Posted Speed limit before Construction zone):</label><br>
+            <div class="speed-buttons" id="postedSpeedButtons">
+                <button class="speed-button" onclick="setSpeed('posted', 25)">25</button>
+                <button class="speed-button" onclick="setSpeed('posted', 30)">30</button>
+                <button class="speed-button" onclick="setSpeed('posted', 35)">35</button>
+                <button class="speed-button" onclick="setSpeed('posted', 40)">40</button>
+                <button class="speed-button" onclick="setSpeed('posted', 45)">45</button>
+                <button class="speed-button" onclick="setSpeed('posted', 50)">50</button>
+                <button class="speed-button" onclick="setSpeed('posted', 55)">55</button>
+                <button class="speed-button" onclick="setSpeed('posted', 60)">60</button>
+            </div>
+            <label>Select Work Zone Speed Limit:</label><br>
+            <div class="work-speed-buttons" id="workSpeedButtons">
+                <button class="speed-button work-speed" data-speed="35" onclick="setSpeed('work', 35)">35</button>
+                <button class="speed-button work-speed" data-speed="40" onclick="setSpeed('work', 40)">40</button>
+                <button class="speed-button work-speed" data-speed="45" onclick="setSpeed('work', 45)">45</button>
+                <button class="speed-button work-speed" data-speed="50" onclick="setSpeed('work', 50)">50</button>
+                <button class="speed-button work-speed" data-speed="55" onclick="setSpeed('work', 55)">55</button>
+                <button class="speed-button work-speed" data-speed="60" onclick="setSpeed('work', 60)">60</button>
+            </div>
+            <input type="hidden" id="postedSpeed" value="0">
+            <input type="hidden" id="workSpeed" value="0">
+            <button class="calculate-button" onclick="calculateTaperLength()">Calculate</button>
+            <div id="formula" class="result formula"></div>
+            <div id="formulaDetails" class="formula-details"></div>
+            <div class="result" id="result"></div>
+        </div>
+        <div class="references">
+            <h2>References</h2>
+            <p>For more information on taper lengths, please visit the <a href="https://rcoc.miraheze.org/wiki/Taper_Length" target="_blank">Taper Length Wiki</a>.</p>
+        </div>
+    </div>
+
+    <div id="speedDialog">
+        <div id="speedDialogContent">
+            <p>You have selected a posted speed of 40 MPH. Would you like to consider using 45 MPH instead as it may be the prevailing speed? The distance between 40 and 45 is significant.</p>
+            <button id="keep40" onclick="confirmSpeed(40)">40 MPH</button>
+            <button id="use45" onclick="confirmSpeed(45)">45 MPH</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
