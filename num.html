@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Work Order Number Generator</title>
+    <link rel="stylesheet" href="styles/numstyle.css" />
+    <script src="scripts/num.js" defer></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD1ytJOuR59PKQ2asFlPiiZUiSKoogrruA&callback=initMap&v=weekly"
+      defer
+    ></script>
+  </head>
+  <body>
+    <main class="page">
+      <section class="panel" aria-labelledby="generator-heading">
+        <h1 id="generator-heading">Work Order Number Generator</h1>
+        <img src="img/company_logo.png" alt="Company logo" class="logo" />
+        <p class="helper">Drop a pin on the map or type a city manually.</p>
+
+        <label class="field">
+          <span>City</span>
+          <input type="text" id="cityInput" placeholder="Start typing..." autocomplete="off" />
+        </label>
+
+        <label class="field">
+          <span>Road class</span>
+          <select id="classDropdown">
+            <option value="Primary">Primary</option>
+            <option value="Local">Local</option>
+          </select>
+        </label>
+
+        <button class="generate" type="button" id="generateBtn">
+          Generate Work Order Number
+        </button>
+
+        <div class="result" id="result" aria-live="polite">
+          <span class="result-label">Generated number</span>
+          <output id="numberOutput">—</output>
+        </div>
+      </section>
+
+      <section class="map-panel" aria-label="Map for selecting a city">
+        <p class="map-hint">Click the map to autofill the city field.</p>
+        <div id="map"></div>
+      </section>
+    </main>
+  </body>
+</html>
