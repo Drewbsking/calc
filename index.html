@@ -39,6 +39,28 @@
             color: #3f4d63;
             text-align: center;
         }
+        .fatal-counter {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+            text-align: center;
+        }
+        .fatal-counter img {
+            width: 100%;
+            max-width: 360px;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+        }
+        .fatal-source {
+            font-size: 14px;
+            color: #334155;
+        }
+        .fatal-source a {
+            color: #005dc1;
+            text-decoration: underline;
+        }
         .calculator-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -101,6 +123,11 @@
         <section class="home-card">
             <h1>Calculator Home Base</h1>
             <p>Select a tool below. More calculators will appear here as you add them.</p>
+        </section>
+        <section class="home-card fatal-counter" aria-labelledby="fatality-counter-heading">
+            <h2 id="fatality-counter-heading">Michigan Weekly Fatal Crashes</h2>
+            <img src="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/General-Images/TZD-banner.png?rev=f0c347f439e3420ea8cff6161420798a&amp;hash=42AA1B7AB34C55C39FB33CD3A458471A" alt="MDOT Toward Zero Deaths graphic with Michigan weekly road fatality numbers" loading="lazy">
+            <p class="fatal-source">Live counter provided by <a href="https://www.michigan.gov/mdot/travel/safety/efforts/tzd" target="_blank" rel="noopener">MDOT Toward Zero Deaths</a>. Refresh to see the latest totals.</p>
         </section>
 
         <section class="calculator-grid">
