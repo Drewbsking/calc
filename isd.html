@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Intersection Sight Distance</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <h1>Intersection Sight Distance</h1>
+        <form id="intersectionForm">
+            <label for="caseSelect">Select Intersection Case:</label>
+            <select id="caseSelect" onchange="updateForm()">
+                <option value="" disabled selected>Select a case</option>
+                <option value="A">Case A: No Control</option>
+                <option value="B">Case B: Stop Control - Left (B1), Right (B2), and Crossing (B3) Maneuver</option>
+                <option value="C">Case C: Yield Control - Crossing (C1), and Left or Right (C2) Maneuver</option>
+                <option value="D">Case D: Traffic Signal Control</option>
+                <option value="E">Case E: All-Way Stop Control</option>
+                <option value="F">Case F: Left Turn from Major Road</option>
+                <option value="G">Case G: Roundabouts</option>
+            </select>
+
+            <div id="dynamicInputs"></div>
+
+            <button type="button" class="calculate-button" onclick="calculateSightDistance()">Calculate</button>
+        </form>
+
+        <div id="result" class="result"></div>
+    </div>
+
+    <div class="drawing-container">
+        <h2>Sight Triangle Visualization</h2>
+        <svg id="sight-triangle" width="800" height="400" xmlns="http://www.w3.org/2000/svg">
+            <line id="major-road" x1="0" y1="200" x2="800" y2="200" stroke="black" stroke-width="4"></line>
+            <text x="700" y="190" font-size="12" text-anchor="right">Major</text>
+
+            <line id="minor-road" x1="400" y1="200" x2="400" y2="400" stroke="black" stroke-width="2"></line>
+            <text x="200" y="100" font-size="12" transform="rotate(270, 390, 100)">Minor</text>
+
+            <polygon id="sight-left" points="400,200 200,200 400,400" fill="rgba(0,0,255,0.2)" stroke="blue" stroke-width="1"></polygon>
+            <polygon id="sight-right" points="400,190 600,190 400,400" fill="rgba(0,255,0,0.2)" stroke="green" stroke-width="1"></polygon>
+        </svg>
+        <img id="roundabout-image" src="img/Roundabout.png" alt="Roundabout" style="display: none; width: 800px; height: 400px;">
+    </div>
+    
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/isdScript.js"></script>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Placement</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <div class="calculator content">
+            <h1>Sign Placement</h1>
+            <form oninput="calculateDistance()">
+                <div class="form-group">
+                    <label for="initial-velocity">Initial Velocity (MPH):</label>
+                    <input type="number" id="initial-velocity" name="initial-velocity" step="0.1" value="50">
+                </div>
+                <div class="form-group">
+                    <label for="final-velocity">Final Velocity (MPH):</label>
+                    <input type="number" id="final-velocity" name="final-velocity" step="0.1" value="25">
+                </div>
+                <div class="form-group">
+                    <label for="g-force">G-Force:</label>
+                    <input type="number" id="g-force" name="g-force" step="0.01" value="0.3">
+                    <p class="note">Default 0.3 g (≈9.65 ft/s²). Change only if directed by the engineer.</p>
+                </div>
+                <div class="form-group">
+                    <label for="pr-time">Perception-Reaction Time (s):</label>
+                    <input type="number" id="pr-time" name="pr-time" step="0.1" value="1.5">
+                    <p class="note">Default is 1.5 seconds.</p>
+                </div>
+            </form>
+            <div id="output" class="result">
+                <h3>Perception-Reaction Distance:</h3>
+                <p id="pr-distance" class="highlight">0.00 ft</p>
+
+                <h3>Required Text Height for the Sign:</h3>
+                <p id="text-height" class="highlight">0.00 ft</p>
+
+                <h3>Total Distance Traveled:</h3>
+                <p id="distance-traveled" class="highlight">0.00 ft</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/signPlacement.js"></script>
+</body>
+</html>

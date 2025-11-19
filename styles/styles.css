@@ -170,6 +170,18 @@ th {
     background-color: #f2f2f2;
 }
 
+.drawing-container {
+    text-align: center;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 100%;
+    max-width: 900px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
 .work-zone-speed {
     background: #ffecd1; /* Light peach background for normal state */
     color: #000; /* Black text for contrast */

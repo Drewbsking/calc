@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AASHTO Vertical Crest Curve</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <div class="content calculator">
+            <h1>AASHTO Vertical Crest Curve</h1>
+            <form oninput="setHeights(); calculateCurveLength();">
+                <div class="form-group">
+                    <label>Select Sight Distance Type:</label>
+                    <input type="radio" id="stopping" name="sight-type" value="stopping" checked>
+                    <label for="stopping">AASHTO Stopping Sight Distance</label><br>
+                    <input type="radio" id="passing" name="sight-type" value="passing">
+                    <label for="passing">Passing Sight Distance</label><br>
+                    <input type="radio" id="rcoc" name="sight-type" value="rcoc">
+                    <label for="rcoc">RCOC Stopping Sight Distance</label><br>
+                </div>
+
+                <div class="form-group">
+                    <label for="eye-height">Height of Driver's Eye (feet):</label>
+                    <input type="number" id="eye-height" name="eye-height" min="0" step="0.1" value="3.5">
+                </div>
+                <div class="form-group">
+                    <label for="object-height">Height of Object (feet):</label>
+                    <input type="number" id="object-height" name="object-height" min="0" step="0.1" value="2.0">
+                </div>
+                <div class="note">
+                    <p>The heights in the calculations above should match the sight distance of interest. RCOC SSD: h1 = 3.5 ft, h2 = 0.5 ft. Passing: h1 = 3.5 ft, h2 = 3.5 ft. AASHTO SSD: h1 = 3.5 ft, h2 = 2.0 ft.</p>
+                </div>
+                <div class="form-group">
+                    <label for="grade-difference">Algebraic Difference of Vertical Curve (%):</label>
+                    <input type="number" id="grade-difference" name="grade-difference" min="0" step="0.5">
+                </div>
+                <div class="form-group">
+                    <label for="speed">Design Speed (mph):</label>
+                    <select id="speed" name="speed">
+                        <option value="15">15 mph</option>
+                        <option value="20">20 mph</option>
+                        <option value="25">25 mph</option>
+                        <option value="30">30 mph</option>
+                        <option value="35">35 mph</option>
+                        <option value="40">40 mph</option>
+                        <option value="45">45 mph</option>
+                        <option value="50">50 mph</option>
+                        <option value="55">55 mph</option>
+                        <option value="60">60 mph</option>
+                        <option value="65">65 mph</option>
+                        <option value="70">70 mph</option>
+                        <option value="75">75 mph</option>
+                        <option value="80">80 mph</option>
+                        <option value="85">85 mph</option>
+                    </select>
+                </div>
+            </form>
+            <div id="output" class="result">
+                <h3>Required Curve Length:</h3>
+                <p id="curve-length" class="highlight">0.00 ft</p>
+                <h3>K Value:</h3>
+                <p id="k-value" class="highlight">0.00</p>
+                <div class="equation">
+                    <h3>Equation Used:</h3>
+                    <p id="equation">N/A</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/ssdScript.js"></script>
+</body>
+</html>
