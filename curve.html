@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+<title>Horizontal Alignment Tool</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<link rel="stylesheet" href="styles/styles.css"/>
+<link rel="stylesheet" href="styles/Curvestyles.css"/>
+</head>
+<body>
+<div id="header-placeholder"></div>
+<main class="curve-app">
+<div class="wrap">
+      <div class="panel" id="panel">
+    <h1>Horizontal Alignment Tool</h1>
+
+    <div class="section section-instructions">
+      <div id="status" class="stat muted">Tap the map to place three points on the road centerline.</div>
+      <div class="instructions-header">
+      </div>
+      <div class="instructions-body" id="instructionsBody">
+        <ul>
+          <li>Select the Point of Curvature (PC), midpoint on curve, and Point of Tangent (PT).</li>
+          <li>Drag a marker to refine; red tangent lines should align with the centerline.</li>
+          <li>Target 30&ndash;120&deg; separation on the constant-radius portion.</li>
+          <li><strong>Only use with circular curves</strong> (avoid spirals).</li>
+          <li>The MDOT advisory speed is for <strong> Full superelevation ONLY</strong></li>
+          <li>Mobile: pinch to zoom. Desktop: Shift+drag for box zoom.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="section section-buttons">
+      <div class="row">
+        <button id="instructionsToggle" class="instructions-toggle" type="button" aria-controls="instructionsBody" aria-expanded="false">Show instructions</button>
+        <button id="resetBtn">Reset</button>
+        <button id="locateBtn">Use my location</button>
+      </div>
+    </div>
+
+    <div class="section section-diagnostics">
+      <div class="card card-diagnostics" id="spacing"></div>
+    </div>
+
+    <div class="section section-inputs">
+      <div class="card">
+        <div class="card-title">Inputs</div>
+        <div class="input-stack">
+          <label for="roadwayTypeSel">Roadway type</label>
+          <select id="roadwayTypeSel">
+            <option value="freeway_expressway">Freeway or expressway</option>
+            <option value="arterial_no_markings">Arterial or collector without pavement markings</option>
+            <option value="arterial_with_markings" selected>Arterial or collector with pavement markings</option>
+            <option value="all_other">All other roadways</option>
+          </select>
+        </div>
+        <div class="input-stack">
+          <label for="surfaceSel">Roadway surface</label>
+          <select id="surfaceSel">
+            <option value="paved" selected>Paved</option>
+            <option value="gravel">Gravel / unpaved</option>
+          </select>
+        </div>
+        <div class="input-stack">
+          <label for="aadtSel">AADT category</label>
+          <select id="aadtSel">
+            <option value="lt1000">&lt; 1,000</option>
+            <option value="1000_2999" selected>1,000&ndash;2,999</option>
+            <option value="3000_3999">3,000&ndash;3,999</option>
+            <option value="4000_plus">&gt; 3,999</option>
+          </select>
+          <div class="small-note muted">
+            Need counts? <a href="https://maps.semcog.org/TrafficVolume/#/" target="_blank" rel="noopener noreferrer">SEMCOG Traffic Volume Map</a>
+          </div>
+        </div>
+        <div class="speeds-card">
+          <div class="grp">
+            <div>
+              <label for="postedSel">Posted Speed (mph)</label>
+              <select id="postedSel">
+                <option>25</option><option>30</option><option>35</option><option>40</option>
+                <option selected>45</option><option>50</option><option>55</option><option>60</option>
+                <option>65</option><option>70</option><option>75</option>
+              </select>
+            </div>
+            <div>
+              <label for="advisorySel">Advisory Speed (mph) from Ball Bank Study</label>
+              <select id="advisorySel">
+                <option>5</option><option>10</option><option>15</option><option>20</option>
+                <option>25</option><option>30</option><option>35</option><option>40</option>
+                <option selected>45</option><option>50</option><option>55</option><option>60</option>
+                <option>65</option><option>70</option>
+              </select>
+            </div>
+          </div>
+          <div class="grp">
+            <div>
+              <label for="roadWidthInput">Road width (ft)</label>
+              <input id="roadWidthInput" type="number" inputmode="decimal" step="0.1" min="0" value="24" placeholder="24" />
+            </div>
+            <div>
+              <label for="roadHeightInput">Height (ft)</label>
+              <input id="roadHeightInput" type="number" inputmode="decimal" step="0.01" value="0.5" placeholder="0.5" />
+            </div>
+          </div>
+        </div>
+        <hr class="input-divider" />
+        <div class="grp-1">
+          <div>
+            <label for="modeSel" class="card-title">Chevron placement mode</label>
+            <select id="modeSel" title="Chevron placement rule">
+              <option value="snapEnds" selected>Snap to ends (~ S, hits A & C)</option>
+              <option value="centered">Centered (= S, equal margins)</option>
+              <option value="startAtA">Start at A (= S, leftover at end)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="section section-results">
+      <div id="results"></div>
+    </div>
+  </div>
+
+  <div id="map" role="region" aria-label="Map"></div>
+</div>
+</main>
+<div id="footer-placeholder"></div>
+
+<button class="fab" id="menuBtn" aria-label="Open controls"><span>&#9776;</span></button>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="scripts/layoutScript.js"></script>
+<script src="scripts/app.js"></script>
+</body>
+</html>
