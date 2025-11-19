@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taper Lengths</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Taper Lengths</h1>
+            <p class="calculator-lede">Choose the simple or advanced workflow to compute taper length values.</p>
+            <div class="mode-toggle" role="group" aria-label="Select calculator detail level">
+                <button class="mode-button active" data-mode="simple" type="button">Simple</button>
+                <button class="mode-button" data-mode="advanced" type="button">Advanced</button>
+            </div>
+
+            <div class="calculator-panel" data-mode="simple">
+                <h2>Simple Calculator</h2>
+                <label for="simpleW">Enter W (width):</label>
+                <input type="number" id="simpleW" min="0" placeholder="Enter W">
+                <label>Select S (speed):</label><br>
+                <div class="speed-buttons simple-speeds">
+                    <button class="speed-button" onclick="setSimpleSpeed(25, this)">25</button>
+                    <button class="speed-button" onclick="setSimpleSpeed(30, this)">30</button>
+                    <button class="speed-button" onclick="setSimpleSpeed(35, this)">35</button>
+                    <button class="speed-button" onclick="setSimpleSpeed(40, this)">40</button>
+                    <button class="speed-button" onclick="setSimpleSpeed(45, this)">45</button>
+                    <button class="speed-button" onclick="setSimpleSpeed(50, this)">50</button>
+                    <button class="speed-button" onclick="setSimpleSpeed(55, this)">55</button>
+                    <button class="speed-button" onclick="setSimpleSpeed(60, this)">60</button>
+                </div>
+                <input type="hidden" id="simpleSpeed" value="0">
+                <button class="calculate-button" onclick="calculateSimpleTaper()">Calculate</button>
+                <div class="result" id="simpleResult"></div>
+                <div class="note hidden" id="simpleNote">
+                    <p>* L/2 Shift only is rounded to the nearest multiple of 5.</p>
+                </div>
+            </div>
+
+            <div class="calculator-panel hidden" data-mode="advanced">
+                <h2>Advanced Calculator</h2>
+                <label for="advancedW">Enter W (width):</label>
+                <input type="number" id="advancedW" min="0" placeholder="Enter W">
+                <label>Select Posted Speed limit before Construction zone:</label><br>
+                <div class="speed-buttons" id="postedSpeedButtons">
+                    <button class="speed-button" data-speed="25" onclick="setAdvancedSpeed('posted', 25, this)">25</button>
+                    <button class="speed-button" data-speed="30" onclick="setAdvancedSpeed('posted', 30, this)">30</button>
+                    <button class="speed-button" data-speed="35" onclick="setAdvancedSpeed('posted', 35, this)">35</button>
+                    <button class="speed-button" data-speed="40" onclick="setAdvancedSpeed('posted', 40, this)">40</button>
+                    <button class="speed-button" data-speed="45" onclick="setAdvancedSpeed('posted', 45, this)">45</button>
+                    <button class="speed-button" data-speed="50" onclick="setAdvancedSpeed('posted', 50, this)">50</button>
+                    <button class="speed-button" data-speed="55" onclick="setAdvancedSpeed('posted', 55, this)">55</button>
+                    <button class="speed-button" data-speed="60" onclick="setAdvancedSpeed('posted', 60, this)">60</button>
+                </div>
+                <label>Select Work Zone Speed Limit:</label><br>
+                <div class="work-speed-buttons" id="workSpeedButtons">
+                    <button class="speed-button work-speed" data-speed="35" onclick="setAdvancedSpeed('work', 35, this)">35</button>
+                    <button class="speed-button work-speed" data-speed="40" onclick="setAdvancedSpeed('work', 40, this)">40</button>
+                    <button class="speed-button work-speed" data-speed="45" onclick="setAdvancedSpeed('work', 45, this)">45</button>
+                    <button class="speed-button work-speed" data-speed="50" onclick="setAdvancedSpeed('work', 50, this)">50</button>
+                    <button class="speed-button work-speed" data-speed="55" onclick="setAdvancedSpeed('work', 55, this)">55</button>
+                    <button class="speed-button work-speed" data-speed="60" onclick="setAdvancedSpeed('work', 60, this)">60</button>
+                </div>
+                <input type="hidden" id="advancedPostedSpeed" value="0">
+                <input type="hidden" id="advancedWorkSpeed" value="0">
+                <button class="calculate-button" onclick="calculateAdvancedTaper()">Calculate</button>
+                <div id="advancedFormula" class="result formula"></div>
+                <div id="advancedFormulaDetails" class="formula-details"></div>
+                <div class="result" id="advancedResult"></div>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>References</h2>
+            <p>For more information on taper lengths, please visit the <a href="https://rcoc.miraheze.org/wiki/Taper_Length" target="_blank" rel="noopener">Taper Length Wiki</a>.</p>
+        </section>
+    </main>
+
+    <div id="speedDialog">
+        <div id="speedDialogContent">
+            <p>You have selected a posted speed of 40 MPH. Would you like to consider using 45 MPH instead as it may be the prevailing speed? The distance between 40 and 45 is significant.</p>
+            <button id="keep40" onclick="confirmAdvancedSpeed(40)">40 MPH</button>
+            <button id="use45" onclick="confirmAdvancedSpeed(45)">45 MPH</button>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/taperLengths.js"></script>
+</body>
+</html>

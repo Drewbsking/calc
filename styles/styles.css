@@ -53,6 +53,42 @@ body {
     justify-content: space-between;
 }
 
+.calculator-lede {
+    text-align: center;
+    color: #475569;
+    margin-bottom: 5px;
+}
+
+.mode-toggle {
+    display: inline-flex;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid #d4d7dd;
+    border-radius: 999px;
+    padding: 6px;
+    background: #f1f5f9;
+    margin: 16px auto 18px;
+}
+
+.mode-button {
+    border: none;
+    background: transparent;
+    padding: 10px 22px;
+    border-radius: 999px;
+    font-weight: 600;
+    cursor: pointer;
+    color: #475569;
+}
+
+.mode-button.active {
+    background: #0b2a4a;
+    color: #fff;
+}
+
+.calculator-panel + .calculator-panel {
+    margin-top: 24px;
+}
+
 .speed-button {
     width: calc(50% - 10px);
     padding: 10px;
