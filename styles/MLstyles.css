@@ -1,0 +1,80 @@
+.los-body {
+    font-family: Arial, sans-serif;
+    background-color: #e9ecef;
+    margin: 0;
+    padding: 20px 0;
+}
+.los-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+#losForm {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+.los-page h1 {
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #343a40;
+}
+.los-page label {
+    font-size: 16px;
+    display: block;
+    margin-bottom: 5px;
+    color: #495057;
+}
+.los-page input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    font-size: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.los-page button {
+    width: 100%;
+    padding: 15px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+.los-page button:hover {
+    background-color: #0056b3;
+}
+.los-page h2, .los-page h3, .los-page p {
+    color: #343a40;
+}
+.los-page .form-group {
+    margin-bottom: 20px;
+}
+.los-page .result-section {
+    margin-top: 20px;
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.los-page .step {
+    margin-bottom: 15px;
+}
+.los-page .formula {
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #f8f9fa;
+    padding: 10px;
+    border-radius: 5px;
+}

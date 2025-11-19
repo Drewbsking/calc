@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highway LOS Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/MLstyles.css">
+</head>
+<body class="los-body">
+    <div id="header-placeholder"></div>
+    <main class="container los-page">
+        <section class="calculator">
+            <form id="losForm">
+                <h1>Highway LOS Calculator</h1>
+                <div class="form-group">
+                    <label for="trafficVolume">Traffic Volume (vph):</label>
+                    <input type="number" id="trafficVolume" value="1900">
+                </div>
+                <div class="form-group">
+                    <label for="percentTrucks">Percent Trucks (%):</label>
+                    <input type="number" id="percentTrucks" value="13">
+                </div>
+                <div class="form-group">
+                    <label for="percentRVs">Percent RVs (%):</label>
+                    <input type="number" id="percentRVs" value="2">
+                </div>
+                <div class="form-group">
+                    <label for="gradeLength">Grade Length (ft):</label>
+                    <input type="number" id="gradeLength" value="3200">
+                </div>
+                <div class="form-group">
+                    <label for="gradePercent">Grade Percent (%):</label>
+                    <input type="number" id="gradePercent" value="2.5">
+                </div>
+                <div class="form-group">
+                    <label for="laneWidth">Lane Width (ft):</label>
+                    <input type="number" id="laneWidth" value="11">
+                </div>
+                <div class="form-group">
+                    <label for="shoulderWidth">Shoulder Width (ft):</label>
+                    <input type="number" id="shoulderWidth" value="4">
+                </div>
+                <div class="form-group">
+                    <label for="accessPoints">Access Points per Mile:</label>
+                    <input type="number" id="accessPoints" value="20">
+                </div>
+                <div class="form-group">
+                    <label for="PHF">Peak Hour Factor (PHF):</label>
+                    <input type="number" id="PHF" value="0.90">
+                </div>
+                <div class="form-group">
+                    <label for="freeFlowSpeed">Free Flow Speed (mph):</label>
+                    <input type="number" id="freeFlowSpeed" value="56">
+                </div>
+                <button type="button" onclick="calculateLOS()">Calculate LOS</button>
+            </form>
+        </section>
+        <section class="result-section" aria-live="polite">
+            <h2 id="result"></h2>
+            <div id="steps"></div>
+        </section>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="MLdata.js"></script>
+    <script src="MLscripts.js"></script>
+</body>
+</html>

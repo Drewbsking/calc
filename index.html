@@ -115,6 +115,27 @@
                 padding: 28px 16px 40px;
             }
         }
+        .external-links-card .external-links-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .external-links-card .external-links-list a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #d0d8e4;
+            background: #f6f7fb;
+            text-decoration: none;
+            color: #0b2a4a;
+            font-weight: 600;
+        }
+        .external-links-card .external-links-list a:hover {
+            background: #e0e9fb;
+        }
     </style>
 </head>
 <body>
@@ -181,6 +202,13 @@
             </div>
 
             <div class="calculator-card">
+                <span class="badge">🚗 Operations</span>
+                <h2>Highway LOS</h2>
+                <p>Run HCM-style upgrades/downgrades LOS with heavy-vehicle factors and density steps.</p>
+                <a href="ML.html">Open LOS Tool</a>
+            </div>
+
+            <div class="calculator-card">
                 <span class="badge">👁️ Sight Distance</span>
                 <h2>Stopping Sight Distance</h2>
                 <p>Compute uphill/downhill stopping sight distance with a quick chart.</p>
@@ -241,6 +269,15 @@
                 <h2>Density (Cohesive)</h2>
                 <p>Estimate max density/optimum moisture for cohesive soils (AASHTO T-99).</p>
                 <a href="densityCohesive.html">Open Density Tool</a>
+            </div>
+
+            <div class="home-card external-links-card">
+                <h2>External Resources</h2>
+                <p>Helpful references that pair well with these calculators.</p>
+                <div class="external-links-list">
+                    <a href="https://www.sddc.army.mil/sites/TEA/Functions/SpecialAssistant/TrafficEngineeringBranch/BMTE/calcIntersections/Pages/calcStorageLength.aspx" target="_blank" rel="noopener">SDDC Army Calculator</a>
+                    <a href="https://rcoc.miraheze.org/wiki/Main_Page" target="_blank" rel="noopener">RCOC TS-ENG Wiki</a>
+                </div>
             </div>
 
             <div class="calculator-card">
