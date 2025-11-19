@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AASHTO T 99 Density Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <div class="calculator">
+            <h1>AASHTO T 99 Density Calculator for <u>Cohesive</u> Soils</h1>
+            <p class="note">Results are informational only. Verify with Bates or Greathouse before official use.</p>
+            <p>This calculator estimates maximum density and optimum moisture content for cohesive soils using AASHTO T-99 (Modified Proctor) and Michigan Cone data.</p>
+            <form id="densityForm">
+                <label for="moisture">Moisture (%):</label>
+                <input type="number" id="moisture" name="moisture" value="11.00" step="0.01" required>
+
+                <label>
+                    <input type="radio" name="inputOption" value="known" checked>
+                    Enter known Compacted Soil Wet (PCF)
+                </label>
+                <label>
+                    <input type="radio" name="inputOption" value="calculate">
+                    Calculate Compacted Soil Wet (PCF)
+                </label>
+
+                <div id="knownInput">
+                    <label for="compactedSoilWet">Compacted Soil Wet (PCF):</label>
+                    <input type="number" id="compactedSoilWet" name="compactedSoilWet" step="0.01">
+                </div>
+
+                <div id="calculateInput" class="hidden">
+                    <label for="volume">Volume of Mold (cft):</label>
+                    <input type="number" id="volume" name="volume" step="0.01" value="0.0360" required>
+
+                    <label for="wetSoilMold">Wet Soil + Mold (g):</label>
+                    <input type="number" id="wetSoilMold" name="wetSoilMold" value="4820" required>
+
+                    <label for="mold">Mold (g):</label>
+                    <input type="number" id="mold" name="mold" value="2618" required>
+                </div>
+
+                <button type="submit" class="calculate-button" id="calculateButton">Calculate</button>
+                <button type="button" class="calculate-button" id="clearButton">Clear Form</button>
+            </form>
+
+            <div id="results" class="result hidden">
+                <h2>Results</h2>
+                <p id="wetSoilGContainer" class="hidden">Wet Soil (g): <span id="wetSoilG"></span></p>
+                <p id="wetSoilLbContainer" class="hidden">Wet Soil (lb): <span id="wetSoilLb"></span></p>
+                <p>Compacted Soil Wet (PCF): <span id="compactSoilWet"></span></p>
+                <p>Moisture Content (% dry weight): <span id="moistureResult"></span></p>
+                <p>Max Density (PCF): <span id="maxDensity"></span></p>
+                <p>Optimum Moisture (%): <span id="optimumMoisture"></span></p>
+            </div>
+        </div>
+
+        <div class="calculator references">
+            <h2>Resources</h2>
+            <ul>
+                <li><a href="https://www.youtube.com/watch?v=FuYleO1blac&t=70s" target="_blank" rel="noopener">Watch Video on AASHTO T 99 Test</a></li>
+                <li><a href="https://mdotjboss.state.mi.us/webforms/GetDocument.htm?fileName=T-99RED.pdf" target="_blank" rel="noopener">View AASHTO T 99 Chart</a></li>
+                <li><a href="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Construction/Standard-Specifications-Construction/CFS-Manuals/Density-Testing-Inspection-Manual.pdf" target="_blank" rel="noopener">Density Testing and Inspection Manual</a></li>
+                <li><a href="https://mdotjboss.state.mi.us/webforms/GetDocument.htm?fileName=0582B.pdf" target="_blank" rel="noopener">MDOT Form 0582B - Nuclear Method</a></li>
+                <li><a href="https://play.google.com/store/apps/details?id=com.JacobArmour.ConstructionDensity&hl=en_US" target="_blank" rel="noopener">Construction Density App (Android)</a></li>
+                <li><a href="https://apps.apple.com/us/app/construction-density/id1530130134" target="_blank" rel="noopener">Construction Density App (iOS)</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/densityCohesiveScript.js"></script>
+</body>
+</html>

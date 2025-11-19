@@ -10,26 +10,28 @@
     <div id="header-placeholder"></div>
 
     <div class="container">
-        <h1>Intersection Sight Distance</h1>
-        <form id="intersectionForm">
-            <label for="caseSelect">Select Intersection Case:</label>
-            <select id="caseSelect" onchange="updateForm()">
-                <option value="" disabled selected>Select a case</option>
-                <option value="A">Case A: No Control</option>
-                <option value="B">Case B: Stop Control - Left (B1), Right (B2), and Crossing (B3) Maneuver</option>
-                <option value="C">Case C: Yield Control - Crossing (C1), and Left or Right (C2) Maneuver</option>
-                <option value="D">Case D: Traffic Signal Control</option>
-                <option value="E">Case E: All-Way Stop Control</option>
-                <option value="F">Case F: Left Turn from Major Road</option>
-                <option value="G">Case G: Roundabouts</option>
-            </select>
+        <div class="calculator">
+            <h1>Intersection Sight Distance</h1>
+            <form id="intersectionForm">
+                <label for="caseSelect">Select Intersection Case:</label>
+                <select id="caseSelect" onchange="updateForm()">
+                    <option value="" disabled selected>Select a case</option>
+                    <option value="A">Case A: No Control</option>
+                    <option value="B">Case B: Stop Control - Left (B1), Right (B2), and Crossing (B3) Maneuver</option>
+                    <option value="C">Case C: Yield Control - Crossing (C1), and Left or Right (C2) Maneuver</option>
+                    <option value="D">Case D: Traffic Signal Control</option>
+                    <option value="E">Case E: All-Way Stop Control</option>
+                    <option value="F">Case F: Left Turn from Major Road</option>
+                    <option value="G">Case G: Roundabouts</option>
+                </select>
 
-            <div id="dynamicInputs"></div>
+                <div id="dynamicInputs"></div>
 
-            <button type="button" class="calculate-button" onclick="calculateSightDistance()">Calculate</button>
-        </form>
+                <button type="button" class="calculate-button" onclick="calculateSightDistance()">Calculate</button>
+            </form>
 
-        <div id="result" class="result"></div>
+            <div id="result" class="result"></div>
+        </div>
     </div>
 
     <div class="drawing-container">
