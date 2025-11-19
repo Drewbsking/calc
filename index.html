@@ -3,49 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculator Selection</title>
+    <title>Calculator Home</title>
+    <link rel="stylesheet" href="styles.css">
     <style>
         body {
+            margin: 0;
+            min-height: 100vh;
             font-family: Arial, sans-serif;
+            background: url('pexels-hngstrm-1203768.jpg') center/cover no-repeat fixed;
+            color: #0f172a;
+            display: flex;
+            justify-content: center;
+        }
+        .home-wrapper {
+            width: 100%;
+            max-width: 1100px;
+            padding: 40px 20px 60px;
+            backdrop-filter: blur(3px);
+        }
+        .home-card {
+            background: rgba(255, 255, 255, 0.92);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 28px 28px 12px;
+            margin-bottom: 24px;
+        }
+        .home-card h1 {
+            margin: 0 0 8px;
+            color: #0b2a4a;
+            text-align: center;
+        }
+        .home-card p {
+            margin: 0;
+            color: #3f4d63;
+            text-align: center;
+        }
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 18px;
+        }
+        .calculator-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            gap: 10px;
+        }
+        .calculator-card h2 {
             margin: 0;
-            background-image: url('pexels-hngstrm-1203768.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            font-size: 20px;
+            color: #0b2a4a;
         }
-        h1 {
-            margin-bottom: 20px;
-            color: white;
-            text-shadow: 2px 2px 4px #000000;
+        .calculator-card p {
+            margin: 0;
+            color: #4b5563;
+            line-height: 1.4;
         }
-        .calculator-option {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 20px;
-            margin: 10px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 200px;
-        }
-        .calculator-option a {
+        .calculator-card a {
+            margin-top: auto;
+            display: inline-block;
+            padding: 10px 12px;
+            background: #007bff;
+            color: #fff;
             text-decoration: none;
-            color: #007BFF;
-            font-size: 18px;
+            border-radius: 6px;
+            text-align: center;
+            font-weight: 600;
+        }
+        .calculator-card a:hover {
+            background: #005dc1;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            color: #0b2a4a;
+            background: #e7f3fe;
+            border: 1px solid #c7ddf7;
+            width: fit-content;
+        }
+        @media (max-width: 600px) {
+            .home-wrapper {
+                padding: 28px 16px 40px;
+            }
         }
     </style>
 </head>
 <body>
-    <h1>Choose a Calculator</h1>
-    <div class="calculator-option">
-        <a href="simple_calculator.html">Simple Calculator</a>
-    </div>
-    <div class="calculator-option">
-        <a href="complicated_calculator.html">Complicated Calculator</a>
-    </div>
+    <main class="home-wrapper">
+        <section class="home-card">
+            <h1>Calculator Home Base</h1>
+            <p>Select a tool below. More calculators will appear here as you add them.</p>
+        </section>
+
+        <section class="calculator-grid">
+            <div class="calculator-card">
+                <span class="badge">Everyday</span>
+                <h2>Simple Calculator</h2>
+                <p>Quick, no-frills arithmetic for everyday totals.</p>
+                <a href="simple_calculator.html">Open Calculator</a>
+            </div>
+
+            <div class="calculator-card">
+                <span class="badge">Advanced</span>
+                <h2>Complicated Calculator</h2>
+                <p>More detailed inputs for scenario planning and what-ifs.</p>
+                <a href="complicated_calculator.html">Open Calculator</a>
+            </div>
+
+            <div class="calculator-card">
+                <span class="badge">UD-10</span>
+                <h2>Crash Report Fetcher</h2>
+                <p>Enter a Crash ID to open the corresponding UD-10 PDF report.</p>
+                <a href="ud10.html">Open UD-10 Tool</a>
+            </div>
+
+            <div class="calculator-card">
+                <span class="badge">Coming soon</span>
+                <h2>More calculators</h2>
+                <p>Add your next HTML + JS tool and link it here to keep everything in one place.</p>
+                <a href="#!" aria-disabled="true">Stay tuned</a>
+            </div>
+        </section>
+    </main>
 </body>
 </html>

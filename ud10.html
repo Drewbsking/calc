@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Fetcher</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Fetch Crash Report PDF</h1>
+        <form id="pdfForm" onsubmit="fetchPDF(event)">
+            <label for="crashId">Crash ID:</label>
+            <input type="text" id="crashId" name="crashId" required>
+            <button type="submit">Get PDF</button>
+        </form>
+    </div>
+    <script src="scripts/ud10.js"></script>
+</body>
+</html>
