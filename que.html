@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Left-Turn Capacity</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Left-Turn Capacity + Storage Length</h1>
+            <p class="note">Experimental — verify before using for decisions.</p>
+
+            <label for="vc">Major-road volume (v/h):</label>
+            <input type="number" id="vc" required>
+
+            <label for="tc">Critical gap (s):</label>
+            <input type="number" id="tc" required>
+
+            <label for="tf">Follow-up gap (s):</label>
+            <input type="number" id="tf" required>
+
+            <label for="p">Probability (P(n &gt;= N)):</label>
+            <input type="number" step="0.01" id="p" required>
+
+            <label for="vl">Average length per vehicle (ft):</label>
+            <input type="number" id="vl" required>
+
+            <button class="calculate-button" onclick="calculateQueLength()">Calculate</button>
+
+            <div id="results" class="result"></div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/queLengthScript.js"></script>
+</body>
+</html>

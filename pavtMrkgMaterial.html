@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pavement Marking Material</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Pavement Marking Material</h1>
+
+            <h2>Material</h2>
+            <form id="markingForm">
+                <label for="material">Select Pavement Marking Material:</label>
+                <select id="material" name="material" required onchange="calculate()">
+                    <option value="">--Select Material--</option>
+                    <option value="waterborne">Waterborne (Low Temp)</option>
+                    <option value="regularWaterborne">Regular Dry Waterborne</option>
+                    <option value="sprayableThermoplastic">Sprayable Thermoplastic</option>
+                </select>
+
+                <h2>Long Lines</h2>
+                <label for="width">Width of Pavement Marking (inches):</label>
+                <input type="range" id="width" name="width" min="4" max="24" value="4" step="1" class="slider"
+                       oninput="updateWidthLabel(this.value); calculate();">
+                <span id="widthValue">4 inches</span>
+
+                <label for="feet">Feet of Pavement Marking Painted:</label>
+                <input type="number" id="feet" name="feet" step="0.01" required oninput="calculate()">
+
+                <h2>Special Markings:</h2>
+                <div class="table-container">
+                    <h3>Legends</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Legend</th>
+                            <th>Quantity (Each)</th>
+                            <th>Unit Area (sq ft)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>AHEAD</td>
+                            <td><input type="number" id="AHEAD" value="0" oninput="calculate()"></td>
+                            <td id="AHEAD_area">28.86</td>
+                        </tr>
+                        <tr>
+                            <td>BIKE</td>
+                            <td><input type="number" id="BIKE" value="0" oninput="calculate()"></td>
+                            <td id="BIKE_area">22.15</td>
+                        </tr>
+                        <tr>
+                            <td>BUS</td>
+                            <td><input type="number" id="BUS" value="0" oninput="calculate()"></td>
+                            <td id="BUS_area">18.55</td>
+                        </tr>
+                        <tr>
+                            <td>CANADA</td>
+                            <td><input type="number" id="CANADA" value="0" oninput="calculate()"></td>
+                            <td id="CANADA_area">32.87</td>
+                        </tr>
+                        <tr>
+                            <td>EAST</td>
+                            <td><input type="number" id="EAST" value="0" oninput="calculate()"></td>
+                            <td id="EAST_area">21.71</td>
+                        </tr>
+                        <tr>
+                            <td>EXIT</td>
+                            <td><input type="number" id="EXIT" value="0" oninput="calculate()"></td>
+                            <td id="EXIT_area">17.76</td>
+                        </tr>
+                        <tr>
+                            <td>LANE</td>
+                            <td><input type="number" id="LANE" value="0" oninput="calculate()"></td>
+                            <td id="LANE_area">22.30</td>
+                        </tr>
+                        <tr>
+                            <td>LEFT</td>
+                            <td><input type="number" id="LEFT" value="0" oninput="calculate()"></td>
+                            <td id="LEFT_area">19.11</td>
+                        </tr>
+                        <tr>
+                            <td>MERGE</td>
+                            <td><input type="number" id="MERGE" value="0" oninput="calculate()"></td>
+                            <td id="MERGE_area">33.28</td>
+                        </tr>
+                        <tr>
+                            <td>NO</td>
+                            <td><input type="number" id="NO" value="0" oninput="calculate()"></td>
+                            <td id="NO_area">12.92</td>
+                        </tr>
+                        <tr>
+                            <td>NORTH</td>
+                            <td><input type="number" id="NORTH" value="0" oninput="calculate()"></td>
+                            <td id="NORTH_area">29.53</td>
+                        </tr>
+                        <tr>
+                            <td>ONLY</td>
+                            <td><input type="number" id="ONLY" value="0" oninput="calculate()"></td>
+                            <td id="ONLY_area">20.90</td>
+                        </tr>
+                        <tr>
+                            <td>PED</td>
+                            <td><input type="number" id="PED" value="0" oninput="calculate()"></td>
+                            <td id="PED_area">17.63</td>
+                        </tr>
+                        <tr>
+                            <td>RIGHT</td>
+                            <td><input type="number" id="RIGHT" value="0" oninput="calculate()"></td>
+                            <td id="RIGHT_area">25.10</td>
+                        </tr>
+                        <tr>
+                            <td>SCHOOL</td>
+                            <td><input type="number" id="SCHOOL" value="0" oninput="calculate()"></td>
+                            <td id="SCHOOL_area">32.58</td>
+                        </tr>
+                        <tr>
+                            <td>SOUTH</td>
+                            <td><input type="number" id="SOUTH" value="0" oninput="calculate()"></td>
+                            <td id="SOUTH_area">27.83</td>
+                        </tr>
+                        <tr>
+                            <td>STOP</td>
+                            <td><input type="number" id="STOP" value="0" oninput="calculate()"></td>
+                            <td id="STOP_area">21.50</td>
+                        </tr>
+                        <tr>
+                            <td>TO</td>
+                            <td><input type="number" id="TO" value="0" oninput="calculate()"></td>
+                            <td id="TO_area">10.43</td>
+                        </tr>
+                        <tr>
+                            <td>TRAIL</td>
+                            <td><input type="number" id="TRAIL" value="0" oninput="calculate()"></td>
+                            <td id="TRAIL_area">22.10</td>
+                        </tr>
+                        <tr>
+                            <td>TURN</td>
+                            <td><input type="number" id="TURN" value="0" oninput="calculate()"></td>
+                            <td id="TURN_area">23.04</td>
+                        </tr>
+                        <tr>
+                            <td>WEST</td>
+                            <td><input type="number" id="WEST" value="0" oninput="calculate()"></td>
+                            <td id="WEST_area">24.42</td>
+                        </tr>
+                        <tr>
+                            <td>XING</td>
+                            <td><input type="number" id="XING" value="0" oninput="calculate()"></td>
+                            <td id="XING_area">20.13</td>
+                        </tr>
+                        <tr>
+                            <td>YIELD</td>
+                            <td><input type="number" id="YIELD" value="0" oninput="calculate()"></td>
+                            <td id="YIELD_area">22.91</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="table-container">
+                    <h3>Symbols</h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>Symbol</th>
+                            <th>Quantity (Each)</th>
+                            <th>Unit Area (sq ft)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td>ACCESSIBLE</td>
+                            <td><input type="number" id="ACCESSIBLE" value="0" oninput="calculate()"></td>
+                            <td id="ACCESSIBLE_area">11.11</td>
+                        </tr>
+                        <tr>
+                            <td>BICYCLE (ROAD)</td>
+                            <td><input type="number" id="BICYCLE_ROAD" value="0" oninput="calculate()"></td>
+                            <td id="BICYCLE_ROAD_area">10.54</td>
+                        </tr>
+                        <tr>
+                            <td>BICYCLE (LANE/PATH)</td>
+                            <td><input type="number" id="BICYCLE_LANE_PATH" value="0" oninput="calculate()"></td>
+                            <td id="BICYCLE_LANE_PATH_area">5.93</td>
+                        </tr>
+                        <tr>
+                            <td>BIKE TURN ARROW, LT OR RT</td>
+                            <td><input type="number" id="BIKE_TURN_ARROW_LT_OR_RT" value="0" oninput="calculate()"></td>
+                            <td id="BIKE_TURN_ARROW_LT_OR_RT_area">4.11</td>
+                        </tr>
+                        <tr>
+                            <td>DEDICATED LANE (HOV)</td>
+                            <td><input type="number" id="DEDICATED_LANE_HOV" value="0" oninput="calculate()"></td>
+                            <td id="DEDICATED_LANE_HOV_area">10.24</td>
+                        </tr>
+                        <tr>
+                            <td>DIRECT ARROW (BIKE)</td>
+                            <td><input type="number" id="DIRECT_ARROW_BIKE" value="0" oninput="calculate()"></td>
+                            <td id="DIRECT_ARROW_BIKE_area">5.07</td>
+                        </tr>
+                        <tr>
+                            <td>LEFT, RIGHT ARROW</td>
+                            <td><input type="number" id="LEFT_RIGHT_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="LEFT_RIGHT_ARROW_area">28.99</td>
+                        </tr>
+                        <tr>
+                            <td>LT ROUNDABOUT ARROW</td>
+                            <td><input type="number" id="LT_ROUNDABOUT_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="LT_ROUNDABOUT_ARROW_area">17.48</td>
+                        </tr>
+                        <tr>
+                            <td>LT, RT, THRU ARROW</td>
+                            <td><input type="number" id="LT_RT_THRU_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="LT_RT_THRU_ARROW_area">40.26</td>
+                        </tr>
+                        <tr>
+                            <td>MERGE ARROW</td>
+                            <td><input type="number" id="MERGE_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="MERGE_ARROW_area">42.17</td>
+                        </tr>
+                        <tr>
+                            <td>RAILROAD</td>
+                            <td><input type="number" id="RAILROAD" value="0" oninput="calculate()"></td>
+                            <td id="RAILROAD_area">60.89</td>
+                        </tr>
+                        <tr>
+                            <td>RAILROAD-ALTERNATE</td>
+                            <td><input type="number" id="RAILROAD_ALTERNATE" value="0" oninput="calculate()"></td>
+                            <td id="RAILROAD_ALTERNATE_area">59.06</td>
+                        </tr>
+                        <tr>
+                            <td>RT. LT ROUNDABOUT ARROW</td>
+                            <td><input type="number" id="RT_LT_ROUNDABOUT_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="RT_LT_ROUNDABOUT_ARROW_area">22.19</td>
+                        </tr>
+                        <tr>
+                            <td>RT, THRU, LT ROUNDABOUT ARROW</td>
+                            <td><input type="number" id="RT_THRU_LT_ROUNDABOUT_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="RT_THRU_LT_ROUNDABOUT_ARROW_area">28.31</td>
+                        </tr>
+                        <tr>
+                            <td>SHARROW</td>
+                            <td><input type="number" id="SHARROW" value="0" oninput="calculate()"></td>
+                            <td id="SHARROW_area">9.26</td>
+                        </tr>
+                        <tr>
+                            <td>THRU ARROW</td>
+                            <td><input type="number" id="THRU_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="THRU_ARROW_area">13.16</td>
+                        </tr>
+                        <tr>
+                            <td>THRU, LT TURN ARROW</td>
+                            <td><input type="number" id="THRU_LT_TURN_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="THRU_LT_TURN_ARROW_area">23.60</td>
+                        </tr>
+                        <tr>
+                            <td>THRU, RT TURN ARROW</td>
+                            <td><input type="number" id="THRU_RT_TURN_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="THRU_RT_TURN_ARROW_area">28.14</td>
+                        </tr>
+                        <tr>
+                            <td>TURN ARROW, LT OR RT</td>
+                            <td><input type="number" id="TURN_ARROW_LT_OR_RT" value="0" oninput="calculate()"></td>
+                            <td id="TURN_ARROW_LT_OR_RT_area">16.42</td>
+                        </tr>
+                        <tr>
+                            <td>WRONG WAY ARROW</td>
+                            <td><input type="number" id="WRONG_WAY_ARROW" value="0" oninput="calculate()"></td>
+                            <td id="WRONG_WAY_ARROW_area">56.54</td>
+                        </tr>
+                        <tr>
+                            <td>YIELD TRIANGLE</td>
+                            <td><input type="number" id="YIELD_TRIANGLE" value="0" oninput="calculate()"></td>
+                            <td id="YIELD_TRIANGLE_area">3.00</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </form>
+
+            <div id="result" class="result hidden">
+                <h1>Results</h1>
+                <div class="result-section" id="MDOTApplicationSection">
+                    <h2>Application Rates (PER MDOT SPEC BOOK):</h2>
+                    <p id="thickness">Minimum Dry Thickness: </p>
+                    <p id="thicknessBeads">Minimum Dry Thickness with Beads: </p>
+                    <p id="gallonsPerMile">Gallons of Paint per Mile: </p>
+                    <p id="lbsPerMile">Pounds of Paint per Mile: </p>
+                    <p id="beadsPerMile">Pounds of Beads per Mile: </p>
+                    <p id="gallonsPerSFT">Gallons of Paint per Square Foot</p>
+                    <p id="beadsPerSFT">Pounds of Beads per Square Foot</p>
+                </div>
+
+                <div class="result-section" id="PerDataSection">
+                    <h2>Application Rate for Entered Data:</h2>
+                    <p id="materialGallons">Gallons of Paint Used: </p>
+                    <p id="materialLbs">Pounds of Paint Used: </p>
+                    <p id="beadsUsed">Pounds of Beads Used: </p>
+                    <p id="specialMarkings">Total Special Markings Quantity (sq ft): </p>
+                    <p id="specialGallonsUsed">Gallons of Paint Used for Special Markings: </p>
+                    <p id="specialLbsUsed">Pounds of Paint Used for Special Markings: </p>
+                    <p id="specialBeadsUsed">Pounds of Beads Used for Special Markings: </p>
+                </div>
+
+                <div class="button-group">
+                    <input type="text" id="projectName" placeholder="Project Name (Optional)">
+                    <input type="text" id="projectNumber" placeholder="Project Number (Optional)">
+                    <button type="button" onclick="exportToPDF()">Export to PDF</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/pavtMrkgMaterialScript.js"></script>
+</body>
+</html>

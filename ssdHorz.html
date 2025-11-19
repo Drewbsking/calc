@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Horizontal Sight Offset</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <h1>Horizontal Sight Offset Calculator</h1>
+        <form>
+            <label for="inputType">Input Type:</label>
+            <select id="inputType" onchange="toggleInputFields()">
+                <option value="speed">Speed</option>
+                <option value="sightDistance">Sight Distance</option>
+            </select>
+
+            <div id="speedInput">
+                <label for="speed">Speed (mph):</label>
+                <input type="number" id="speed" placeholder="Enter speed" value="45" required>
+            </div>
+
+            <div id="sightDistanceInput" style="display: none;">
+                <label for="sightDistance">Sight Distance (S):</label>
+                <input type="number" id="sightDistance" placeholder="Enter sight distance" value="400" required>
+            </div>
+
+            <div id="gradeInput">
+                <label for="grade">Grade (G):</label>
+                <input type="number" id="grade" placeholder="Enter grade (%)" value="-6" required>
+            </div>
+
+            <label for="radius">Radius (R):</label>
+            <input type="number" id="radius" placeholder="Enter radius" value="500" required>
+
+            <div id="decelRateInput">
+                <label for="decelRate">Deceleration Rate (ft/s²):</label>
+                <input type="number" id="decelRate" placeholder="Enter deceleration rate" value="11.2" required>
+                <small>Note: This value should not be changed unless approved by an Engineer.</small>
+            </div>
+
+
+            <button type="button" class="calculate-button" onclick="calculateHSO()">Calculate HSO</button>
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/ssdScript.js"></script>
+    <script src="scripts/ssdHorzScript.js"></script>
+</body>
+</html>

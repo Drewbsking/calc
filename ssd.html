@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stopping Sight Distance</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <h1>Stopping Sight Distance</h1>
+        <div class="content">
+            <form>
+                <label for="velocity">Velocity/Speed (mph):</label>
+                <select id="velocity" name="velocity">
+                    <option value="25">25 mph</option>
+                    <option value="30">30 mph</option>
+                    <option value="35">35 mph</option>
+                    <option value="40">40 mph</option>
+                    <option value="45">45 mph</option>
+                    <option value="50" selected>50 mph</option>
+                    <option value="55">55 mph</option>
+                </select>
+
+                <label for="grade">Grade (percent):</label>
+                <input type="number" id="grade" name="grade" min="0" step="0.1" value="6.0">
+
+                <label for="deceleration">Deceleration Rate (ft/sec²)*:</label>
+                <input type="number" id="deceleration" name="deceleration" value="11.2" step="0.1">
+
+                <label for="reaction-time">Brake Reaction Time (seconds)*:</label>
+                <input type="number" id="reaction-time" name="reaction-time" value="2.5" step="0.1">
+                <p class="note">* Do not change unless directed by an engineer.</p>
+
+            </form>
+            <button type="button" class="calculate-button" onclick="calculateDistances()">Calculate</button>
+            <div id="output">
+                <div>
+                    <h3>Total Stopping Sight Distance Downhill ⬇️:</h3>
+                    <p id="total-stopping-distance-downhill" class="highlight">0.00 ft</p>
+                    <h3>Total Stopping Sight Distance Uphill ⬆️:</h3>
+                    <p id="total-stopping-distance-uphill" class="highlight">0.00 ft</p>
+                </div>
+                <div id="chart-container">
+                    <canvas id="ssdChart"></canvas>
+                </div>
+            </div>
+            <hr>
+            <h3>Additional Information:</h3>
+            <p>Brake Reaction Distance: <span id="brake-reaction-distance">0.00 ft</span></p>
+            <p>Braking Distance Downhill: <span id="braking-distance-downhill">0.00 ft</span></p>
+            <p>Braking Distance Uphill: <span id="braking-distance-uphill">0.00 ft</span></p>
+        </div>
+    </div>
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/ssdScript.js"></script>
+</body>
+</html>

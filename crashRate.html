@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crash Rate Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Crash Rate Calculator</h1>
+            <p class="note">Toggle between segment and intersection modes; enter the values to compute crash rate.</p>
+
+            <div class="speed-buttons" style="margin-bottom: 10px;">
+                <button class="speed-button" id="segmentBtn" onclick="setMode('segment')">Segment</button>
+                <button class="speed-button" id="intersectionBtn" onclick="setMode('intersection')">Intersection</button>
+            </div>
+
+            <div id="segmentFields">
+                <label for="segCrashes">Number of Crashes:</label>
+                <input type="number" id="segCrashes" min="0" step="1" placeholder="e.g., 12">
+
+                <label for="segAdt">Average Daily Traffic (ADT):</label>
+                <input type="number" id="segAdt" min="0" step="1" placeholder="e.g., 18000">
+
+                <label for="segLength">Segment Length (miles):</label>
+                <input type="number" id="segLength" min="0" step="0.01" placeholder="e.g., 2.5">
+
+                <label for="segYears">Time Period (years):</label>
+                <input type="number" id="segYears" min="0" step="1" placeholder="e.g., 5">
+            </div>
+
+            <div id="intersectionFields" class="hidden">
+                <label for="intCrashes">Number of Crashes:</label>
+                <input type="number" id="intCrashes" min="0" step="1" placeholder="e.g., 8">
+
+                <label for="intMajorAdt">ADT on Major Road:</label>
+                <input type="number" id="intMajorAdt" min="0" step="1" placeholder="e.g., 22000">
+
+                <label for="intMinorAdt">ADT on Minor Road:</label>
+                <input type="number" id="intMinorAdt" min="0" step="1" placeholder="e.g., 9000">
+
+                <label for="intYears">Time Period (years):</label>
+                <input type="number" id="intYears" min="0" step="1" placeholder="e.g., 3">
+            </div>
+
+            <button class="calculate-button" onclick="calculateCrashRate()">Calculate</button>
+            <div id="result" class="result"></div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/crashRateScript.js"></script>
+</body>
+</html>

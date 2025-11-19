@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calculator Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles/styles.css">
     <style>
         body {
             margin: 0;
@@ -13,7 +13,8 @@
             background: url('pexels-hngstrm-1203768.jpg') center/cover no-repeat fixed;
             color: #0f172a;
             display: flex;
-            justify-content: center;
+            flex-direction: column;
+            align-items: center;
         }
         .home-wrapper {
             width: 100%;
@@ -95,6 +96,7 @@
     </style>
 </head>
 <body>
+    <div id="header-placeholder"></div>
     <main class="home-wrapper">
         <section class="home-card">
             <h1>Calculator Home Base</h1>
@@ -124,6 +126,48 @@
             </div>
 
             <div class="calculator-card">
+                <span class="badge">Traffic</span>
+                <h2>Left-Turn Queue Length</h2>
+                <p>Estimate left-turn capacity and storage length. Experimental—use with caution.</p>
+                <a href="que.html">Open Queue Tool</a>
+            </div>
+
+            <div class="calculator-card">
+                <span class="badge">Geometry</span>
+                <h2>Fillet Area</h2>
+                <p>Pick an angle and radius to estimate fillet area.</p>
+                <a href="fillet.html">Open Fillet Tool</a>
+            </div>
+
+            <div class="calculator-card">
+                <span class="badge">Materials</span>
+                <h2>Pavement Marking</h2>
+                <p>Estimate paint, beads, and totals for lines, legends, and symbols.</p>
+                <a href="pavtMrkgMaterial.html">Open Marking Tool</a>
+            </div>
+
+            <div class="calculator-card">
+                <span class="badge">Safety</span>
+                <h2>Crash Rate</h2>
+                <p>Compute crash rates for segments or intersections with a single tool.</p>
+                <a href="crashRate.html">Open Crash Rate Tool</a>
+            </div>
+
+            <div class="calculator-card">
+                <span class="badge">Sight Distance</span>
+                <h2>Stopping Sight Distance</h2>
+                <p>Compute uphill/downhill stopping sight distance with a quick chart.</p>
+                <a href="ssd.html">Open SSD Tool</a>
+            </div>
+
+            <div class="calculator-card">
+                <span class="badge">Sight Distance</span>
+                <h2>Horizontal Sight Offset</h2>
+                <p>Calculate HSO from speed or sight distance with grade and radius.</p>
+                <a href="ssdHorz.html">Open HSO Tool</a>
+            </div>
+
+            <div class="calculator-card">
                 <span class="badge">Coming soon</span>
                 <h2>More calculators</h2>
                 <p>Add your next HTML + JS tool and link it here to keep everything in one place.</p>
@@ -131,5 +175,7 @@
             </div>
         </section>
     </main>
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
 </body>
 </html>

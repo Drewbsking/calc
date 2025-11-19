@@ -1,0 +1,418 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 20px;
+    padding: 20px;
+    background-color: #f7f7f7;
+    color: #333;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 10px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 1200px;
+}
+
+h1, h2 {
+    text-align: center;
+}
+
+label {
+    display: block;
+    margin: 10px 0 5px;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+}
+
+button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+#calculateButton {
+    background-color: #28a745;
+}
+
+#calculateButton:hover {
+    background-color: #218838;
+}
+
+#clearButton {
+    background-color: #dc3545;
+}
+
+#clearButton:hover {
+    background-color: #c82333;
+}
+
+#result {
+    margin-top: 20px;
+    font-size: 18px;
+}
+
+.drawing-container {
+    text-align: center;
+    margin: 20px auto;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+    width: 90%;
+    max-width: 800px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+svg {
+    margin-top: 20px;
+}
+
+.dynamic {
+    font-family: Arial, sans-serif;
+    font-size: 12px;
+    fill: darkgray;
+}
+
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block;
+}
+
+@media only screen and (max-width: 600px) {
+    body {
+        margin: 10px;
+        font-size: 14px;
+    }
+    form, .result {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    label {
+        display: block;
+        margin: 10px 0 5px;
+    }
+    .slider {
+        width: 100%;
+    }
+    .button-group {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+    .button-group input, .button-group button {
+        width: 100%;
+        margin: 0;
+    }
+}
+
+.slider {
+    width: 100%;
+}
+
+.result {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ddd;
+}
+
+.result-section {
+    margin-bottom: 20px;
+}
+
+.button-group {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.button-group input {
+    width: 150px;
+}
+
+.table-container {
+    margin-bottom: 20px;
+}
+
+.table-container table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-container th, .table-container td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.table-container th {
+    background-color: #f2f2f2;
+}
+
+header, footer {
+    background-color: #333;
+    color: #fff;
+    text-align: center;
+    padding: 1rem 0;
+}
+
+.content {
+    padding: 1rem 0;
+}
+
+.note {
+    font-size: 0.9rem;
+    color: #555;
+    margin-top: 0.5rem;
+}
+
+#output {
+    margin-top: 1rem;
+    padding: 1rem;
+    background-color: #f4f4f4;
+    border: 1px solid #ddd;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.highlight {
+    background-color: yellow;
+    font-weight: bold;
+    font-size: 1.2rem;
+    color: #000;
+}
+
+#chart-container {
+    width: 50%;
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 100%;
+        padding: 0 1rem;
+    }
+    #output {
+        flex-direction: column;
+    }
+    #chart-container {
+        width: 100%;
+        margin-top: 1rem;
+    }
+}
+
+nav {
+    margin-top: 1rem;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: bold;
+    margin: 0 1rem;
+}
+
+nav a:hover {
+    text-decoration: underline;
+}
+
+.equation {
+    margin-top: 1rem;
+    font-style: italic;
+    font-size: 1rem;
+    color: #333;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+}
+
+.calculator, .references {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    overflow-x: auto;
+}
+
+.calculator input {
+    width: calc(100% - 22px); /* Adjust for border and padding */
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    -moz-appearance: textfield;
+}
+
+.calculator input[type=number]::-webkit-outer-spin-button,
+.calculator input[type=number]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.speed-buttons, .work-speed-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+}
+
+.speed-button {
+    width: calc(50% - 10px);
+    padding: 10px;
+    margin: 5px 0;
+    background: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    text-align: center;
+}
+
+.speed-button:hover, .speed-button.selected {
+    background: #0056b3;
+}
+
+.work-speed {
+    background: #ffecd1;
+    color: #000;
+}
+
+.work-speed:hover, .work-speed.selected {
+    background: #e6c48f; /* Darker shade of peach for hover and selected state */
+    color: #000; /* Keep text color black for visibility */
+}
+
+.calculate-button {
+    width: 100%;
+    padding: 10px;
+    background: #28a745;
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.calculate-button:hover {
+    background: #218838;
+}
+
+.result, .formula, .formula-details, .note {
+    margin-top: 20px;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.formula, .formula-details {
+    background-color: #e7f3fe;
+    border-left: 6px solid #2196f3;
+    border-radius: 4px;
+    padding: 10px;
+}
+
+.note {
+    font-size: 14px;
+    text-align: center;
+}
+
+.work-zone-speed {
+    background: #ffecd1; /* Light peach background for normal state */
+    color: #000; /* Black text for contrast */
+}
+
+@media (max-width: 600px) {
+    .speed-button, .work-speed {
+        width: 100%;
+        margin: 5px 0;
+    }
+    .calculate-button {
+        font-size: 14px;
+    }
+    .result, .formula, .formula-details, .note {
+        font-size: 14px;
+    }
+    th, td {
+        font-size: 14px;
+    }
+    h1, h2 {
+        font-size: 20px;
+    }
+}
+
+#speedDialog {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0,0,0);
+    background-color: rgba(0,0,0,0.4);
+}
+
+#speedDialogContent {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 300px;
+    text-align: center;
+    border-radius: 10px;
+}
+
+#speedDialogContent button {
+    width: 100px;
+    padding: 10px;
+    margin: 5px;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#speedDialogContent button#keep40 {
+    background: #007bff;
+    color: #fff;
+}
+
+#speedDialogContent button#use45 {
+    background: #28a745;
+    color: #fff;
+}
