@@ -100,9 +100,9 @@ function calculateSimpleTaper() {
 
   document.getElementById('simpleResult').innerHTML = `
     ${formula}<br>
-    Calculated L = ${l.toFixed(2)}<br>
-    Design L = ${designL}<br>
-    L/2 Shift only* = ${l2ShiftOnly}
+    Calculated L = ${l.toFixed(2)}${getRatioText(l, w)}<br>
+    Design L = ${designL}${getRatioText(designL, w)}<br>
+    L/2 Shift only* = ${l2ShiftOnly}${getRatioText(l2ShiftOnly, w)}
   `;
   document.getElementById('simpleNote').classList.remove('hidden');
 }
@@ -200,11 +200,17 @@ function calculateAdvancedTaper() {
   const workFormulaData = calculateTaperBySpeed(w, workSpeed);
 
   const bufferDistance = bufferDistances[postedSpeed] || null;
-  const bufferDistanceRounded = bufferDistance ? roundUpToNearestFive(bufferDistance) : 'N/A';
-  const signDistance = signDistances[postedSpeed] || 'N/A';
+  const bufferDistanceRounded = typeof bufferDistance === 'number' ? roundUpToNearestFive(bufferDistance) : null;
+  const signDistance = typeof signDistances[postedSpeed] === 'number' ? signDistances[postedSpeed] : null;
+  const bufferDistanceDisplay = bufferDistanceRounded !== null
+    ? `${bufferDistanceRounded} feet${getRatioText(bufferDistanceRounded, w)}`
+    : 'N/A';
+  const signDistanceDisplay = signDistance !== null
+    ? `${signDistance} feet${getRatioText(signDistance, w)}`
+    : 'N/A';
 
   document.getElementById('advancedFormula').innerHTML = `
-        <span>Formula Used: ${postedFormulaData.formula}, Calculated L: ${postedFormulaData.l.toFixed(2)}</span>
+        <span>Formula Used: ${postedFormulaData.formula}, Calculated L: ${postedFormulaData.l.toFixed(2)}${getRatioText(postedFormulaData.l, w)}</span>
     `;
   document.getElementById('advancedFormulaDetails').innerHTML = `
         <p>W (width): ${w}</p>
@@ -220,26 +226,26 @@ function calculateAdvancedTaper() {
             </tr>
             <tr>
                 <td>Merging (L)<sup>*</sup></td>
-                <td>${postedFormulaData.mergingL}</td>
-                <td class="work-zone-speed">${workFormulaData.mergingL}</td>
+                <td>${postedFormulaData.mergingL}${getRatioText(postedFormulaData.mergingL, w)}</td>
+                <td class="work-zone-speed">${workFormulaData.mergingL}${getRatioText(workFormulaData.mergingL, w)}</td>
             </tr>
             <tr>
                 <td>Shift (L/2)</td>
-                <td>${postedFormulaData.shiftL}</td>
-                <td class="work-zone-speed">${workFormulaData.shiftL}</td>
+                <td>${postedFormulaData.shiftL}${getRatioText(postedFormulaData.shiftL, w)}</td>
+                <td class="work-zone-speed">${workFormulaData.shiftL}${getRatioText(workFormulaData.shiftL, w)}</td>
             </tr>
             <tr>
                 <td>Shoulder (L/3)</td>
-                <td>${postedFormulaData.shoulderL}</td>
-                <td class="work-zone-speed">${workFormulaData.shoulderL}</td>
+                <td>${postedFormulaData.shoulderL}${getRatioText(postedFormulaData.shoulderL, w)}</td>
+                <td class="work-zone-speed">${workFormulaData.shoulderL}${getRatioText(workFormulaData.shoulderL, w)}</td>
             </tr>
             <tr>
                 <td>Buffer Distance (B)</td>
-                <td colspan="2">RCOC standard is 200 ft (Calculated ${bufferDistanceRounded} feet)</td>
+                <td colspan="2">RCOC standard is 200 ft (Calculated ${bufferDistanceDisplay})</td>
             </tr>
             <tr>
                 <td>Sign Distance (D)</td>
-                <td colspan="2">RCOC standard is 350 feet (Calculated ${signDistance} feet)</td>
+                <td colspan="2">RCOC standard is 350 feet (Calculated ${signDistanceDisplay})</td>
             </tr>
         </table>
         <div class="note">
@@ -268,4 +274,16 @@ function calculateTaperBySpeed(width, speed) {
     shiftL: roundUpToNearestFive(l / 2),
     shoulderL: roundUpToNearestFive(l / 3)
   };
+}
+
+function getRatioText(length, width) {
+  if (!width || width <= 0 || !Number.isFinite(length)) {
+    return '';
+  }
+  const ratio = length / width;
+  if (!Number.isFinite(ratio) || ratio <= 0) {
+    return '';
+  }
+  const ratioValue = Number(ratio.toFixed(2));
+  return ` (1:${ratioValue})`;
 }
