@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manning's Equation Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <div class="calculator">
+            <p class="calculator-lede">Use consistent units (ft/ft, m/m, etc.) so the discharge matches your inputs.</p>
+            <h1>Open Channel Flow (Manning's n)</h1>
+            <form id="manningForm">
+                <label for="solveFor">Solve for</label>
+                <select id="solveFor">
+                    <option value="discharge">Discharge (Q)</option>
+                    <option value="slope">Channel slope (S)</option>
+                    <option value="roughness">Manning's n</option>
+                    <option value="depth">Depth (y)</option>
+                </select>
+
+                <label for="unitSystem">Unit System</label>
+                <select id="unitSystem">
+                    <option value="1">SI (k = 1.0)</option>
+                    <option value="1.49">US Customary (k = 1.49)</option>
+                </select>
+
+                <label for="channelType">Channel Shape</label>
+                <select id="channelType">
+                    <option value="rectangular">Rectangular</option>
+                    <option value="trapezoidal">Trapezoidal</option>
+                    <option value="triangular">Triangular (symmetric)</option>
+                    <option value="circular">Circular (partially full)</option>
+                    <option value="custom">Custom area & wetted perimeter</option>
+                </select>
+
+                <div id="rectangular-fields" class="geometry-group">
+                    <label for="rectWidth">Bottom Width (b)</label>
+                    <input type="number" id="rectWidth" min="0" step="0.01" placeholder="e.g., 12">
+
+                    <label for="rectDepth">Flow Depth (y)</label>
+                    <input type="number" id="rectDepth" min="0" step="0.01" placeholder="e.g., 3.5">
+                </div>
+
+                <div id="trapezoidal-fields" class="geometry-group hidden">
+                    <label for="trapWidth">Bottom Width (b)</label>
+                    <input type="number" id="trapWidth" min="0" step="0.01" placeholder="e.g., 12">
+
+                    <label for="trapDepth">Flow Depth (y)</label>
+                    <input type="number" id="trapDepth" min="0" step="0.01" placeholder="e.g., 3.5">
+
+                    <label for="trapSideSlope">Side Slope z (H:1V)</label>
+                    <input type="number" id="trapSideSlope" min="0" step="0.1" placeholder="e.g., 2 for 2H:1V">
+                </div>
+
+                <div id="triangular-fields" class="geometry-group hidden">
+                    <label for="triDepth">Flow Depth (y)</label>
+                    <input type="number" id="triDepth" min="0" step="0.01" placeholder="e.g., 3.5">
+
+                    <label for="triSideSlope">Side Slope z (H:1V)</label>
+                    <input type="number" id="triSideSlope" min="0" step="0.1" placeholder="e.g., 1.5 for 1.5H:1V">
+                </div>
+
+                <div id="circular-fields" class="geometry-group hidden">
+                    <label for="circDiameter">Diameter</label>
+                    <input type="number" id="circDiameter" min="0" step="0.01" placeholder="Pipe diameter">
+
+                    <label for="circDepth">Flow Depth (y)</label>
+                    <input type="number" id="circDepth" min="0" step="0.01" placeholder="Must be ≤ diameter">
+                </div>
+
+                <div id="custom-fields" class="geometry-group hidden">
+                    <label for="customArea">Flow Area (A)</label>
+                    <input type="number" id="customArea" min="0" step="0.01" placeholder="ft² or m²">
+
+                    <label for="customPerimeter">Wetted Perimeter (P)</label>
+                    <input type="number" id="customPerimeter" min="0" step="0.01" placeholder="ft or m">
+                </div>
+
+                <div id="n-field-group">
+                    <label for="manningN">Roughness (n)</label>
+                    <input type="number" id="manningN" min="0" step="0.001" placeholder="e.g., 0.015">
+                </div>
+
+                <div id="slope-field-group">
+                    <label for="channelSlope">Channel Slope (S)</label>
+                    <input type="number" id="channelSlope" min="0" step="0.0001" placeholder="ft/ft or m/m">
+                </div>
+
+                <div id="known-discharge-group" class="hidden">
+                    <label for="knownDischarge">Known Discharge (Q)</label>
+                    <input type="number" id="knownDischarge" min="0" step="0.01" placeholder="cfs or m³/s">
+                </div>
+
+                <button type="submit" class="calculate-button">Solve</button>
+            </form>
+            <div id="result" class="result hidden" aria-live="polite"></div>
+        </div>
+
+        <div class="calculator formula">
+            <h2>Manning's Equation</h2>
+            <p>Q = (1/n) · A · R<sup>2/3</sup> · S<sup>1/2</sup></p>
+            <ul>
+                <li>Q = discharge</li>
+                <li>A = flow area</li>
+                <li>R = hydraulic radius = A / P</li>
+                <li>P = wetted perimeter</li>
+                <li>S = channel slope (ft/ft or m/m)</li>
+            </ul>
+            <p class="note">Keep the units consistent so the computed discharge matches the units of A and velocity.</p>
+        </div>
+
+        <div class="calculator references">
+            <h2>Typical Manning's n Values</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Surface</th>
+                        <th>n</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Finished concrete</td>
+                        <td>0.012 – 0.015</td>
+                    </tr>
+                    <tr>
+                        <td>Earth, clean &amp; straight</td>
+                        <td>0.016 – 0.025</td>
+                    </tr>
+                    <tr>
+                        <td>Earth, winding or weedy</td>
+                        <td>0.030 – 0.050</td>
+                    </tr>
+                    <tr>
+                        <td>Natural stream with stones</td>
+                        <td>0.035 – 0.070</td>
+                    </tr>
+                    <tr>
+                        <td>Natural stream, heavy brush</td>
+                        <td>0.070 – 0.150</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/openChannelFlow.js"></script>
+</body>
+</html>
