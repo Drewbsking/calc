@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Culvert Headwater Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .culvert-container {
+            max-width: 1000px;
+        }
+        .culvert-intro {
+            text-align: center;
+            color: #475569;
+            margin-bottom: 24px;
+        }
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
+        .input-card {
+            border: 1px solid #d9e1ec;
+            border-radius: 8px;
+            padding: 16px;
+            background: #fefefe;
+        }
+        .input-card h3 {
+            margin-top: 0;
+            color: #0b2a4a;
+        }
+        .input-card label {
+            display: block;
+            font-weight: 600;
+            color: #334155;
+            margin-top: 12px;
+        }
+        .input-card input,
+        .input-card select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 6px;
+            border-radius: 6px;
+            border: 1px solid #cbd5f0;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .inline-note {
+            font-size: 14px;
+            color: #546278;
+            margin-top: 4px;
+        }
+        .shape-field {
+            display: none;
+        }
+        .shape-field.active {
+            display: block;
+        }
+        .derived-value {
+            font-size: 14px;
+            color: #475569;
+            margin-top: 10px;
+            background: #f1f5f9;
+            border-radius: 6px;
+            padding: 8px;
+        }
+        .calculate-button {
+            margin-top: 20px;
+            background: #0b7a45;
+            font-size: 18px;
+        }
+        .results-panel {
+            margin-top: 28px;
+            background: #fff;
+            border-radius: 10px;
+            padding: 22px;
+            box-shadow: 0 6px 16px rgba(15, 23, 42, 0.12);
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+        }
+        .result-card {
+            border: 1px solid #d8e3f5;
+            border-radius: 8px;
+            padding: 14px;
+            background: #f8fbff;
+        }
+        .result-card h4 {
+            margin: 0 0 6px;
+            color: #0b2a4a;
+        }
+        .result-card p {
+            margin: 4px 0;
+            color: #1d3557;
+        }
+        .control-note {
+            margin: 8px 0;
+            color: #475569;
+            font-size: 15px;
+        }
+        .control-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .control-pill.inlet {
+            background: #e0f2fe;
+            color: #075985;
+        }
+        .control-pill.outlet {
+            background: #ede9fe;
+            color: #5b21b6;
+        }
+        .status-line {
+            margin-top: 16px;
+            font-weight: 600;
+        }
+        .status-line.safe {
+            color: #0f8a51;
+        }
+        .status-line.warn {
+            color: #b45309;
+        }
+        .details-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 18px;
+        }
+        .details-table th,
+        .details-table td {
+            padding: 10px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+        .details-table th {
+            background: #f5f6fb;
+            color: #475569;
+        }
+        @media (max-width: 600px) {
+            .input-card label {
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main class="container culvert-container">
+        <header class="culvert-intro">
+            <h1>Culvert Headwater & Control Calculator</h1>
+            <p>Enter the culvert geometry, flow, and water-surface information to estimate upstream headwater depth and determine whether inlet or outlet control governs.</p>
+        </header>
+
+        <form id="culvert-form">
+            <section class="input-grid">
+                <article class="input-card">
+                    <h3>Geometry & Flow</h3>
+                    <label for="flow">Design flow Q (cfs)</label>
+                    <input type="number" id="flow" min="0" step="0.01" placeholder="e.g., 120" required>
+
+                    <label for="shape">Culvert shape</label>
+                    <select id="shape">
+                        <option value="circular">Circular</option>
+                        <option value="box">Box (rectangular)</option>
+                    </select>
+
+                    <div class="shape-field active" data-shape="circular">
+                        <label for="diameter">Diameter (ft)</label>
+                        <input type="number" id="diameter" min="0" step="0.01" placeholder="e.g., 3" value="3">
+                    </div>
+
+                    <div class="shape-field" data-shape="box">
+                        <label for="boxWidth">Box width (ft)</label>
+                        <input type="number" id="boxWidth" min="0" step="0.01" placeholder="e.g., 6">
+                        <label for="boxHeight">Box height (ft)</label>
+                        <input type="number" id="boxHeight" min="0" step="0.01" placeholder="e.g., 4">
+                    </div>
+
+                    <label for="length">Barrel length (ft)</label>
+                    <input type="number" id="length" min="0" step="0.1" placeholder="e.g., 80" required>
+
+                    <label for="slope">Barrel slope</label>
+                    <input type="number" id="slope" step="0.001" placeholder="Enter S value">
+                    <select id="slopeUnits" aria-label="Slope units">
+                        <option value="percent">% (per 100 ft)</option>
+                        <option value="ftft">ft/ft (decimal)</option>
+                    </select>
+                    <p class="inline-note">Slope is positive when the outlet is lower than the inlet. Choose % or ft/ft.</p>
+                    <div class="derived-value">Elevation drop over barrel = <span id="gradeDrop">–</span></div>
+                </article>
+
+                <article class="input-card">
+                    <h3>Hydraulics</h3>
+                    <label for="manningN">Manning n (barrel)</label>
+                    <input type="number" id="manningN" min="0" step="0.001" value="0.012">
+
+                    <label for="entranceType">Entrance type</label>
+                    <select id="entranceType">
+                        <option value="square">Square edge projecting</option>
+                        <option value="headwall">Headwall, flush</option>
+                        <option value="mitered">Mitered to slope</option>
+                        <option value="rounded">Rounded / beveled</option>
+                    </select>
+
+                    <label for="ke">Entrance loss coefficient (K<sub>e</sub>)</label>
+                    <input type="number" id="ke" min="0" step="0.01" value="0.5">
+                    <p class="inline-note">Adjust K<sub>e</sub> if you have a more specific value.</p>
+
+                    <div class="derived-value" id="coeff-note">
+                        Using default weir/orifice coefficients for a square edge entrance.
+                    </div>
+                </article>
+
+                <article class="input-card">
+                    <h3>Water Surface Data</h3>
+                    <label for="upstreamInvert">Upstream invert elevation z₁ (ft)</label>
+                    <input type="number" id="upstreamInvert" step="0.01" placeholder="e.g., 682.5" required>
+                    <div class="derived-value">Outlet invert (calculated) z₂ = <span id="outletInvert">–</span></div>
+
+                    <label for="tailwaterDepth">Tailwater depth above outlet invert (ft)</label>
+                    <input type="number" id="tailwaterDepth" min="0" step="0.01" value="0">
+                    <div class="derived-value">Tailwater elevation: <span id="tailwaterElevation">–</span></div>
+
+                    <label for="roadwayElevation">Roadway / limiting elevation (ft)</label>
+                    <input type="number" id="roadwayElevation" step="0.01" placeholder="Optional">
+
+                    <label for="maxRatio">Design limit: max headwater ÷ rise (optional)</label>
+                    <input type="number" id="maxRatio" min="0" step="0.1" value="1.5">
+                    <p class="inline-note">Enter the ratio your policy allows (example: 1.5 = “HW ≤ 1.5D”, 1.0 = “keep water below the crown”). The calculator will flag the result if the computed HW ÷ rise exceeds this limit.</p>
+                </article>
+            </section>
+
+            <button class="calculate-button" type="submit">Compute Headwater</button>
+        </form>
+
+        <section class="results-panel" id="results-panel" aria-live="polite">
+            <div class="result-card">
+                <p>Enter data and click “Compute Headwater” to view results.</p>
+            </div>
+        </section>
+
+        <section class="calculator references">
+            <h2>How the calculator works</h2>
+            <ul>
+                <li><strong>Inlet check:</strong> estimates how deep water must pond at the entrance (like a weir or orifice) to push the design flow through the opening.</li>
+                <li><strong>Outlet check:</strong> balances energy from inlet to outlet, adding tailwater, entrance, friction, and velocity losses to see how much depth is needed on the upstream side.</li>
+                <li><strong>Result logic:</strong> the higher of the two depths wins; we then compare that headwater to your roadway elevation and the HW ÷ rise limit.</li>
+            </ul>
+        </section>
+    </main>
+    <div id="footer-placeholder"></div>
+
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/culvert.js"></script>
+</body>
+</html>
