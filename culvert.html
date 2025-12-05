@@ -69,6 +69,26 @@
             background: #0b7a45;
             font-size: 18px;
         }
+        .calculate-button.secondary {
+            background: #1d4ed8;
+        }
+        .calculate-button.secondary:hover {
+            background: #1e40af;
+        }
+        .calculate-button.ghost {
+            background: transparent;
+            border: 1px dashed #1d4ed8;
+            color: #1d4ed8;
+        }
+        .calculate-button.ghost:hover {
+            background: rgba(29, 78, 216, 0.08);
+        }
+        .action-buttons {
+            margin-top: 24px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 14px;
+        }
         .results-panel {
             margin-top: 28px;
             background: #fff;
@@ -94,6 +114,12 @@
         .result-card p {
             margin: 4px 0;
             color: #1d3557;
+        }
+        .flow-type-note {
+            display: block;
+            font-size: 14px;
+            color: #475569;
+            margin-top: 2px;
         }
         .control-note {
             margin: 8px 0;
@@ -143,9 +169,144 @@
             background: #f5f6fb;
             color: #475569;
         }
+        .equation-grid {
+            margin-top: 18px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+        .equation-card {
+            background: #ffffff;
+            border: 1px solid #d9e1ec;
+            border-radius: 10px;
+            padding: 18px;
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.08);
+        }
+        .equation-card h3 {
+            margin-top: 0;
+            color: #0b2a4a;
+        }
+        .equation-math {
+            font-family: 'Courier New', Courier, monospace;
+            background: #f8fafc;
+            border-radius: 6px;
+            padding: 8px;
+            margin: 10px 0;
+            color: #0f172a;
+        }
+        .equation-details {
+            font-size: 14px;
+            color: #475569;
+            margin: 8px 0;
+        }
+        .math-inline {
+            font-family: 'Courier New', Courier, monospace;
+            background: #eef2ff;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        .equation-legend {
+            font-size: 13px;
+            color: #5c6c82;
+            margin: 8px 0 0;
+            padding-left: 18px;
+        }
+        .flow-type-card {
+            grid-column: 1 / -1;
+        }
+        .flow-type-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 12px;
+        }
+        .flow-type-table th,
+        .flow-type-table td {
+            border: 1px solid #dbe4f4;
+            padding: 8px;
+            vertical-align: top;
+            text-align: left;
+            font-size: 14px;
+        }
+        .flow-type-table th {
+            background: #eef2ff;
+            color: #1e293b;
+        }
+        .iteration-card {
+            margin-top: 28px;
+            border: 1px solid #dbe4f4;
+            border-radius: 12px;
+            padding: 18px;
+            background: #fdfefe;
+            box-shadow: 0 4px 16px rgba(15, 23, 42, 0.08);
+        }
+        .iteration-card h3 {
+            margin-top: 0;
+            color: #0b2a4a;
+        }
+        .sample-step {
+            margin: 14px 0;
+            padding: 12px;
+            border: 1px dashed #c7d7ef;
+            border-radius: 8px;
+            background: #f7f9ff;
+        }
+        .sample-step h4 {
+            margin: 0 0 6px;
+            color: #0f2e5c;
+        }
+        .sample-step ul {
+            margin: 0;
+            padding-left: 18px;
+            color: #1f2a44;
+        }
+        .sample-step li + li {
+            margin-top: 4px;
+        }
+        .iteration-note {
+            margin: 4px 0 12px;
+            color: #475569;
+        }
+        .iteration-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .iteration-table th,
+        .iteration-table td {
+            border: 1px solid #d6deee;
+            padding: 8px;
+            text-align: left;
+            font-size: 14px;
+        }
+        .iteration-table th {
+            background: #eef2ff;
+            color: #1f2a44;
+        }
+        .iteration-footnote {
+            margin: 10px 0 0;
+            font-size: 13px;
+            color: #5c6c82;
+        }
+        .logic-card {
+            background: #f9fbff;
+        }
+        .logic-steps {
+            padding-left: 18px;
+            color: #1d3557;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+        .logic-steps li + li {
+            margin-top: 8px;
+        }
         @media (max-width: 600px) {
             .input-card label {
                 margin-top: 10px;
+            }
+            .equation-grid {
+                grid-template-columns: 1fr;
+            }
+            .action-buttons {
+                flex-direction: column;
             }
         }
     </style>
@@ -168,6 +329,7 @@
                     <label for="shape">Culvert shape</label>
                     <select id="shape">
                         <option value="circular">Circular</option>
+                        <option value="square">Box (square)</option>
                         <option value="box">Box (rectangular)</option>
                     </select>
 
@@ -181,6 +343,12 @@
                         <input type="number" id="boxWidth" min="0" step="0.01" placeholder="e.g., 6">
                         <label for="boxHeight">Box height (ft)</label>
                         <input type="number" id="boxHeight" min="0" step="0.01" placeholder="e.g., 4">
+                    </div>
+
+                    <div class="shape-field" data-shape="square">
+                        <label for="squareSize">Square side (ft)</label>
+                        <input type="number" id="squareSize" min="0" step="0.01" placeholder="e.g., 5" value="4">
+                        <p class="inline-note">This treats the box width and height equally.</p>
                     </div>
 
                     <label for="length">Barrel length (ft)</label>
@@ -234,15 +402,28 @@
                     <label for="maxRatio">Design limit: max headwater ÷ rise (optional)</label>
                     <input type="number" id="maxRatio" min="0" step="0.1" value="1.5">
                     <p class="inline-note">Enter the ratio your policy allows (example: 1.5 = “HW ≤ 1.5D”, 1.0 = “keep water below the crown”). The calculator will flag the result if the computed HW ÷ rise exceeds this limit.</p>
+
+                    <label for="targetHeadwater">Headwater limit above crown (ft, optional)</label>
+                    <input type="number" id="targetHeadwater" min="0" step="0.01" placeholder="e.g., 5">
+                    <p class="inline-note">Enter the allowable depth above the culvert crown (Example 19.12 uses 5 ft). This drives the sizing solver and the manual head-based iteration below.</p>
                 </article>
             </section>
 
-            <button class="calculate-button" type="submit">Compute Headwater</button>
+            <div class="action-buttons">
+                <button class="calculate-button" type="submit">Compute Headwater</button>
+                <button class="calculate-button secondary" type="button" id="size-button">Solve culvert size</button>
+            </div>
         </form>
 
         <section class="results-panel" id="results-panel" aria-live="polite">
             <div class="result-card">
                 <p>Enter data and click “Compute Headwater” to view results.</p>
+            </div>
+        </section>
+
+        <section class="results-panel" id="design-panel" aria-live="polite">
+            <div class="result-card">
+                <p>Need a size? Enter HW<sub>allow</sub> and click “Solve culvert size” to get a suggested diameter/height.</p>
             </div>
         </section>
 
@@ -253,6 +434,122 @@
                 <li><strong>Outlet check:</strong> balances energy from inlet to outlet, adding tailwater, entrance, friction, and velocity losses to see how much depth is needed on the upstream side.</li>
                 <li><strong>Result logic:</strong> the higher of the two depths wins; we then compare that headwater to your roadway elevation and the HW ÷ rise limit.</li>
             </ul>
+            <div class="equation-grid">
+                <article class="equation-card">
+                    <h3>Inlet-control equations</h3>
+                    <p class="equation-math">H<sub>w</sub> = [Q / (C<sub>w</sub> · L)]<sup>2/3</sup></p>
+                    <p class="equation-details">Free-surface (weir) mode where L = span width. Depth is capped at the culvert rise to avoid unrealistic weir depths.</p>
+                    <p class="equation-math">H<sub>o</sub> = Q<sup>2</sup> / [2g (C<sub>d</sub> · A)<sup>2</sup>] + rise/2</p>
+                    <p class="equation-details">Submerged (orifice) mode measured to the water surface at the inlet. The calculator takes the larger of H<sub>w</sub> or H<sub>o</sub>.</p>
+                    <p class="equation-details">Remember: H is always the depth above the local invert (H = h<sub>1</sub> − z<sub>1</sub>), so plug in the water-surface elevation h and subtract the invert elevation z.</p>
+                </article>
+                <article class="equation-card">
+                    <h3>Outlet-control energy balance</h3>
+                    <p class="equation-math">HW<sub>out</sub> = Δz + TW + h<sub>e</sub> + h<sub>f</sub> + V<sup>2</sup>/(2g)</p>
+                    <p class="equation-details">Δz is z₂ − z₁ (negative when the outlet is lower). TW is tailwater depth above the outlet invert.</p>
+                    <p class="equation-math">h<sub>e</sub> = K<sub>e</sub> · V<sup>2</sup>/(2g)</p>
+                    <p class="equation-math">h<sub>f</sub> = [((Q · n)/(1.486 · A · R<sup>2/3</sup>))<sup>2</sup>] · L</p>
+                    <p class="equation-details">Those terms cover entrance, friction, and barrel velocity losses that must be overcome upstream.</p>
+                </article>
+                <article class="equation-card">
+                    <h3>Full-barrel capacity reference</h3>
+                    <p class="equation-math">Q<sub>full</sub> = (1.486 / n) · A · R<sup>2/3</sup> · S<sup>1/2</sup></p>
+                    <p class="equation-details">Shown in the results as the "capacity" line to show whether the flowing-full barrel can pass the design discharge at the supplied slope.</p>
+                    <ul class="equation-legend">
+                        <li>A = area of the chosen culvert shape (ft²)</li>
+                        <li>R = A / wetted perimeter</li>
+                        <li>S = barrel slope in ft/ft</li>
+                    </ul>
+                </article>
+                <article class="equation-card flow-type-card">
+                    <h3>USGS culvert flow types (WSP 233)</h3>
+                    <p>The six regimes describe how the inlet, tailwater, and barrel interact. Use them to sanity-check whether you expect inlet or outlet control.</p>
+                    <table class="flow-type-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Description</th>
+                                <th>Primary control</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Inlet and outlet both unsubmerged with tailwater below the outlet invert (free outfall).</td>
+                                <td>Entrance/weir control.</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Inlet unsubmerged but tailwater rises against the outlet (partial submergence or hydraulic jump).</td>
+                                <td>Still inlet driven but tailwater influences.</td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Inlet submerges while the outlet discharges freely (drawdown at exit).</td>
+                                <td>Entrance/orifice control.</td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Both inlet and tailwater partly submerged (tailwater between invert and crown).</td>
+                                <td>Mixed—entrance plus backwater.</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Inlet and outlet submerged with tailwater over the crown but barrel not yet pressurized.</td>
+                                <td>Outlet + system losses.</td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Pressurized flow with the barrel flowing full from inlet to outlet.</td>
+                                <td>Outlet/total head.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </article>
+            </div>
+            <article class="iteration-card logic-card">
+                <h3>Handbook logic checklist</h3>
+                <ol class="logic-steps">
+                    <li><strong>Assume a trial size.</strong> Start with the smallest span/rise that is practical in your context (the CERMs begins at 1.0 ft). Enter that trial dimension under Geometry &amp; Flow.</li>
+                    <li><strong>Calculate the head H.</strong> The total head is <em>H = h<sub>1</sub> − h<sub>3</sub></em> plus the barrel slope term <em>S·L</em>. In this tool, supplying headwater, tailwater, length, and slope automatically computes H.</li>
+                    <li><strong>Check the entrance mode.</strong> The calculator uses Eq. 19.106/19.100 variations to compute the weir/orifice depth and determine whether the trial is in entrance (case 5) or outlet (case 6/pressurized) control.</li>
+                    <li><strong>Compute the barrel velocity.</strong> Manning’s equation (Eq. 19.100) is used with h<sub>f</sub> + k<sub>e</sub>V²/2g to combine velocity head and friction loss. The reported velocity and hydraulic radius match the handbook quantities.</li>
+                    <li><strong>Find discharge for the trial.</strong> Use <em>Q = v·A</em>. In the UI the “Flow Q” line shows the design discharge and the “Capacity check” line compares it to the calculated full-flow capacity; when the capacity is less than the design Q, increase the trial size.</li>
+                    <li><strong>Repeat until adequate.</strong> Use “Solve culvert size” (which walks up in 0.5-ft increments per the CERMs iteration) or manually change the span/rise and recompute. Stop as soon as the calculated flow meets or exceeds the design Q and the HW/Rise and overtopping checks pass.</li>
+                </ol>
+                <p class="iteration-footnote">This mirrors Example 19.12 in the Civil Engineering Reference Manual: assume size → compute H → compute velocity/flow → check capacity → adjust size.</p>
+            </article>
+
+            <article class="iteration-card sample-card" aria-labelledby="sample-problem-heading">
+                <h3 id="sample-problem-heading">Sample problem (CERMs Example 19.12)</h3>
+                <p class="iteration-note">Given: square culvert, slope 0.01, length 250 ft, headwater 5 ft above the crown, free outlet, design flow 45 cfs, Manning n = 0.013, square-edge entrance (k<sub>e</sub> = 0.5). The handbook iterates through trial sizes until the discharge ≥ 45 cfs.</p>
+                <div class="sample-step">
+                    <h4>Trial 1 — 1 ft × 1 ft square</h4>
+                    <ul>
+                        <li>Area A = 1 ft², total head H = 6 ft</li>
+                        <li>Velocity from Eq. 19.100 ≈ 9.9 ft/s (R ≈ 0.5 ft)</li>
+                        <li>Q = vA ≈ 12.2 cfs → insufficient</li>
+                    </ul>
+                </div>
+                <div class="sample-step">
+                    <h4>Trial 2 — 2 ft × 2 ft square</h4>
+                    <ul>
+                        <li>A = 4 ft², H = 7 ft, R = 0.667 ft</li>
+                        <li>Velocity from Manning ≈ 10.24 ft/s</li>
+                        <li>Q ≈ 40.9 cfs (still &lt; 45 cfs) → increase opening</li>
+                    </ul>
+                </div>
+                <div class="sample-step">
+                    <h4>Trial 3 — 2.5 ft × 2.5 ft square</h4>
+                    <ul>
+                        <li>A = 6.25 ft², H = 7.5 ft, hydraulic radius R = 0.5 ft (full barrel assumption)</li>
+                        <li>Velocity: <span class="math-inline">v = H / \sqrt{[(1+k_e)/(2g)] + [n²L/(2.21R^{4/3})]}</span> ≈ 10.12 ft/s</li>
+                        <li>Q = vA ≈ 63 cfs ≥ 45 cfs → acceptable; flow type 5/6</li>
+                        <li>Critical depth d<sub>c</sub> ≈ 1.78 ft, normal depth d<sub>n</sub> ≈ 1.78 ft (supercritical, entrance assumption consistent)</li>
+                    </ul>
+                </div>
+                <p class="iteration-footnote">Enter these trial sizes manually or use the “Solve culvert size” button to mimic the handbook iteration (it searches sizes in 0.5-ft increments). Setting the headwater limit above crown to 5 ft exposes the same V and Q calculations shown above.</p>
+            </article>
         </section>
     </main>
     <div id="footer-placeholder"></div>
