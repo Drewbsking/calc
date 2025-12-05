@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Length of Need</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .helper-text {
+            color: #475569;
+            font-size: 14px;
+            margin: 6px 0 10px;
+        }
+        .inline-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .result-callout {
+            background: #ecfeff;
+            border: 1px solid #bae6fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Length of Need</h1>
+            <p class="calculator-lede">Tangent length of need per RDG: angle-line method with deflection and runout checks.</p>
+            <p class="note">Reference only. Use current Roadside Design Guide and agency practice for final design.</p>
+
+            <div class="inline-fields">
+                <div>
+                    <label for="lonSpeed">Design/posted speed (mph)</label>
+                    <input type="number" id="lonSpeed" min="10" step="1" placeholder="e.g., 55">
+                </div>
+                <div>
+                    <label for="lonContext">Context</label>
+                    <select id="lonContext">
+                        <option value="rural">Rural / high-speed</option>
+                        <option value="urban">Urban / low-speed</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="lonHazardOffset">Hazard offset from edge of travel lane (ft)</label>
+                    <input type="number" id="lonHazardOffset" min="0" step="0.1" placeholder="e.g., 20">
+                </div>
+                <div>
+                    <label for="lonBarrierOffset">Barrier offset from edge of travel lane (ft)</label>
+                    <input type="number" id="lonBarrierOffset" min="0" step="0.1" placeholder="e.g., 8">
+                </div>
+                <div>
+                    <label for="lonHazardLength">Hazard length along roadway (ft)</label>
+                    <input type="number" id="lonHazardLength" min="0" step="0.1" placeholder="e.g., 60">
+                </div>
+                <div>
+                    <label for="lonDeflection">Barrier deflection to plan for (ft)</label>
+                    <input type="number" id="lonDeflection" min="0" step="0.1" placeholder="e.g., 2">
+                </div>
+                <div>
+                    <label for="lonAngle">Departure angle (deg, optional)</label>
+                    <input type="number" id="lonAngle" min="5" max="30" step="1" placeholder="auto: 15° ≥50 mph, 20° &lt;50 mph">
+                </div>
+            </div>
+            <p class="helper-text">Effective offset = barrier offset – deflection. Length of need = hazard length + (lateral gap / tan(θ)). Runout length check based on RDG.</p>
+
+            <button class="calculate-button" type="button" id="calcLon">Calculate length of need</button>
+            <div id="lonResult" class="result" aria-live="polite"></div>
+            <div id="lonNote" class="note"></div>
+
+            <div class="result-callout">
+                <p><strong>Defaults:</strong> Departure angle 15° for speeds ≥50 mph, 20° for speeds &lt;50 mph. Rural runout lengths are longer than urban/low-speed.</p>
+                <p class="helper-text">If computed LON exceeds the runout length for the speed/context, extend upstream or reassess placement/offset.</p>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>Runout length table (ft)</h2>
+            <p class="helper-text">Approximate RDG values used for the check.</p>
+            <div class="table-container" id="lonTable"></div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/lengthOfNeed.js"></script>
+</body>
+</html>

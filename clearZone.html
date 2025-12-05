@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clear Zone Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .helper-text {
+            color: #475569;
+            font-size: 14px;
+            margin: 4px 0 12px;
+        }
+        .result-callout {
+            background: #ecfeff;
+            border: 1px solid #bae6fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+        .inline-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Clear Zone (AASHTO-style)</h1>
+            <p class="calculator-lede">Lookup from Roadside Design Guide Table 3-1 style values with simple slope adjustments.</p>
+            <p class="note">Reference only. Use current AASHTO Green Book/RDG and agency policy for design submittals.</p>
+
+            <div class="inline-fields">
+                <div>
+                    <label for="designSpeed">Design/posted speed (mph)</label>
+                    <input type="number" id="designSpeed" min="10" step="1" placeholder="e.g., 45">
+                </div>
+                <div>
+                    <label for="adt">ADT (veh/day)</label>
+                    <input type="number" id="adt" min="1" step="1" placeholder="e.g., 12000">
+                </div>
+                <div>
+                    <label for="slopeClass">Roadside slope</label>
+                    <select id="slopeClass">
+                        <option value="recoverable">1V:4H or flatter (recoverable)</option>
+                        <option value="nonrecoverable">Between 1V:3H and 1V:4H (non-recoverable)</option>
+                        <option value="steep">Between 1V:2H and 1V:3H (critical)</option>
+                        <option value="verySteep">Steeper than 1V:2H or with obstacles</option>
+                        <option value="backslope">Ditch section / back slope present</option>
+                    </select>
+                </div>
+            </div>
+
+            <div id="slopeWidthBlock" class="inline-fields hidden">
+                <div>
+                    <label for="slopeRatio">Side slope ratio (H:1)</label>
+                    <input type="number" id="slopeRatio" min="0" step="0.1" placeholder="e.g., 3">
+                </div>
+                <div>
+                    <label for="slopeHeight">Slope height (ft)</label>
+                    <input type="number" id="slopeHeight" min="0" step="0.1" placeholder="e.g., 6">
+                </div>
+            </div>
+            <p id="slopeWidthHelp" class="helper-text hidden">Horizontal run of the non-recoverable slope (H×V) is deducted from the clear zone because it lies on the slope itself.</p>
+
+            <button class="calculate-button" type="button" id="calcClearZone">Calculate clear zone</button>
+            <div id="czResult" class="result" aria-live="polite"></div>
+            <div id="czNote" class="note"></div>
+
+            <div class="result-callout">
+                <p><strong>Logic:</strong> Base values from AASHTO RDG Table 3-1 (US customary) by ADT and speed. Slope classes apply small offsets per RDG guidance.</p>
+                <p class="helper-text">Offsets: +0 ft for recoverable 1:4+, +2 ft for 1:3–1:4, +5 ft for 1:2–1:3, +8 ft for &lt;1:2/obstacles. Backslope/ditch keeps base value but check drainage/side slopes.</p>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>Reference table (ft)</h2>
+            <p class="helper-text">Values mirror RDG Table 3-1 (ranges in feet) before slope offsets.</p>
+            <div class="table-container" id="czTableContainer"></div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/clearZone.js"></script>
+</body>
+</html>

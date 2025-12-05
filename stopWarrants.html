@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Sign Warrants (MUTCD 11ed helper)</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .inline-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .helper-text {
+            color: #475569;
+            font-size: 14px;
+            margin: 6px 0 10px;
+        }
+        .result-callout {
+            background: #ecfeff;
+            border: 1px solid #bae6fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+        .pill {
+            display: inline-block;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-weight: 700;
+        }
+        .pill.ok {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .pill.warn {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .pill.info {
+            background: #e0f2fe;
+            color: #075985;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Stop Sign Warrants</h1>
+            <p class="calculator-lede">Quick MUTCD 11th Ed helper for 2-way vs multi-way stop considerations.</p>
+            <p class="note">Reference only. Confirm against the current MUTCD text, crash diagrams, and agency policies.</p>
+
+            <div class="inline-fields">
+                <div>
+                    <label for="warrantType">Control type</label>
+                    <select id="warrantType">
+                        <option value="twoway">Two-way stop (minor street)</option>
+                        <option value="multiway">Multi-way stop</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="crashes">Correctable crashes (last 12 mo)</label>
+                    <input type="number" id="crashes" min="0" step="1" placeholder="e.g., 5">
+                </div>
+                <div>
+                    <label for="majorVph">Major street volume (veh/h, 8-hr)</label>
+                    <input type="number" id="majorVph" min="0" step="1" placeholder="e.g., 650">
+                </div>
+                <div>
+                    <label for="minorVph">Minor street volume (veh/h, 8-hr)</label>
+                    <input type="number" id="minorVph" min="0" step="1" placeholder="e.g., 200">
+                </div>
+                <div>
+                    <label for="majorSpeed">85th percentile / posted speed (mph)</label>
+                    <input type="number" id="majorSpeed" min="0" step="1" placeholder="e.g., 40">
+                </div>
+            </div>
+
+            <div class="inline-fields">
+                <div>
+                    <label for="volumeThresholdMajor">Major volume threshold (veh/h)</label>
+                    <input type="number" id="volumeThresholdMajor" min="0" step="1" value="600">
+                    <p class="helper-text">Default ~600 veh/h for major approaches (any 8 hrs).</p>
+                </div>
+                <div>
+                    <label for="volumeThresholdMinor">Minor volume threshold (veh/h)</label>
+                    <input type="number" id="volumeThresholdMinor" min="0" step="1" value="200">
+                    <p class="helper-text">Default ~200 veh/h total minor (any 8 hrs).</p>
+                </div>
+                <div>
+                    <label for="crashThreshold">Crash threshold</label>
+                    <input type="number" id="crashThreshold" min="0" step="1" value="5">
+                    <p class="helper-text">Default 5+ correctable crashes in 12 months.</p>
+                </div>
+            </div>
+
+            <div class="inline-fields">
+                <div>
+                    <label><input type="checkbox" id="sightIssue"> Inadequate sight distance / skew / complicated geom</label>
+                </div>
+                <div>
+                    <label><input type="checkbox" id="pedBike"> Notable ped/bike generators (school, trail, transit)</label>
+                </div>
+                <div>
+                    <label><input type="checkbox" id="transition"> Transition / speed control desired (gateway)</label>
+                </div>
+            </div>
+
+            <button class="calculate-button" type="button" id="calcWarrant">Evaluate warrants</button>
+            <div id="warrantResult" class="result" aria-live="polite"></div>
+            <div id="warrantDetails" class="note"></div>
+
+            <div class="result-callout">
+                <p><strong>Criteria used (editable):</strong> Crash pattern (5+ in 12 mo), volume (≥ major + minor thresholds for any 8 hrs), and context flags (sight distance, ped/bike generators, speed transition).</p>
+                <p class="helper-text">For two-way stops, the tool highlights if minor control is justified and whether a multi-way should be explored. For multi-way, it reports if crash or volume warrants are met; use engineering judgment for final selection.</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/stopWarrants.js"></script>
+</body>
+</html>

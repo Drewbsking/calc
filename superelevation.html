@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Superelevation Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .inline-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .helper-text {
+            color: #475569;
+            font-size: 14px;
+            margin: 6px 0 10px;
+        }
+        .result-callout {
+            background: #ecfeff;
+            border: 1px solid #bae6fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Superelevation</h1>
+            <p class="calculator-lede">Compute superelevation rate from AASHTO e + f = V²/(15R) with design friction defaults.</p>
+            <p class="note">US customary units. Use current AASHTO Green Book values and agency limits for design.</p>
+
+            <div class="inline-fields">
+                <div>
+                    <label for="seSpeed">Design/posted speed (mph)</label>
+                    <input type="number" id="seSpeed" min="5" step="1" placeholder="e.g., 50">
+                </div>
+                <div>
+                    <label for="seRadius">Curve radius (ft)</label>
+                    <input type="number" id="seRadius" min="1" step="1" placeholder="e.g., 1200">
+                </div>
+                <div>
+                    <label for="seMaxE">Max superelevation (%)</label>
+                    <input type="number" id="seMaxE" min="2" max="14" step="0.1" value="10">
+                </div>
+                <div>
+                    <label for="seFrictionMode">Design side friction</label>
+                    <select id="seFrictionMode">
+                        <option value="table">Use AASHTO design f (by speed)</option>
+                        <option value="custom">Custom f value</option>
+                    </select>
+                </div>
+                <div id="customFWrapper" class="hidden">
+                    <label for="seCustomF">Custom f (decimal)</label>
+                    <input type="number" id="seCustomF" min="0" max="0.25" step="0.005" placeholder="e.g., 0.10">
+                </div>
+            </div>
+            <p class="helper-text">Equation: e + f = V² / (15R). Speeds in mph, radius in feet, e and f in decimals. e is capped at your chosen max.</p>
+
+            <button class="calculate-button" type="button" id="calcSuperelevation">Calculate superelevation</button>
+            <div id="seResult" class="result" aria-live="polite"></div>
+            <div id="seNote" class="note"></div>
+
+            <div class="result-callout">
+                <p><strong>Outputs:</strong> Required e, adopted e (capped), friction used/available, and min radius if you hold e<sub>max</sub> and design f.</p>
+                <p class="helper-text">If friction demand exceeds design f, consider raising e (if allowed), increasing radius, or lowering speed.</p>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>Design side friction f (typical AASHTO)</h2>
+            <p class="helper-text">Used when “Use design f” is selected. Pick a custom f if your agency differs.</p>
+            <div class="table-container" id="seTable"></div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/superelevation.js"></script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oakland County Stormwater Helper</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .inline-fields {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+        }
+        .helper-text {
+            color: #475569;
+            font-size: 14px;
+            margin: 6px 0 10px;
+        }
+        .result-callout {
+            background: #ecfeff;
+            border: 1px solid #bae6fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>WRC Stormwater Volumes (Modified Rational)</h1>
+            <p class="calculator-lede">Compute required volumes per WRC Stormwater Standards (April 2025) using Equation 3 and Table 2 depths.</p>
+            <p class="note">Reference only—verify against the current manual, site soils, and your composite C calculations.</p>
+
+            <div class="calculator-panel">
+                <h2>Composite C helper</h2>
+                <p class="helper-text">Add subareas and weight their C values; sends the result to the main input.</p>
+                <div class="inline-fields">
+                    <div>
+                        <label for="mdotPreset">MDOT Table 3-1 preset</label>
+                        <select id="mdotPreset">
+                            <option value="">-- Select drainage area type --</option>
+                            <option value="Concrete or Asphalt Pavement|0.8|0.9">Concrete or Asphalt Pavement (0.8–0.9)</option>
+                            <option value="Commercial and Industrial|0.7|0.9">Commercial and Industrial (0.7–0.9)</option>
+                            <option value="Gravel Roadways and Shoulders|0.5|0.7">Gravel Roadways and Shoulders (0.5–0.7)</option>
+                            <option value="Residential – Urban|0.5|0.7">Residential – Urban (0.5–0.7)</option>
+                            <option value="Residential – Suburban|0.3|0.5">Residential – Suburban (0.3–0.5)</option>
+                            <option value="Undeveloped|0.1|0.3">Undeveloped (0.1–0.3)</option>
+                            <option value="Berms|0.1|0.3">Berms (0.1–0.3)</option>
+                            <option value="Agricultural – Cultivated Fields|0.15|0.4">Agricultural – Cultivated Fields (0.15–0.4)</option>
+                            <option value="Agricultural – Pastures|0.1|0.4">Agricultural – Pastures (0.1–0.4)</option>
+                            <option value="Agricultural – Forested Areas|0.1|0.4">Agricultural – Forested Areas (0.1–0.4)</option>
+                        </select>
+                        <p class="helper-text">MDOT 7th Ed Table 3-1 (R 280.9). Lower values for flat/permeable soils, higher for steep/impermeable (2:1 or steeper).</p>
+                    </div>
+                    <div>
+                        <label for="mdotArea">Area to add (ac)</label>
+                        <input type="number" id="mdotArea" min="0" step="0.01" placeholder="e.g., 1.0">
+                        <button type="button" class="ghost-button" id="addPresetCRow">Add preset row</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th scope="col">Label</th>
+                                <th scope="col">Area (ac)</th>
+                                <th scope="col">C</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="cRows"></tbody>
+                    </table>
+                </div>
+                <div class="end-area-actions">
+                    <button type="button" class="ghost-button" id="addCRow">+ Add subarea</button>
+                    <button type="button" class="ghost-button" id="calcCompositeC">Calc composite C</button>
+                </div>
+                <div id="cResult" class="note"></div>
+            </div>
+
+            <div class="inline-fields">
+                <div>
+                    <label for="oakArea">Total contributing area (ac)</label>
+                    <input type="number" id="oakArea" min="0" step="0.01" placeholder="e.g., 10.3">
+                </div>
+                <div>
+                    <label for="oakCompositeC">Composite runoff coefficient C</label>
+                    <input type="number" id="oakCompositeC" min="0" max="1" step="0.01" placeholder="e.g., 0.60">
+                </div>
+                <div>
+                    <label for="oakTc">Time of concentration Tc (min)</label>
+                    <input type="number" id="oakTc" min="0" step="0.1" placeholder="e.g., 15">
+                    <p class="helper-text">Used for Water Quality Rate (Eq. 18). TR-55 minimum of 5 minutes is a common lower bound.</p>
+                </div>
+            </div>
+
+            <div class="inline-fields">
+                <div>
+                    <label for="depthWQ">Water Quality depth Pwq (in)</label>
+                    <input type="number" id="depthWQ" min="0" step="0.01" value="1.00">
+                </div>
+                <div>
+                    <label for="depthCPVC">Channel Protection Volume Pcpvc (in)</label>
+                    <input type="number" id="depthCPVC" min="0" step="0.01" value="1.30">
+                </div>
+                <div>
+                    <label for="depthCPRC">Channel Protection Rate Control Pcprc (in)</label>
+                    <input type="number" id="depthCPRC" min="0" step="0.01" value="1.90">
+                </div>
+                <div>
+                    <label for="depthForebay">Forebay depth Pfb (in)</label>
+                    <input type="number" id="depthForebay" min="0" step="0.01" value="0.15">
+                </div>
+                <div>
+                    <label for="depth100">100-year (24-hr) depth P100 (in)</label>
+                    <input type="number" id="depth100" min="0" step="0.01" value="5.23">
+                </div>
+            </div>
+
+            <p class="helper-text">Equation 3 (manual): V = 3,630 × P(in) × C × A(ac). Table 2 depths above are pre-filled from the April 2025 manual.</p>
+
+            <button class="calculate-button" type="button" id="oakCalc">Calculate volumes</button>
+            <div id="oakResult" class="result" aria-live="polite"></div>
+            <div id="oakNote" class="note"></div>
+
+            <div class="result-callout">
+                <p><strong>Manual links:</strong> <a href="https://www.oakgov.com/home/showpublisheddocument/26616/638796323905670000" target="_blank" rel="noopener">WRC Stormwater Standards (oakgov.com)</a> · <a href="scripts/WRC%20Stormwater%20Standards_April%202025.pdf" target="_blank" rel="noopener">Local PDF copy</a></p>
+                <p class="helper-text">Formulas: Eq. 3 (volumes) and Eq. 18 (Water Quality Rate). Confirm release rates, infiltration feasibility, and any agency-specific MEP decisions.</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/oakStormwater.js"></script>
+</body>
+</html>
