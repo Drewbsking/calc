@@ -379,7 +379,7 @@
                     <input type="number" class="sign-height" min="1" step="0.5" aria-label="Sign height in inches or diamond side">
                     <select class="sign-shape" aria-label="Sign shape">
                         <option value="rect">Rectangle / Square</option>
-                        <option value="diamond">Diamond (enter side length)</option>
+                        <option value="diamond" data-diamond="true">Diamond (enter side length)</option>
                     </select>
                     <button type="button" class="remove-sign" title="Remove sign">×</button>
                 `;
@@ -390,10 +390,37 @@
                 row.querySelector('.remove-sign').addEventListener('click', () => {
                     if (signList.children.length > 1) {
                         row.remove();
+                        enforceShapeOptions();
                         calculate();
                     }
                 });
                 row.querySelectorAll('input, select').forEach(inp => inp.addEventListener('input', calculate));
+                enforceShapeOptions();
+            }
+
+            function enforceShapeOptions() {
+                const rows = Array.from(signList.querySelectorAll('.sign-row'));
+                rows.forEach((row, idx) => {
+                    const select = row.querySelector('.sign-shape');
+                    if (!select) return;
+                    let diamondOption = select.querySelector('option[data-diamond="true"]');
+                    if (idx === 0) {
+                        if (!diamondOption) {
+                            diamondOption = document.createElement('option');
+                            diamondOption.value = 'diamond';
+                            diamondOption.dataset.diamond = 'true';
+                            diamondOption.textContent = 'Diamond (enter side length)';
+                            select.appendChild(diamondOption);
+                        }
+                    } else if (diamondOption) {
+                        const wasDiamond = select.value === 'diamond';
+                        diamondOption.remove();
+                        if (wasDiamond) {
+                            select.value = 'rect';
+                            select.dispatchEvent(new Event('change', { bubbles: true }));
+                        }
+                    }
+                });
             }
 
             function getSigns() {
@@ -644,11 +671,28 @@
             let cursorY = topY;
             signs.forEach((sign, idx) => {
                 const heightPx = sign.heightFt * scale;
-                signRects += `
-                    <rect x="${signCenterX - signWidth / 2}" y="${cursorY}" rx="8" ry="8" width="${signWidth}" height="${heightPx}" fill="${theme.signFill}" stroke="${theme.signStroke}" stroke-width="2" />
-                    <text x="${signCenterX}" y="${cursorY + heightPx / 2 - 5}" class="sign-title">${sign.label}</text>
-                    <text x="${signCenterX}" y="${cursorY + heightPx / 2 + 12}" class="sign-sub">${(sign.heightFt * 12).toFixed(0)} in</text>
-                `;
+                if (sign.shape === 'diamond') {
+                    const squareSide = heightPx / Math.SQRT2;
+                    const centerY = cursorY + heightPx / 2;
+                    const sideLabel = sign.entryIn
+                        ? `${sign.entryIn} in side`
+                        : `${(sign.heightFt * 12 / Math.SQRT2).toFixed(0)} in side`;
+                    signRects += `
+                        <g transform="translate(${signCenterX}, ${centerY})">
+                            <rect x="${-squareSide / 2}" y="${-squareSide / 2}" width="${squareSide}" height="${squareSide}" fill="${theme.signFill}" stroke="${theme.signStroke}" stroke-width="2" rx="6" ry="6" transform="rotate(45)" />
+                            <g transform="rotate(-45)">
+                                <text class="sign-title" text-anchor="middle" dominant-baseline="middle">${sign.label}</text>
+                                <text class="sign-sub" text-anchor="middle" y="16">${sideLabel}</text>
+                            </g>
+                        </g>
+                    `;
+                } else {
+                    signRects += `
+                        <rect x="${signCenterX - signWidth / 2}" y="${cursorY}" rx="8" ry="8" width="${signWidth}" height="${heightPx}" fill="${theme.signFill}" stroke="${theme.signStroke}" stroke-width="2" />
+                        <text x="${signCenterX}" y="${cursorY + heightPx / 2 - 5}" class="sign-title">${sign.label}</text>
+                        <text x="${signCenterX}" y="${cursorY + heightPx / 2 + 12}" class="sign-sub">${(sign.heightFt * 12).toFixed(0)} in</text>
+                    `;
+                }
                 cursorY += heightPx;
                 if (idx < signs.length - 1) {
                     cursorY += gapPx;
