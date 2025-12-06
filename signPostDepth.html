@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Post Embed Depth</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .calculator h1 {
+            margin-top: 0;
+        }
+        .calculator-lede {
+            text-align: center;
+            color: #475569;
+            margin-bottom: 14px;
+        }
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin: 12px 0 6px;
+        }
+        .input-block {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 12px;
+        }
+        .input-block h3 {
+            margin: 0 0 8px;
+            font-size: 16px;
+        }
+        .radio-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .sign-row {
+            display: grid;
+            grid-template-columns: 1fr 110px 150px 34px;
+            gap: 8px;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        .sign-row input[type="text"],
+        .sign-row input[type="number"],
+        .sign-row select,
+        #gapBetween {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+        .sign-row select {
+            background: #fff;
+        }
+        .sign-row button {
+            border: none;
+            background: #ef4444;
+            color: #fff;
+            border-radius: 6px;
+            cursor: pointer;
+            height: 40px;
+        }
+        .sign-row button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .add-sign {
+            width: 100%;
+            padding: 10px;
+            border: 1px dashed #94a3b8;
+            border-radius: 8px;
+            background: #f1f5f9;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+            margin-top: 14px;
+        }
+        .stat-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 10px 12px;
+            background: #fff;
+        }
+        .stat-label {
+            font-size: 14px;
+            color: #475569;
+        }
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #0f172a;
+        }
+        .post-visual {
+            margin-top: 22px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            align-items: center;
+        }
+        .dim-diagram {
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 10px;
+            width: 100%;
+            max-width: 100%;
+            box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+        }
+        .post-container {
+            position: relative;
+            width: 220px;
+            background: linear-gradient(180deg, #e9eef5 0%, #f3f6fa 100%);
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            padding: 0 0 10px;
+            box-sizing: border-box;
+            overflow: hidden;
+            max-width: 320px;
+            width: 100%;
+            display: none; /* hidden in favor of single SVG below */
+        }
+        .ground-fill {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #8b5e3c;
+            z-index: 1;
+        }
+        .grass-cap {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: rgba(34, 197, 94, 0.3);
+            z-index: 5; /* sit over the post so the green is continuous */
+        }
+        .post-track {
+            position: relative;
+            margin: 0 auto;
+            width: 32px;
+            height: 320px;
+            z-index: 3;
+        }
+        .post-bar {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 18px;
+            transform: translateX(-50%);
+            background: #9ca3af;
+            border-radius: 6px 6px 12px 12px;
+        }
+        .post-embed {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #111827;
+            border-radius: 0 0 12px 12px;
+        }
+        .signs-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+        .dimension-layer {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            z-index: 8;
+        }
+        .sign-block {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            background: #f8fafc;
+            border: 2px solid #0f172a;
+            border-radius: 8px;
+            color: #0f172a;
+            font-weight: 700;
+            font-size: 12px;
+            text-align: center;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.18);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px;
+            box-sizing: border-box;
+            z-index: 7;
+        }
+        .sign-block .sign-text {
+            display: block;
+        }
+        .sign-block.diamond {
+            border-radius: 6px;
+            transform: translateX(-50%) rotate(45deg);
+        }
+        .sign-block.diamond .sign-text {
+            transform: rotate(-45deg);
+        }
+        .legend {
+            font-size: 15px;
+            color: #475569;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .legend span {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .legend .dot {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .result-text {
+            margin-top: 14px;
+            font-size: 16px;
+            font-weight: 600;
+            color: #0f172a;
+            text-align: center;
+        }
+        .result-callout {
+            margin-top: 14px;
+            padding: 12px 14px;
+            border-radius: 8px;
+            background: #ecfeff;
+            border: 1px solid #bae6fd;
+            color: #0c4a6e;
+            font-weight: 700;
+            text-align: center;
+        }
+        @media (max-width: 700px) {
+            .sign-row {
+                grid-template-columns: 1fr 1fr 1fr 34px;
+            }
+            .post-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main class="container">
+        <section class="calculator">
+            <h1>Sign Post Embed Depth</h1>
+            <p class="calculator-lede">Stack your signs, pick the area type, and we will choose a 10, 12, or 15 ft post that keeps at least 3 ft embedded.</p>
+
+            <div class="input-grid">
+                <div class="input-block">
+                    <h3>Area / Pedestrians</h3>
+                    <div class="radio-row">
+                        <label><input type="radio" name="areaType" value="rural" checked> Rural / No Pedestrians (5 ft bottom)</label>
+                    </div>
+                    <div class="radio-row">
+                        <label><input type="radio" name="areaType" value="urban"> Urban / Pedestrians Present (7 ft bottom)</label>
+                    </div>
+                </div>
+                <div class="input-block">
+                    <h3>Face Spacing</h3>
+                    <label for="gapBetween">Gap between stacked signs (inches)</label>
+                    <input type="number" id="gapBetween" min="0" max="2" step="0.25" value="1">
+                    <p style="margin:6px 0 0; color:#475569; font-size:14px;">Kept between 0–2 in (MUTCD spacing). Applied between each face in the stack.</p>
+                </div>
+            </div>
+
+            <div class="input-block">
+                <h3>Signs on this post</h3>
+                <p style="margin:0 0 10px; color:#475569; font-size:14px;">List signs top-to-bottom. The first (top) face is the parent sign, and the 5 ft / 7 ft bottom height runs up to the bottom of that face. Diamonds: enter side length; we handle the height.</p>
+                <div id="signList"></div>
+                <button class="add-sign" id="addSign">+ Add another sign</button>
+            </div>
+
+            <button class="calculate-button" id="calculateBtn">Calculate embed depth</button>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Bottom mounting height</div>
+                    <div class="stat-value" id="bottomValue">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Sign stack height</div>
+                    <div class="stat-value" id="stackValue">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Above-ground height</div>
+                    <div class="stat-value" id="aboveValue">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Recommended post</div>
+                    <div class="stat-value" id="postValue">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Embed depth with pick</div>
+                    <div class="stat-value" id="embedValue">--</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Mark this distance from post bottom</div>
+                    <div class="stat-value" id="markValue">--</div>
+                </div>
+            </div>
+
+            <div class="result-callout" id="resultCallout">Results will appear here.</div>
+            <div class="result-text" id="resultText"></div>
+
+            <div class="post-visual">
+                <div class="post-container" id="postContainer">
+                    <div class="ground-fill" id="groundFill"></div>
+                    <div class="grass-cap" id="grassCap"></div>
+                    <div class="post-track" id="postTrack">
+                        <div class="post-bar" id="postBar">
+                            <div class="post-embed" id="embedBar"></div>
+                        </div>
+                        <div class="signs-layer" id="signLayer"></div>
+                        <div class="dimension-layer" id="dimensionLayer"></div>
+                    </div>
+                </div>
+                <div class="dim-diagram" id="dimDiagram"></div>
+            </div>
+
+            <div class="note">
+                Uses 5 ft minimum bottom mounting height for rural / no pedestrians and 7 ft when pedestrians are present. Chooses the shortest 10, 12, or 16 ft post that leaves at least 3 ft − 1 in embedded (aiming for 3 ft ± 1 in). Bottom height is measured from the edge of travel lane pavement to the bottom of the parent sign. Mind footing / soil needs before driving.
+            </div>
+        </section>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script>
+        (function() {
+            const signList = document.getElementById('signList');
+            const addSignBtn = document.getElementById('addSign');
+            const calculateBtn = document.getElementById('calculateBtn');
+            const gapInput = document.getElementById('gapBetween');
+            const areaInputs = document.querySelectorAll('input[name="areaType"]');
+
+            const bottomValue = document.getElementById('bottomValue');
+            const stackValue = document.getElementById('stackValue');
+            const aboveValue = document.getElementById('aboveValue');
+            const postValue = document.getElementById('postValue');
+            const embedValue = document.getElementById('embedValue');
+            const resultText = document.getElementById('resultText');
+            const resultCallout = document.getElementById('resultCallout');
+
+            const PX_PER_FT = 18;
+            let lastTrackHeight = 0;
+
+            const postTrack = document.getElementById('postTrack');
+            const postBar = document.getElementById('postBar');
+            const embedBar = document.getElementById('embedBar');
+            const signLayer = document.getElementById('signLayer');
+            const dimensionLayer = document.getElementById('dimensionLayer');
+            const postContainer = document.getElementById('postContainer');
+            const groundFill = document.getElementById('groundFill');
+            const grassCap = document.getElementById('grassCap');
+            const markValue = document.getElementById('markValue');
+            const dimDiagram = document.getElementById('dimDiagram');
+
+            const ftLabel = (val) => `${val.toFixed(2)} ft`;
+
+            function addSignRow(heightIn = 30, labelText = '', shape = 'rect') {
+                const row = document.createElement('div');
+                row.className = 'sign-row';
+                row.innerHTML = `
+                    <input type="text" class="sign-label" placeholder="Label (optional)">
+                    <input type="number" class="sign-height" min="1" step="0.5" aria-label="Sign height in inches or diamond side">
+                    <select class="sign-shape" aria-label="Sign shape">
+                        <option value="rect">Rectangle / Square</option>
+                        <option value="diamond">Diamond (enter side length)</option>
+                    </select>
+                    <button type="button" class="remove-sign" title="Remove sign">×</button>
+                `;
+                row.querySelector('.sign-label').value = labelText;
+                row.querySelector('.sign-height').value = heightIn;
+                row.querySelector('.sign-shape').value = shape;
+                signList.appendChild(row);
+                row.querySelector('.remove-sign').addEventListener('click', () => {
+                    if (signList.children.length > 1) {
+                        row.remove();
+                        calculate();
+                    }
+                });
+                row.querySelectorAll('input, select').forEach(inp => inp.addEventListener('input', calculate));
+            }
+
+            function getSigns() {
+                const rows = Array.from(signList.querySelectorAll('.sign-row'));
+                return rows.map((row, idx) => {
+                    const label = row.querySelector('.sign-label').value.trim() || `Sign ${idx + 1}`;
+                    const heightIn = parseFloat(row.querySelector('.sign-height').value);
+                    const shape = row.querySelector('.sign-shape').value;
+                    if (isNaN(heightIn) || heightIn <= 0) return { label, heightFt: 0, shape };
+                    const heightFt = shape === 'diamond'
+                        ? (heightIn * Math.SQRT2) / 12 // side -> vertical height
+                        : heightIn / 12;
+                    return { label, heightFt, shape, entryIn: heightIn };
+                }).filter(s => s.heightFt > 0);
+            }
+
+            function renderVisualization({ signs, bottomHeight, gapFt, embedDepth, postLength, aboveGround }) {
+                const scale = PX_PER_FT; // px per ft
+                const trackHeightPx = postLength * scale;
+                lastTrackHeight = trackHeightPx;
+                postTrack.style.height = trackHeightPx + 'px';
+                postBar.style.height = trackHeightPx + 'px';
+
+                const embedPx = Math.max(embedDepth, 0) * scale;
+                const grassHeight = 8;
+                const embedVisible = Math.max(embedPx - grassHeight, 0); // keep black within soil
+                embedBar.style.height = `${embedVisible}px`;
+                groundFill.style.height = `${embedPx}px`;
+                const grassBottom = embedPx; // decorative band on top of soil
+                grassCap.style.height = `${grassHeight}px`;
+                grassCap.style.bottom = `${grassBottom}px`;
+
+                // clear old signs and overlay
+                signLayer.innerHTML = '';
+                dimensionLayer.innerHTML = '';
+                // clamp top sign to the physical top of the post (pixel anchored)
+                const signEntries = signs.map(sign => {
+                    const block = document.createElement('div');
+                    const isDiamond = sign.shape === 'diamond';
+                    const verticalPx = sign.heightFt * scale;
+                    const squareSide = Math.max(verticalPx / Math.SQRT2, 18);
+                    return { sign, block, isDiamond, verticalPx, squareSide };
+                });
+                const gapPx = gapFt * scale;
+                let cursorBottomPx = trackHeightPx;
+                signEntries.forEach((entry, idx) => {
+                    const { sign, block, isDiamond, verticalPx, squareSide } = entry;
+                    block.className = `sign-block${isDiamond ? ' diamond' : ''}`;
+                    if (isDiamond) {
+                        block.style.width = `${squareSide}px`;
+                        block.style.height = `${squareSide}px`;
+                    } else {
+                        block.style.width = `120px`;
+                        block.style.height = `${verticalPx}px`;
+                    }
+                    cursorBottomPx -= verticalPx;
+                    block.style.bottom = `${cursorBottomPx}px`;
+                    block.innerHTML = `<span class="sign-text">${sign.label} (${sign.shape === 'diamond' ? `${sign.entryIn || ''} in side` : `${(sign.heightFt * 12).toFixed(0)} in height`})</span>`;
+                    signLayer.appendChild(block);
+                    if (idx < signEntries.length - 1) {
+                        cursorBottomPx -= gapPx;
+                    }
+                });
+
+            }
+
+            function calculate() {
+                const areaType = document.querySelector('input[name="areaType"]:checked').value;
+                const bottomHeight = areaType === 'urban' ? 7 : 5;
+                const rawGap = parseFloat(gapInput.value) || 0;
+                const clampedGapIn = Math.min(Math.max(rawGap, 0), 2);
+                if (clampedGapIn !== rawGap) {
+                    gapInput.value = clampedGapIn.toFixed(2).replace(/\.?0+$/, '');
+                }
+                const gapFt = clampedGapIn / 12;
+            const minEmbedFt = 35 / 12; // 3 ft - 1 in
+            const maxEmbedFt = 37 / 12; // 3 ft + 1 in
+            const signs = getSigns();
+
+                if (!signs.length) {
+                    resultText.textContent = 'Add at least one sign height to size the post.';
+                    resultCallout.textContent = 'Add at least one sign to size the post.';
+                    bottomValue.textContent = ftLabel(bottomHeight);
+                    stackValue.textContent = '--';
+                    aboveValue.textContent = '--';
+                    postValue.textContent = '--';
+                    embedValue.textContent = '--';
+                    markValue.textContent = '--';
+                    signLayer.innerHTML = '';
+                    return;
+                }
+
+                const signStackFt = signs.reduce((sum, s) => sum + s.heightFt, 0);
+                const gapTotalFt = Math.max(signs.length - 1, 0) * gapFt;
+                const stackHeight = signStackFt + gapTotalFt;
+                const aboveGround = bottomHeight + stackHeight;
+                const requiredLength = aboveGround + minEmbedFt;
+                const options = [10, 12, 16];
+                const recommended = options.find(len => len >= requiredLength);
+                const embedDepth = recommended ? recommended - aboveGround : Math.max(0, requiredLength - aboveGround);
+                const shortBy = recommended ? 0 : requiredLength - options[options.length - 1];
+                const nextDown = recommended ? options[options.indexOf(recommended) - 1] : options[options.length - 1];
+                const nextDownEmbed = nextDown ? nextDown - aboveGround : 0;
+                const overBy = embedDepth - maxEmbedFt;
+
+                bottomValue.textContent = ftLabel(bottomHeight);
+                stackValue.textContent = ftLabel(stackHeight);
+                aboveValue.textContent = ftLabel(aboveGround);
+                postValue.textContent = recommended ? `${recommended} ft` : 'Longer than 16 ft';
+                embedValue.textContent = recommended ? ftLabel(embedDepth) : `Short of ${minEmbedFt.toFixed(2)} ft`;
+                markValue.textContent = recommended ? ftLabel(embedDepth) : '--';
+
+                if (recommended) {
+                    const markDepth = embedDepth.toFixed(2);
+                    resultCallout.textContent = `Use a ${recommended} ft post. Mark ${markDepth} ft up from the post bottom as the ground line and drive to that mark.`;
+                    const shorterNote = nextDown && nextDownEmbed >= 0
+                        ? `A ${nextDown} ft post would only leave ${nextDownEmbed.toFixed(2)} ft embedded (needs ≥${minEmbedFt.toFixed(2)} ft).`
+                        : '';
+                    const overNote = overBy > 0.01
+                        ? `This leaves ${embedDepth.toFixed(2)} ft embedded, which is ${overBy.toFixed(2)} ft over the 3 ft ±1 in band. Trim about ${overBy.toFixed(2)} ft off the top or recheck the stack if you need embed closer to 3 ft.`
+                        : '';
+                    resultText.textContent = `${shorterNote} Above-ground height: ${aboveGround.toFixed(2)} ft. ${overNote}`.trim();
+                } else {
+                    resultCallout.textContent = `Even a 16 ft post comes up short by ${shortBy.toFixed(2)} ft to keep ${minEmbedFt.toFixed(2)} ft embedded.`;
+                    resultText.textContent = 'Trim the stack or pick a longer post length.';
+                }
+
+                const drawLength = recommended || requiredLength;
+                const drawEmbed = recommended ? embedDepth : minEmbedFt;
+                renderVisualization({
+                    signs,
+                    bottomHeight,
+                    gapFt,
+                    embedDepth: drawEmbed,
+                    postLength: drawLength,
+                    aboveGround
+                });
+
+                renderDimDiagram({
+                    postLength: drawLength,
+                    embedDepth: drawEmbed,
+                    aboveGround,
+                    bottomHeight,
+                    stackHeight,
+                    scale: PX_PER_FT,
+                    trackHeightPx: lastTrackHeight,
+                    signs,
+                    gapFt
+                });
+            }
+
+            addSignBtn.addEventListener('click', () => {
+                addSignRow(24, '');
+                calculate();
+            });
+            calculateBtn.addEventListener('click', calculate);
+            gapInput.addEventListener('input', calculate);
+            areaInputs.forEach(r => r.addEventListener('change', calculate));
+
+            // Seed with two common faces
+            addSignRow(30, 'Main sign');
+            addSignRow(18, 'Supplemental');
+            calculate();
+        })();
+
+        function renderDimDiagram(data) {
+            const { postLength, embedDepth, aboveGround, bottomHeight, stackHeight, scale, trackHeightPx, signs, gapFt } = data;
+            const theme = {
+                post: '#94a3b8',
+                postStroke: '#0f172a',
+                embed: '#1f2937',
+                soil: '#e6c9a3',
+                grass: '#a3e635',
+                guide: '#1f2937',
+                guideSubtle: '#94a3b8',
+                accent: '#0ea5e9',
+                labelBg: '#f1f5f9',
+                labelText: '#0f172a',
+                signFill: '#ffffff',
+                signStroke: '#0f172a',
+                textSub: '#475569'
+            };
+            const fontFamily = `'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif`;
+            const padding = 28;
+            const svgWidth = 760;
+            const baseY = trackHeightPx + padding;
+            const groundY = baseY - embedDepth * scale;
+            const topY = baseY - postLength * scale;
+            const parentHeightFt = signs.length ? signs[0].heightFt : 0;
+            const parentHeightPx = parentHeightFt * scale;
+            const parentBottomY = topY + parentHeightPx;
+            const stackYTop = topY;
+            const stackYBottom = topY + stackHeight * scale;
+            const horizontalShift = 40;
+            const postCenter = svgWidth / 2 - horizontalShift;
+            const postWidth = 18;
+            const signCenterX = svgWidth / 2 - horizontalShift;
+            const signWidth = 150;
+            const signLeft = signCenterX - signWidth / 2;
+            const signRight = signCenterX + signWidth / 2;
+            const stackArrowX = signRight + 8;
+            const gapPx = gapFt * scale;
+            const supplementBottomFt = signs.length > 1
+                ? bottomHeight - (gapFt + signs[1].heightFt)
+                : null;
+            const supplementBottomY = signs.length > 1
+                ? parentBottomY + gapPx + signs[1].heightFt * scale
+                : null;
+
+            const arrow = (y1, y2, text, x, opts = {}) => {
+                const {
+                    color = theme.guide,
+                    bg = theme.labelBg,
+                    labelYOffset = 0,
+                    tickWidth = 16,
+                    tickStart,
+                    labelSide = 'right'
+                } = opts;
+                const top = Math.min(y1, y2);
+                const bottom = Math.max(y1, y2);
+                const centerY = (top + bottom) / 2;
+                const labelWidth = Math.max(text.length * 7, 120);
+                let axisX = x;
+                let tickLeft = x - tickWidth / 2;
+                let tickRight = x + tickWidth / 2;
+                if (typeof tickStart === 'number') {
+                    tickLeft = tickStart;
+                    tickRight = tickStart + tickWidth;
+                    axisX = tickLeft + tickWidth / 2;
+                }
+                const labelX = labelSide === 'left'
+                    ? axisX - labelWidth - 1
+                    : axisX + 1;
+                const textX = labelX + labelWidth / 2;
+                const labelY = centerY - 12 + labelYOffset;
+                return `
+                    <g class="dim-arrow">
+                        <line x1="${axisX}" x2="${axisX}" y1="${top}" y2="${bottom}" stroke="${color}" stroke-width="1.6" />
+                        <line x1="${tickLeft}" x2="${tickRight}" y1="${top}" y2="${top}" stroke="${color}" stroke-width="1.6" />
+                        <line x1="${tickLeft}" x2="${tickRight}" y1="${bottom}" y2="${bottom}" stroke="${color}" stroke-width="1.6" />
+                        <rect x="${labelX}" y="${labelY}" width="${labelWidth}" height="24" rx="8" ry="8" fill="${bg}" stroke="${color}" stroke-width="0.9" />
+                        <text x="${textX}" y="${centerY + 1}" class="label-text">${text}</text>
+                    </g>
+                `;
+            };
+
+            let signRects = '';
+            let cursorY = topY;
+            signs.forEach((sign, idx) => {
+                const heightPx = sign.heightFt * scale;
+                signRects += `
+                    <rect x="${signCenterX - signWidth / 2}" y="${cursorY}" rx="8" ry="8" width="${signWidth}" height="${heightPx}" fill="${theme.signFill}" stroke="${theme.signStroke}" stroke-width="2" />
+                    <text x="${signCenterX}" y="${cursorY + heightPx / 2 - 5}" class="sign-title">${sign.label}</text>
+                    <text x="${signCenterX}" y="${cursorY + heightPx / 2 + 12}" class="sign-sub">${(sign.heightFt * 12).toFixed(0)} in</text>
+                `;
+                cursorY += heightPx;
+                if (idx < signs.length - 1) {
+                    cursorY += gapPx;
+                }
+            });
+
+            dimDiagram.innerHTML = `
+                <svg width="100%" height="${baseY + padding}" viewBox="0 0 ${svgWidth} ${baseY + padding}" xmlns="http://www.w3.org/2000/svg">
+                    <defs>
+                        <style>
+                            .label-text { font-size: 12px; font-weight: 700; fill: ${theme.labelText}; text-anchor: middle; dominant-baseline: middle; font-family: ${fontFamily}; }
+                            .sign-title { font-size: 13px; font-weight: 700; fill: ${theme.signStroke}; text-anchor: middle; font-family: ${fontFamily}; }
+                            .sign-sub { font-size: 12px; fill: ${theme.textSub}; text-anchor: middle; font-family: ${fontFamily}; }
+                            .note-text { font-size: 12px; fill: ${theme.textSub}; font-family: ${fontFamily}; }
+                        </style>
+                    </defs>
+                    <rect x="0" y="${groundY}" width="${svgWidth}" height="${baseY + padding - groundY}" fill="${theme.soil}" />
+                    <rect x="0" y="${groundY - 3}" width="${svgWidth}" height="6" fill="${theme.grass}" />
+                    <line x1="0" x2="${svgWidth}" y1="${groundY}" y2="${groundY}" stroke="${theme.guideSubtle}" stroke-width="1.2" stroke-dasharray="4 4" />
+                    <rect x="${postCenter - postWidth / 2}" y="${groundY}" width="${postWidth}" height="${baseY - groundY}" fill="${theme.embed}" stroke="${theme.postStroke}" stroke-width="1.2" rx="3" />
+                    <rect x="${postCenter - postWidth / 2}" y="${topY}" width="${postWidth}" height="${baseY - topY}" fill="${theme.post}" stroke="${theme.postStroke}" stroke-width="1.2" rx="3" />
+                    <!-- stack highlight removed per request -->
+                    <circle cx="${postCenter}" cy="${topY}" r="4" fill="${theme.guide}" />
+                    <line x1="${postCenter - postWidth / 2}" x2="${postCenter - postWidth / 2 - 60}" y1="${groundY + (baseY - groundY) / 2 - 30}" y2="${groundY + (baseY - groundY) / 2 + 10}" stroke="${theme.accent}" stroke-width="1.2" />
+                    <text x="${postCenter - postWidth / 2 - 64}" y="${groundY + (baseY - groundY) / 2 + 4}" class="label-text" text-anchor="end">${postLength.toFixed(2)} ft post</text>
+                    ${signRects}
+                    ${arrow(groundY, baseY, `${embedDepth.toFixed(2)} ft embed`, stackArrowX, { tickStart: signRight })}
+                    ${arrow(topY, groundY, `${aboveGround.toFixed(2)} ft above`, Math.min(svgWidth - 120, signRight + 120))}
+                    ${arrow(groundY, parentBottomY, `${bottomHeight.toFixed(2)} ft to parent bottom`, signLeft - 8, { labelYOffset: 3, tickStart: signLeft - 16, labelSide: 'left' })}
+                    ${supplementBottomY !== null ? arrow(groundY, supplementBottomY, `${supplementBottomFt.toFixed(2)} ft to supplemental bottom`, stackArrowX, { labelYOffset: 3, tickStart: signRight }) : ''}
+                    ${arrow(stackYTop, stackYBottom, `${stackHeight.toFixed(2)} ft stack`, stackArrowX, { tickStart: signRight })}
+                </svg>
+            `;
+        }
+    </script>
+</body>
+</html>
