@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCOC Turning Warrants</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 18px;
+        }
+        .input-grid label {
+            font-weight: 600;
+            color: #0b2a4a;
+        }
+        .callout {
+            margin-top: 16px;
+            padding: 14px;
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            color: #065f46;
+        }
+        .result-card {
+            margin-top: 18px;
+            padding: 16px;
+            border: 1px solid #dbeafe;
+            background: #eff6ff;
+            border-radius: 12px;
+            color: #0b2a4a;
+        }
+        .pill {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 999px;
+            font-weight: 700;
+            font-size: 16px;
+        }
+        .pill.ok {
+            background: #dcfce7;
+            color: #166534;
+        }
+        .pill.warn {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        .pill.info {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        .chart-panel {
+            margin-top: 30px;
+            padding: 18px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+        .chart-panel h3 {
+            margin-top: 0;
+            text-align: left;
+            color: #0b2a4a;
+        }
+        .chart-wrapper {
+            width: 100%;
+            position: relative;
+        }
+        #warrantChart {
+            width: 100%;
+            height: 320px;
+            display: block;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: inset 0 0 0 1px #e2e8f0;
+        }
+        .chart-note {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #475569;
+            text-align: center;
+        }
+        .download-button {
+            margin-top: 16px;
+            background: #0f172a;
+        }
+        .download-button:hover {
+            background: #1d4ed8;
+        }
+        .field-note {
+            font-size: 13px;
+            color: #475569;
+            margin-top: 4px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main class="container">
+        <section class="calculator">
+            <h1>RCOC Turning Warrants</h1>
+            <p class="calculator-lede">Quick check for RCOC’s permit-guide envelopes for left-turn (median crossover) and right-turn (taper/lane) warrants.</p>
+            <p class="note">Pick the movement below, enter the two-way ADT/AADT and the peak-hour turning volume, and the tool will compare the point to the agency’s reference lines.</p>
+            <div class="mode-toggle" role="group" aria-label="Turning movement">
+                <button type="button" class="mode-button active" data-mode="left">Left turns</button>
+                <button type="button" class="mode-button" data-mode="right">Right turns</button>
+            </div>
+            <p class="note">Trucks count as <strong>two passenger cars</strong> for the left-turn branch only (per the permit guide PCU rule). Right-turn checks use the raw turning volume unless you note otherwise.</p>
+            <div class="input-grid">
+                <div>
+                    <label for="siteName">Site name / notes (optional)</label>
+                    <input type="text" id="siteName" placeholder="e.g., Walnut Lake PUD">
+                </div>
+                <div>
+                    <label for="twoWayVolume">Two-way 24-hr volume (ADT or AADT)</label>
+                    <input type="number" id="twoWayVolume" min="0" step="1" placeholder="e.g., 4000">
+                </div>
+                <div>
+                    <label for="leftTurns" id="turnVolumeLabel">Peak-hour left turns (veh/h)</label>
+                    <input type="number" id="leftTurns" min="0" step="0.1" placeholder="e.g., 50">
+                </div>
+                <div>
+                    <label for="percentCommercial">Percent commercial (truck share %)</label>
+                    <input type="number" id="percentCommercial" min="0" max="100" step="1" placeholder="e.g., 12">
+                    <span class="field-note" id="turnFieldNote">Example: 20% trucks → left turns × 1.20 for the warrant check. (Right-turn branch ignores this factor.)</span>
+                </div>
+            </div>
+            <button class="calculate-button" id="checkWarrant">Check warrant</button>
+            <div id="warrantVerdict" class="result" aria-live="polite"></div>
+            <div id="warrantDetails" class="note"></div>
+            <div id="warrantSummary" class="result-card hidden"></div>
+            <div class="chart-panel">
+                <h3>Warrant Envelope Preview</h3>
+                <div class="chart-wrapper">
+                    <canvas id="warrantChart" role="img" aria-label="Left-turn warrant chart with envelope and evaluated point"></canvas>
+                </div>
+                <p class="chart-note" id="chartNoteText">Blue line = published left-turn envelope. The dot animates to your point (green when allowed, red when prohibited) after you hit "Check warrant".</p>
+                <button type="button" class="calculate-button download-button" id="downloadChart">Download chart PNG</button>
+            </div>
+            <div class="callout">
+                Left-turn data is the RCOC permit-guide envelope (3,000–28,000 vpd). Right-turn data reflects the deceleration-lane/taper guidance you shared. The tool linearly interpolates between published points.
+            </div>
+        </section>
+        <section class="references">
+            <h2>References</h2>
+            <p>Source: Road Commission for Oakland County (RCOC) Permit Guide table for permitting left turns without a left-turn lane.</p>
+            <p>The inputs should reflect the combined two-way daily volume for the corridor and the single peak-hour left-turn demand being evaluated.</p>
+        </section>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/leftTurnWarrant.js"></script>
+</body>
+</html>
