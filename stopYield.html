@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop or Yield (Safe Approach Speed)</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .calculator h1 {
+            margin-bottom: 10px;
+        }
+        .calculator-lede {
+            margin-bottom: 12px;
+        }
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 14px;
+            margin-bottom: 16px;
+        }
+        fieldset {
+            border: 1px solid #d1d5db;
+            border-radius: 12px;
+            margin-bottom: 22px;
+            padding: 16px;
+        }
+        fieldset legend {
+            font-weight: 700;
+            padding: 0 10px;
+            color: #0b2a4a;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            justify-content: space-between;
+        }
+        .legend-action-button {
+            border: 1px solid #cbd5f5;
+            background: #f8fafc;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: #0f172a;
+            padding: 4px 12px;
+            cursor: pointer;
+        }
+        .legend-action-button:hover {
+            background: #e0e7ff;
+        }
+        label {
+            font-size: 0.95rem;
+            color: #0b2a4a;
+            display: block;
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"] {
+            width: 100%;
+            padding: 10px;
+            border-radius: 6px;
+            border: 1px solid #cbd5f5;
+            font-size: 16px;
+            box-sizing: border-box;
+        }
+        .note-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+            margin-top: 18px;
+        }
+        .diagram-card {
+            border: 1px solid #cbd5f5;
+            border-radius: 16px;
+            padding: 16px;
+            background: #f8fafc;
+        }
+        .diagram-card h3 {
+            margin-top: 0;
+            text-align: left;
+        }
+        .diagram-wrapper {
+            width: 100%;
+            overflow: auto;
+        }
+        .diagram-svg {
+            width: 100%;
+            max-width: 680px;
+            display: block;
+            margin: 0 auto;
+        }
+        .pill-tip {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 999px;
+            background: #e0f2fe;
+            color: #0c4a6e;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+        .safe-speed-highlight {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin: 14px 0;
+        }
+        .safe-speed-box {
+            background: #fff7ed;
+            border: 1px solid #fdba74;
+            border-radius: 12px;
+            padding: 12px 16px;
+            text-align: center;
+        }
+        .safe-speed-box span {
+            display: block;
+            font-size: 0.9rem;
+            letter-spacing: 0.04em;
+            color: #9a3412;
+        }
+        .safe-speed-box strong {
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 800;
+            color: #c2410c;
+        }
+        .calc-actions {
+            margin-top: 12px;
+            display: flex;
+            justify-content: flex-end;
+        }
+        .secondary-button {
+            border-radius: 999px;
+            border: 1px solid #94a3b8;
+            padding: 8px 18px;
+            background: #fff;
+            color: #0f172a;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+        .secondary-button:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+        .secondary-button:not(:disabled):hover {
+            background: #e2e8f0;
+        }
+        .recommendation-callout {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            border-radius: 14px;
+            border: 2px solid #1d4ed8;
+            padding: 14px 18px;
+            background: #eff6ff;
+            margin-top: 18px;
+        }
+        .recommendation-callout img {
+            width: 64px;
+            height: 64px;
+            object-fit: contain;
+        }
+        .recommendation-copy {
+            display: flex;
+            flex-direction: column;
+        }
+        .recommendation-copy span {
+            font-size: 0.9rem;
+            color: #1e3a8a;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .recommendation-copy strong {
+            font-size: 1.4rem;
+            color: #0f172a;
+        }
+        .print-summary {
+            margin-top: 18px;
+        }
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+        }
+        .summary-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .summary-table th {
+            text-align: left;
+            padding: 4px 8px;
+            font-size: 0.85rem;
+            color: #475569;
+            width: 55%;
+        }
+        .summary-table td {
+            padding: 4px 8px;
+            font-weight: 600;
+            color: #0f172a;
+            font-size: 0.95rem;
+        }
+        .summary-callout {
+            margin-top: 18px;
+        }
+        .summary-speed-line {
+            margin: 4px 0;
+            font-size: 0.95rem;
+            color: #334155;
+        }
+        .summary-diagram {
+            margin-top: 16px;
+        }
+        @media print {
+            body {
+                background: #fff;
+            }
+            #header-placeholder,
+            #footer-placeholder,
+            .calculator fieldset,
+            .calculate-button,
+            .calc-actions,
+            .note-grid,
+            #previewOutput,
+            #calcOutputs {
+                display: none !important;
+            }
+            .print-summary {
+                display: block !important;
+                border: none;
+                background: #fff;
+                box-shadow: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Stop or Yield? Safe Approach Speed Helper</h1>
+            <p class="calculator-lede">Log the roadway geometry, sight-triangle measurements, and posted speed to prep the stop-or-yield decision. Calculations/outputs wire in next.</p>
+
+            <fieldset>
+                <legend>
+                    <span>Site Information</span>
+                    <button type="button" class="legend-action-button" id="resetSiteBtn">Reset</button>
+                </legend>
+                <div class="form-grid">
+                    <div>
+                        <label for="siteDate">Date</label>
+                        <input type="date" id="siteDate">
+                    </div>
+                    <div>
+                        <label for="analyst">Analyst</label>
+                        <input type="text" id="analyst" placeholder="e.g., Jane Doe">
+                    </div>
+                    <div>
+                        <label for="subdivision">Subdivision (optional)</label>
+                        <input type="text" id="subdivision" placeholder="e.g., Walnut Lake PUD">
+                    </div>
+                    <div>
+                        <label for="township">Township</label>
+                        <input type="text" id="township" placeholder="e.g., West Bloomfield">
+                    </div>
+                    <div>
+                        <label for="majorRoad">Major road name</label>
+                        <input type="text" id="majorRoad" placeholder="e.g., Orchard Lake Rd">
+                    </div>
+                    <div>
+                        <label for="minorRoad">Minor road name</label>
+                        <input type="text" id="minorRoad" placeholder="e.g., Walnut Lake Rd">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    <span>Measured Values</span>
+                    <button type="button" class="legend-action-button" id="resetMeasuredBtn">Reset</button>
+                </legend>
+                <h3>Width of roads (edge of metal / edge of pavement)</h3>
+                <div class="form-grid">
+                    <div>
+                        <label for="majorWidth">Major road width (ft)</label>
+                        <input type="number" id="majorWidth" min="0" step="0.1" placeholder="e.g., 23">
+                    </div>
+                    <div>
+                        <label for="minorWidth">Minor road width (ft)</label>
+                        <input type="number" id="minorWidth" min="0" step="0.1" placeholder="e.g., 23">
+                    </div>
+                </div>
+
+                <h3>Distance to obstruction (ft) from E/M or E/P</h3>
+                <div class="form-grid">
+                    <div>
+                        <label for="obsA">a</label>
+                        <input type="number" id="obsA" min="0" step="0.1">
+                    </div>
+                    <div>
+                        <label for="obsB">b</label>
+                        <input type="number" id="obsB" min="0" step="0.1">
+                    </div>
+                    <div>
+                        <label for="obsC">c</label>
+                        <input type="number" id="obsC" min="0" step="0.1">
+                    </div>
+                    <div>
+                        <label for="obsD">d</label>
+                        <input type="number" id="obsD" min="0" step="0.1">
+                    </div>
+                </div>
+
+                <h3>Available distance along the major road (D₂)</h3>
+                <div class="form-grid">
+                    <div>
+                        <label for="distD2A">Left / near-side available distance, D₂a (ft)</label>
+                        <input type="text" id="distD2A" placeholder="Auto-calculated" readonly>
+                    </div>
+                    <div>
+                        <label for="distD2C">Right / far-side available distance, D₂c (ft)</label>
+                        <input type="text" id="distD2C" placeholder="Auto-calculated" readonly>
+                    </div>
+                </div>
+
+                <h3>Intersection geometry</h3>
+                <div class="form-grid">
+                    <div>
+                        <label for="deltaAngle">Delta (degrees, counter-clockwise)</label>
+                        <input type="number" id="deltaAngle" min="0" max="360" step="0.1" placeholder="e.g., 130">
+                    </div>
+                    <div>
+                        <label for="majorSpeed">Posted speed limit of major road (mph)</label>
+                        <input type="number" id="majorSpeed" min="0" step="1" placeholder="e.g., 35">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>
+                    <span>Assumed Values</span>
+                    <button type="button" class="legend-action-button" id="defaultAssumedBtn">Restore defaults</button>
+                </legend>
+                <p class="note">Defaults mirror the worksheet screenshot (perception/reaction time from AASHTO). Adjust if your analysis uses different values.</p>
+                <div class="form-grid">
+                    <div>
+                        <label for="safetyFactor">Factor of safety for speed (mph)</label>
+                        <input type="number" id="safetyFactor" min="0" step="0.1" value="5">
+                    </div>
+                    <div>
+                        <label for="driverOffset">Offset from centerline to driver eye, O (ft)</label>
+                        <input type="number" id="driverOffset" min="0" step="0.1" value="3">
+                    </div>
+                    <div>
+                        <label for="reactionTime">Perception / reaction time, t (sec)</label>
+                        <input type="number" id="reactionTime" min="0" step="0.1" value="2.5">
+                    </div>
+                    <div>
+                        <label for="decelerationRate">Deceleration rate, A (ft/s²)</label>
+                        <input type="number" id="decelerationRate" min="0" step="0.1" value="11.2">
+                    </div>
+                    <div>
+                        <label for="clearanceDistance">Clearance distance beyond SSD (AAA EC) (ft)</label>
+                        <input type="number" id="clearanceDistance" min="0" step="0.1" placeholder="N/A if unused">
+                    </div>
+                    <div>
+                        <label for="safeApproachSpeed">Safe approach speed (mph)</label>
+                        <input type="number" id="safeApproachSpeed" min="0" step="0.5" value="10">
+                    </div>
+                </div>
+                <p class="note">*Clearance distance currently not used in the legacy sheet; keep blank unless your analysis calls for it.</p>
+                <p class="note">**10 mph has been the generally accepted safe approach speed; adjust as needed.</p>
+            </fieldset>
+
+            <button class="calculate-button" id="generateSheet">Calculate stop / yield recommendation</button>
+            <div id="previewOutput" class="note"></div>
+            <div id="calcOutputs" class="diagram-card hidden" style="margin-top:16px;">
+                <h3>Calculated Values</h3>
+                <p class="note">Automatically updates when you hit “Calculate stop / yield recommendation”. Calculations use <strong>V₁ = Posted speed + safety factor</strong> and <strong>D₁ = 1.47·V₁·t + 1.075·(V₁² / A)</strong>.</p>
+                <div class="safe-speed-highlight">
+                    <div class="safe-speed-box">
+                        <span>V₂a (mph)</span>
+                        <strong id="v2aDisplay">—</strong>
+                    </div>
+                    <div class="safe-speed-box">
+                        <span>V₂c (mph)</span>
+                        <strong id="v2cDisplay">—</strong>
+                    </div>
+                </div>
+                <div id="controlRecommendation" class="recommendation-callout hidden" aria-live="polite">
+                    <img src="r1-1.gif" alt="STOP sign" id="controlIcon">
+                    <div class="recommendation-copy">
+                        <span>Recommended traffic control</span>
+                        <strong id="controlText">—</strong>
+                    </div>
+                </div>
+                <div id="calcTable"></div>
+                <div class="calc-actions">
+                    <button type="button" class="secondary-button" id="printSummaryBtn" disabled>Print summary</button>
+                </div>
+            </div>
+
+            <div id="printableSummary" class="diagram-card print-summary hidden">
+                <h3>Stop or Yield field summary</h3>
+                <p class="note">Use this section for the PDF/printout. All fields mirror the form inputs plus the calculated safe approach speeds.</p>
+                <div class="summary-grid">
+                    <div>
+                        <h4>Site information</h4>
+                        <table class="summary-table">
+                            <tr><th>Date</th><td id="summaryDate">—</td></tr>
+                            <tr><th>Analyst</th><td id="summaryAnalyst">—</td></tr>
+                            <tr><th>Subdivision</th><td id="summarySubdivision">—</td></tr>
+                            <tr><th>Township</th><td id="summaryTownship">—</td></tr>
+                            <tr><th>Major road</th><td id="summaryMajorRoad">—</td></tr>
+                            <tr><th>Minor road</th><td id="summaryMinorRoad">—</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h4>Measured values</h4>
+                        <table class="summary-table">
+                            <tr><th>Major road width (ft)</th><td id="summaryMajorWidth">—</td></tr>
+                            <tr><th>Minor road width (ft)</th><td id="summaryMinorWidth">—</td></tr>
+                            <tr><th>a (ft)</th><td id="summaryObsA">—</td></tr>
+                            <tr><th>b (ft)</th><td id="summaryObsB">—</td></tr>
+                            <tr><th>c (ft)</th><td id="summaryObsC">—</td></tr>
+                            <tr><th>d (ft)</th><td id="summaryObsD">—</td></tr>
+                            <tr><th>Delta angle (°)</th><td id="summaryDelta">—</td></tr>
+                            <tr><th>Posted speed (mph)</th><td id="summaryPostedSpeed">—</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="summary-grid">
+                    <div>
+                        <h4>Assumed values</h4>
+                        <table class="summary-table">
+                            <tr><th>Safety factor (mph)</th><td id="summarySafetyFactor">—</td></tr>
+                            <tr><th>Driver eye offset O (ft)</th><td id="summaryDriverOffset">—</td></tr>
+                            <tr><th>Perception / reaction t (sec)</th><td id="summaryReaction">—</td></tr>
+                            <tr><th>Deceleration A (ft/s²)</th><td id="summaryDecel">—</td></tr>
+                            <tr><th>Safe approach speed (mph)</th><td id="summarySafeApproach">—</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <h4>Calculated values</h4>
+                        <table class="summary-table">
+                            <tr><th>V₁ (mph)</th><td id="summaryV1">—</td></tr>
+                            <tr><th>D₁ (SSD, ft)</th><td id="summaryD1">—</td></tr>
+                            <tr><th>D₂a (ft)</th><td id="summaryD2a">—</td></tr>
+                            <tr><th>D₂c (ft)</th><td id="summaryD2c">—</td></tr>
+                        </table>
+                    </div>
+                </div>
+                <div class="recommendation-callout summary-callout hidden" id="summaryRecommendation">
+                    <img src="r1-1.gif" alt="Stop sign" id="summarySign">
+                    <div class="recommendation-copy">
+                        <span>Recommended traffic control</span>
+                        <strong id="summaryControl">—</strong>
+                        <p class="summary-speed-line">V₂a: <span id="summaryV2a">—</span> mph • V₂c: <span id="summaryV2c">—</span> mph</p>
+                        <p class="summary-speed-line">Safe approach target: <span id="summarySafeApproachLine">—</span> mph</p>
+                    </div>
+                </div>
+                <div class="diagram-wrapper summary-diagram">
+                    <img src="diagram.png" class="diagram-svg" alt="Sight triangle diagram with major/minor roads and obstruction offsets">
+                </div>
+            </div>
+
+            <div class="note-grid">
+                <div class="diagram-card">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;">
+                        <div>
+                            <span class="pill-tip">Reference layout</span>
+                            <h3 style="margin-bottom:4px;">Clear View Triangle Diagram</h3>
+                        </div>
+                        <button type="button" class="legend-action-button" id="expandDiagramBtn">Open larger view</button>
+                    </div>
+                    <div class="diagram-wrapper">
+                        <img src="diagram.png" class="diagram-svg" alt="Sight triangle diagram with major/minor roads, obstruction offsets, and labeled distances a, b, c, d">
+                    </div>
+                    <p class="note">The provided CAD-style diagram mirrors the worksheet markup so crews can compare the calculator inputs against the field sketch.</p>
+                </div>
+
+                <div class="diagram-card">
+                    <span class="pill-tip">Next steps</span>
+                    <p>Still on deck for this tool:</p>
+                    <ul>
+                        <li>Clear-view triangle check vs. posted speed (flag when sight distance is short).</li>
+                    </ul>
+                    <p>The printable summary above is now live—hit “Print summary” once your data is locked in.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/stopYield.js"></script>
+</body>
+</html>

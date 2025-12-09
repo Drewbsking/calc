@@ -21,13 +21,93 @@ document.addEventListener('DOMContentLoaded', () => {
     'clearanceDistance',
     'safeApproachSpeed'
   ];
+  const siteFieldIds = [
+    'siteDate',
+    'analyst',
+    'subdivision',
+    'township',
+    'majorRoad',
+    'minorRoad'
+  ];
+  const measuredFieldIds = [
+    'majorWidth',
+    'minorWidth',
+    'obsA',
+    'obsB',
+    'obsC',
+    'obsD',
+    'deltaAngle',
+    'majorSpeed'
+  ];
+  const assumedFieldIds = [
+    'safetyFactor',
+    'driverOffset',
+    'reactionTime',
+    'decelerationRate',
+    'clearanceDistance',
+    'safeApproachSpeed'
+  ];
+  const assumedDefaults = {
+    safetyFactor: '5',
+    driverOffset: '3',
+    reactionTime: '2.5',
+    decelerationRate: '11.2',
+    clearanceDistance: '',
+    safeApproachSpeed: '10'
+  };
 
   const storageKey = 'stop-yield-inputs-v1';
+  const parseNumeric = (value) => {
+    const num = parseFloat(value);
+    return Number.isFinite(num) ? num : null;
+  };
   const previewOutput = document.getElementById('previewOutput');
   const calcContainer = document.getElementById('calcOutputs');
   const calcTable = document.getElementById('calcTable');
   const distD2AInput = document.getElementById('distD2A');
   const distD2CInput = document.getElementById('distD2C');
+  const v2aDisplay = document.getElementById('v2aDisplay');
+  const v2cDisplay = document.getElementById('v2cDisplay');
+  const recommendationWrap = document.getElementById('controlRecommendation');
+  const recommendationIcon = document.getElementById('controlIcon');
+  const recommendationText = document.getElementById('controlText');
+  const resetSiteButton = document.getElementById('resetSiteBtn');
+  const resetMeasuredButton = document.getElementById('resetMeasuredBtn');
+  const defaultAssumedButton = document.getElementById('defaultAssumedBtn');
+  const expandDiagramButton = document.getElementById('expandDiagramBtn');
+  const summarySection = document.getElementById('printableSummary');
+  const summaryRecommendation = document.getElementById('summaryRecommendation');
+  const summarySign = document.getElementById('summarySign');
+  const summaryControl = document.getElementById('summaryControl');
+  const summaryV2a = document.getElementById('summaryV2a');
+  const summaryV2c = document.getElementById('summaryV2c');
+  const summarySafeApproachLine = document.getElementById('summarySafeApproachLine');
+  const summaryFields = {
+    date: document.getElementById('summaryDate'),
+    analyst: document.getElementById('summaryAnalyst'),
+    subdivision: document.getElementById('summarySubdivision'),
+    township: document.getElementById('summaryTownship'),
+    majorRoad: document.getElementById('summaryMajorRoad'),
+    minorRoad: document.getElementById('summaryMinorRoad'),
+    majorWidth: document.getElementById('summaryMajorWidth'),
+    minorWidth: document.getElementById('summaryMinorWidth'),
+    obsA: document.getElementById('summaryObsA'),
+    obsB: document.getElementById('summaryObsB'),
+    obsC: document.getElementById('summaryObsC'),
+    obsD: document.getElementById('summaryObsD'),
+    delta: document.getElementById('summaryDelta'),
+    postedSpeed: document.getElementById('summaryPostedSpeed'),
+    safetyFactor: document.getElementById('summarySafetyFactor'),
+    driverOffset: document.getElementById('summaryDriverOffset'),
+    reaction: document.getElementById('summaryReaction'),
+    decel: document.getElementById('summaryDecel'),
+    safeApproach: document.getElementById('summarySafeApproach'),
+    V1: document.getElementById('summaryV1'),
+    D1: document.getElementById('summaryD1'),
+    D2a: document.getElementById('summaryD2a'),
+    D2c: document.getElementById('summaryD2c')
+  };
+  const printButton = document.getElementById('printSummaryBtn');
 
   const loadInputs = () => {
     try {
@@ -57,23 +137,18 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const computeCalcs = (data) => {
-    const getNum = (value) => {
-      const num = parseFloat(value);
-      return Number.isFinite(num) ? num : null;
-    };
-
-    const majorSpeed = getNum(data.majorSpeed);
-    const safetyFactor = getNum(data.safetyFactor);
-    const reactionTime = getNum(data.reactionTime);
-    const decel = getNum(data.decelerationRate);
-    const driverOffset = getNum(data.driverOffset);
-    const majorWidth = getNum(data.majorWidth);
-    const minorWidth = getNum(data.minorWidth);
-    const obsA = getNum(data.obsA);
-    const obsB = getNum(data.obsB);
-    const obsC = getNum(data.obsC);
-    const obsD = getNum(data.obsD);
-    const delta = getNum(data.deltaAngle);
+    const majorSpeed = parseNumeric(data.majorSpeed);
+    const safetyFactor = parseNumeric(data.safetyFactor);
+    const reactionTime = parseNumeric(data.reactionTime);
+    const decel = parseNumeric(data.decelerationRate);
+    const driverOffset = parseNumeric(data.driverOffset);
+    const majorWidth = parseNumeric(data.majorWidth);
+    const minorWidth = parseNumeric(data.minorWidth);
+    const obsA = parseNumeric(data.obsA);
+    const obsB = parseNumeric(data.obsB);
+    const obsC = parseNumeric(data.obsC);
+    const obsD = parseNumeric(data.obsD);
+    const delta = parseNumeric(data.deltaAngle);
 
     if ([majorSpeed, safetyFactor, reactionTime, decel].some((n) => !Number.isFinite(n))) {
       return null;
@@ -102,18 +177,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const toRadians = (deg) => (deg * Math.PI) / 180;
     const toDegrees = (rad) => (rad * 180) / Math.PI;
 
-    const calculateD2 = (primary, secondary) => {
-      if (![primary, secondary, D1].every(Number.isFinite)) return null;
-      if (!Number.isFinite(delta) || primary === 0) return null;
+    const calculateD2A = (aprime, bprime) => {
+      if (![aprime, bprime, D1].every(Number.isFinite)) return null;
+      if (!Number.isFinite(delta) || aprime === 0) return null;
 
       const step1 = 90 - delta;
-      const tanTerm = Math.tan(toRadians(step1));
-      const step2 = tanTerm * primary;
+      const step2 = Math.tan(toRadians(step1)) * aprime;
       const sinDelta = Math.sin(toRadians(delta));
       if (Math.abs(sinDelta) < 1e-6) return null;
-      const step3 = secondary / sinDelta;
+      const step3 = bprime / sinDelta;
       const step4 = D1 - step3 - step2;
-      const step5 = toDegrees(Math.atan(step4 / primary));
+      const step5 = toDegrees(Math.atan(step4 / aprime));
       const step6 = 90 - step5;
       const step7 = 180 - delta - step6;
       const sinStep7 = Math.sin(toRadians(step7));
@@ -122,24 +196,43 @@ document.addEventListener('DOMContentLoaded', () => {
       return (D1 / sinStep7) * sinStep6;
     };
 
-    const solveSafeSpeed = (availableDistance, approachDistance) => {
-      if (![availableDistance, approachDistance, reactionTime, decel].every(Number.isFinite)) {
+    const calculateD2C = (cprime, dprime) => {
+      if (![cprime, dprime, D1].every(Number.isFinite)) return null;
+      if (!Number.isFinite(delta) || dprime === 0) return null;
+
+      const step1 = 90 - delta;
+      const step2 = Math.tan(toRadians(Math.abs(step1))) * dprime;
+      const sinDelta = Math.sin(toRadians(delta));
+      if (Math.abs(sinDelta) < 1e-6) return null;
+      const step3 = cprime / sinDelta;
+      const step4a = D1 - step3 - step2;
+      const step4b = D1 - step4a;
+      const step5 = toDegrees(Math.atan(step4b / dprime));
+      const step6 = 90 - step5;
+      const step7 = 180 - step1 - step6 - 90;
+      const sinStep7 = Math.sin(toRadians(step7));
+      const sinStep6 = Math.sin(toRadians(step6));
+      if (Math.abs(sinStep7) < 1e-6) return null;
+      return (D1 / sinStep7) * sinStep6;
+    };
+
+    const solveSafeSpeed = (availableDistance) => {
+      if (![availableDistance, reactionTime, decel].every(Number.isFinite)) {
         return null;
       }
-      if (availableDistance <= 0 || approachDistance <= 0 || decel <= 0) {
+      if (availableDistance <= 0 || decel <= 0) {
         return null;
       }
-      const discriminant = 43000 * availableDistance + 21609 * (reactionTime ** 2) * approachDistance;
-      const sqrtTerm = Math.sqrt(approachDistance * discriminant);
-      const numerator = -147 * reactionTime * approachDistance + sqrtTerm;
+      const discriminant = decel * (43000 * availableDistance + 21609 * (reactionTime ** 2) * decel);
+      const numerator = -147 * reactionTime * decel + Math.sqrt(discriminant);
       return numerator / 215;
     };
 
-    const D2a = calculateD2(aPrime, bPrime);
-    const D2c = calculateD2(cPrime, dPrime);
+    const D2a = calculateD2A(aPrime, bPrime);
+    const D2c = calculateD2C(cPrime, dPrime);
 
-    const V2a = solveSafeSpeed(D2a, aPrime);
-    const V2c = solveSafeSpeed(D2c, cPrime);
+    const V2a = solveSafeSpeed(D2a);
+    const V2c = solveSafeSpeed(D2c);
 
     return {
       V1,
@@ -181,7 +274,11 @@ document.addEventListener('DOMContentLoaded', () => {
       .filter(Boolean)
       .join(' • ') || 'Location TBD';
     const speedText = majorSpeed ? `${majorSpeed} mph posted` : 'Speed TBD';
-    const approachText = safeApproachSpeed ? `Target safe approach: ${safeApproachSpeed} mph` : '';
+    const parsedSafeApproach = parseFloat(safeApproachSpeed);
+    const safeApproachNumeric = Number.isFinite(parsedSafeApproach) ? parsedSafeApproach : null;
+    const approachText = Number.isFinite(safeApproachNumeric)
+      ? `Target safe approach: ${safeApproachNumeric} mph`
+      : '';
 
     const calcs = computeCalcs(data);
 
@@ -198,6 +295,43 @@ document.addEventListener('DOMContentLoaded', () => {
     if (distD2CInput) {
       distD2CInput.value = calcs && Number.isFinite(calcs.D2c) ? formatNumber(calcs.D2c, 2) : '';
     }
+    if (v2aDisplay) {
+      v2aDisplay.textContent = calcs && Number.isFinite(calcs.V2a) ? formatNumber(calcs.V2a, 1) : '—';
+    }
+    if (v2cDisplay) {
+      v2cDisplay.textContent = calcs && Number.isFinite(calcs.V2c) ? formatNumber(calcs.V2c, 1) : '—';
+    }
+
+    let yieldOK = null;
+    const hasRecommendationInputs =
+      calcs &&
+      Number.isFinite(calcs?.V2a) &&
+      Number.isFinite(calcs?.V2c) &&
+      Number.isFinite(safeApproachNumeric);
+
+    if (recommendationWrap) {
+      if (
+        hasRecommendationInputs &&
+        recommendationIcon &&
+        recommendationText
+      ) {
+        yieldOK = calcs.V2a >= safeApproachNumeric && calcs.V2c >= safeApproachNumeric;
+        recommendationWrap.classList.remove('hidden');
+        if (yieldOK) {
+          recommendationIcon.src = 'r1-2.gif';
+          recommendationIcon.alt = 'Yield sign';
+          recommendationText.textContent = 'YIELD sign recommended';
+        } else {
+          recommendationIcon.src = 'r1-1.gif';
+          recommendationIcon.alt = 'Stop sign';
+          recommendationText.textContent = 'STOP sign required';
+        }
+      } else {
+        recommendationWrap.classList.add('hidden');
+      }
+    }
+
+    updateSummary(data, calcs, safeApproachNumeric, yieldOK, hasRecommendationInputs);
 
     if (calcContainer && calcTable) {
       if (!calcs) {
@@ -225,6 +359,108 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   };
 
+  const setText = (node, value) => {
+    if (node) {
+      node.textContent = value;
+    }
+  };
+
+  const setFieldValue = (fieldId, value = '') => {
+    const el = document.getElementById(fieldId);
+    if (el) {
+      el.value = value;
+    }
+  };
+
+  const resetFields = (fieldIds, defaultsMap) => {
+    fieldIds.forEach((fieldId) => {
+      const hasDefault = defaultsMap && Object.prototype.hasOwnProperty.call(defaultsMap, fieldId);
+      const nextValue = hasDefault ? defaultsMap[fieldId] : '';
+      setFieldValue(fieldId, nextValue);
+    });
+  };
+
+  const updateSummary = (inputs, calcs, safeApproachNumeric, yieldOK, hasRecommendationInputs) => {
+    if (!summarySection) return;
+
+    if (!calcs) {
+      summarySection.classList.add('hidden');
+      if (summaryRecommendation) {
+        summaryRecommendation.classList.add('hidden');
+      }
+      if (printButton) {
+        printButton.disabled = true;
+      }
+      return;
+    }
+
+    summarySection.classList.remove('hidden');
+    if (printButton) {
+      printButton.disabled = false;
+    }
+
+    const textOrDash = (value) => {
+      if (!value) return '—';
+      return String(value).trim() || '—';
+    };
+    const numOrDash = (value, digits = 2) => {
+      const num = parseNumeric(value);
+      return Number.isFinite(num) ? formatNumber(num, digits) : '—';
+    };
+
+    const dateValue = inputs.siteDate ? new Date(inputs.siteDate) : null;
+    const dateText = dateValue && !Number.isNaN(dateValue.valueOf())
+      ? dateValue.toLocaleDateString()
+      : '—';
+
+    setText(summaryFields.date, dateText);
+    setText(summaryFields.analyst, textOrDash(inputs.analyst));
+    setText(summaryFields.subdivision, textOrDash(inputs.subdivision));
+    setText(summaryFields.township, textOrDash(inputs.township));
+    setText(summaryFields.majorRoad, textOrDash(inputs.majorRoad));
+    setText(summaryFields.minorRoad, textOrDash(inputs.minorRoad));
+
+    setText(summaryFields.majorWidth, numOrDash(inputs.majorWidth));
+    setText(summaryFields.minorWidth, numOrDash(inputs.minorWidth));
+    setText(summaryFields.obsA, numOrDash(inputs.obsA));
+    setText(summaryFields.obsB, numOrDash(inputs.obsB));
+    setText(summaryFields.obsC, numOrDash(inputs.obsC));
+    setText(summaryFields.obsD, numOrDash(inputs.obsD));
+    setText(summaryFields.delta, numOrDash(inputs.deltaAngle, 1));
+    setText(summaryFields.postedSpeed, numOrDash(inputs.majorSpeed, 1));
+
+    setText(summaryFields.safetyFactor, numOrDash(inputs.safetyFactor, 1));
+    setText(summaryFields.driverOffset, numOrDash(inputs.driverOffset, 1));
+    setText(summaryFields.reaction, numOrDash(inputs.reactionTime, 2));
+    setText(summaryFields.decel, numOrDash(inputs.decelerationRate, 1));
+    setText(summaryFields.safeApproach, Number.isFinite(safeApproachNumeric) ? formatNumber(safeApproachNumeric, 1) : '—');
+    setText(summarySafeApproachLine, Number.isFinite(safeApproachNumeric) ? formatNumber(safeApproachNumeric, 1) : '—');
+
+    setText(summaryFields.V1, Number.isFinite(calcs.V1) ? formatNumber(calcs.V1, 2) : '—');
+    setText(summaryFields.D1, Number.isFinite(calcs.D1) ? formatNumber(calcs.D1, 2) : '—');
+    setText(summaryFields.D2a, Number.isFinite(calcs.D2a) ? formatNumber(calcs.D2a, 2) : '—');
+    setText(summaryFields.D2c, Number.isFinite(calcs.D2c) ? formatNumber(calcs.D2c, 2) : '—');
+    setText(summaryV2a, Number.isFinite(calcs.V2a) ? formatNumber(calcs.V2a, 1) : '—');
+    setText(summaryV2c, Number.isFinite(calcs.V2c) ? formatNumber(calcs.V2c, 1) : '—');
+
+    if (summaryRecommendation) {
+      if (hasRecommendationInputs && summarySign && summaryControl) {
+        summaryRecommendation.classList.remove('hidden');
+        if (yieldOK) {
+          summarySign.src = 'r1-2.gif';
+          summarySign.alt = 'Yield sign';
+          summaryControl.textContent = 'YIELD sign recommended';
+        } else {
+          summarySign.src = 'r1-1.gif';
+          summarySign.alt = 'Stop sign';
+          summaryControl.textContent = 'STOP sign required';
+        }
+      } else {
+        summaryRecommendation.classList.add('hidden');
+      }
+    }
+  };
+
   const handleSave = () => {
     const inputs = collectInputs();
     try {
@@ -241,6 +477,35 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveButton = document.getElementById('generateSheet');
   if (saveButton) {
     saveButton.addEventListener('click', handleSave);
+  }
+  if (resetSiteButton) {
+    resetSiteButton.addEventListener('click', () => {
+      resetFields(siteFieldIds);
+      handleSave();
+    });
+  }
+  if (resetMeasuredButton) {
+    resetMeasuredButton.addEventListener('click', () => {
+      resetFields(measuredFieldIds);
+      handleSave();
+    });
+  }
+  if (defaultAssumedButton) {
+    defaultAssumedButton.addEventListener('click', () => {
+      resetFields(assumedFieldIds, assumedDefaults);
+      handleSave();
+    });
+  }
+
+  if (printButton) {
+    printButton.addEventListener('click', () => {
+      window.print();
+    });
+  }
+  if (expandDiagramButton) {
+    expandDiagramButton.addEventListener('click', () => {
+      window.open('diagram.png', '_blank', 'noopener');
+    });
   }
 
   loadInputs();
