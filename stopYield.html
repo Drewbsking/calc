@@ -124,6 +124,12 @@
             font-weight: 800;
             color: #c2410c;
         }
+        .safe-speed-explainer {
+            font-size: 0.85rem;
+            color: #9a3412;
+            margin-top: 4px;
+            line-height: 1.25;
+        }
         .calc-actions {
             margin-top: 12px;
             display: flex;
@@ -371,10 +377,12 @@
                     <div class="safe-speed-box">
                         <span>V₂a (mph)</span>
                         <strong id="v2aDisplay">—</strong>
+                        <p class="safe-speed-explainer">Approach speed based on a vehicle arriving from the left.</p>
                     </div>
                     <div class="safe-speed-box">
                         <span>V₂c (mph)</span>
                         <strong id="v2cDisplay">—</strong>
+                        <p class="safe-speed-explainer">Approach speed based on a vehicle arriving from the right.</p>
                     </div>
                 </div>
                 <div class="d2-output">
@@ -458,7 +466,7 @@
                     <div class="recommendation-copy">
                         <span>Recommended traffic control</span>
                         <strong id="summaryControl">—</strong>
-                        <p class="summary-speed-line">V₂a: <span id="summaryV2a">—</span> mph • V₂c: <span id="summaryV2c">—</span> mph</p>
+                        <p class="summary-speed-line">V₂a (vehicle from left): <span id="summaryV2a">—</span> mph • V₂c (vehicle from right): <span id="summaryV2c">—</span> mph</p>
                         <p class="summary-speed-line">Safe approach target: <span id="summarySafeApproachLine">—</span> mph</p>
                     </div>
                 </div>
