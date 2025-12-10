@@ -130,11 +130,6 @@
             margin-top: 4px;
             line-height: 1.25;
         }
-        .calc-actions {
-            margin-top: 12px;
-            display: flex;
-            justify-content: flex-end;
-        }
         .secondary-button {
             border-radius: 999px;
             border: 1px solid #94a3b8;
@@ -189,6 +184,20 @@
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 18px;
         }
+        .summary-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 6px;
+        }
+        .summary-header h3 {
+            margin: 0;
+        }
+        .summary-print-button {
+            margin-left: auto;
+        }
         .summary-table {
             width: 100%;
             border-collapse: collapse;
@@ -225,10 +234,12 @@
             #footer-placeholder,
             .calculator fieldset,
             .calculate-button,
-            .calc-actions,
             .note-grid,
             #previewOutput,
             #calcOutputs {
+                display: none !important;
+            }
+            .summary-print-button {
                 display: none !important;
             }
             .print-summary {
@@ -406,13 +417,13 @@
                     </div>
                 </div>
                 <div id="calcTable"></div>
-                <div class="calc-actions">
-                    <button type="button" class="secondary-button" id="printSummaryBtn" disabled>Print summary</button>
-                </div>
             </div>
 
             <div id="printableSummary" class="diagram-card print-summary hidden">
-                <h3>Stop or Yield field summary</h3>
+                <div class="summary-header">
+                    <h3>Stop or Yield field summary</h3>
+                    <button type="button" class="secondary-button summary-print-button" id="printSummaryBtn" disabled>Print summary</button>
+                </div>
                 <p class="note">Use this section for the PDF/printout. All fields mirror the form inputs plus the calculated safe approach speeds.</p>
                 <div class="summary-grid">
                     <div>
