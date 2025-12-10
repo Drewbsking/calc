@@ -239,8 +239,8 @@
 
     <main class="container">
         <section class="calculator">
-            <h1>Stop or Yield? Safe Approach Speed Helper</h1>
-            <p class="calculator-lede">Log the roadway geometry, sight-triangle measurements, and posted speed to prep the stop-or-yield decision. Calculations/outputs wire in next.</p>
+            <h1>Safe Approach Speed Calculator</h1>
+            <p class="calculator-lede">Estimate the maximum safe speed a vehicle can use to approach a yield-controlled or uncontrolled intersection, based on AASHTO sight distance criteria.</p>
 
             <fieldset>
                 <legend>
@@ -272,6 +272,10 @@
                         <label for="minorRoad">Minor road name</label>
                         <input type="text" id="minorRoad" placeholder="e.g., Walnut Lake Rd">
                     </div>
+                    <div>
+                        <label for="majorSpeed">Posted speed limit of major road (mph)</label>
+                        <input type="number" id="majorSpeed" min="0" step="1" placeholder="e.g., 35">
+                    </div>
                 </div>
             </fieldset>
 
@@ -293,34 +297,23 @@
                 </div>
 
                 <h3>Distance to obstruction (ft) from E/M or E/P</h3>
+                <p class="note">a and d measure from the major road centerline; b and c measure from the minor road.</p>
                 <div class="form-grid">
                     <div>
-                        <label for="obsA">a</label>
+                        <label for="obsA">a (major road)</label>
                         <input type="number" id="obsA" min="0" step="0.1">
                     </div>
                     <div>
-                        <label for="obsB">b</label>
+                        <label for="obsB">b (minor road)</label>
                         <input type="number" id="obsB" min="0" step="0.1">
                     </div>
                     <div>
-                        <label for="obsC">c</label>
+                        <label for="obsC">c (minor road)</label>
                         <input type="number" id="obsC" min="0" step="0.1">
                     </div>
                     <div>
-                        <label for="obsD">d</label>
+                        <label for="obsD">d (major road)</label>
                         <input type="number" id="obsD" min="0" step="0.1">
-                    </div>
-                </div>
-
-                <h3>Available distance along the major road (D₂)</h3>
-                <div class="form-grid">
-                    <div>
-                        <label for="distD2A">Left / near-side available distance, D₂a (ft)</label>
-                        <input type="text" id="distD2A" placeholder="Auto-calculated" readonly>
-                    </div>
-                    <div>
-                        <label for="distD2C">Right / far-side available distance, D₂c (ft)</label>
-                        <input type="text" id="distD2C" placeholder="Auto-calculated" readonly>
                     </div>
                 </div>
 
@@ -329,10 +322,6 @@
                     <div>
                         <label for="deltaAngle">Delta (degrees, counter-clockwise)</label>
                         <input type="number" id="deltaAngle" min="0" max="360" step="0.1" placeholder="e.g., 130">
-                    </div>
-                    <div>
-                        <label for="majorSpeed">Posted speed limit of major road (mph)</label>
-                        <input type="number" id="majorSpeed" min="0" step="1" placeholder="e.g., 35">
                     </div>
                 </div>
             </fieldset>
@@ -388,6 +377,19 @@
                         <strong id="v2cDisplay">—</strong>
                     </div>
                 </div>
+                <div class="d2-output">
+                    <h4>Available distance along the major road (D₂)</h4>
+                    <div class="form-grid">
+                        <div>
+                            <label for="distD2A">Left / near-side available distance, D₂a (ft)</label>
+                            <input type="text" id="distD2A" placeholder="Auto-calculated" readonly>
+                        </div>
+                        <div>
+                            <label for="distD2C">Right / far-side available distance, D₂c (ft)</label>
+                            <input type="text" id="distD2C" placeholder="Auto-calculated" readonly>
+                        </div>
+                    </div>
+                </div>
                 <div id="controlRecommendation" class="recommendation-callout hidden" aria-live="polite">
                     <img src="r1-1.gif" alt="STOP sign" id="controlIcon">
                     <div class="recommendation-copy">
@@ -414,6 +416,7 @@
                             <tr><th>Township</th><td id="summaryTownship">—</td></tr>
                             <tr><th>Major road</th><td id="summaryMajorRoad">—</td></tr>
                             <tr><th>Minor road</th><td id="summaryMinorRoad">—</td></tr>
+                            <tr><th>Posted speed (mph)</th><td id="summaryPostedSpeed">—</td></tr>
                         </table>
                     </div>
                     <div>
@@ -426,7 +429,6 @@
                             <tr><th>c (ft)</th><td id="summaryObsC">—</td></tr>
                             <tr><th>d (ft)</th><td id="summaryObsD">—</td></tr>
                             <tr><th>Delta angle (°)</th><td id="summaryDelta">—</td></tr>
-                            <tr><th>Posted speed (mph)</th><td id="summaryPostedSpeed">—</td></tr>
                         </table>
                     </div>
                 </div>
