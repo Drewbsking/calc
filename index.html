@@ -134,8 +134,10 @@
         }
         .external-links-card .external-links-list a {
             display: inline-flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 4px;
             padding: 10px 12px;
             border-radius: 6px;
             border: 1px solid #d0d8e4;
@@ -143,6 +145,11 @@
             text-decoration: none;
             color: #0b2a4a;
             font-weight: 600;
+        }
+        .external-links-card .external-links-list .login-note {
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
         }
         .external-links-card .external-links-list a:hover {
             background: #e0e9fb;
@@ -385,7 +392,8 @@
                 <div class="external-links-list">
                     <a href="https://www.sddc.army.mil/sites/TEA/Functions/SpecialAssistant/TrafficEngineeringBranch/BMTE/calcIntersections/Pages/calcStorageLength.aspx" target="_blank" rel="noopener">SDDC Army Storage Length</a>
                     <a href="https://ncase.me/trust/" target="_blank" rel="noopener">Nicky Case Trust Spectrum</a>
-                    <a href="https://rcoc.miraheze.org/wiki/Main_Page" target="_blank" rel="noopener">RCOC TS-ENG Wiki</a>
+                    <a href="https://rcoc.miraheze.org/wiki/Main_Page" target="_blank" rel="noopener">RCOC TS-ENG Wiki<span class="login-note">Login required</span></a>
+                    <a href="https://msp.numetric.com/" target="_blank" rel="noopener">MSP Crash Analysis (Numetric)<span class="login-note">Login required</span></a>
                 </div>
             </div>
             
