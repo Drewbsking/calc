@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCOC Certification Map Finder</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        body {
+            background: #f7f9fc;
+        }
+        .cert-map-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 24px 16px 48px;
+            color: #0b2a4a;
+        }
+        .cert-map-header h1 {
+            margin: 0 0 8px;
+            text-align: center;
+            color: #0b2a4a;
+        }
+        .cert-map-header p {
+            margin: 0;
+            text-align: center;
+            color: #475569;
+        }
+        .cert-map-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+            margin: 18px 0 10px;
+        }
+        .cert-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 14px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            color: #fff;
+            background: #0b5ed7;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+        }
+        .cert-link.secondary {
+            background: #e2e8f0;
+            color: #0b2a4a;
+            box-shadow: none;
+            border: 1px solid #cbd5e1;
+        }
+        .map-wrapper {
+            position: relative;
+            margin-top: 14px;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
+            overflow: hidden;
+        }
+        .map-wrapper img {
+            display: block;
+            width: 100%;
+            height: auto;
+            user-select: none;
+        }
+        .map-pin {
+            position: absolute;
+            transform: translate(-50%, -50%);
+            padding: 6px 10px;
+            background: rgba(11, 46, 74, 0.9);
+            color: #fff;
+            font-size: 13px;
+            border-radius: 999px;
+            text-decoration: none;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.16);
+            transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+            white-space: nowrap;
+        }
+        .map-pin:hover, .map-pin:focus-visible {
+            background: #0b5ed7;
+            transform: translate(-50%, -50%) scale(1.04);
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+        }
+        .map-pin:focus-visible {
+            outline: 2px solid #2563eb;
+            outline-offset: 2px;
+        }
+        .link-fallback {
+            margin-top: 18px;
+            padding: 14px 16px;
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+        }
+        .link-fallback h2 {
+            margin: 0 0 10px;
+            font-size: 18px;
+            color: #0b2a4a;
+        }
+        .link-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 10px;
+        }
+        .link-grid a {
+            display: block;
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            text-decoration: none;
+            color: #0b2a4a;
+            font-weight: 600;
+        }
+        .link-grid a:hover, .link-grid a:focus-visible {
+            border-color: #bcd0f7;
+            background: #eef3ff;
+            outline: none;
+        }
+        @media (max-width: 600px) {
+            .map-pin {
+                font-size: 11px;
+                padding: 5px 8px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main class="cert-map-page">
+        <header class="cert-map-header">
+            <h1>RCOC Certification Map Finder</h1>
+            <p>Click a township name on the map to open its certification PDF.</p>
+            <div class="cert-map-actions">
+                <a class="cert-link" href="certMap/2024%20Countywide%20Cert.pdf" target="_blank" rel="noopener">Open Full Book (2024)</a>
+                <a class="cert-link secondary" href="certMap/2024_districtmap.pdf" target="_blank" rel="noopener">View District Map</a>
+            </div>
+        </header>
+
+        <div class="map-wrapper" aria-label="Oakland County map with township links">
+            <img src="certMap/Oakland_County,_Michigan_Political_Boundaries.jpg" alt="Oakland County townships map" loading="lazy">
+        </div>
+
+        <section class="link-fallback" aria-label="Certification links list">
+            <h2>Direct PDF Links</h2>
+            <div class="link-grid" id="cert-links-list"></div>
+        </section>
+    </main>
+    <div id="footer-placeholder"></div>
+
+    <script src="scripts/layoutScript.js"></script>
+    <script>
+        const locations = [
+            { name: 'Addison Township', file: 'Addison-24-CW.pdf', left: 86, top: 14 },
+            { name: 'Oxford Township', file: 'Oxford-24-CW.pdf', left: 68, top: 14 },
+            { name: 'Brandon Township', file: 'Brandon-24-CW.pdf', left: 50, top: 14 },
+            { name: 'Groveland Township', file: 'Groveland-24-CW.pdf', left: 32, top: 14 },
+            { name: 'Holly Township', file: 'Holly-24-CW.pdf', left: 14, top: 14 },
+
+            { name: 'Rose Township', file: 'Rose-24-CW.pdf', left: 14, top: 34 },
+            { name: 'Springfield Township', file: 'Springfield-24-CW.pdf', left: 32, top: 34 },
+            { name: 'Independence Township', file: 'Independence-24-CW.pdf', left: 50, top: 34 },
+            { name: 'Orion Township', file: 'Orion-24-CW.pdf', left: 68, top: 34 },
+            { name: 'Oakland Township', file: 'Oakland-24-CW.pdf', left: 86, top: 34 },
+
+            { name: 'Highland Township', file: 'Highland-24-CW.pdf', left: 18, top: 54 },
+            { name: 'White Lake Township', file: 'Whitelake-24-CW.pdf', left: 36, top: 54 },
+            { name: 'Waterford Township', file: 'Waterford-24-CW.pdf', left: 54, top: 54 },
+            { name: 'Pontiac', file: 'Pontiac-24-CW.pdf', left: 72, top: 56 },
+            { name: 'Rochester Hills', file: 'Rochester-24-CW.pdf', left: 88, top: 54 },
+
+            { name: 'Milford Township', file: 'Milford-24-CW.pdf', left: 18, top: 72 },
+            { name: 'Commerce Township', file: 'Commerce-24-CW.pdf', left: 36, top: 72 },
+            { name: 'West Bloomfield Township', file: 'WBloomfield-24-CW.pdf', left: 54, top: 72 },
+            { name: 'Bloomfield Township', file: 'Bloomfield-24-CW.pdf', left: 72, top: 72 },
+            { name: 'Troy', file: 'Troy-24-CW.pdf', left: 88, top: 72 },
+
+            { name: 'Lyon Township', file: 'Lyon-24-CW.pdf', left: 18, top: 90 },
+            { name: 'Novi', file: 'Novi-24-CW.pdf', left: 36, top: 90 },
+            { name: 'Farmington Hills', file: 'Farmington-24-CW.pdf', left: 54, top: 90 },
+            { name: 'Southfield', file: 'Southfield-24-CW.pdf', left: 72, top: 90 },
+            { name: 'Royal Oak Township', file: 'RoyalOak-24-CW.pdf', left: 88, top: 90 }
+        ];
+
+        const mapWrapper = document.querySelector('.map-wrapper');
+        const linksList = document.getElementById('cert-links-list');
+
+        function buildPins() {
+            locations.forEach((loc) => {
+                const pin = document.createElement('a');
+                pin.className = 'map-pin';
+                pin.href = `certMap/${encodeURIComponent(loc.file)}`;
+                pin.target = '_blank';
+                pin.rel = 'noopener';
+                pin.textContent = loc.name;
+                pin.style.left = `${loc.left}%`;
+                pin.style.top = `${loc.top}%`;
+                pin.setAttribute('aria-label', `${loc.name} certification PDF`);
+                mapWrapper.appendChild(pin);
+            });
+        }
+
+        function buildList() {
+            locations.forEach((loc) => {
+                const link = document.createElement('a');
+                link.href = `certMap/${encodeURIComponent(loc.file)}`;
+                link.target = '_blank';
+                link.rel = 'noopener';
+                link.textContent = loc.name;
+                linksList.appendChild(link);
+            });
+        }
+
+        buildPins();
+        buildList();
+    </script>
+</body>
+</html>
