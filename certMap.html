@@ -58,11 +58,19 @@
             box-shadow: 0 14px 36px rgba(0, 0, 0, 0.12);
             overflow: hidden;
         }
-        .map-wrapper img {
+        .map-surface {
+            position: relative;
+            width: 100%;
+            touch-action: none;
+            transform-origin: center center;
+            will-change: transform;
+        }
+        .map-surface img {
             display: block;
             width: 100%;
             height: auto;
             user-select: none;
+            pointer-events: none;
         }
         .map-pin {
             position: absolute;
@@ -139,7 +147,9 @@
         </header>
 
         <div class="map-wrapper" aria-label="Oakland County map with township links">
-            <img src="certMap/Oakland_County,_Michigan_Political_Boundaries.jpg" alt="Oakland County townships map" loading="lazy">
+            <div class="map-surface">
+                <img src="certMap/Oakland_County,_Michigan_Political_Boundaries.jpg" alt="Oakland County townships map" loading="lazy">
+            </div>
         </div>
 
         <section class="link-fallback" aria-label="Certification links list">
@@ -184,7 +194,17 @@
         ];
 
         const mapWrapper = document.querySelector('.map-wrapper');
+        const mapSurface = document.querySelector('.map-surface');
         const linksList = document.getElementById('cert-links-list');
+        let scale = 1;
+        let translateX = 0;
+        let translateY = 0;
+        let startScale = 1;
+        let startDistance = 0;
+        let startMidpoint = { x: 0, y: 0 };
+        let startTranslate = { x: 0, y: 0 };
+        let activePointers = new Map();
+        let panStart = null;
 
         function buildPins() {
             locations.forEach((loc) => {
@@ -197,12 +217,12 @@
                 pin.style.left = `${loc.left}%`;
                 pin.style.top = `${loc.top}%`;
                 pin.setAttribute('aria-label', `${loc.name} certification PDF`);
-                mapWrapper.appendChild(pin);
+                mapSurface.appendChild(pin);
             });
         }
 
         function buildList() {
-            locations.forEach((loc) => {
+            [...locations].sort((a, b) => a.name.localeCompare(b.name)).forEach((loc) => {
                 const link = document.createElement('a');
                 link.href = `certMap/${encodeURIComponent(loc.file)}`;
                 link.target = '_blank';
@@ -212,8 +232,81 @@
             });
         }
 
+        function clamp(value, min, max) {
+            return Math.min(Math.max(value, min), max);
+        }
+
+        function distance(p1, p2) {
+            const dx = p1.x - p2.x;
+            const dy = p1.y - p2.y;
+            return Math.hypot(dx, dy);
+        }
+
+        function midpoint(p1, p2) {
+            return { x: (p1.x + p2.x) / 2, y: (p1.y + p2.y) / 2 };
+        }
+
+        function updateTransform() {
+            mapSurface.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
+        }
+
+        function onPointerDown(e) {
+            activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+            if (activePointers.size === 1) {
+                panStart = { x: e.clientX, y: e.clientY, tx: translateX, ty: translateY };
+            } else if (activePointers.size === 2) {
+                const pts = Array.from(activePointers.values());
+                startDistance = distance(pts[0], pts[1]);
+                startMidpoint = midpoint(pts[0], pts[1]);
+                startScale = scale;
+                startTranslate = { x: translateX, y: translateY };
+                panStart = null;
+            }
+        }
+
+        function onPointerMove(e) {
+            if (!activePointers.has(e.pointerId)) return;
+            activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+
+            if (activePointers.size === 2) {
+                const pts = Array.from(activePointers.values());
+                const currentDistance = distance(pts[0], pts[1]);
+                const mid = midpoint(pts[0], pts[1]);
+                const scaleFactor = clamp((currentDistance / startDistance) * startScale, 1, 3);
+                const dx = mid.x - startMidpoint.x;
+                const dy = mid.y - startMidpoint.y;
+                scale = scaleFactor;
+                translateX = startTranslate.x + dx;
+                translateY = startTranslate.y + dy;
+                updateTransform();
+            } else if (activePointers.size === 1 && panStart) {
+                const current = activePointers.get(e.pointerId);
+                translateX = panStart.tx + (current.x - panStart.x);
+                translateY = panStart.ty + (current.y - panStart.y);
+                updateTransform();
+            }
+        }
+
+        function onPointerUp(e) {
+            if (activePointers.has(e.pointerId)) {
+                activePointers.delete(e.pointerId);
+            }
+            panStart = null;
+            if (activePointers.size < 2) {
+                startDistance = 0;
+            }
+        }
+
         buildPins();
         buildList();
+        updateTransform();
+
+        mapSurface.addEventListener('pointerdown', onPointerDown);
+        mapSurface.addEventListener('pointermove', onPointerMove);
+        mapSurface.addEventListener('pointerup', onPointerUp);
+        mapSurface.addEventListener('pointercancel', onPointerUp);
+        mapSurface.addEventListener('pointerleave', onPointerUp);
     </script>
 </body>
 </html>
