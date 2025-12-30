@@ -65,12 +65,36 @@
             transform-origin: center center;
             will-change: transform;
         }
-        .map-surface img {
+        .map-surface svg {
             display: block;
             width: 100%;
             height: auto;
             user-select: none;
+        }
+        .map-surface image {
             pointer-events: none;
+        }
+        .map-loading {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #475569;
+            font-weight: 600;
+            background: linear-gradient(135deg, #f8fafc, #eef2ff);
+        }
+        .map-surface [data-file], .map-surface [id*=".pdf"] {
+            cursor: pointer;
+            fill: rgba(0, 94, 215, 0.12) !important;
+            stroke: rgba(0, 94, 215, 0.24) !important;
+            stroke-width: 0.75 !important;
+            pointer-events: auto;
+        }
+        .map-surface [data-file]:hover,
+        .map-surface [id*=".pdf"]:hover {
+            fill: rgba(0, 94, 215, 0.18) !important;
+            stroke: rgba(0, 94, 215, 0.36) !important;
         }
         .map-pin {
             position: absolute;
@@ -148,7 +172,7 @@
 
         <div class="map-wrapper" aria-label="Oakland County map with township links">
             <div class="map-surface">
-                <img src="certMap/Oakland_County,_Michigan_Political_Boundaries.jpg" alt="Oakland County townships map" loading="lazy">
+                <div class="map-loading" aria-hidden="true">Loading map…</div>
             </div>
         </div>
 
@@ -193,9 +217,11 @@
             { name: 'Royal Oak Township', file: 'RoyalOak-24-CW.pdf', left: 88, top: 90 }
         ];
 
+        const MAP_SVG_URL = 'certMap/Oakland_County,_Michigan_Political_Boundaries_PLAIN.svg';
         const mapWrapper = document.querySelector('.map-wrapper');
         const mapSurface = document.querySelector('.map-surface');
         const linksList = document.getElementById('cert-links-list');
+        const mapLoading = mapSurface.querySelector('.map-loading');
         let scale = 1;
         let translateX = 0;
         let translateY = 0;
@@ -206,21 +232,6 @@
         let activePointers = new Map();
         let panStart = null;
 
-        function buildPins() {
-            locations.forEach((loc) => {
-                const pin = document.createElement('a');
-                pin.className = 'map-pin';
-                pin.href = `certMap/${encodeURIComponent(loc.file)}`;
-                pin.target = '_blank';
-                pin.rel = 'noopener';
-                pin.textContent = loc.name;
-                pin.style.left = `${loc.left}%`;
-                pin.style.top = `${loc.top}%`;
-                pin.setAttribute('aria-label', `${loc.name} certification PDF`);
-                mapSurface.appendChild(pin);
-            });
-        }
-
         function buildList() {
             [...locations].sort((a, b) => a.name.localeCompare(b.name)).forEach((loc) => {
                 const link = document.createElement('a');
@@ -229,6 +240,72 @@
                 link.rel = 'noopener';
                 link.textContent = loc.name;
                 linksList.appendChild(link);
+            });
+        }
+
+        function openPdf(file) {
+            const cleanFile = file.trim();
+            if (!cleanFile) return;
+            window.open(`certMap/${encodeURIComponent(cleanFile)}`, '_blank', 'noopener');
+        }
+
+        function normalizeFileValue(raw) {
+            if (!raw) return '';
+            let val = raw.trim();
+            val = val.replace(/^data-file[_-]*/i, '');
+            val = val.replace(/^id[_-]*/i, '');
+            val = val.replace(/^_+|_+$/g, '');
+            if (!val.toLowerCase().endsWith('.pdf')) return '';
+            return val;
+        }
+
+        async function loadSvg() {
+            try {
+                const res = await fetch(MAP_SVG_URL);
+                if (!res.ok) throw new Error('Failed to load map');
+                const svgText = await res.text();
+                mapSurface.innerHTML = svgText;
+                const svgEl = mapSurface.querySelector('svg');
+                if (svgEl) {
+                    svgEl.setAttribute('width', '100%');
+                    svgEl.removeAttribute('height');
+                    svgEl.style.width = '100%';
+                    svgEl.style.height = 'auto';
+                    svgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+                    try {
+                        const bbox = svgEl.getBBox();
+                        if (bbox && isFinite(bbox.width) && isFinite(bbox.height) && bbox.width > 0 && bbox.height > 0) {
+                            svgEl.setAttribute('viewBox', `${bbox.x} ${bbox.y} ${bbox.width} ${bbox.height}`);
+                        }
+                    } catch (e) {
+                        console.warn('Could not compute SVG bounds', e);
+                    }
+                    wireSvgLinks(svgEl);
+                }
+                if (mapLoading) mapLoading.remove();
+            } catch (err) {
+                if (mapLoading) mapLoading.textContent = 'Map failed to load';
+                console.error(err);
+            }
+        }
+
+        function wireSvgLinks(root) {
+            if (!root) return;
+            const targets = root.querySelectorAll('[data-file], [id*=".pdf"]');
+            targets.forEach((el) => {
+                const file = normalizeFileValue(el.getAttribute('data-file')) || normalizeFileValue(el.id);
+                if (!file) return;
+                el.style.pointerEvents = 'auto';
+                el.style.cursor = 'pointer';
+                el.setAttribute('tabindex', '0');
+                const handler = () => openPdf(file);
+                el.addEventListener('click', handler);
+                el.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        handler();
+                    }
+                });
             });
         }
 
@@ -300,7 +377,7 @@
             }
         }
 
-        buildPins();
+        loadSvg();
         buildList();
         updateTransform();
 
