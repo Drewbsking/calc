@@ -248,7 +248,7 @@
 
         function updateTransform() {
             mapSurface.style.transform = `translate(${translateX}px, ${translateY}px) scale(${scale})`;
-            const pinScale = Math.min(1.3, 1 + (scale - 1) * 0.2);
+            const pinScale = Math.max(0.4, 1 / scale);
             mapSurface.style.setProperty('--pin-scale', pinScale);
         }
 
