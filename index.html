@@ -162,6 +162,18 @@
             font-size: 16px;
             color: #0b2a4a;
         }
+        .calendar-card .calendar-groups {
+            display: grid;
+            gap: 12px;
+        }
+        .calendar-card .calendar-group h3 {
+            margin: 0 0 6px;
+            font-size: 16px;
+            color: #0b2a4a;
+        }
+        .calendar-card .link-buttons a {
+            flex: 1 1 160px;
+        }
     </style>
 </head>
 <body>
@@ -174,13 +186,25 @@
         </section>
 
         <section class="calculator-grid">
-            <div class="calculator-card">
-                <span class="badge">🗓️ Board</span>
-                <h2>Board Meeting Calendars</h2>
-                <p>Annual board meeting dates with agenda deadlines for easy reference.</p>
-                <div class="link-buttons">
-                    <a href="img/Annual%20Board%20Calendar_2025.pdf" target="_blank" rel="noopener">2025 Calendar</a>
-                    <a href="img/Annual%20Board%20Calendar_2026.pdf" target="_blank" rel="noopener">2026 Calendar</a>
+            <div class="calculator-card calendar-card">
+                <span class="badge">🗓️ Calendars</span>
+                <h2>Board & Bid Letting Dates</h2>
+                <p>Quick PDFs for board meetings and construction bid lettings.</p>
+                <div class="calendar-groups">
+                    <div class="calendar-group">
+                        <h3>Board Meetings</h3>
+                        <div class="link-buttons">
+                            <a href="img/Annual%20Board%20Calendar_2025.pdf" target="_blank" rel="noopener">2025 Board Calendar</a>
+                            <a href="img/Annual%20Board%20Calendar_2026.pdf" target="_blank" rel="noopener">2026 Board Calendar</a>
+                        </div>
+                    </div>
+                    <div class="calendar-group">
+                        <h3>Bid Lettings</h3>
+                        <div class="link-buttons">
+                            <a href="img/2026%20Bid%20Letting%20Dates%20ALL%20Except%20SID_.pdf" target="_blank" rel="noopener">2026 Lettings (All Except SID)</a>
+                            <a href="img/2026%20Bid%20Letting%20Dates_SID.pdf" target="_blank" rel="noopener">2026 Lettings (SID)</a>
+                        </div>
+                    </div>
                 </div>
             </div>
 
