@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Off Decision Helper</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        body.timeoff-body {
+            background: #f7f9fc;
+            color: #0f172a;
+        }
+        .timeoff-container h1 {
+            margin-bottom: 4px;
+        }
+        .timeoff-container .calculator-lede {
+            margin-top: 0;
+            margin-bottom: 18px;
+        }
+        .timeoff-form {
+            display: grid;
+            gap: 14px;
+        }
+        .field-label {
+            font-weight: 700;
+            color: #0b2a4a;
+            margin-bottom: 6px;
+        }
+        .helper-text {
+            margin: 4px 0 0;
+            color: #475569;
+            font-size: 14px;
+        }
+        .choice-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 12px;
+            border-radius: 10px;
+            border: 1px solid #d0d8e4;
+            background: #f8fafc;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            flex: 1 1 180px;
+        }
+        .chip input {
+            accent-color: #0b2a4a;
+        }
+        .chip:hover {
+            border-color: #94a3b8;
+            background: #eef2f7;
+        }
+        .conditional {
+            display: none;
+        }
+        .number-field {
+            display: grid;
+            gap: 6px;
+        }
+        .number-field input {
+            max-width: 240px;
+        }
+        .decision-card {
+            margin-top: 10px;
+            background: linear-gradient(120deg, #0b2a4a, #0f4c81);
+            color: #fff;
+            border-radius: 10px;
+            padding: 16px 18px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.12);
+        }
+        .decision-headline {
+            margin: 0 0 6px;
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+        }
+        .decision-meta {
+            margin: 0 0 10px;
+            color: #e2e8f0;
+            font-size: 14px;
+        }
+        .decision-steps {
+            margin: 0;
+            padding-left: 18px;
+            color: #e2e8f0;
+            display: grid;
+            gap: 4px;
+        }
+        .validation {
+            margin-top: 10px;
+            padding: 10px 12px;
+            background: #fff6e6;
+            border: 1px solid #f59e0b;
+            color: #92400e;
+            border-radius: 8px;
+        }
+        @media (max-width: 600px) {
+            .chip {
+                flex: 1 1 100%;
+            }
+            .number-field input {
+                max-width: 100%;
+            }
+        }
+    </style>
+</head>
+<body class="timeoff-body">
+    <div id="header-placeholder"></div>
+    <main class="container timeoff-container">
+        <section class="calculator">
+            <h1>Time Off Decision Helper</h1>
+            <p class="calculator-lede">Walk a time-off request through the EST/A leave tree to see the correct category and requirements.</p>
+            <form id="timeOffForm" class="timeoff-form" novalidate>
+                <div>
+                    <div class="field-label">Is the absence related to illness, medical care, family care, mental health, or public health?</div>
+                    <div class="choice-row" role="group" aria-label="Health-related absence">
+                        <label class="chip">
+                            <input type="radio" name="healthRelated" value="yes">
+                            <span>Yes</span>
+                        </label>
+                        <label class="chip">
+                            <input type="radio" name="healthRelated" value="no">
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="hoursGroup" class="conditional number-field">
+                    <div class="field-label">Personal leave hours already used this benefit year</div>
+                    <input type="number" id="hoursUsed" min="0" step="0.5" placeholder="e.g., 24">
+                    <p class="helper-text">Under 72 hours = automatically ESTA-covered if hours remain.</p>
+                </div>
+
+                <div id="daysGroup" class="conditional number-field">
+                    <div class="field-label">Expected consecutive days absent</div>
+                    <input type="number" id="consecutiveDays" min="0" step="1" placeholder="e.g., 1">
+                    <p class="helper-text">3+ days requires a medical note and fit-for-duty clearance.</p>
+                </div>
+
+                <div id="plannedGroup" class="conditional">
+                    <div class="field-label">Is this planned time off (travel, personal, etc.)?</div>
+                    <div class="choice-row" role="group" aria-label="Planned time off">
+                        <label class="chip">
+                            <input type="radio" name="plannedTime" value="yes">
+                            <span>Yes</span>
+                        </label>
+                        <label class="chip">
+                            <input type="radio" name="plannedTime" value="no">
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="longTermGroup" class="conditional">
+                    <div class="field-label">Is this long-term medical leave?</div>
+                    <div class="choice-row" role="group" aria-label="Long-term medical leave">
+                        <label class="chip">
+                            <input type="radio" name="longTermMedical" value="yes">
+                            <span>Yes</span>
+                        </label>
+                        <label class="chip">
+                            <input type="radio" name="longTermMedical" value="no">
+                            <span>No</span>
+                        </label>
+                    </div>
+                </div>
+
+                <div id="personalExhaustedGroup" class="conditional">
+                    <div class="field-label">Has personal leave been exhausted?</div>
+                    <div class="choice-row" role="group" aria-label="Personal leave exhausted">
+                        <label class="chip">
+                            <input type="radio" name="personalLeaveExhausted" value="no">
+                            <span>No, balance remains</span>
+                        </label>
+                        <label class="chip">
+                            <input type="radio" name="personalLeaveExhausted" value="yes">
+                            <span>Yes, nothing left</span>
+                        </label>
+                    </div>
+                </div>
+
+                <button type="button" id="evaluateButton" class="calculate-button">Evaluate leave</button>
+            </form>
+
+            <div id="validationMessage" class="validation" style="display: none;"></div>
+            <div id="decisionCard" class="decision-card" aria-live="polite" style="display: none;">
+                <p class="decision-headline" id="decisionHeadline"></p>
+                <p class="decision-meta" id="decisionMeta"></p>
+                <ul class="decision-steps" id="decisionSteps"></ul>
+            </div>
+        </section>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/timeOff.js"></script>
+</body>
+</html>
