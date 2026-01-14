@@ -121,6 +121,32 @@
             border: 1px solid #c7ddf7;
             width: fit-content;
         }
+        .section-divider {
+            margin: 34px 0 20px;
+            border: 0;
+            border-top: 1px solid #d0d8e4;
+            position: relative;
+        }
+        .section-divider::after {
+            content: "Reference & External Links";
+            position: absolute;
+            left: 50%;
+            top: -11px;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.92);
+            padding: 4px 10px;
+            color: #0b2a4a;
+            font-weight: 700;
+            font-size: 13px;
+            border-radius: 999px;
+            border: 1px solid #d0d8e4;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        }
+        .static-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 18px;
+        }
         .filter-card {
             padding: 18px 18px 14px;
             margin-bottom: 22px;
@@ -481,7 +507,11 @@
                 <p>Estimate max density/optimum moisture for cohesive soils (AASHTO T-99).</p>
                 <a href="densityCohesive.html">Open Density Tool</a>
             </div>
+        </section>
 
+        <div class="section-divider" role="separator" aria-label="Reference and external links"></div>
+
+        <section class="static-grid" aria-label="Reference and external links">
             <div class="home-card external-links-card">
                 <h2>SEMCOG Maps</h2>
                 <p>Transportation map apps from SEMCOG plus a quick link to Road Jurisdiction.</p>
@@ -528,7 +558,7 @@
                     <a href="https://payments.clemis.org/extservices/Crash/CrashLogin.aspx" target="_blank" rel="noopener">CLEMIS Crash Reports<span class="login-note">Login required</span></a>
                 </div>
             </div>
-            
+
             <div class="home-card external-links-card">
                 <h2>Other Sites by Andrew Bates</h2>
                 <p>Fun experiments and data dashboards hosted elsewhere.</p>
@@ -546,13 +576,6 @@
                         <a href="https://rsam-dashboard.streamlit.app/" target="_blank" rel="noopener">RSAM Dashboard</a>
                     </div>
                 </div>
-            </div>
-
-            <div class="calculator-card">
-                <span class="badge">Coming soon</span>
-                <h2>More calculators</h2>
-                <p>Add your next HTML + JS tool and link it here to keep everything in one place.</p>
-                <a href="#!" aria-disabled="true">Stay tuned</a>
             </div>
         </section>
     </main>
