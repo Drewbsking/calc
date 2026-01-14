@@ -121,6 +121,53 @@
             border: 1px solid #c7ddf7;
             width: fit-content;
         }
+        .filter-card {
+            padding: 18px 18px 14px;
+            margin-bottom: 22px;
+        }
+        .filter-bar {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 12px;
+        }
+        .filter-bar h2 {
+            margin: 0;
+            color: #0b2a4a;
+            font-size: 18px;
+        }
+        .filter-bar p {
+            margin: 2px 0 0;
+            color: #4b5563;
+            font-size: 14px;
+        }
+        .filter-text {
+            flex: 1 1 220px;
+        }
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        .filter-chip {
+            border: 1px solid #c7ddf7;
+            background: #f6f7fb;
+            color: #0b2a4a;
+            border-radius: 999px;
+            padding: 8px 12px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+        }
+        .filter-chip:hover {
+            background: #e0e9fb;
+        }
+        .filter-chip.active {
+            background: #005dc1;
+            color: #ffffff;
+            border-color: #005dc1;
+            box-shadow: 0 6px 16px rgba(0, 93, 193, 0.25);
+        }
         @media (max-width: 600px) {
             .home-wrapper {
                 padding: 28px 16px 40px;
@@ -183,6 +230,18 @@
             <h2 id="fatality-counter-heading">Michigan Weekly Fatal Crashes</h2>
             <img src="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/General-Images/TZD-banner.png?rev=f0c347f439e3420ea8cff6161420798a&amp;hash=42AA1B7AB34C55C39FB33CD3A458471A" alt="MDOT Toward Zero Deaths graphic with Michigan weekly road fatality numbers" loading="lazy">
             <p class="fatal-source">Live counter provided by <a href="https://www.michigan.gov/mdot/travel/safety/efforts/tzd" target="_blank" rel="noopener">MDOT Toward Zero Deaths</a>. Refresh to see the latest totals.</p>
+        </section>
+
+        <section class="home-card filter-card" aria-label="Filter calculators by category">
+            <div class="filter-bar" id="category-filter-bar">
+                <div class="filter-text">
+                    <h2>Filter by Category</h2>
+                    <p>Show just the tools you need: HR, Work Zones, Drainage, etc.</p>
+                </div>
+                <div class="filter-buttons" id="category-filter-buttons" role="group" aria-label="Calculator categories">
+                    <button class="filter-chip active" type="button" data-filter="all" aria-pressed="true">All</button>
+                </div>
+            </div>
         </section>
 
         <section class="calculator-grid">
@@ -463,6 +522,7 @@
                 <div class="external-links-list">
                     <a href="https://www.sddc.army.mil/sites/TEA/Functions/SpecialAssistant/TrafficEngineeringBranch/BMTE/calcIntersections/Pages/calcStorageLength.aspx" target="_blank" rel="noopener">SDDC Army Storage Length</a>
                     <a href="https://ballbank.rcocwiki.org/" target="_blank" rel="noopener">Ball Bank Calculator</a>
+                    <a href="https://www.trafficsign.us/" target="_blank" rel="noopener">TrafficSign.us MUTCD Reference</a>
                     <a href="https://ncase.me/trust/" target="_blank" rel="noopener">Nicky Case Trust Spectrum</a>
                     <a href="https://msp.numetric.com/" target="_blank" rel="noopener">MSP Crash Analysis (Numetric)<span class="login-note">Login required</span></a>
                     <a href="https://payments.clemis.org/extservices/Crash/CrashLogin.aspx" target="_blank" rel="noopener">CLEMIS Crash Reports<span class="login-note">Login required</span></a>
@@ -498,5 +558,67 @@
     </main>
     <div id="footer-placeholder"></div>
     <script src="scripts/layoutScript.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const cards = Array.from(document.querySelectorAll('.calculator-card'));
+            const filterButtonsContainer = document.getElementById('category-filter-buttons');
+            if (!filterButtonsContainer || cards.length === 0) return;
+
+            const categories = new Map();
+            cards.forEach((card) => {
+                const badge = card.querySelector('.badge');
+                if (!badge) return;
+                const rawLabel = badge.textContent.trim();
+                const key = rawLabel.toLowerCase();
+                card.dataset.categoryKey = key;
+                if (!categories.has(key)) {
+                    categories.set(key, rawLabel);
+                }
+            });
+
+            const createButton = (key, label) => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'filter-chip';
+                btn.dataset.filter = key;
+                btn.textContent = label;
+                btn.setAttribute('aria-pressed', 'false');
+                filterButtonsContainer.appendChild(btn);
+                return btn;
+            };
+
+            const buttons = new Map();
+            buttons.set('all', filterButtonsContainer.querySelector('[data-filter="all"]'));
+
+            Array.from(categories.entries())
+                .sort((a, b) => a[1].localeCompare(b[1]))
+                .forEach(([key, label]) => {
+                    const btn = createButton(key, label);
+                    buttons.set(key, btn);
+                });
+
+            const applyFilter = (targetKey) => {
+                buttons.forEach((btn, key) => {
+                    const isActive = key === targetKey;
+                    btn.classList.toggle('active', isActive);
+                    btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+                });
+
+                cards.forEach((card) => {
+                    const cardKey = card.dataset.categoryKey;
+                    const matches = targetKey === 'all' || (cardKey && cardKey === targetKey);
+                    card.style.display = matches ? '' : 'none';
+                });
+            };
+
+            filterButtonsContainer.addEventListener('click', (event) => {
+                const target = event.target;
+                if (!(target instanceof HTMLElement)) return;
+                const key = target.dataset.filter;
+                if (!key) return;
+                applyFilter(key);
+            });
+        });
+    </script>
 </body>
 </html>
