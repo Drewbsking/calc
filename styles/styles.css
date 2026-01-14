@@ -410,3 +410,123 @@ footer {
     background: #28a745;
     color: #fff;
 }
+
+.mode-switch {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 10px 0 6px;
+}
+
+.mode-label {
+    font-weight: 600;
+    color: #0b2a4a;
+}
+
+.switch-toggle {
+    position: relative;
+    display: inline-block;
+    width: 56px;
+    height: 28px;
+}
+
+.switch-toggle input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.toggle-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #dbeafe;
+    transition: 0.3s;
+    border-radius: 34px;
+    box-shadow: inset 0 0 0 1px #cbd5e1;
+}
+
+.toggle-slider:before {
+    position: absolute;
+    content: "";
+    height: 22px;
+    width: 22px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+    box-shadow: 0 2px 4px rgba(15, 23, 42, 0.25);
+}
+
+.switch-toggle input:checked + .toggle-slider {
+    background-color: #0b2a4a;
+    box-shadow: inset 0 0 0 1px #0b2a4a;
+}
+
+.switch-toggle input:checked + .toggle-slider:before {
+    transform: translateX(28px);
+}
+
+.mode-panel {
+    margin-top: 14px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 12px;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    background: #fff;
+}
+
+#sign-placement-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+#sign-placement-table th,
+#sign-placement-table td {
+    text-align: center;
+    padding: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+#sign-placement-table thead th {
+    background: #f1f5f9;
+    font-weight: 700;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+.condition-a-cell {
+    background: #fffbea;
+    font-weight: 700;
+}
+
+.table-highlight-row {
+    background: #f8fafc;
+}
+
+.table-highlight-col {
+    background: #eef2ff;
+}
+
+.table-highlight-cell {
+    background: #fffd8a;
+    font-weight: 800;
+}
+
+.table-highlight-row .condition-a-cell {
+    background: #fffbea;
+}
+
+#table-context {
+    text-align: left;
+    font-weight: 400;
+}

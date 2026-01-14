@@ -12,7 +12,16 @@
     <div class="container">
         <div class="calculator content">
             <h1>Sign Placement</h1>
-            <form oninput="calculateDistance()">
+            <div class="mode-switch" aria-label="Select sign placement method">
+                <span class="mode-label">Formula</span>
+                <label class="switch-toggle">
+                    <input type="checkbox" id="modeToggle" aria-label="Toggle table lookup">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span class="mode-label">Table lookup</span>
+            </div>
+            <p class="note">Switch between physics-based calculation and MUTCD Table 2-1 lookup (advisory speed table shown below).</p>
+            <form oninput="runCalculation()">
                 <div class="form-group">
                     <label for="initial-velocity">Initial Velocity (MPH):</label>
                     <input type="number" id="initial-velocity" name="initial-velocity" step="0.1" value="50">
@@ -21,27 +30,40 @@
                     <label for="final-velocity">Final Velocity (MPH):</label>
                     <input type="number" id="final-velocity" name="final-velocity" step="0.1" value="25">
                 </div>
-                <div class="form-group">
+                <div class="form-group formula-only">
                     <label for="g-force">G-Force:</label>
                     <input type="number" id="g-force" name="g-force" step="0.01" value="0.3">
                     <p class="note">Default 0.3 g (≈9.65 ft/s²). Change only if directed by the engineer.</p>
                 </div>
-                <div class="form-group">
+                <div class="form-group formula-only">
                     <label for="pr-time">Perception-Reaction Time (s):</label>
                     <input type="number" id="pr-time" name="pr-time" step="0.1" value="1.5">
                     <p class="note">Default is 1.5 seconds.</p>
                 </div>
-                <button type="button" class="calculate-button" onclick="calculateDistance()">Refresh</button>
+                <button type="button" class="calculate-button" onclick="runCalculation()">Refresh</button>
             </form>
-            <div id="output" class="result">
-                <h3>Perception-Reaction Distance:</h3>
-                <p id="pr-distance" class="highlight">0.00 ft</p>
+            <div id="formula-panel" class="mode-panel">
+                <div id="output" class="result">
+                    <h3>Perception-Reaction Distance:</h3>
+                    <p id="pr-distance" class="highlight">0.00 ft</p>
 
-                <h3>Required Text Height for the Sign:</h3>
-                <p id="text-height" class="highlight">0.00 ft</p>
+                    <h3>Required Text Height for the Sign:</h3>
+                    <p id="text-height" class="highlight">0.00 ft</p>
 
-                <h3>Total Distance Traveled:</h3>
-                <p id="distance-traveled" class="highlight">0.00 ft</p>
+                    <h3>Total Distance Traveled:</h3>
+                    <p id="distance-traveled" class="highlight">0.00 ft</p>
+                </div>
+            </div>
+            <div id="table-panel" class="mode-panel hidden">
+                <div id="table-result" class="result">
+                    <h3>Table Distance (Condition B):</h3>
+                    <p id="table-distance" class="highlight">—</p>
+                    <p id="table-context" class="note"></p>
+                </div>
+                <p class="note">Values come from the MUTCD advance-placement table (5 mph increments). If a cell is blank in the published table, the tool interpolates the nearest values. Example: 45 mph posted / 35 mph advisory highlights to 125 ft like the shared graphic.</p>
+                <div class="table-wrapper">
+                    <table id="sign-placement-table" aria-label="Minimum advance placement distance table"></table>
+                </div>
             </div>
         </div>
     </div>
