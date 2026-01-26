@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Letter Height Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Letter Height Calculator</h1>
+            <p class="calculator-lede">Size sign legend using the 1 in / 30 ft guidance from Section 2A.08 or the street-name values in MUTCD Table 2D-2.</p>
+
+            <div class="calculator-panel">
+                <h2>Legibility Distance (Section 2A.08)</h2>
+                <label for="legibility-distance">Target legibility distance (ft)</label>
+                <input type="number" id="legibility-distance" min="0" step="1" placeholder="e.g., 300" oninput="calculateLegibility()">
+                <button type="button" class="calculate-button" onclick="calculateLegibility()">Calculate</button>
+                <div class="result" id="legibility-result">Enter a distance to see the letter height.</div>
+                <p class="note">Guidance: plan for 1 inch of letter height for every 30 feet of legibility distance (MUTCD Section 2A.08).</p>
+            </div>
+
+            <div class="calculator-panel">
+                <h2>Street Name Signs (Table 2D-2)</h2>
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label for="mounting-select">Mounting</label>
+                        <select id="mounting-select" onchange="handleTableChange()">
+                            <option value="overhead">Overhead</option>
+                            <option value="post">Post-mounted</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="roadway-select">Roadway type</label>
+                        <select id="roadway-select" onchange="handleTableChange()">
+                            <option value="all">All types (overhead)</option>
+                            <option value="multi">Multi-lane</option>
+                            <option value="two">Two-lane</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="speed-select">Speed context</label>
+                        <select id="speed-select" onchange="handleTableChange()"></select>
+                    </div>
+                </div>
+                <div class="result" id="table-result">
+                    <p>Select a mounting and roadway context to see the recommended letter heights.</p>
+                </div>
+                <p class="note" id="table-footnote">Table 2D-2 values are recommended minimum letter heights for street name signs.</p>
+
+                <div class="table-wrapper">
+                    <table aria-label="MUTCD Table 2D-2 recommended minimum letter heights">
+                        <thead>
+                            <tr>
+                                <th scope="col">Type of Mounting</th>
+                                <th scope="col">Type of Street or Highway</th>
+                                <th scope="col">Speed Limit</th>
+                                <th scope="col">Initial Upper-Case</th>
+                                <th scope="col">Lower-Case</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Overhead</td>
+                                <td>All types</td>
+                                <td>All speed limits</td>
+                                <td>12 in</td>
+                                <td>9 in</td>
+                            </tr>
+                            <tr>
+                                <td>Post-mounted</td>
+                                <td>Multi-lane</td>
+                                <td>More than 40 mph</td>
+                                <td>8 in</td>
+                                <td>6 in</td>
+                            </tr>
+                            <tr>
+                                <td>Post-mounted</td>
+                                <td>Multi-lane</td>
+                                <td>40 mph or less</td>
+                                <td>6 in</td>
+                                <td>4.5 in</td>
+                            </tr>
+                            <tr>
+                                <td>Post-mounted</td>
+                                <td>Two-lane</td>
+                                <td>All speed limits</td>
+                                <td>6 in*</td>
+                                <td>4.5 in*</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p class="note">* On local two-lane streets with speed limits of 25 mph or less, 4-inch initial upper-case letters with 3-inch lower-case letters may be used.</p>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>References</h2>
+            <ul>
+                <li><a href="https://mutcd.fhwa.dot.gov/htm/2009r1r2/part2/part2a.htm#section2A08" target="_blank" rel="noopener">MUTCD Section 2A.08 (2009 R1/R2)</a> — 1 inch of letter height per 30 ft of legibility distance.</li>
+                <li><a href="https://mutcd.fhwa.dot.gov/htm/2009r1r2/part2/part2d.htm#table2D02" target="_blank" rel="noopener">MUTCD Table 2D-2 (2009 R1/R2)</a> — recommended minimum letter heights for street name signs.</li>
+            </ul>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/letterSize.js"></script>
+</body>
+</html>
