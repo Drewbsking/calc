@@ -295,7 +295,15 @@
           </thead>
           <tbody>${capRows}</tbody>
         </table>
-        <p>p0,4 (queue-free probability for major LT) = ${fmt2(calc.capacities.p0_4)}, f7 (adjustment on minor LT) = ${fmt2(calc.capacities.f7)}.</p>
+        <p>p0,4 (probability the major-street LT is queue-free) from Eq. 20-28 = ${fmt2(calc.capacities.p0_4)}, f7 (minor LT adjustment) = ${fmt2(calc.capacities.f7)}.</p>
+      </div>
+      <div class="result-block">
+        <h3>Steps noted as not applicable</h3>
+        <ul>
+          <li>Step 6 (pedestrian impedance): skipped because no pedestrians are present in this example.</li>
+          <li>Step 9 (Rank 4 movements): skipped because there are no Rank 4 movements in this geometry.</li>
+          <li>Step 11b (delay to Rank 1 movements): skipped because major-street through/right are assumed unimpeded here.</li>
+        </ul>
       </div>
       <div class="result-block">
         <h3>Steps 10-12: Shared lane and control delay</h3>

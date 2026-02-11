@@ -1,0 +1,1252 @@
+== Plan Sheet ==
+When PCMS board are used we wil ahve our own sheets,
+
+== Notes ==
+*'''should''' not use humor!
+*Must be less than eight characters long and three lines.
+
+[[Changeable Message Signs]] to be included in ALL projects, unless Engineer says not to.  Messages must be in the plans.  Remember messages can only be eight (8) charters per line and three (3) lines per screen, and readable with either screen read first.
+
+*RCOC DOES NOT USE
+**'''SEEK ALTERNATE ROUTE in any signing or press releases.'''
+
+== Location ==
+
+== Messages ==
+The '''pre-approved message''' are to be shown in the plans.  
+
+The spec book may say:<blockquote>If message changes are necessary from those as included in the plans, the message changes shall be submitted to the Engineer for approval a minimum of 5 business days prior to displaying the message.</blockquote>If more messages are planned, please expand this section to include planned messages for the project.  A message plan for canceled work due to weather or last-minute change on the project should also be discussed with construction. All of the planned messages don’t need to be included but you should verify that you have a message plan for the number of boards that you have.
+
+Use PCMS’s to warn traffic of upcoming and changing traffic control during the life of the project.  Obtain approval from the Engineer for all sign locations.  Where feasible, utilize existing permanent changeable message signs (DMS) to display project information in lieu of a PCMS.  PCMS should not be placed within a 0.5 mile of a DMS.  Verify with construction the number of PCMS included in the project, there should be anticipated messages for the PCMS boards included. 
+
+Install PCMS’s and make them operational a minimum of 7 calendar days prior to the start of work, unless otherwise directed by the Engineer.  Messages displayed on the PCMS’s must conform to MDOT’s policy on PCMS’s.  Notify the Engineer if displaying a different message then those listed below for the project.
+
+'''<u>Do not leave PCMS’s with a blank screen within the clear zone of any roadway at any time.  Remove the PCMS or display flashing dots in each corner of the screen when there is no message to display.  Update the PCMS messages at the end of each work period to reflect current traffic lane restrictions.</u>'''
+
+
+For PCMS boards, it is recommended to indicate the date and time for projects beginning in more than six days. For when the project is beginning within six days, use the day of the week and time to indicate the start time (and end time, if known).
+{| class="wikitable" 
+! rowspan="2" |Location
+! colspan="22" |Sequences - BEFORE Start
+|-
+! colspan="9" | 1 -  (FOR AT LEAST 2 SECONDS)
+!
+!
+!
+!
+!
+! colspan="8" | 2 - (FOR AT LEAST 2 SECONDS)
+|-
+| rowspan="4" | Location 1
+| Line\Space
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|
+|
+|
+|
+|
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|-
+| 1
+| '''C'''
+| '''L'''
+| '''A'''
+| '''R'''
+| '''K'''
+| '''S'''
+| '''T'''
+| '''N'''
+|
+|
+|
+|
+|
+| '''S'''
+| '''T'''
+| '''A'''
+| '''R'''
+| '''T'''
+| '''I'''
+| '''N'''
+| '''G'''
+|-
+| 2
+|
+|
+|
+| '''R'''
+| '''D'''
+|
+|
+|
+|
+|
+|
+|
+|
+| '''A'''
+| '''P'''
+| '''R'''
+| '''I'''
+| '''L'''
+|
+| '''1'''
+| '''2'''
+|-
+| 3
+|
+| '''C'''
+| '''L'''
+| '''O'''
+| '''S'''
+| '''E'''
+| '''D'''
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|}
+{| class="wikitable" 
+! rowspan="2" |Location
+! colspan="18" |Sequences - BEFORE Start
+|-
+! colspan="9" | 1 -  (FOR AT LEAST 2 SECONDS)
+!
+! colspan="8" | 2 - (FOR AT LEAST 2 SECONDS)
+|-
+| rowspan="4" | Location 2
+| Line\Space
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|-
+| 1
+|
+| '''1'''
+| '''2'''
+|
+| '''M'''
+| '''I'''
+|
+|
+|
+|'''F'''
+| '''R'''
+| '''I'''
+|
+|
+|
+|
+|
+|-
+| 2
+|
+|'''A'''
+|'''T'''
+|
+| '''O'''
+|'''L'''
+|'''R'''
+|
+|
+|'''T'''
+| '''O'''
+|
+|
+|
+|
+|
+|
+|-
+| 3
+|
+| '''C'''
+| '''L'''
+| '''O'''
+| '''S'''
+| '''E'''
+| '''D'''
+|
+|
+|'''M'''
+|'''O'''
+|'''N'''
+|
+|
+|
+|
+|
+|}
+{| class="wikitable" 
+! rowspan="2" |Location
+! colspan="18" |Sequences - AFTER Start
+|-
+! colspan="9" | 1 -  (FOR AT LEAST 2 SECONDS)
+!
+! colspan="8" | 2 - (FOR AT LEAST 2 SECONDS)
+|-
+| rowspan="4" | Location 2
+| Line\Space
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|-
+| 1
+| '''C'''
+| '''L'''
+| '''A'''
+| '''R'''
+| '''K'''
+| '''S'''
+| '''T'''
+| '''N'''
+|
+|
+| '''F'''
+| '''O'''
+| '''L'''
+| '''L'''
+| '''O'''
+| '''W'''
+|
+|-
+| 2
+|
+|
+|
+| '''R'''
+| '''D'''
+|
+|
+|
+|
+|
+| '''D'''
+| '''E'''
+| '''T'''
+| '''O'''
+|'''U'''
+| '''R'''
+|
+|-
+| 3
+|
+| '''C'''
+| '''L'''
+| '''O'''
+| '''S'''
+| '''E'''
+| '''D'''
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|}
+{| class="wikitable" 
+! rowspan="2" |Location
+! colspan="18" |Sequences - BEFORE Start
+|-
+! colspan="9" | 1 -  (FOR AT LEAST 2 SECONDS)
+!
+! colspan="8" | 2 - (FOR AT LEAST 2 SECONDS)
+|-
+| rowspan="4" | Location 2
+| Line\Space
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|-
+| 1
+| '''N'''
+|
+| '''B'''
+| '''O'''
+| '''U'''
+| '''N'''
+| '''D'''
+|
+|
+|'''C'''
+| '''L'''
+| '''O'''
+| '''S'''
+| '''I'''
+| '''N'''
+| '''G'''
+|
+|-
+| 2
+|'''N'''
+|'''O'''
+|'''V'''
+| '''I'''
+|
+|'''R'''
+|'''D'''
+|
+|
+|'''A'''
+| '''P'''
+| '''R'''
+| '''I'''
+| '''L'''
+|
+| '''1'''
+|'''2'''
+|-
+| 3
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|}
+{| class="wikitable" 
+! rowspan="2" |Location
+! colspan="18" |Sequence - BEFORE Start of Construction
+|-
+! colspan="9" | 1 -  (FOR AT LEAST 2 SECONDS)
+!
+! colspan="8" | 2 - (FOR AT LEAST 2 SECONDS)
+|-
+| rowspan="4" | Location 1
+| Line\Space
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|-
+| 1
+| '''R'''
+| '''O'''
+| '''A'''
+| '''D'''
+|
+| '''W'''
+| '''R'''
+| '''K'''
+|
+| '''B'''
+| '''E'''
+| '''G'''
+| '''I'''
+| '''N'''
+| '''S*'''
+|
+|
+|-
+| 2
+| '''1'''
+| '''2'''
+|
+| '''M'''
+| '''I'''
+| '''L'''
+| '''E'''
+|
+|
+| '''A'''
+| '''P'''
+| '''R'''
+| '''I'''
+| '''L'''
+|
+|
+|
+|-
+| 3
+| '''T'''
+| '''O'''
+|
+| '''1'''
+| '''4'''
+|
+| '''M'''
+| '''I'''
+|
+|'''1'''
+| '''2'''
+|
+|
+|
+|
+|
+|
+|}
+
+{| class="wikitable" 
+! rowspan="2" |Location
+! colspan="18" |Sequence - AFTER Start of Construction
+|-
+! colspan="9" | 1 -  (FOR AT LEAST 2 SECONDS)
+!
+! colspan="8" | 2 - (FOR AT LEAST 2 SECONDS)
+|-
+| rowspan="4" | Location 1
+| Line\Space
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|
+| 1
+| 2
+| 3
+| 4
+| 5
+| 6
+| 7
+| 8
+|-
+| 1
+| '''R'''
+| '''O'''
+| '''A'''
+| '''D'''
+|
+| '''W'''
+| '''R'''
+| '''K'''
+|
+| '''E'''
+| '''X'''
+| '''P'''
+| '''E'''
+| '''C'''
+| '''T'''
+|
+|
+|-
+| 2
+| '''1'''
+| '''2'''
+|
+| '''M'''
+| '''I'''
+| '''L'''
+| '''E'''
+|
+|
+| '''D'''
+| '''E'''
+| '''L'''
+| '''A'''
+| '''Y'''
+|'''S'''
+|
+|
+|-
+| 3
+| '''T'''
+| '''O'''
+|
+| '''1'''
+| '''4'''
+|
+| '''M'''
+| '''I'''
+|
+|
+|
+|
+|
+|
+|
+|
+|
+|}
+
+<blockquote>'''BEGINS will be after WORK, WRK, CONST'''
+
+'''STARTING will be after CLOSED'''</blockquote>
+
+
+=== Standard/Acceptable Abbreviations ===
+The event that a message needs to be modified or added in the field use the following nationally recognized abbreviations if needed.
+{| class="wikitable sortable mw-collapsible"
+|+
+|-
+! WORD MESSAGE
+! OK
+|-
+|Access
+|ACCS**
+|-
+|Ahead
+|AHD**
+|-
+| Afternoon/Evening
+| PM
+|-
+| Alternate
+| ALT
+|-
+| Avenue
+| AVE, AV
+|-
+| Bicycle
+| BIKE
+|-
+| Boulevard
+| BLVD*
+|-
+|Bound (Do not Abbrieavte)
+|BOUND
+|-
+|Blocked
+|BLKD**
+|-
+|Bridge
+|BRDG, or BR**
+|-
+|CB Radio
+|CB
+|-
+| Cannot
+| CANT
+|-
+| Center (as part of a place Name)
+| CNTR*
+|-
+| Circle
+| CIR
+|-
+| Civil Defense
+| CD
+|-
+|Compressed Natural Gas
+|CNG
+|-
+| Court
+| CT*
+|-
+| Crossing (other than highway-rail)
+| X-ING, or XING
+|-
+| Do Not
+| DONT
+|-
+| Drive
+| DR*
+|-
+|East
+|E
+|-
+|Eastbound
+|EB, or E-BND
+|-
+| Emergency
+| EMER
+|-
+| Entrance, Enter
+| ENT
+|-
+|Electric Vehcile
+|EV
+|-
+| Expressway
+| EXPWY*
+|-
+| Feet
+| FT
+|-
+| FM Radio
+| FM
+|-
+| Freeway
+| FWY
+|-
+| Friday
+| FRI
+|-
+| Hazardous Material
+| HAZMAT
+|-
+| Highway
+| HWY*
+|-
+|High Occupancy Vechile
+|HOV
+|-
+| Highway-Rail Grade Crossing Pavement Marking
+| RXR, or RR XING
+|-
+| Hospital
+| H, or HOSP
+|-
+| Hour(s)
+| HR. or HRS
+|-
+|Inherently Low Emission Vehcile
+|ILEV
+|-
+|International
+|INTL
+|-
+|Interstate
+|See MUTCD Table
+|-
+| Information
+| INFO
+|-
+| It Is
+| ITS
+|-
+| Junction/lntersection
+| JCT
+|-
+| Lane
+| LN**
+|-
+| Left
+| LFT
+|-
+|Liquid Propane Gas
+|LP-GAS
+|-
+| Maintenance
+| MAINT
+|-
+|Maximum
+|MAX
+|-
+| Mile(s)
+| MI
+|-
+| Miles Per Hour
+| MPH
+|-
+|Minimum
+|MIN
+|-
+| Minute(s)
+| MIN
+|-
+| Monday
+| MON
+|-
+| Morning/Late Night
+| AM
+|-
+|Mount
+|MT
+|-
+|Mountain
+|MTN
+|-
+|National
+|NATL
+|-
+|North
+|N
+|-
+|Northbound
+|NB, or N-BND
+|-
+| Normal
+| NORM
+|-
+| Parking
+| PKING
+|-
+| Parkway
+| PKWY*
+|-
+| Pedestrian
+| PED
+|-
+| Place
+| PL*
+|-
+| Pounds
+| LBS
+|-
+| Right
+| RHT
+|-
+| Road
+| RD*
+|-
+|Saint
+|ST
+|-
+| Saturday
+| SAT
+|-
+| Service
+| SERV
+|-
+| Shoulder
+| SHLDR
+|-
+| Slippery
+| SLIP
+|-
+| Speed
+| SPD
+|-
+|South
+|S
+|-
+|Southbound
+|SB, or S-BND
+|-
+|State, county, or other non-US or non-Interstate numbered Route
+|**
+|-
+| Street
+| ST*
+|-
+| Sunday
+| SUN
+|-
+| Telephone
+| PHONE
+|-
+| Temoporary
+| TEMP
+|-
+| Terrace
+| TER*
+|-
+| Thursday
+| THURS
+|-
+|Thruway
+|THWY*
+|-
+| Traffic
+| TRAF
+|-
+|Tons of Weight
+|T
+|-
+| Trail
+| TR* (Trl is used by USPS)
+|-
+| Travelers
+| TRVLRS
+|-
+| Tuesday
+| TUES
+|-
+|Turnpike
+|TPK*
+|-
+|Tires with lugs
+|LUGS
+|-
+| Two-Way Intersection
+| 2-WAY
+|-
+| Two-Wheeled Vehicles
+| CYCLES
+|-
+| US Numbered Route
+| US**
+|-
+| Vehicle(s)
+| VEH, VEHS
+|-
+| Warning
+| WARN
+|-
+| Wednesday
+| WED
+|-
+| Will Not
+| WONT
+|-
+|West
+|W
+|-
+|Westbound
+|WB, or W-BND
+|-
+| colspan="2" |*This abbreviation shall not be used for any application other than the name of a roadway
+<nowiki>**</nowiki>See ''Abbreviations used with Prompts (Suffix and Prefix) table'' below.
+|}
+See [[Abbreviations]] for more.
+
+=== Unacceptable Abbreviations ===
+Abbreviations should be used cautiously with prompts words as they can cause confusion when used in the wrong context.  For example, drivers interpret BLK as BLOCKED when it appears with LANE in the form LANE BLKD.  CHEM is interpreted by drivers as CHEMICAL when sued in the message CHEM SPILL.  The table below provides a list of abbreviations are easily misinterpreted.
+{| class="wikitable sortable mw-collapsible"
+|+
+!Abbrivations
+!fIntended Word
+!Common Mistinerperteation
+|-
+|ACC
+|Accident
+|Access (Road)
+|-
+|CLRS
+|Clears
+|Colors
+|-
+|DLY
+|Delay
+|Daily
+|-
+|FDR
+|Feeder
+|Federal
+|-
+|L
+|Left
+|Lane (Merge)
+|-
+|LT
+|Light (Traffic)
+|Left
+|-
+|PARK
+|Parking
+|Park
+|-
+|POLL
+|Pollution (Index)
+|Poll
+|-
+|RED
+|Reduce
+|RED
+|-
+|STAD
+|Stadium
+|Standard
+|-
+|WRNG
+|Warning
+|Wrong
+|}
+
+=== Abbreviations used with Prompts (Suffix and Prefix) ===
+Other abbreviations are easily understood when they appear with a prompt word commonly associated with it.  '''The prompt word must be spelled out when used with the abbreviated word!'''
+{| class="wikitable sortable mw-collapsible"
+|+
+!Word
+!Abbrevation
+!Prompt Word -  Prefix (Before Word)
+!Prompt Word - Suffix (After Word)
+|-
+|Access
+|ACCS
+|
+|Road
+|-
+|Ahead
+|AHD
+|Fog
+|
+|-
+|Blocked
+|BLKD
+|Lane
+|
+|-
+|Bridge
+|BRDG, or BR
+|[Name]
+|
+|-
+|Center
+|CNTR
+|
+|Lane
+|-
+|Chemical
+|CHEM
+|
+|Spill
+|-
+|Conidtion
+|COND
+|Traffic
+|
+|-
+|Congested
+|CONG
+|Traffic
+|
+|-
+|Construction
+|CONST
+|
+|Ahead
+|-
+|Downtown
+|DWNTN
+|
+|Traffic
+|-
+|Exit
+|EXT
+|Next
+|
+|-
+|Exprfess
+|EXP
+|
+|Lane
+|-
+|Frontage
+|FRNTG
+|
+|Road
+|-
+|Hazardous
+|HAZ
+|
+|Driving
+|-
+|Interstate
+|I-**
+|
+|[Number]**
+|-
+|Lane
+|LN
+|[Roadway Name], Right, Left, Center
+|
+|-
+|Local
+|LOC
+|
+|Traffic
+|-
+|Major
+|MAJ
+|
+|Accident/Crash
+|-
+|Minor
+|MNR
+|
+|Accident/Crash
+|-
+|Minute(s)
+|Min
+|(Number)
+|
+|-
+|Overzied
+|OVRSZ
+|
+|Load
+|-
+|Pavement
+|PVMT
+|Wet
+|
+|-
+|Prepare
+|PREP
+|
+|To Stop
+|-
+|Quality
+|QLTY
+|Air
+|
+|-
+|Roadwork
+|RDWK
+|
+|Ahead [Distance]
+|-
+|Right
+|RT
+|Keep, Next
+|
+|-
+|Right
+|RT
+|
+|Lane
+|-
+|US numbered ROute
+|US
+|
+|[Number]**
+|-
+|Route
+|RT, RTE
+|Best
+|
+|-
+|Township
+|TWNSP
+|
+|Limits
+|-
+|Turnpike
+|TRNPK
+|(Name)
+|
+|-
+|State, County, or other non-US or non-Interstate numbered Route
+|As determined by Engeer.
+|
+|[Number]**
+|-
+|Cardinal Directions
+|NB, EB, SB, WB
+|
+|[Number]
+|-
+|Lower
+|LWR
+|
+|Level
+|-
+|Upper
+|UPR
+|
+|Level
+|-
+|Work
+|WRK
+|Road
+|
+|-
+| colspan="4" |** with a dash
+<nowiki>*</nowiki> without a dash
+Only the Interstates get a DASH.
+|}
+
+=== Sample Messaging ===
+{| class="wikitable" 
+|-
+! Message1
+! Message2
+!Type
+|-
+|ROAD CLOSED**
+|XX MILES AHEAD**
+| rowspan="14" |'''Standard Messages'''
+|-
+| RIGHT (LEFT) LANE CLOSED
+| XX MILES AHEAD
+|-
+| TRAFFIC SHIFT RIGHT (LEFT)
+| XX MILES AHEAD
+|-
+| RD WORK US-24 TO M-39
+| RIGHT (LEFT) LN CLOSED AHEAD
+|-
+| NEW TRAFFIC PATTERN
+| XX MILES AHEAD
+|-
+|NEW TRAFFIC PATTERN
+|At ORCHARD LAKE RD
+|-
+| ROAD WORK AHEAD
+| 8 MILE TO 9 MILE
+|-
+| RD WORK US-24 TO ECORSE
+| TRUCKS USE LEFT (RIGHT) LANE
+|-
+| NARROW LANES AHEAD
+| REDUCE SPEED
+|-
+| NARROW LANES AHEAD
+| OVERSIZE LOADS EXIT XXX
+|-
+|ROAD CLOSED**
+|STARTING APRIL 5TH**
+|-
+| RD WORK AT LAPEER
+| STARTING APRIL 5TH
+|-
+| RD WORK M-24 TO M-15
+| BEGINS APRIL 5TH
+|-
+| NIGHTLY LANE CLOSURES
+| 9PM TO 5AM
+|-
+| colspan="3" |
+|-
+| SLOW TRAFFIC AHEAD
+| WATCH FOR BACKUPS
+| rowspan="6" |'''Stop Traffic Advisory System'''
+|-
+| STOPPED TRAFFIC AHEAD
+| BE PREPARED TO STOP
+|-
+| SLOWED TRAFFIC
+| XX MILES AHEAD
+|-
+| STOPPED TRAFFIC
+| XX MILES AHEAD
+|-
+| RD WORK XX MILES AHEAD
+| TRUCKS USE LEFT (RIGHT) LANE
+|-
+| RD WORK US-24 TO M-39
+| MOTRCYCLS USE LEFT (RIGHT) LANE
+|-
+|
+|
+|
+|-
+|RUMBLE STRIPS AHEAD
+|ATTENTION MOTOR-CYCLES
+| rowspan="3" |'''Rumble Strips'''
+|-
+|RUMBLE STRIPS
+|XX MILES AHEAD
+|-
+|RUMBLE STRIPS AHEAD
+|REDUCE SPEED
+|-
+|
+|
+|
+|-
+|BALDWIN ROAD CLOSED
+|FOLLOW DETOUR
+| rowspan="6" |'''Detours'''
+|-
+|BALDWIN ROAD CLOSED
+|USE EXIT XXX
+|-
+|NB I-75 TRAFFIC
+|USE DIXIE HWY
+|-
+|NB I-75 CLOSED
+|FOLLOW DETOUR
+|-
+|US 24 RAMP CLOSED
+|USE EXIT XXX
+|-
+|US 24 RAMP CLOSED
+|FOLLOW DEOTUR
+|-
+|
+|
+|
+|-
+|15 MIN CLOSURES
+|STARTING MON 9PM to 5AM
+| rowspan="3" |'''TRAFFIC STOPPAGES'''
+|-
+|15 MIN FWY CLOSURES
+|SEEK ALT ROUTE*
+|-
+|NIGHTLY FWY CLOSURES
+|MON-FRI 9PM TO 5 AM
+|-
+| colspan="3" |'''* RCOC DO NOT USE'''
+<nowiki>**</nowiki> Added by Andy
+|}
+
+==Manufacturers==
+[https://www.wanco.com/ Wanco]]
+
+[https://www.ver-mac.com/en/ Ver-Mac]
+
+https://optraffic.com/
+
+https://amsig.com/

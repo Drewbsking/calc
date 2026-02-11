@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PCMS Message Builder</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <script src="https://unpkg.com/gif.js.optimized/dist/gif.js"></script>
+    <style>
+        .pcms-wrapper {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 14px;
+            margin-top: 12px;
+        }
+        .pcms-screen {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: #f8fafc;
+        }
+        .pcms-screen h3 {
+            margin: 0 0 6px;
+            color: #0b2a4a;
+        }
+        .pcms-screen small {
+            color: #475569;
+        }
+        .pcms-input {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0 2px;
+            border-radius: 6px;
+            border: 1px solid #cbd5e1;
+            font-size: 16px;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+        }
+        .pcms-counter {
+            font-size: 12px;
+            color: #475569;
+            text-align: right;
+            margin: 0 0 6px;
+        }
+        .pcms-counter.over {
+            color: #b91c1c;
+            font-weight: 700;
+        }
+        .pcms-actions {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .pcms-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 12px;
+        }
+        .pcms-preview {
+            background: #0f172a;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            min-height: 170px;
+            border: 1px solid #1f2937;
+        }
+        .pcms-preview h4 {
+            margin: 0 0 8px;
+            color: #cbd5f5;
+        }
+        .preview-line {
+            font-family: 'Courier New', monospace;
+            font-size: 20px;
+            letter-spacing: 3px;
+            background: rgba(248, 250, 252, 0.08);
+            padding: 6px 8px;
+            border-radius: 8px;
+            margin: 6px 0;
+            min-height: 28px;
+        }
+        .board-frame {
+            background: #0f172a url('gallery-prod-msgbd-3line-full.jpg') center/cover no-repeat;
+            position: relative;
+            border-radius: 10px;
+            border: 1px solid #1f2937;
+            aspect-ratio: 1479 / 1600;
+            overflow: hidden;
+        }
+        .board-overlay {
+            position: absolute;
+            left: 3.18%;
+            top: 1.31%;
+            width: 94.25%;
+            height: 46.69%;
+            display: block;
+            color: #fbbf24;
+            text-shadow: 0 0 6px rgba(247, 191, 36, 0.8), 0 0 12px rgba(247, 191, 36, 0.5);
+        }
+        .board-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .board-line {
+            position: relative;
+            font-family: 'Courier New', monospace;
+            font-size: 50px;
+            letter-spacing: 10px;
+            line-height: 1;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            transform: translateY(-100%);
+            text-align: center;
+            white-space: nowrap;
+        }
+        .pcms-status {
+            background: #ecfeff;
+            border: 1px solid #bae6fd;
+            border-radius: 10px;
+            padding: 10px 12px;
+            color: #0f172a;
+            margin-top: 12px;
+        }
+        .pcms-status strong {
+            color: #0b2a4a;
+        }
+        .pcms-checklist {
+            padding-left: 18px;
+            margin: 8px 0 0;
+            color: #0f172a;
+        }
+        .pcms-checklist li {
+            margin-bottom: 4px;
+        }
+        .pcms-rolling {
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 14px;
+            background: #fff;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+        }
+        .rolling-screen {
+            background: #111827;
+            color: #e5e7eb;
+            border-radius: 10px;
+            padding: 12px;
+            border: 1px solid #1f2937;
+        }
+        .rolling-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: #cbd5e1;
+            font-size: 13px;
+            margin-bottom: 4px;
+        }
+        .pcms-chip {
+            display: inline-block;
+            padding: 4px 8px;
+            background: #e0f2fe;
+            color: #0f172a;
+            border-radius: 999px;
+            font-size: 12px;
+            border: 1px solid #bae6fd;
+            margin-left: 6px;
+        }
+        .pcms-note {
+            font-size: 14px;
+            color: #475569;
+            margin: 0;
+        }
+        .abbr-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 8px;
+            margin-top: 8px;
+        }
+        .abbr-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 8px 10px;
+            background: #f8fafc;
+        }
+        .abbr-card strong {
+            display: block;
+            color: #0b2a4a;
+        }
+        .abbr-card span {
+            color: #475569;
+            font-size: 0.95rem;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main class="container">
+        <section class="calculator">
+            <h1>Portable Changeable Message Sign (PCMS) Builder</h1>
+            <p class="calculator-lede">Create a two-screen road work message that fits an 8-character-wide, 3-line board. Based on the RCOC guidance: no humor, avoid "SEEK ALTERNATE ROUTE," and keep each screen readable in order.</p>
+
+            <div class="pcms-wrapper">
+                <div class="pcms-screen">
+                    <h3>Screen 1 <small>(first shown, ~2 seconds)</small></h3>
+                    <p class="pcms-note">Uppercase enforced; spaces count toward the 8-character limit.</p>
+                    <label for="s1l1">Line 1</label>
+                    <input class="pcms-input" id="s1l1" maxlength="8" autocomplete="off">
+                    <div class="pcms-counter" data-count-for="s1l1"></div>
+                    <label for="s1l2">Line 2</label>
+                    <input class="pcms-input" id="s1l2" maxlength="8" autocomplete="off">
+                    <div class="pcms-counter" data-count-for="s1l2"></div>
+                    <label for="s1l3">Line 3</label>
+                    <input class="pcms-input" id="s1l3" maxlength="8" autocomplete="off">
+                    <div class="pcms-counter" data-count-for="s1l3"></div>
+                </div>
+                <div class="pcms-screen">
+                    <h3>Screen 2 <small>(second screen, ~2 seconds)</small></h3>
+                    <p class="pcms-note">Keep wording consistent with Screen 1; stay within two screens total.</p>
+                    <label for="s2l1">Line 1</label>
+                    <input class="pcms-input" id="s2l1" maxlength="8" autocomplete="off">
+                    <div class="pcms-counter" data-count-for="s2l1"></div>
+                    <label for="s2l2">Line 2</label>
+                    <input class="pcms-input" id="s2l2" maxlength="8" autocomplete="off">
+                    <div class="pcms-counter" data-count-for="s2l2"></div>
+                    <label for="s2l3">Line 3</label>
+                    <input class="pcms-input" id="s2l3" maxlength="8" autocomplete="off">
+                    <div class="pcms-counter" data-count-for="s2l3"></div>
+                </div>
+            </div>
+
+            <div class="pcms-actions">
+                <button type="button" class="secondary-button" id="copyScreen1">Copy Screen 1 to Screen 2</button>
+                <button type="button" class="secondary-button" id="clearAll">Clear all lines</button>
+                <button type="button" class="secondary-button" id="downloadGif">Download GIF (2 screens)</button>
+            </div>
+            <p id="gifStatus" class="pcms-note" style="margin-top: 6px;">Download a 2-frame GIF that flips every ~2 seconds.</p>
+
+            <div class="result-block">
+                <h3>Fit check</h3>
+                <div id="fitStatus" class="pcms-status"></div>
+                <ul id="fitIssues" class="pcms-checklist"></ul>
+            </div>
+
+            <div class="result-block">
+                <h3>Rolling preview (8 chars x 3 lines)</h3>
+                <div class="pcms-rolling">
+                    <div class="rolling-screen">
+                        <div class="rolling-meta">
+                            <span id="rollingLabel">Screen 1</span>
+                            <span>~2 sec</span>
+                        </div>
+                        <div class="board-frame">
+                            <div class="board-overlay" id="overlayRoll"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <section class="references">
+            <h2>Guidance</h2>
+            <ul>
+                <li>Max 8 characters per line, 3 lines per screen; two screens only, each held for at least 2 seconds.</li>
+                <li>Keep it factual - no humor. Avoid "SEEK ALTERNATE ROUTE."</li>
+                <li>Blank lines are allowed if you need fewer than 3 lines.</li>
+                <li>Use simple abbreviations when space is tight.</li>
+            </ul>
+            <p class="pcms-note"><strong>Helpful abbreviations:</strong></p>
+            <div class="abbr-grid">
+                <div class="abbr-card"><strong>ROAD</strong><span> RD</span></div>
+                <div class="abbr-card"><strong>WORK</strong><span> WRK</span></div>
+                <div class="abbr-card"><strong>LANE</strong><span> LN</span></div>
+                <div class="abbr-card"><strong>MILE</strong><span> MI</span></div>
+                <div class="abbr-card"><strong>NORTH/SOUTH</strong><span> NB / SB</span></div>
+                <div class="abbr-card"><strong>EAST/WEST</strong><span> EB / WB</span></div>
+                <div class="abbr-card"><strong>ALTERNATE</strong><span> ALT</span></div>
+                <div class="abbr-card"><strong>DETOUR</strong><span> DETOUR</span></div>
+            </div>
+            <p class="calculator-lede" style="margin-top: 14px;">Source: RCOC Changeable Message Signs guidance.</p>
+            <p class="pcms-note">Full reference: <a href="https://rcoc.miraheze.org/wiki/Changeable_Message_Signs" target="_blank" rel="noopener">RCOC Changeable Message Signs</a></p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script>
+        (function() {
+            const MAX = 8;
+            const inputs = [
+                's1l1', 's1l2', 's1l3',
+                's2l1', 's2l2', 's2l3'
+            ];
+            let rollingScreen = 1;
+            let rollingTimer;
+            const BOARD_IMG_SRC = 'gallery-prod-msgbd-3line-full.jpg';
+            const BOARD_ASPECT = 1479 / 1600;
+            const ROI = { left: 47 / 1479, top: 21 / 1600, width: (1440 - 47) / 1479, height: (768 - 21) / 1600 };
+            const LETTER_SPACING = 10; // px in image space
+            const canvas = document.createElement('canvas');
+            canvas.width = 1479;
+            canvas.height = 1600;
+            const ctx = canvas.getContext('2d');
+            const boardImage = new Image();
+            let boardImageLoaded = false;
+            boardImage.onload = () => { boardImageLoaded = true; };
+            boardImage.src = BOARD_IMG_SRC;
+
+            function normalize(value) {
+                return value.toUpperCase();
+            }
+
+            function padLine(text) {
+                return (text || '').padEnd(MAX, ' ').slice(0, MAX);
+            }
+
+            function escapeHtml(str) {
+                return str.replace(/[&<>"']/g, (ch) => ({
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#39;'
+                })[ch]);
+            }
+
+            function renderPreview() {
+                const screen1 = getScreenLines(1);
+                const screen2 = getScreenLines(2);
+                updateFitCheck(screen1, screen2);
+                renderRolling();
+            }
+
+            function setOverlay(targetId, lines) {
+                const overlay = document.getElementById(targetId);
+                if (!overlay) return;
+                const yOffsets = [245 - 160, 500 - 285, 765 - 425]; // px positions relative to overlay top
+                overlay.innerHTML = lines.map((line, idx) => {
+                    const safe = escapeHtml(padLine(line)).replace(/ /g, '&nbsp;');
+                    const y = yOffsets[idx] || 0;
+                    return '<div class="board-line" style="top:' + y + 'px;">' + safe + '</div>';
+                }).join('');
+            }
+
+            function getScreenLines(screen) {
+                return [
+                    document.getElementById(`s${screen}l1`).value.trimEnd(),
+                    document.getElementById(`s${screen}l2`).value.trimEnd(),
+                    document.getElementById(`s${screen}l3`).value.trimEnd()
+                ];
+            }
+
+            function updateCounters() {
+                inputs.forEach((id) => {
+                    const input = document.getElementById(id);
+                    const counter = document.querySelector(`[data-count-for="${id}"]`);
+                    if (!input || !counter) return;
+                    const val = normalize(input.value).slice(0, MAX);
+                    input.value = val;
+                    counter.textContent = `${val.length}/${MAX}`;
+                    counter.classList.toggle('over', val.length > MAX);
+                });
+            }
+
+            function updateFitCheck(screen1, screen2) {
+                const issues = [];
+                const banned = /(SEEK\s+ALT(ERNATE)?\s+ROUTE)/i;
+                const screens = [screen1, screen2];
+
+                screens.forEach((lines, sIdx) => {
+                    lines.forEach((line, lIdx) => {
+                        if (line.length > MAX) {
+                            issues.push(`Screen ${sIdx + 1} line ${lIdx + 1} exceeds 8 characters.`);
+                        }
+                    });
+                });
+
+                const allText = screens.flat().join(' ');
+                if (banned.test(allText)) {
+                    issues.push('RCOC does not allow "SEEK ALTERNATE ROUTE."');
+                }
+
+                const fitStatus = document.getElementById('fitStatus');
+                const fitIssues = document.getElementById('fitIssues');
+                fitIssues.innerHTML = issues.map((i) => '<li>' + i + '</li>').join('');
+                fitStatus.textContent = issues.length ? 'Needs fixes before fielding.' : 'Fits the 8x3 board. Two screens ready to roll.';
+            }
+
+            function renderRolling() {
+                const lines = getScreenLines(rollingScreen);
+                const rollingLabel = document.getElementById('rollingLabel');
+                setOverlay('overlayRoll', lines);
+                rollingLabel.textContent = rollingScreen === 1 ? 'Screen 1' : 'Screen 2';
+            }
+
+            function copyScreenOne() {
+                document.getElementById('s2l1').value = document.getElementById('s1l1').value;
+                document.getElementById('s2l2').value = document.getElementById('s1l2').value;
+                document.getElementById('s2l3').value = document.getElementById('s1l3').value;
+                updateCounters();
+                renderPreview();
+            }
+
+            function clearAll() {
+                inputs.forEach((id) => {
+                    const input = document.getElementById(id);
+                    if (input) input.value = '';
+                });
+                updateCounters();
+                renderPreview();
+            }
+
+            function setDefaults() {
+                document.getElementById('s1l1').value = 'ROAD WRK';
+                document.getElementById('s1l2').value = 'AT MAIN';
+                document.getElementById('s1l3').value = 'APR 05';
+
+                document.getElementById('s2l1').value = 'EXPECT';
+                document.getElementById('s2l2').value = 'DELAYS';
+                document.getElementById('s2l3').value = 'MON-FRI';
+            }
+
+            function startRolling() {
+                if (rollingTimer) clearInterval(rollingTimer);
+                rollingTimer = setInterval(() => {
+                    rollingScreen = rollingScreen === 1 ? 2 : 1;
+                    renderRolling();
+                }, 2200);
+            }
+
+            const GIF_FONT_PX = 80; // increase to make GIF text larger than on-page default (50px)
+
+            function drawFrame(lines, opts = {}) {
+                ctx.fillStyle = '#0f172a';
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                if (boardImageLoaded) {
+                    ctx.drawImage(boardImage, 0, 0, canvas.width, canvas.height);
+                }
+                const overlay = {
+                    x: ROI.left * canvas.width,
+                    y: ROI.top * canvas.height,
+                    w: ROI.width * canvas.width,
+                    h: ROI.height * canvas.height
+                };
+                ctx.fillStyle = 'rgba(0,0,0,0.55)';
+                ctx.fillRect(overlay.x, overlay.y, overlay.w, overlay.h);
+                ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(overlay.x, overlay.y, overlay.w, overlay.h);
+
+                const scale = canvas.width / 1479;
+                const baseFontPx = opts.fontPx ? opts.fontPx : 50;
+                const baseSpacingPx = opts.letterSpacing ? opts.letterSpacing : LETTER_SPACING;
+                const fontPx = baseFontPx * scale;
+                const spacingPx = baseSpacingPx * scale;
+                const yOffsetsImage = [245, 500, 765]; // absolute y positions in image space (px from top)
+                ctx.font = `${fontPx}px \"Courier New\", monospace`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'alphabetic';
+                ctx.fillStyle = '#fbbf24';
+                ctx.shadowColor = 'rgba(247,191,36,0.9)';
+                ctx.shadowBlur = 8;
+                lines.forEach((line, idx) => {
+                    const text = padLine(line);
+                    const y = (yOffsetsImage[idx] || 0) * (canvas.height / 1600);
+                    drawWithSpacing(ctx, text, overlay.x + overlay.w / 2, y, spacingPx);
+                });
+                ctx.shadowBlur = 0;
+                return canvas;
+            }
+
+            function drawWithSpacing(ctx, text, centerX, y, spacing) {
+                const chars = text.split('');
+                const widths = chars.map((ch) => ctx.measureText(ch).width);
+                const totalWidth = widths.reduce((a, b) => a + b, 0) + spacing * (chars.length - 1);
+                let x = centerX - totalWidth / 2;
+                chars.forEach((ch, idx) => {
+                    ctx.fillText(ch, x, y);
+                    x += widths[idx] + spacing;
+                });
+            }
+
+            function downloadGif() {
+                const status = document.getElementById('gifStatus');
+                if (typeof GIF === 'undefined') {
+                    status.textContent = 'GIF library did not load. Check your connection.';
+                    return;
+                }
+                if (!boardImageLoaded) {
+                    status.textContent = 'Background image is still loading. Try again in a moment.';
+                    return;
+                }
+                status.textContent = 'Building GIF...';
+                const gif = new GIF({
+                    workers: 2,
+                    quality: 10,
+                    width: canvas.width,
+                    height: canvas.height,
+                    workerScript: 'scripts/gif.worker.js'
+                });
+
+                const frameData = [getScreenLines(1), getScreenLines(2)].map((lines) =>
+                    drawFrame(lines, { fontPx: GIF_FONT_PX }).toDataURL('image/png')
+                );
+
+                Promise.all(
+                    frameData.map(
+                        (src) =>
+                            new Promise((resolve) => {
+                                const img = new Image();
+                                img.onload = () => resolve(img);
+                                img.src = src;
+                            })
+                    )
+                ).then((images) => {
+                    images.forEach((img) => gif.addFrame(img, { delay: 2000, copy: true }));
+
+                    gif.on('finished', (blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const link = document.createElement('a');
+                        link.href = url;
+                        link.download = 'pcms.gif';
+                        link.click();
+                        setTimeout(() => URL.revokeObjectURL(url), 2000);
+                        status.textContent = 'GIF ready (downloaded).';
+                    });
+
+                    gif.on('abort', () => {
+                        status.textContent = 'GIF build canceled.';
+                    });
+
+                    gif.render();
+                });
+            }
+
+            document.addEventListener('DOMContentLoaded', () => {
+                setDefaults();
+                updateCounters();
+                renderPreview();
+                startRolling();
+
+                inputs.forEach((id) => {
+                    const input = document.getElementById(id);
+                    input.addEventListener('input', () => {
+                        input.value = normalize(input.value).slice(0, MAX);
+                        updateCounters();
+                        renderPreview();
+                    });
+                });
+
+                document.getElementById('copyScreen1').addEventListener('click', copyScreenOne);
+                document.getElementById('clearAll').addEventListener('click', clearAll);
+                document.getElementById('downloadGif').addEventListener('click', downloadGif);
+            });
+        })();
+    </script>
+</body>
+</html>
