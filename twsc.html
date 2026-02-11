@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TWSC Example Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .calculator h1 {
+            margin: 0 0 8px;
+        }
+        .calculator-lede {
+            margin: 0 0 16px;
+            text-align: center;
+            color: #475569;
+        }
+        .calculator-panel {
+            margin-top: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: #f8fafc;
+        }
+        .calculator-panel h3 {
+            margin: 0 0 8px;
+            color: #0b2a4a;
+        }
+        .form-hint {
+            font-size: 0.9rem;
+            color: #475569;
+            margin: 0 0 6px;
+        }
+        .secondary-button {
+            display: inline-block;
+            padding: 10px 14px;
+            margin-top: 10px;
+            border-radius: 8px;
+            border: 1px solid #cbd5e1;
+            background: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            color: #0f172a;
+        }
+        .secondary-button:hover {
+            background: #e2e8f0;
+        }
+        .result-block {
+            margin-top: 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 12px 14px;
+            background: #fff;
+        }
+        .result-block h3 {
+            margin: 0 0 8px;
+        }
+        .metric-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 10px;
+            margin: 10px 0;
+        }
+        .metric-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: #f8fafc;
+        }
+        .metric-card span {
+            display: block;
+            font-size: 0.9rem;
+            color: #475569;
+        }
+        .metric-card strong {
+            display: block;
+            font-size: 1.3rem;
+            color: #0f172a;
+        }
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        .results-table th,
+        .results-table td {
+            border: 1px solid #e2e8f0;
+            padding: 6px 8px;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+        .results-table th {
+            background: #f1f5f9;
+            color: #0b2a4a;
+        }
+        .group-row th {
+            background: #e8eef5;
+            color: #0b2a4a;
+        }
+        .approach-groups {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 12px;
+            margin-top: 10px;
+        }
+        .approach-card {
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 10px 12px;
+            background: #f8fafc;
+        }
+        .approach-card h4 {
+            margin: 0 0 8px;
+            color: #0b2a4a;
+        }
+        .approach-card .form-group {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main class="container">
+        <section class="calculator">
+            <h1>Two-Way Stop-Controlled (TWSC) Calculator</h1>
+            <p class="calculator-lede">Follows Chapter 32 Example 1 from the 2022 HCM: three-leg TWSC with a stop-controlled minor approach.</p>
+
+            <div class="calculator-panel">
+                <h3>Analysis settings</h3>
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label for="analysisPeriod">Analysis period (hours)</label>
+                        <input type="number" id="analysisPeriod" step="0.01" value="0.25">
+                    </div>
+                    <div class="form-group">
+                        <label for="heavyVehicles">Heavy vehicles (% of approach flow)</label>
+                        <input type="number" id="heavyVehicles" step="0.1" value="10">
+                    </div>
+                    <div class="form-group">
+                        <label for="gradePercent">Approach grade (%)</label>
+                        <input type="number" id="gradePercent" step="0.1" value="0">
+                    </div>
+                </div>
+                <p class="form-hint">Grade and heavy vehicles feed into the critical/follow-up headway adjustments. Use the heavy-vehicle percent for the approach you are analyzing (major LT uses major %, minor LT/RT use minor %). Use the grade on that same approach; set to 0 for level.</p>
+            </div>
+
+            <div class="calculator-panel">
+                <h3>Volumes</h3>
+                <p class="form-hint">Enter either peak 15-min counts or hourly flows. Choose below and the tool will handle the conversion.</p>
+                <figure style="margin: 14px 0; border: 1px solid #e2e8f0; border-radius: 10px; padding: 12px; background: #fff;">
+                    <div style="display: flex; gap: 12px; flex-wrap: wrap; align-items: flex-start; justify-content: center;">
+                        <img src="volume pic1.png" alt="15-min volumes diagram" style="max-width: 340px; width: 100%; height: auto; border-radius: 6px; border: 1px solid #e2e8f0; background: #f8fafc;">
+                        <img src="volume pic2.png" alt="Lane configuration diagram" style="max-width: 340px; width: 100%; height: auto; border-radius: 6px; border: 1px solid #e2e8f0; background: #f8fafc;">
+                    </div>
+                    <figcaption style="margin-top: 6px; color: #475569; font-size: 0.9rem;">Match your movements to the v-numbers shown.</figcaption>
+                </figure>
+                <div class="form-group">
+                    <label for="volumeBasis">Your inputs are:</label>
+                    <select id="volumeBasis">
+                        <option value="15min" selected>15-min counts (will be multiplied by 4)</option>
+                        <option value="hour">Hourly flow rates (veh/h)</option>
+                    </select>
+                </div>
+                <p class="form-hint">EB = eastbound major, WB = westbound major, NB = stop-controlled minor. Enter counts for your analysis approach.</p>
+                <div class="approach-groups">
+                    <div class="approach-card">
+                        <h4>EB (major)</h4>
+                        <div class="form-group">
+                            <label for="vol_v2">EB through (v2)</label>
+                            <input type="number" id="vol_v2" min="0" step="1" value="60">
+                        </div>
+                        <div class="form-group">
+                            <label for="vol_v3">EB right (v3)</label>
+                            <input type="number" id="vol_v3" min="0" step="1" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="vol_v1">EB left (v1, optional)</label>
+                            <input type="number" id="vol_v1" min="0" step="1" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="vol_v1u">EB U-turn (v1U, optional)</label>
+                            <input type="number" id="vol_v1u" min="0" step="1" value="0">
+                        </div>
+                    </div>
+                    <div class="approach-card">
+                        <h4>WB (major)</h4>
+                        <div class="form-group">
+                            <label for="vol_v5">WB through (v5)</label>
+                            <input type="number" id="vol_v5" min="0" step="1" value="75">
+                        </div>
+                        <div class="form-group">
+                            <label for="vol_v4">WB left (v4)</label>
+                            <input type="number" id="vol_v4" min="0" step="1" value="40">
+                        </div>
+                        <div class="form-group">
+                            <label for="vol_v6">WB right (v6)</label>
+                            <input type="number" id="vol_v6" min="0" step="1" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="vol_v4u">WB U-turn (v4U, optional)</label>
+                            <input type="number" id="vol_v4u" min="0" step="1" value="0">
+                        </div>
+                    </div>
+                    <div class="approach-card">
+                        <h4>NB (minor stop)</h4>
+                        <div class="form-group">
+                            <label for="vol_v7">Minor left (v7)</label>
+                            <input type="number" id="vol_v7" min="0" step="1" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="vol_v9">Minor right (v9)</label>
+                            <input type="number" id="vol_v9" min="0" step="1" value="30">
+                        </div>
+                    </div>
+                    <div class="approach-card">
+                        <h4>Other conflicts</h4>
+                        <div class="form-group">
+                            <label for="vol_v13">Other conflicting (v13)</label>
+                            <input type="number" id="vol_v13" min="0" step="1" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="vol_v14">Other conflicting (v14)</label>
+                            <input type="number" id="vol_v14" min="0" step="1" value="0">
+                        </div>
+                        <div class="form-group">
+                            <label for="vol_v15">Other conflicting (v15)</label>
+                            <input type="number" id="vol_v15" min="0" step="1" value="0">
+                        </div>
+                    </div>
+                </div>
+                <p class="form-hint">Optional fields default to 0, matching the Example 1 geometry. Adjust only if your site has those conflicts.</p>
+            </div>
+
+            <button class="calculate-button" id="calculateTwsc">Calculate</button>
+            <button type="button" class="secondary-button" id="resetTwscDefaults">Reset to Example 1</button>
+
+            <div id="twscResults" class="result"></div>
+        </section>
+
+        <section class="references">
+            <h2>References</h2>
+            <p>Steps and coefficients follow <a href="Pages from Chapter-32-Stop-Controlled-Intersections-Supp-700p.pdf" target="_blank" rel="noopener">HCM 2022 Chapter 32 supplemental example (Version 7.0, July 2022)</a>.</p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/twsc.js"></script>
+</body>
+</html>
