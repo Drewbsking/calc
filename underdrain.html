@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Underdrain Materials</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .underdrain-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 18px;
+            align-items: start;
+        }
+        .diagram-card {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+            padding: 14px;
+        }
+        .diagram-wrapper {
+            position: relative;
+            width: 100%;
+        }
+        .diagram-wrapper svg {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 10px;
+            border: 1px solid #d7dce5;
+        }
+        .diagram-input {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.96);
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid #d0d8e4;
+            box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+            width: 150px;
+        }
+        .diagram-input label {
+            display: block;
+            font-size: 12px;
+            font-weight: 700;
+            color: #0b2a4a;
+            margin-bottom: 4px;
+        }
+        .diagram-input input {
+            width: 100%;
+            margin: 0;
+        }
+        .diagram-input-width { top: 6%; left: 50%; transform: translate(-50%, -50%); }
+        .diagram-input-depth { top: 50%; left: 12%; transform: translate(-50%, -50%); }
+        .diagram-input-pipe { top: 68%; left: 50%; transform: translate(-50%, 0); }
+        .diagram-depth-buttons {
+            display: flex;
+            gap: 6px;
+            margin-top: 6px;
+        }
+        .diagram-depth-buttons .speed-button {
+            flex: 1;
+            padding: 6px 8px;
+            font-size: 12px;
+            margin: 0;
+        }
+        .diagram-note {
+            margin-top: 10px;
+            font-size: 13px;
+            color: #475569;
+            text-align: center;
+        }
+        .reference-image {
+            display: block;
+            width: 100%;
+            max-width: 720px;
+            height: auto;
+            border: 1px solid #d0d8e4;
+            border-radius: 8px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+            margin: 12px auto 6px;
+        }
+        .image-credit {
+            text-align: center;
+            font-size: 13px;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Subgrade Underdrain Materials</h1>
+            <p class="calculator-lede">Per-foot factors and totals for 6" wrapped underdrains (pipe, fabric, pea stone).</p>
+
+            <div class="underdrain-layout">
+                <div class="diagram-card">
+                    <img src="Cross Section Drain Pipe.png" alt="Underdrain cross section with fabric liner, pea stone, and 6-inch pipe" class="reference-image" loading="lazy">
+                    <p class="diagram-note">Width fixed at 1.5 ft; pipe fixed at 6 in; select depth and length to calculate.</p>
+                </div>
+
+                <div class="calculator-panel">
+                    <h2>Inputs</h2>
+                    <div class="input-grid">
+                        <div class="form-group">
+                            <label for="runLength">Underdrain length (ft)</label>
+                            <input type="number" id="runLength" min="0" step="any" placeholder="e.g., 250">
+                        </div>
+                        <div class="form-group">
+                            <label for="stoneDepth">Stone depth (ft)</label>
+                            <div class="diagram-depth-buttons">
+                                <button class="speed-button" type="button" data-depth="1.5">1.5</button>
+                                <button class="speed-button" type="button" data-depth="2">2.0</button>
+                            </div>
+                            <input type="number" id="stoneDepth" min="0" step="0.1" value="1.5">
+                        </div>
+                    </div>
+                    <p class="note">Fixed values: 1.5 ft width, 6-inch pipe, 1.5 ft fabric overlap, 1 ft seam allowance, and 100 lb/cu ft pea stone. Depth is selectable above.</p>
+                </div>
+            </div>
+
+            <div class="calculator-panel">
+                <h2>Per-foot factors</h2>
+                <div class="result" id="perFootResults"></div>
+                <div class="formula-details" id="calcDetails"></div>
+            </div>
+
+            <div class="calculator-panel">
+                <h2>Totals</h2>
+                <div class="result" id="totalResults"></div>
+            </div>
+
+            <button class="calculate-button" id="calculateBtn" type="button">Calculate</button>
+        </section>
+
+        <section class="references">
+            <h2>Assumptions</h2>
+            <ul>
+                <li>Fabric wrap width = trench width + (2 × depth) + overlap + seam allowance; overlap is fixed at 1.5 ft with a 1 ft seam.</li>
+                <li>Peastone volume = (trench width × depth − pipe area) × run length; trench width is 1.5 ft and pipe diameter is 6 in.</li>
+                <li>Outputs round to two decimals (MDOT convention) for LFT, SYD, and tons.</li>
+            </ul>
+        </section>
+
+        <section class="references">
+            <h2>Example hand calc</h2>
+            <img src="example Edge Drain Calc.png" alt="Example edge drain calculation handwritten sheet" class="reference-image" loading="lazy">
+            <p class="image-credit">Example courtesy of Don Uptegraff.</p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/underdrain.js"></script>
+</body>
+</html>
