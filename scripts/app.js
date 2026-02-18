@@ -9,6 +9,9 @@
   const DELINEATOR_OFFSET_FT = 35;           // lateral offset from centerline
   const DELINEATOR_MIN_SPACING_FT = 20;      // minimum delineator spacing
   const DELINEATOR_MAX_SPACING_FT = 300;     // maximum delineator spacing
+  const MDOT_RAMP_SLOW_MAX = 40;             // ramp speeds using 24" (MDOT)
+  const MDOT_RAMP_FAST_MIN = 45;             // ramp speeds using 36" (MDOT)
+  const MDOT_RAMP_FAST_MAX = 55;             // ramp speeds using 36" (MDOT)
 
   // Side-friction lookup table (AASHTO 2011 Fig. 3-6 approximations)
   const SIDE_FRICTION_TABLE = [
@@ -540,6 +543,31 @@
     };
   }
 
+  function lookupChevronSizes({ advisoryMPH, roadwayType } = {}){
+    const advisory = Number(advisoryMPH);
+    const speedBasis = Number.isFinite(advisory) ? advisory : NaN;
+    const isFreeway = roadwayType === 'freeway_expressway';
+    const rcoc = {
+      agency: 'RCOC',
+      sizeInches: 24,
+      rationale: 'All locations'
+    };
+
+    let mdotSize = 24;
+    let mdotNote = 'Ramp 10-40 mph or non-freeway';
+    if (isFreeway){
+      mdotSize = 36;
+      mdotNote = 'Freeway or expressway';
+    } else if (speedBasis >= MDOT_RAMP_FAST_MIN && speedBasis <= MDOT_RAMP_FAST_MAX){
+      mdotSize = 36;
+      mdotNote = 'Ramp 45-55 mph (based on advisory speed selection)';
+    } else if (Number.isFinite(speedBasis) && speedBasis > MDOT_RAMP_SLOW_MAX){
+      mdotNote = 'Non-freeway (assumed for this advisory speed); ramps 10-40 mph use 24"';
+    }
+
+    return { rcoc, mdot: { sizeInches: mdotSize, rationale: mdotNote }, basisMph: speedBasis };
+  }
+
   function computePlacementProfile(length_m, targetSpacing_m, mode, opts = {}){
     const spacing = Math.max(targetSpacing_m, 1e-6);
     const minCount = Math.max(1, opts.minCount || 1);
@@ -968,6 +996,10 @@
                       : (PLACEMENT_MODE === 'startAtA') ? 'Start at A'
                       : 'Centered';
     const calloutAW = lookupAWdistanceFt(postedMPH, advisoryMPH);
+    const chevronSizes = lookupChevronSizes({ advisoryMPH, roadwayType });
+    const rcocChevronSize = chevronSizes.rcoc.sizeInches;
+    const mdotChevronSize = chevronSizes.mdot.sizeInches;
+    const mdotChevronNote = chevronSizes.mdot.rationale;
     const needRowsHtml = deviceNeedRows.length ? deviceNeedRows.map(row => {
       const selectedSuffix = row.selected ? ' (selected)' : '';
       const selectedClass = row.selected ? ' selected' : '';
@@ -1002,12 +1034,11 @@
 
         <h2>Warning Signs:</h2>
         <div class="small-note muted">Per MDOT Guide</div>
+        <div class="stat"><strong>Chevron size (W1-8) - RCOC</strong>: ${rcocChevronSize}&Prime; <span class="muted">(${chevronSizes.rcoc.rationale})</span></div>
+        <div class="stat"><strong>Chevron size (W1-8) - MDOT</strong>: ${mdotChevronSize}&Prime; <span class="muted">${mdotChevronNote}${Number.isFinite(chevronSizes.basisMph) ? ` • based on advisory ${chevronSizes.basisMph} mph` : ''}</span></div>
         <div class="stat"><strong>Target Chevron Spacing (S):</strong> ${Sft.toFixed(1)} ft
           <span class="muted"> &bull; ${modeLabel}</span>
         </div>
-
-
-
         <div class="stat"><strong>Actual chevron spacing (S)</strong>: ${actualStepFt.toFixed(1)} ft
           <span class="muted">${PLACEMENT_MODE==='snapEnds' ? '(~ S to hit both ends)' : '(= S)'}</span>
         </div>
@@ -1044,6 +1075,7 @@
       PI, PI_ll, AP_m, CP_m, PIangle_deg,
       EXT_FT, Sft, Nchev, sepDeg, PLACEMENT_MODE, actualStepFt,
       calloutAW,
+      chevronSizes,
       postedMPH,
       advisoryMPH,
       speedDifferential,
