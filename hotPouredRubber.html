@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hot Poured Rubber</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .hot-rubber-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .hot-rubber-actions .calculate-button {
+            margin-top: 0;
+            width: auto;
+            flex: 1 1 240px;
+        }
+
+        .ghost-button {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #0b2a4a;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1 1 180px;
+        }
+
+        .ghost-button:hover {
+            background: #e2e8f0;
+        }
+
+        .helper-text {
+            color: #475569;
+            margin: 6px 0 2px;
+            font-size: 14px;
+        }
+
+        .reference-image {
+            display: block;
+            width: 100%;
+            max-width: 760px;
+            height: auto;
+            border: 1px solid #d0d8e4;
+            border-radius: 8px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+            margin: 12px auto 6px;
+        }
+
+        .image-credit {
+            text-align: center;
+            font-size: 13px;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Hot Poured Rubber for Sawed Joints</h1>
+            <p class="calculator-lede">Estimate sealant weight from data-sheet lb/gal and joint dimensions.</p>
+            <p class="note">Uses the sample method: 1 gallon = 0.13368 cf, then convert to lb/cf and multiply by joint volume per foot.</p>
+
+            <div class="calculator-panel">
+                <h2>Inputs</h2>
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label for="sealantProduct">Sealant product/spec</label>
+                        <select id="sealantProduct">
+                            <option value="wr3405m" selected>W.R. Meadows 3405-M (9.2 lb/gal)</option>
+                            <option value="wr3405">W.R. Meadows 3405 (10.0 lb/gal)</option>
+                            <option value="wr3405hp">W.R. Meadows 3405 HP (10.0 lb/gal)</option>
+                            <option value="wr3405ne">W.R. Meadows 3405 NE (10.0 lb/gal)</option>
+                            <option value="wr1190">W.R. Meadows 1190 (10.0 lb/gal)</option>
+                            <option value="wrDirectFire">W.R. Meadows DIRECT FIRE (11.3 lb/gal)</option>
+                            <option value="wr164">W.R. Meadows #164 (~9.33 lb/gal from 69.8 lb/cf)</option>
+                            <option value="wrHiSpec">W.R. Meadows HI-SPEC (~9.65 lb/gal from 72.2 lb/cf)</option>
+                            <option value="custom">Custom (manual lb/gal)</option>
+                        </select>
+                        <p class="helper-text" id="productSpecNote">3405-M sample note: 9.2 lb/gal.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="unitWeightGal">Sealant unit weight (lb/gal)</label>
+                        <input type="number" id="unitWeightGal" step="any" min="0" value="9.2">
+                    </div>
+                    <div class="form-group">
+                        <label for="jointWidth">Joint width (in)</label>
+                        <input type="number" id="jointWidth" step="any" min="0" value="1">
+                    </div>
+                    <div class="form-group">
+                        <label for="jointDepth">Joint depth (in)</label>
+                        <input type="number" id="jointDepth" step="any" min="0" value="0.25">
+                    </div>
+                    <div class="form-group">
+                        <label for="jointLength">Total joint length (ft)</label>
+                        <input type="number" id="jointLength" step="any" min="0" placeholder="Optional for totals">
+                    </div>
+                </div>
+                <p class="helper-text">Defaults match the sample sheet: 9.2 lb/gal, 1 in wide, 1/4 in deep.</p>
+
+                <div class="hot-rubber-actions">
+                    <button type="button" id="calculateRubber" class="calculate-button">Calculate</button>
+                    <button type="button" id="loadSample" class="ghost-button">Load Sample</button>
+                    <button type="button" id="clearInputs" class="ghost-button">Clear</button>
+                </div>
+            </div>
+
+            <div class="calculator-panel">
+                <h2>Results</h2>
+                <div id="rubberMessage" class="note" aria-live="polite"></div>
+                <div id="rubberResult" class="result"></div>
+                <div id="rubberDetails" class="formula-details"></div>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>Method Notes</h2>
+            <ul>
+                <li>Density (lb/cf) = (lb/gal) / 0.13368.</li>
+                <li>Joint volume per foot (cf/ft) = (Width(in) × Depth(in) × 12 in/ft) / 1728 = Width × Depth / 144.</li>
+                <li>Weight per foot = Density × Volume per foot. Total gallons = Total lb / (lb/gal).</li>
+            </ul>
+        </section>
+
+        <section class="references">
+            <h2>Sample Calcs</h2>
+            <img src="hot poured rubber.png" alt="Sample hot poured rubber concrete sawed joints calculations with formula steps" class="reference-image" loading="lazy">
+            <p class="image-credit">courtensy of Don Uptegraff.</p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/hotPouredRubber.js"></script>
+</body>
+</html>
