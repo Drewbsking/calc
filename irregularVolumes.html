@@ -63,6 +63,37 @@
             margin-top: 14px;
         }
 
+        .preview-card {
+            margin-top: 14px;
+            padding: 12px;
+            border: 1px solid #d0d8e4;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .preview-card h3 {
+            margin: 0 0 4px;
+            text-align: center;
+            color: #0b2a4a;
+            font-size: 18px;
+        }
+
+        .preview-meta {
+            text-align: center;
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .dynamic-svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: linear-gradient(180deg, #fcfdff 0%, #f3f7fc 100%);
+        }
+
         .reference-image {
             display: block;
             width: 100%;
@@ -134,6 +165,12 @@
                     </table>
                 </div>
 
+                <div class="preview-card">
+                    <h3>Live Average End Area Preview</h3>
+                    <p class="preview-meta" id="averagePreviewMeta">Enter at least two station/area pairs.</p>
+                    <svg id="averagePreviewSvg" class="dynamic-svg" viewBox="0 0 960 320" role="img" aria-label="Live average end area profile preview"></svg>
+                </div>
+
                 <p class="helper-text">Rows are sorted by station before calculating. Duplicate stations are skipped as errors.</p>
 
                 <button class="calculate-button" type="button" id="calculateVolume">Calculate average end area volume</button>
@@ -173,6 +210,12 @@
                             <label for="crossBase">Base area (sq ft)</label>
                             <input type="number" id="crossBase" step="any" min="0" placeholder="e.g., 1500">
                         </div>
+                    </div>
+
+                    <div class="preview-card">
+                        <h3>Live Cross-Section Preview</h3>
+                        <p class="preview-meta" id="crossPreviewMeta">Enter a, b, c, d depths and base area.</p>
+                        <svg id="crossPreviewSvg" class="dynamic-svg" viewBox="0 0 960 360" role="img" aria-label="Live cross-section method preview"></svg>
                     </div>
 
                     <button class="calculate-button" type="button" id="calculateCrossSection">Calculate cross-section volume</button>
