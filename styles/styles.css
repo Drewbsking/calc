@@ -59,6 +59,20 @@ body {
     margin-bottom: 5px;
 }
 
+.tool-category-label {
+    width: fit-content;
+    margin: 0 auto 10px;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #e7f3fe;
+    border: 1px solid #c7ddf7;
+    color: #0b2a4a;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+}
+
 .mode-toggle {
     display: inline-flex;
     justify-content: center;
