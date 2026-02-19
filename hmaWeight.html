@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HMA Weight Factor</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .hma-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .ghost-button {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #0b2a4a;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1 1 180px;
+        }
+
+        .ghost-button:hover {
+            background: #e2e8f0;
+        }
+
+        .hma-actions .calculate-button {
+            margin-top: 0;
+            width: auto;
+            flex: 1 1 240px;
+        }
+
+        .reference-image {
+            display: block;
+            width: 100%;
+            max-width: 760px;
+            height: auto;
+            border: 1px solid #d0d8e4;
+            border-radius: 8px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+            margin: 12px auto 6px;
+        }
+
+        .image-credit {
+            text-align: center;
+            font-size: 13px;
+            color: #475569;
+        }
+
+        .helper-text {
+            color: #475569;
+            margin: 6px 0 2px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>HMA Weight Factor</h1>
+            <p class="calculator-lede">Calculate compacted HMA weight in lb/SYD/in using bulk specific gravity (Gmb) from the JMF.</p>
+            <p class="note">Formula basis: Unit weight = Gmb × 62.4 (lb/cf), then lb/SYD/in = Unit weight × (3 × 3 × 1/12).</p>
+
+            <div class="calculator-panel">
+                <h2>Inputs</h2>
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label for="gmbInput">Gmb (Bulk Specific Gravity)</label>
+                        <input type="number" id="gmbInput" step="any" min="0" placeholder="e.g., 2.449">
+                    </div>
+                    <div class="form-group">
+                        <label for="areaInput">Area (SYD)</label>
+                        <input type="number" id="areaInput" step="any" min="0" placeholder="e.g., 1500">
+                    </div>
+                    <div class="form-group">
+                        <label for="thicknessInput">Thickness (in)</label>
+                        <input type="number" id="thicknessInput" step="any" min="0" placeholder="e.g., 2">
+                    </div>
+                </div>
+                <p class="helper-text">Area and thickness are optional for totals. Leave blank to compute only the lb/SYD/in factor.</p>
+
+                <div class="hma-actions">
+                    <button type="button" id="calculateHma" class="calculate-button">Calculate HMA Weight</button>
+                    <button type="button" id="loadExample" class="ghost-button">Load Example (Gmb 2.449)</button>
+                    <button type="button" id="clearHma" class="ghost-button">Clear</button>
+                </div>
+            </div>
+
+            <div class="calculator-panel">
+                <h2>Results</h2>
+                <div id="hmaMessage" class="note" aria-live="polite"></div>
+                <div id="hmaResults" class="result"></div>
+                <div id="hmaDetails" class="formula-details"></div>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>Method Notes</h2>
+            <ul>
+                <li>Water unit weight is fixed at 62.4 lb/cf.</li>
+                <li>1 SYD at 1 inch thick has volume 3 ft × 3 ft × (1/12) ft = 0.75 cf.</li>
+                <li>Therefore lb/SYD/in = Gmb × 62.4 × 0.75 = Gmb × 46.8.</li>
+            </ul>
+        </section>
+
+        <section class="references">
+            <h2>BSG from JMF Example</h2>
+            <img src="BSG from JMF.png" alt="Handwritten example showing Gmb conversion to lb per square yard per inch for compacted HMA" class="reference-image" loading="lazy">
+            <p class="image-credit">courtensy of Don Uptegraff.</p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/hmaWeight.js"></script>
+</body>
+</html>
