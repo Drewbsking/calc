@@ -308,16 +308,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const endAverage = (first + last) / 2;
     const weightedSum = endAverage + interiorSum;
     const area = spacing * weightedSum;
+    const areaSqYd = area / 9;
     const interiorExpr = interiorLabels.length ? interiorLabels.join(' + ') : 'none';
 
-    areaResultEl.innerHTML = `<strong>Area (A):</strong> ${formatNumber(area)} sq ft`;
+    areaResultEl.innerHTML = `<strong>Area (A):</strong> ${formatNumber(area)} sq ft (${formatNumber(areaSqYd)} sq yd)`;
 
     formulaDetailsEl.innerHTML = `
       <p><strong>Ordinate count:</strong> ${ordinates.length}</p>
       <p><strong>End average:</strong> (${formatNumber(first)} + ${formatNumber(last)}) / 2 = ${formatNumber(endAverage)}</p>
       <p><strong>Interior sum:</strong> ${interiorExpr} = ${formatNumber(interiorSum)}</p>
       <p><strong>Weighted sum:</strong> ${formatNumber(endAverage)} + ${formatNumber(interiorSum)} = ${formatNumber(weightedSum)}</p>
-      <p><strong>Area:</strong> A = L × weighted sum = ${formatNumber(spacing)} × ${formatNumber(weightedSum)} = ${formatNumber(area)} sq ft</p>
+      <p><strong>Area:</strong> A = L × weighted sum = ${formatNumber(spacing)} × ${formatNumber(weightedSum)} = ${formatNumber(area)} sq ft = ${formatNumber(areaSqYd)} sq yd</p>
     `;
 
     const segments = buildSegmentRows(spacing, ordinates, labels);
@@ -327,6 +328,7 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${segmentData.segment}</td>
         <td>${formatNumber(segmentData.avg)}</td>
         <td>${formatNumber(segmentData.area)}</td>
+        <td>${formatNumber(segmentData.area / 9)}</td>
       </tr>
     `).join('');
 
@@ -339,6 +341,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <th scope="col">Ordinates</th>
               <th scope="col">Avg ordinate (ft)</th>
               <th scope="col">Segment area (sq ft)</th>
+              <th scope="col">Segment area (sq yd)</th>
             </tr>
           </thead>
           <tbody>

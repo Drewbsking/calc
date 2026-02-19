@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irregular Volumes</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .end-area-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .ghost-button {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #0b2a4a;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .ghost-button:hover {
+            background: #e2e8f0;
+        }
+
+        .station-table input {
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .remove-row {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+            border-radius: 6px;
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+
+        .remove-row:hover {
+            background: #f8fafc;
+        }
+
+        .result-callout {
+            background: #ecfeff;
+            border: 1px solid #bae6fd;
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 14px;
+        }
+
+        .helper-text {
+            color: #475569;
+            margin: 6px 0 2px;
+            font-size: 14px;
+        }
+
+        .method-panel + .method-panel {
+            margin-top: 14px;
+        }
+
+        .reference-image {
+            display: block;
+            width: 100%;
+            max-width: 720px;
+            height: auto;
+            border: 1px solid #d0d8e4;
+            border-radius: 8px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+            margin: 12px auto 6px;
+        }
+
+        .image-credit {
+            text-align: center;
+            font-size: 13px;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Irregular Volumes</h1>
+            <p class="calculator-lede">Toggle between Average End Area and Cross-Section methods for irregular solids.</p>
+            <p class="note">Use consistent units. Feet-based inputs return cubic feet and cubic yards.</p>
+
+            <div class="mode-toggle" role="tablist" aria-label="Volume method">
+                <button type="button" class="mode-button active" data-method="average" aria-pressed="true">Average End Area</button>
+                <button type="button" class="mode-button" data-method="cross" aria-pressed="false">Cross-Section</button>
+            </div>
+
+            <div id="averageMethodPanel" class="method-panel">
+                <div class="calculator-panel">
+                    <h2>Trench shape helper</h2>
+                    <p class="helper-text">Pick a common shape and enter dimensions to get a quick cross-section area.</p>
+                    <label for="shapeType">Shape</label>
+                    <select id="shapeType">
+                        <option value="rectangle">Rectangle (vertical sides)</option>
+                        <option value="trapezoid">Trapezoid (side slopes)</option>
+                        <option value="triangle">V-trench (symmetric)</option>
+                        <option value="circle">Circular</option>
+                    </select>
+
+                    <div id="shapeFields"></div>
+
+                    <div class="end-area-actions">
+                        <button type="button" id="computeShapeButton" class="ghost-button">Compute area</button>
+                        <button type="button" id="applyShapeButton" class="ghost-button">Send area to next empty row</button>
+                    </div>
+                    <div id="shapeResult" class="result"></div>
+                </div>
+
+                <div class="end-area-actions">
+                    <button type="button" id="addRowButton" class="ghost-button">+ Add station</button>
+                    <button type="button" id="loadExampleButton" class="ghost-button">Load PE example</button>
+                </div>
+
+                <div class="table-container">
+                    <table class="station-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Station (ft)</th>
+                                <th scope="col">Area (sq ft)</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="stationRows"></tbody>
+                    </table>
+                </div>
+
+                <p class="helper-text">Rows are sorted by station before calculating. Duplicate stations are skipped as errors.</p>
+
+                <button class="calculate-button" type="button" id="calculateVolume">Calculate average end area volume</button>
+                <div id="message" class="note" aria-live="polite"></div>
+                <div id="volumeResult" class="result"></div>
+                <div id="breakdown"></div>
+                <div class="result-callout">
+                    <p><strong>Formula:</strong> Volume between stations = ((A<sub>1</sub> + A<sub>2</sub>) / 2) × Δx</p>
+                    <p class="helper-text">Great for the no-calculator PE items where only a few sections are given.</p>
+                </div>
+            </div>
+
+            <div id="crossMethodPanel" class="method-panel hidden">
+                <div class="calculator-panel">
+                    <h2>Cross-Section Method</h2>
+                    <p class="helper-text">Use corner depths and plan base area from the irregular solids method.</p>
+                    <p class="helper-text"><strong>Formula:</strong> V = ((a + b + c + d) / 4) × Base</p>
+
+                    <div class="input-grid">
+                        <div>
+                            <label for="crossA">a (ft)</label>
+                            <input type="number" id="crossA" step="any" min="0" placeholder="e.g., 2.0">
+                        </div>
+                        <div>
+                            <label for="crossB">b (ft)</label>
+                            <input type="number" id="crossB" step="any" min="0" placeholder="e.g., 3.5">
+                        </div>
+                        <div>
+                            <label for="crossC">c (ft)</label>
+                            <input type="number" id="crossC" step="any" min="0" placeholder="e.g., 4.0">
+                        </div>
+                        <div>
+                            <label for="crossD">d (ft)</label>
+                            <input type="number" id="crossD" step="any" min="0" placeholder="e.g., 2.8">
+                        </div>
+                        <div>
+                            <label for="crossBase">Base area (sq ft)</label>
+                            <input type="number" id="crossBase" step="any" min="0" placeholder="e.g., 1500">
+                        </div>
+                    </div>
+
+                    <button class="calculate-button" type="button" id="calculateCrossSection">Calculate cross-section volume</button>
+                    <div id="crossMessage" class="note" aria-live="polite"></div>
+                    <div id="crossResult" class="result"></div>
+                    <div id="crossDetails" class="formula-details"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>PE-style example (Average End Area)</h2>
+            <p>Cross-section areas (sq ft) are given every 200 ft: 0, 320, 640, 410, 100. Loading the example pre-fills stations 0–800 ft and solves the total volume in cubic yards.</p>
+        </section>
+
+        <section class="references">
+            <h2>Irregular Solids</h2>
+            <img src="irregular solids.png" alt="Irregular solids diagram reference" class="reference-image" loading="lazy">
+            <p class="image-credit">courtensy of Don Uptegraff</p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/irregularVolumes.js"></script>
+</body>
+</html>

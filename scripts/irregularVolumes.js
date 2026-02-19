@@ -5,6 +5,20 @@ document.addEventListener('DOMContentLoaded', () => {
   const breakdownEl = document.getElementById('breakdown');
   const shapeFieldsEl = document.getElementById('shapeFields');
   const shapeResultEl = document.getElementById('shapeResult');
+  const averagePanelEl = document.getElementById('averageMethodPanel');
+  const crossPanelEl = document.getElementById('crossMethodPanel');
+  const modeButtons = Array.from(document.querySelectorAll('[data-method]'));
+
+  const crossInputs = {
+    a: document.getElementById('crossA'),
+    b: document.getElementById('crossB'),
+    c: document.getElementById('crossC'),
+    d: document.getElementById('crossD'),
+    base: document.getElementById('crossBase'),
+  };
+  const crossMessageEl = document.getElementById('crossMessage');
+  const crossResultEl = document.getElementById('crossResult');
+  const crossDetailsEl = document.getElementById('crossDetails');
 
   const exampleData = [
     { station: 0, area: 0 },
@@ -126,6 +140,24 @@ document.addEventListener('DOMContentLoaded', () => {
     messageEl.textContent = '';
     volumeResultEl.textContent = '';
     breakdownEl.innerHTML = '';
+  };
+
+  const clearCrossOutputs = () => {
+    crossMessageEl.textContent = '';
+    crossResultEl.textContent = '';
+    crossDetailsEl.innerHTML = '';
+  };
+
+  const setMethod = (method) => {
+    const isAverage = method === 'average';
+    averagePanelEl.classList.toggle('hidden', !isAverage);
+    crossPanelEl.classList.toggle('hidden', isAverage);
+
+    modeButtons.forEach((button) => {
+      const isActive = button.dataset.method === method;
+      button.classList.toggle('active', isActive);
+      button.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+    });
   };
 
   const addRow = (stationValue = '', areaValue = '') => {
@@ -276,7 +308,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const totalCubicYards = totalCubicFeet / 27;
 
-    volumeResultEl.innerHTML = `<strong>Total volume:</strong> ${formatNumber(totalCubicFeet)} ft³ (${formatNumber(totalCubicYards)} yd³)`;
+    volumeResultEl.innerHTML = `<strong>Total volume:</strong> ${formatNumber(totalCubicFeet)} ft³ (${formatNumber(totalCubicYards)} yd³ | ${formatNumber(totalCubicYards)} CYD)`;
 
     const rowsHtml = intervals.map((interval, idx) => `
         <tr>
@@ -285,6 +317,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <td>${formatNumber(interval.run)}</td>
             <td>${formatNumber(interval.avgArea)}</td>
             <td>${formatNumber(interval.cubicFeet)}</td>
+            <td>${formatNumber(interval.cubicYards)}</td>
             <td>${formatNumber(interval.cubicYards)}</td>
         </tr>
     `).join('');
@@ -300,6 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <th scope="col">Avg area (sq ft)</th>
                     <th scope="col">Volume (ft³)</th>
                     <th scope="col">Volume (yd³)</th>
+                    <th scope="col">Volume (CYD)</th>
                 </tr>
             </thead>
             <tbody>
@@ -310,9 +344,50 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
   };
 
+  const calculateCrossSectionVolume = () => {
+    clearCrossOutputs();
+
+    const a = parseFloat(crossInputs.a.value);
+    const b = parseFloat(crossInputs.b.value);
+    const c = parseFloat(crossInputs.c.value);
+    const d = parseFloat(crossInputs.d.value);
+    const base = parseFloat(crossInputs.base.value);
+
+    const entries = [
+      ['a', a],
+      ['b', b],
+      ['c', c],
+      ['d', d],
+    ];
+
+    for (let i = 0; i < entries.length; i += 1) {
+      const [name, value] = entries[i];
+      if (Number.isNaN(value) || value < 0) {
+        crossMessageEl.textContent = `Depth ${name} must be zero or greater.`;
+        return;
+      }
+    }
+
+    if (Number.isNaN(base) || base <= 0) {
+      crossMessageEl.textContent = 'Base area must be greater than zero.';
+      return;
+    }
+
+    const averageDepth = (a + b + c + d) / 4;
+    const cubicFeet = averageDepth * base;
+    const cubicYards = cubicFeet / 27;
+
+    crossResultEl.innerHTML = `<strong>Total volume:</strong> ${formatNumber(cubicFeet)} ft³ (${formatNumber(cubicYards)} yd³ | ${formatNumber(cubicYards)} CYD)`;
+    crossDetailsEl.innerHTML = `
+      <p><strong>Average depth:</strong> (${formatNumber(a)} + ${formatNumber(b)} + ${formatNumber(c)} + ${formatNumber(d)}) / 4 = ${formatNumber(averageDepth)} ft</p>
+      <p><strong>Volume:</strong> V = Average depth × Base = ${formatNumber(averageDepth)} × ${formatNumber(base)} = ${formatNumber(cubicFeet)} ft³ = ${formatNumber(cubicYards)} yd³ = ${formatNumber(cubicYards)} CYD</p>
+    `;
+  };
+
   document.getElementById('addRowButton').addEventListener('click', () => addRow());
   document.getElementById('loadExampleButton').addEventListener('click', loadExample);
   document.getElementById('calculateVolume').addEventListener('click', calculateVolume);
+  document.getElementById('calculateCrossSection').addEventListener('click', calculateCrossSectionVolume);
   document.getElementById('computeShapeButton').addEventListener('click', calculateShapeArea);
   document.getElementById('applyShapeButton').addEventListener('click', () => {
     const area = calculateShapeArea();
@@ -326,9 +401,17 @@ document.addEventListener('DOMContentLoaded', () => {
     renderShapeFields(event.target.value);
     shapeResultEl.textContent = '';
   });
+  modeButtons.forEach((button) => {
+    button.addEventListener('click', () => {
+      const method = button.dataset.method;
+      if (!method) return;
+      setMethod(method);
+    });
+  });
 
   // Start with two blank rows ready for input.
   addRow();
   addRow();
   renderShapeFields(document.getElementById('shapeType').value);
+  setMethod('average');
 });
