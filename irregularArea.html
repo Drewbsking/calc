@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Irregular Area</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        .ordinate-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .ordinate-table input {
+            width: 100%;
+            box-sizing: border-box;
+            margin: 0;
+        }
+
+        .row-label {
+            font-weight: 700;
+            color: #0b2a4a;
+        }
+
+        .irregular-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .irregular-actions .calculate-button {
+            margin-top: 0;
+            width: auto;
+            flex: 1 1 220px;
+        }
+
+        .ghost-button {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            color: #0b2a4a;
+            padding: 10px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            flex: 1 1 150px;
+        }
+
+        .ghost-button:hover {
+            background: #e2e8f0;
+        }
+
+        .helper-text {
+            color: #475569;
+            margin: 8px 0 0;
+            font-size: 14px;
+        }
+
+        .remove-row {
+            background: #fff;
+            border: 1px solid #e2e8f0;
+            color: #0f172a;
+            border-radius: 6px;
+            padding: 8px 10px;
+            cursor: pointer;
+        }
+
+        .remove-row:hover {
+            background: #f8fafc;
+        }
+
+        .preview-card {
+            margin-top: 14px;
+            padding: 12px;
+            border: 1px solid #d0d8e4;
+            border-radius: 10px;
+            background: #f8fafc;
+        }
+
+        .preview-card h3 {
+            margin: 0 0 4px;
+            text-align: center;
+            color: #0b2a4a;
+            font-size: 18px;
+        }
+
+        .preview-meta {
+            text-align: center;
+            font-size: 13px;
+            color: #475569;
+            margin-bottom: 8px;
+        }
+
+        .irregular-svg {
+            display: block;
+            width: 100%;
+            height: auto;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            background: linear-gradient(180deg, #fcfdff 0%, #f3f7fc 100%);
+        }
+
+        .reference-image {
+            display: block;
+            width: 100%;
+            max-width: 720px;
+            height: auto;
+            margin: 12px auto 6px;
+            border: 1px solid #d0d8e4;
+            border-radius: 8px;
+            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+        }
+
+        .image-credit {
+            text-align: center;
+            font-size: 13px;
+            color: #475569;
+        }
+    </style>
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h1>Irregular Area</h1>
+            <p class="calculator-lede">Equal-spacing irregular figure area using the average-ordinate method.</p>
+            <p class="note">Use consistent units. Formula: A = L[(y1 + yn)/2 + y2 + y3 + ... + y(n-1)]</p>
+
+            <div class="calculator-panel">
+                <h2>Inputs</h2>
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label for="spacing">Spacing L (ft)</label>
+                        <input type="number" id="spacing" step="any" min="0" placeholder="e.g., 25">
+                    </div>
+                </div>
+
+                <p class="helper-text">Add as many equally spaced ordinates as needed (minimum 2).</p>
+                <div class="ordinate-actions">
+                    <button class="ghost-button" id="addOrdinate" type="button">+ Add ordinate</button>
+                </div>
+                <div class="table-container">
+                    <table class="ordinate-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Station #</th>
+                                <th scope="col">Label</th>
+                                <th scope="col">Ordinate (ft)</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="ordinateRows"></tbody>
+                    </table>
+                </div>
+
+                <div class="preview-card">
+                    <h3>Live Figure Preview</h3>
+                    <p class="preview-meta" id="previewMeta">Enter ordinates to draw the figure.</p>
+                    <svg id="irregularSvg" class="irregular-svg" viewBox="0 0 960 360" role="img" aria-label="Live irregular area profile preview"></svg>
+                </div>
+
+                <div class="irregular-actions">
+                    <button class="calculate-button" id="calculateArea" type="button">Calculate area</button>
+                    <button class="ghost-button" id="loadExample" type="button">Load example</button>
+                    <button class="ghost-button" id="clearInputs" type="button">Clear</button>
+                </div>
+            </div>
+
+            <div class="calculator-panel">
+                <h2>Results</h2>
+                <div id="message" class="note" aria-live="polite"></div>
+                <div id="areaResult" class="result"></div>
+                <div id="formulaDetails" class="formula-details"></div>
+                <div id="segmentTable"></div>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>Method Notes</h2>
+            <ul>
+                <li>This tool assumes uniform spacing L between each ordinate.</li>
+                <li>End ordinates y1 and yn are half-weighted; all interior ordinates are full-weighted.</li>
+                <li>With 10 ordinates, labels map to a through j and match the classic form.</li>
+                <li>Total area is reported in square feet when L and ordinates are entered in feet.</li>
+            </ul>
+        </section>
+
+        <section class="references">
+            <h2>Irregular Figure</h2>
+            <img src="Irregular Figure.png" alt="Irregular figure area diagram with equal station spacing and ordinate labels" class="reference-image" loading="lazy">
+            <p class="image-credit">courtensy of Don Uptegraff.</p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/irregularArea.js"></script>
+</body>
+</html>

@@ -10,6 +10,7 @@
   const totalResults = el('totalResults');
   const calcDetails = el('calcDetails');
   const calcBtn = el('calculateBtn');
+  const printBtn = el('printBtn');
   const depthButtons = Array.from(document.querySelectorAll('[data-depth]'));
 
   const round2 = (val) => (Number.isFinite(val) ? val.toFixed(2) : '0.00');
@@ -78,8 +79,11 @@
     input?.addEventListener('input', calculate);
   });
 
-  // lock fixed fields visually
   calcBtn?.addEventListener('click', calculate);
+  printBtn?.addEventListener('click', () => {
+    calculate();
+    window.print();
+  });
   setDepth(inputs.stoneDepth.value || 1.5);
   calculate();
 })();

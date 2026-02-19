@@ -84,6 +84,51 @@
             font-size: 13px;
             color: #475569;
         }
+        .action-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .print-button {
+            background: #0b2a4a;
+        }
+        .print-button:hover {
+            background: #0a2240;
+        }
+        @media print {
+            body {
+                background: #fff;
+                color: #000;
+                padding: 0 12px;
+            }
+            .container {
+                max-width: none;
+                margin: 0;
+                padding: 0;
+            }
+            .underdrain-layout {
+                display: block;
+            }
+            .calculator-panel,
+            .diagram-card,
+            .references {
+                box-shadow: none;
+                border: 1px solid #cbd5e1;
+                page-break-inside: avoid;
+                margin-bottom: 12px;
+            }
+            .reference-image {
+                box-shadow: none;
+            }
+            .action-row {
+                display: none;
+            }
+            .note,
+            .diagram-note,
+            .image-credit {
+                color: #000;
+            }
+        }
     </style>
 </head>
 <body>
@@ -131,7 +176,10 @@
                 <div class="result" id="totalResults"></div>
             </div>
 
-            <button class="calculate-button" id="calculateBtn" type="button">Calculate</button>
+            <div class="action-row">
+                <button class="calculate-button" id="calculateBtn" type="button">Calculate</button>
+                <button class="calculate-button print-button" id="printBtn" type="button">Print PDF for IDR</button>
+            </div>
         </section>
 
         <section class="references">
@@ -143,11 +191,6 @@
             </ul>
         </section>
 
-        <section class="references">
-            <h2>Example hand calc</h2>
-            <img src="example Edge Drain Calc.png" alt="Example edge drain calculation handwritten sheet" class="reference-image" loading="lazy">
-            <p class="image-credit">Example courtesy of Don Uptegraff.</p>
-        </section>
     </main>
 
     <div id="footer-placeholder"></div>
