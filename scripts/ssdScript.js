@@ -611,11 +611,12 @@ function setCurveMode(mode) {
 
   const forwardButton = document.getElementById('curve-mode-forward');
   const inverseButton = document.getElementById('curve-mode-inverse');
+  const inverseStepsPanel = document.getElementById('inverse-steps-panel');
   const forwardPanel = document.getElementById('forward-panel');
   const inversePanel = document.getElementById('inverse-panel');
   const forwardOutput = document.getElementById('output');
   const inverseOutput = document.getElementById('inverse-output');
-  if (!forwardButton || !inverseButton || !forwardPanel || !inversePanel || !forwardOutput || !inverseOutput) return;
+  if (!forwardButton || !inverseButton || !forwardPanel || !inversePanel || !forwardOutput || !inverseOutput || !inverseStepsPanel) return;
 
   const forwardActive = mode === 'forward';
 
@@ -625,6 +626,7 @@ function setCurveMode(mode) {
   inverseButton.setAttribute('aria-pressed', String(!forwardActive));
   forwardPanel.classList.toggle('hidden', !forwardActive);
   forwardOutput.classList.toggle('hidden', !forwardActive);
+  inverseStepsPanel.classList.toggle('hidden', forwardActive);
   inversePanel.classList.toggle('hidden', forwardActive);
   inverseOutput.classList.toggle('hidden', forwardActive);
 

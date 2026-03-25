@@ -20,6 +20,24 @@
                 <p><strong>Purpose:</strong> <span id="curve-calculator-purpose">Use this calculator to estimate the minimum required length and K value for a crest vertical curve connecting two vertical tangents, based on the selected stopping or passing sight-distance criterion.</span></p>
                 <p><strong>How to use:</strong> <span id="curve-calculator-how-to-use">Select <strong>AASHTO Stopping</strong>, <strong>RCOC Stopping</strong>, or <strong>AASHTO Passing</strong>. The calculator applies the matching sight-distance table and default heights automatically. Then enter the initial and final tangent grades plus the design speed. If needed, you can still edit the eye and object heights manually for a custom check.</span></p>
             </div>
+            <section id="inverse-steps-panel" class="inverse-steps curve-panel hidden">
+                <h3>Google Earth Pro (Desktop) Steps</h3>
+                <div class="inverse-step-viewer" aria-live="polite">
+                    <div class="inverse-step-toolbar">
+                        <button type="button" id="inverse-step-prev" class="inverse-step-nav" aria-label="Show previous Google Earth step">
+                            &#8592; Previous
+                        </button>
+                        <p id="inverse-step-counter" class="inverse-step-counter">Step 1 of 3</p>
+                        <button type="button" id="inverse-step-next" class="inverse-step-nav" aria-label="Show next Google Earth step">
+                            Next &#8594;
+                        </button>
+                    </div>
+                    <figure class="inverse-step-stage">
+                        <img id="inverse-step-image" src="img/Step1.png" alt="Google Earth Pro desktop view showing the first step for locating and reviewing the crest vertical curve in plan/profile context" class="inverse-step-image" loading="lazy">
+                        <figcaption id="inverse-step-caption" class="inverse-step-caption"><strong>Step 1:</strong> Open the site in Google Earth Pro and identify the crest vertical curve limits you want to check.</figcaption>
+                    </figure>
+                </div>
+            </section>
             <form class="sight-distance-form">
                 <fieldset class="form-group sight-type-group">
                     <legend>Select Sight Distance Type</legend>
@@ -105,24 +123,6 @@
                         <label for="inverse-curve-length">Vertical Curve Length, L (ft):</label>
                         <input type="number" id="inverse-curve-length" name="inverse-curve-length" min="0" step="0.1" value="265">
                     </div>
-                    <section class="inverse-steps">
-                        <h3>Google Earth Pro (Desktop) Steps</h3>
-                        <div class="inverse-step-viewer" aria-live="polite">
-                            <div class="inverse-step-toolbar">
-                                <button type="button" id="inverse-step-prev" class="inverse-step-nav" aria-label="Show previous Google Earth step">
-                                    &#8592; Previous
-                                </button>
-                                <p id="inverse-step-counter" class="inverse-step-counter">Step 1 of 3</p>
-                                <button type="button" id="inverse-step-next" class="inverse-step-nav" aria-label="Show next Google Earth step">
-                                    Next &#8594;
-                                </button>
-                            </div>
-                            <figure class="inverse-step-stage">
-                                <img id="inverse-step-image" src="img/Step1.png" alt="Google Earth Pro desktop view showing the first step for locating and reviewing the crest vertical curve in plan/profile context" class="inverse-step-image" loading="lazy">
-                                <figcaption id="inverse-step-caption" class="inverse-step-caption"><strong>Step 1:</strong> Open the site in Google Earth Pro and identify the crest vertical curve limits you want to check.</figcaption>
-                            </figure>
-                        </div>
-                    </section>
                 </div>
             </form>
 
