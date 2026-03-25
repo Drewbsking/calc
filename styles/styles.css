@@ -117,6 +117,180 @@ body {
     margin-bottom: 4px;
 }
 
+.sight-distance-form .sight-type-group {
+    margin: 0 0 18px;
+    padding: 16px;
+    border: 1px solid #d7dee8;
+    border-radius: 12px;
+    background: #f8fbff;
+}
+
+.sight-distance-form .sight-type-group legend {
+    padding: 0 8px;
+    font-weight: 700;
+    color: #0b2a4a;
+}
+
+.sight-distance-form .sight-type-options {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.sight-distance-form .sight-type-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 56px;
+    padding: 14px 16px;
+    margin-bottom: 0;
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    background: #fff;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.sight-distance-form .sight-type-option input[type="radio"] {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    flex: 0 0 auto;
+}
+
+.sight-distance-form .sight-type-option span {
+    display: block;
+    line-height: 1.35;
+}
+
+.sight-distance-form .sight-type-option-wide {
+    grid-column: 1 / -1;
+}
+
+.sight-distance-form .sight-type-option:has(input[type="radio"]:checked) {
+    border-color: #1d4ed8;
+    background: #eff6ff;
+    box-shadow: 0 0 0 1px rgba(29, 78, 216, 0.12);
+}
+
+.curve-mode-toggle {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 18px 0 16px;
+}
+
+.curve-mode-button {
+    flex: 1 1 240px;
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
+    background: #f8fafc;
+    color: #0b2a4a;
+    font-weight: 700;
+    padding: 12px 18px;
+    cursor: pointer;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.curve-mode-button.active {
+    background: #0b2a4a;
+    border-color: #0b2a4a;
+    color: #fff;
+}
+
+.curve-panel.hidden {
+    display: none;
+}
+
+.curve-helper-note {
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+.curve-helper-note p {
+    margin: 0;
+}
+
+.inverse-steps {
+    margin-top: 20px;
+}
+
+.inverse-steps h3 {
+    margin: 0 0 12px;
+    text-align: left;
+    color: #0b2a4a;
+}
+
+.inverse-step-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+}
+
+.inverse-step-card {
+    margin: 0;
+    padding: 14px;
+    border: 1px solid #d7dee8;
+    border-radius: 12px;
+    background: #fff;
+    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+}
+
+.inverse-step-image {
+    display: block;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid #d7dee8;
+    margin-bottom: 10px;
+}
+
+.inverse-step-card figcaption {
+    font-size: 14px;
+    line-height: 1.45;
+    color: #334155;
+}
+
+.equation-card {
+    min-width: 260px;
+    flex: 1 1 280px;
+    padding: 14px 16px;
+    border-radius: 12px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+    border: 1px solid #d7dee8;
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+.equation-card h3 {
+    margin: 0 0 8px;
+    text-align: left;
+}
+
+.equation-condition {
+    margin: 0 0 8px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #475569;
+}
+
+.equation-math {
+    margin: 0;
+    font-family: "Times New Roman", Times, serif;
+    font-size: 1.2rem;
+    line-height: 1.5;
+    color: #0f172a;
+}
+
+.equation-math math {
+    display: block;
+    width: 100%;
+}
+
+.equation-math math[display="block"] {
+    margin: 0;
+}
+
 .speed-button {
     width: calc(50% - 10px);
     padding: 10px;
@@ -391,6 +565,24 @@ footer {
         flex-direction: column;
     }
     #chart-container {
+        width: 100%;
+    }
+    .sight-distance-form .sight-type-options {
+        grid-template-columns: 1fr;
+    }
+    .sight-distance-form .sight-type-option-wide {
+        grid-column: auto;
+    }
+    .curve-mode-toggle {
+        flex-direction: column;
+    }
+    .curve-mode-button {
+        width: 100%;
+    }
+    .inverse-step-grid {
+        grid-template-columns: 1fr;
+    }
+    .equation-card {
         width: 100%;
     }
 }

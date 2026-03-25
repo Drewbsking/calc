@@ -12,16 +12,33 @@
     <div class="container">
         <div class="content calculator">
             <h1>AASHTO Vertical Crest Curve</h1>
-            <form oninput="setHeights(); calculateCurveLength();">
-                <div class="form-group">
-                    <label>Select Sight Distance Type:</label>
-                    <input type="radio" id="stopping" name="sight-type" value="stopping" checked>
-                    <label for="stopping">AASHTO Stopping Sight Distance</label><br>
-                    <input type="radio" id="passing" name="sight-type" value="passing">
-                    <label for="passing">Passing Sight Distance</label><br>
-                    <input type="radio" id="rcoc" name="sight-type" value="rcoc">
-                    <label for="rcoc">RCOC Stopping Sight Distance</label><br>
-                </div>
+            <div class="curve-mode-toggle" role="tablist" aria-label="Crest curve calculator mode">
+                <button type="button" id="curve-mode-forward" class="curve-mode-button active" aria-pressed="true">Required Length from Speed</button>
+                <button type="button" id="curve-mode-inverse" class="curve-mode-button" aria-pressed="false">Supported Speed from Existing Crest Curve</button>
+            </div>
+            <p id="curve-calculator-lede" class="calculator-lede">Pick the sight-distance standard, confirm the preset eye/object heights, then enter the two tangent grades and design speed to get the required crest-curve length and K value.</p>
+            <div class="note">
+                <p><strong>Purpose:</strong> <span id="curve-calculator-purpose">Use this calculator to estimate the minimum required length and K value for a crest vertical curve connecting two vertical tangents, based on the selected stopping or passing sight-distance criterion.</span></p>
+                <p><strong>How to use:</strong> <span id="curve-calculator-how-to-use">Select <strong>AASHTO Stopping</strong>, <strong>RCOC Stopping</strong>, or <strong>AASHTO Passing</strong>. The calculator applies the matching sight-distance table and default heights automatically. Then enter the initial and final tangent grades plus the design speed. If needed, you can still edit the eye and object heights manually for a custom check.</span></p>
+            </div>
+            <form class="sight-distance-form">
+                <fieldset class="form-group sight-type-group">
+                    <legend>Select Sight Distance Type</legend>
+                    <div class="sight-type-options">
+                        <label class="sight-type-option" for="stopping">
+                            <input type="radio" id="stopping" name="sight-type" value="stopping" checked>
+                            <span>AASHTO Stopping Sight Distance</span>
+                        </label>
+                        <label class="sight-type-option" for="rcoc">
+                            <input type="radio" id="rcoc" name="sight-type" value="rcoc">
+                            <span>RCOC Stopping Sight Distance</span>
+                        </label>
+                        <label class="sight-type-option sight-type-option-wide" for="passing">
+                            <input type="radio" id="passing" name="sight-type" value="passing">
+                            <span>AASHTO Passing Sight Distance</span>
+                        </label>
+                    </div>
+                </fieldset>
 
                 <div class="form-group">
                     <label for="eye-height">Height of Driver's Eye (feet):</label>
@@ -34,39 +51,108 @@
                 <div class="note">
                     <p>The heights in the calculations above should match the sight distance of interest. RCOC SSD: h1 = 3.5 ft, h2 = 0.5 ft. Passing: h1 = 3.5 ft, h2 = 3.5 ft. AASHTO SSD: h1 = 3.5 ft, h2 = 2.0 ft.</p>
                 </div>
-                <div class="form-group">
-                    <label for="grade-difference">Algebraic Difference of Vertical Curve (%):</label>
-                    <input type="number" id="grade-difference" name="grade-difference" min="0" step="0.5">
+                <div id="forward-panel" class="curve-panel">
+                    <div class="note curve-helper-note">
+                        <p>Crest vertical curve check: the initial tangent grade should be greater than the final tangent grade (`g1 &gt; g2`).</p>
+                    </div>
+                    <div class="input-grid">
+                        <div class="form-group">
+                            <label for="forward-grade-1">Initial Tangent Grade, g1 (%):</label>
+                            <input type="number" id="forward-grade-1" name="forward-grade-1" step="0.1" value="8.5" placeholder="8.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="forward-grade-2">Final Tangent Grade, g2 (%):</label>
+                            <input type="number" id="forward-grade-2" name="forward-grade-2" step="0.1" value="-3.7" placeholder="-3.7">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="speed">Design Speed (mph):</label>
+                        <select id="speed" name="speed">
+                            <option value="15" data-passing-supported="false">15 mph</option>
+                            <option value="20">20 mph</option>
+                            <option value="25">25 mph</option>
+                            <option value="30">30 mph</option>
+                            <option value="35">35 mph</option>
+                            <option value="40">40 mph</option>
+                            <option value="45">45 mph</option>
+                            <option value="50">50 mph</option>
+                            <option value="55">55 mph</option>
+                            <option value="60">60 mph</option>
+                            <option value="65">65 mph</option>
+                            <option value="70">70 mph</option>
+                            <option value="75">75 mph</option>
+                            <option value="80">80 mph</option>
+                            <option value="85" data-passing-supported="false">85 mph</option>
+                        </select>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label for="speed">Design Speed (mph):</label>
-                    <select id="speed" name="speed">
-                        <option value="15">15 mph</option>
-                        <option value="20">20 mph</option>
-                        <option value="25">25 mph</option>
-                        <option value="30">30 mph</option>
-                        <option value="35">35 mph</option>
-                        <option value="40">40 mph</option>
-                        <option value="45">45 mph</option>
-                        <option value="50">50 mph</option>
-                        <option value="55">55 mph</option>
-                        <option value="60">60 mph</option>
-                        <option value="65">65 mph</option>
-                        <option value="70">70 mph</option>
-                        <option value="75">75 mph</option>
-                        <option value="80">80 mph</option>
-                        <option value="85">85 mph</option>
-                    </select>
+
+                <div id="inverse-panel" class="curve-panel hidden">
+                    <div class="note curve-helper-note">
+                        <p>Speed is based on the selected crest-curve criterion and published speed steps in this tool.</p>
+                        <p>Crest vertical curve check: the initial tangent grade should be greater than the final tangent grade (`g1 &gt; g2`).</p>
+                    </div>
+                    <div class="input-grid">
+                        <div class="form-group">
+                            <label for="inverse-grade-1">Initial Tangent Grade, g1 (%):</label>
+                            <input type="number" id="inverse-grade-1" name="inverse-grade-1" step="0.1" value="8.5" placeholder="8.5">
+                        </div>
+                        <div class="form-group">
+                            <label for="inverse-grade-2">Final Tangent Grade, g2 (%):</label>
+                            <input type="number" id="inverse-grade-2" name="inverse-grade-2" step="0.1" value="-3.7" placeholder="-3.7">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inverse-curve-length">Vertical Curve Length, L (ft):</label>
+                        <input type="number" id="inverse-curve-length" name="inverse-curve-length" min="0" step="0.1" value="265">
+                    </div>
+                    <section class="inverse-steps">
+                        <h3>Google Earth Pro (Desktop) Steps</h3>
+                        <div class="inverse-step-grid">
+                            <figure class="inverse-step-card">
+                                <img src="img/Step1.png" alt="Google Earth Pro desktop view showing the first step for locating and reviewing the crest vertical curve in plan/profile context" class="inverse-step-image" loading="lazy">
+                                <figcaption><strong>Step 1:</strong> Open the site in Google Earth Pro and identify the crest vertical curve limits you want to check.</figcaption>
+                            </figure>
+                            <figure class="inverse-step-card">
+                                <img src="img/Step2.png" alt="Google Earth Pro desktop view showing the second step for reading grades and curve information from the terrain profile" class="inverse-step-image" loading="lazy">
+                                <figcaption><strong>Step 2:</strong> Use the terrain profile to read the approach and departure tangent grades for the crest curve.</figcaption>
+                            </figure>
+                            <figure class="inverse-step-card">
+                                <img src="img/Step3.png" alt="Google Earth Pro desktop view showing the third step for measuring the curve length to enter in the supported speed calculator" class="inverse-step-image" loading="lazy">
+                                <figcaption><strong>Step 3:</strong> Measure the vertical-curve length and enter `g1`, `g2`, and `L` here to estimate the supported design speed.</figcaption>
+                            </figure>
+                        </div>
+                    </section>
                 </div>
             </form>
-            <div id="output" class="result">
-                <h3>Required Curve Length:</h3>
+
+            <div id="output" class="result curve-panel">
+                <h3>Algebraic Grade Difference, A:</h3>
+                <p id="forward-a-value" class="highlight">N/A</p>
+                <h3>Required Curve Length, L:</h3>
                 <p id="curve-length" class="highlight">0.00 ft</p>
                 <h3>K Value:</h3>
                 <p id="k-value" class="highlight">0.00</p>
-                <div class="equation">
-                    <h3>Equation Used:</h3>
-                    <p id="equation">N/A</p>
+                <div class="equation-card">
+                    <h3>Method Used</h3>
+                    <p id="equation-condition" class="equation-condition">N/A</p>
+                    <div id="equation" class="equation-math">N/A</div>
+                </div>
+            </div>
+
+            <div id="inverse-output" class="result curve-panel hidden">
+                <h3>Algebraic Grade Difference, A:</h3>
+                <p id="inverse-a-value" class="highlight">N/A</p>
+                <h3>K Value:</h3>
+                <p id="inverse-k-value" class="highlight">N/A</p>
+                <h3>Maximum Supported Design Speed:</h3>
+                <p id="inverse-speed" class="highlight">N/A</p>
+                <h3>Sight Distance Used:</h3>
+                <p id="inverse-sight-distance" class="highlight">N/A</p>
+                <div class="equation-card">
+                    <h3>Method Used</h3>
+                    <p id="inverse-equation-condition" class="equation-condition">N/A</p>
+                    <div id="inverse-equation" class="equation-math">N/A</div>
                 </div>
             </div>
         </div>
