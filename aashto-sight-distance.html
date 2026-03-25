@@ -16,7 +16,6 @@
                 <button type="button" id="curve-mode-forward" class="curve-mode-button active" aria-pressed="true">Required Length from Speed</button>
                 <button type="button" id="curve-mode-inverse" class="curve-mode-button" aria-pressed="false">Supported Speed from Existing Crest Curve</button>
             </div>
-            <p id="curve-calculator-lede" class="calculator-lede">Pick the sight-distance standard, confirm the preset eye/object heights, then enter the two tangent grades and design speed to get the required crest-curve length and K value.</p>
             <div class="note">
                 <p><strong>Purpose:</strong> <span id="curve-calculator-purpose">Use this calculator to estimate the minimum required length and K value for a crest vertical curve connecting two vertical tangents, based on the selected stopping or passing sight-distance criterion.</span></p>
                 <p><strong>How to use:</strong> <span id="curve-calculator-how-to-use">Select <strong>AASHTO Stopping</strong>, <strong>RCOC Stopping</strong>, or <strong>AASHTO Passing</strong>. The calculator applies the matching sight-distance table and default heights automatically. Then enter the initial and final tangent grades plus the design speed. If needed, you can still edit the eye and object heights manually for a custom check.</span></p>
@@ -108,18 +107,19 @@
                     </div>
                     <section class="inverse-steps">
                         <h3>Google Earth Pro (Desktop) Steps</h3>
-                        <div class="inverse-step-grid">
-                            <figure class="inverse-step-card">
-                                <img src="img/Step1.png" alt="Google Earth Pro desktop view showing the first step for locating and reviewing the crest vertical curve in plan/profile context" class="inverse-step-image" loading="lazy">
-                                <figcaption><strong>Step 1:</strong> Open the site in Google Earth Pro and identify the crest vertical curve limits you want to check.</figcaption>
-                            </figure>
-                            <figure class="inverse-step-card">
-                                <img src="img/Step2.png" alt="Google Earth Pro desktop view showing the second step for reading grades and curve information from the terrain profile" class="inverse-step-image" loading="lazy">
-                                <figcaption><strong>Step 2:</strong> Use the terrain profile to read the approach and departure tangent grades for the crest curve.</figcaption>
-                            </figure>
-                            <figure class="inverse-step-card">
-                                <img src="img/Step3.png" alt="Google Earth Pro desktop view showing the third step for measuring the curve length to enter in the supported speed calculator" class="inverse-step-image" loading="lazy">
-                                <figcaption><strong>Step 3:</strong> Measure the vertical-curve length and enter `g1`, `g2`, and `L` here to estimate the supported design speed.</figcaption>
+                        <div class="inverse-step-viewer" aria-live="polite">
+                            <div class="inverse-step-toolbar">
+                                <button type="button" id="inverse-step-prev" class="inverse-step-nav" aria-label="Show previous Google Earth step">
+                                    &#8592; Previous
+                                </button>
+                                <p id="inverse-step-counter" class="inverse-step-counter">Step 1 of 3</p>
+                                <button type="button" id="inverse-step-next" class="inverse-step-nav" aria-label="Show next Google Earth step">
+                                    Next &#8594;
+                                </button>
+                            </div>
+                            <figure class="inverse-step-stage">
+                                <img id="inverse-step-image" src="img/Step1.png" alt="Google Earth Pro desktop view showing the first step for locating and reviewing the crest vertical curve in plan/profile context" class="inverse-step-image" loading="lazy">
+                                <figcaption id="inverse-step-caption" class="inverse-step-caption"><strong>Step 1:</strong> Open the site in Google Earth Pro and identify the crest vertical curve limits you want to check.</figcaption>
                             </figure>
                         </div>
                     </section>

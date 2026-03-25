@@ -1,14 +1,31 @@
 let ssdChart;
 let currentCurveMode = 'forward';
+let currentInverseStepIndex = 0;
+
+const inverseStepSlides = [
+  {
+    src: 'img/Step1.png',
+    alt: 'Google Earth Pro desktop view showing the first step for locating and reviewing the crest vertical curve in plan/profile context',
+    caption: '<strong>Step 1:</strong> Open the site in Google Earth Pro and identify the crest vertical curve limits you want to check.'
+  },
+  {
+    src: 'img/Step2.png',
+    alt: 'Google Earth Pro desktop view showing the second step for reading grades and curve information from the terrain profile',
+    caption: '<strong>Step 2:</strong> Use the terrain profile to read the approach and departure tangent grades for the crest curve.'
+  },
+  {
+    src: 'img/Step3.png',
+    alt: 'Google Earth Pro desktop view showing the third step for measuring the curve length to enter in the supported speed calculator',
+    caption: '<strong>Step 3:</strong> Measure the vertical-curve length and enter `g1`, `g2`, and `L` here to estimate the supported design speed.'
+  }
+];
 
 const curveModeCopy = {
   forward: {
-    lede: 'Pick the sight-distance standard, confirm the preset eye/object heights, then enter the two tangent grades and design speed to get the required crest-curve length and K value.',
     purpose: 'Use this calculator to estimate the minimum required length and K value for a crest vertical curve connecting two vertical tangents, based on the selected stopping or passing sight-distance criterion.',
     howToUse: 'Select <strong>AASHTO Stopping</strong>, <strong>RCOC Stopping</strong>, or <strong>AASHTO Passing</strong>. The calculator applies the matching sight-distance table and default heights automatically. Then enter the initial and final tangent grades plus the design speed. If needed, you can still edit the eye and object heights manually for a custom check.'
   },
   inverse: {
-    lede: 'Pick the sight-distance standard, confirm the preset eye/object heights, then enter the two tangent grades and existing curve length to determine the supported design speed and K value.',
     purpose: 'Use this calculator to evaluate an existing crest vertical curve connecting two vertical tangents and estimate the maximum supported design speed and K value based on the selected stopping or passing sight-distance criterion.',
     howToUse: 'Select <strong>AASHTO Stopping</strong>, <strong>RCOC Stopping</strong>, or <strong>AASHTO Passing</strong>. The calculator applies the matching sight-distance table and default heights automatically. Then enter the initial tangent grade, final tangent grade, and existing vertical-curve length. If needed, you can still edit the eye and object heights manually for a custom check.'
   }
@@ -360,19 +377,57 @@ function isCrestCurveInput(grade1, grade2) {
 
 function updateCurveModeCopy(mode) {
   const copy = curveModeCopy[mode] || curveModeCopy.forward;
-  const ledeEl = document.getElementById('curve-calculator-lede');
   const purposeEl = document.getElementById('curve-calculator-purpose');
   const howToUseEl = document.getElementById('curve-calculator-how-to-use');
 
-  if (ledeEl) {
-    ledeEl.textContent = copy.lede;
-  }
   if (purposeEl) {
     purposeEl.textContent = copy.purpose;
   }
   if (howToUseEl) {
     howToUseEl.innerHTML = copy.howToUse;
   }
+}
+
+function renderInverseStep(index) {
+  const step = inverseStepSlides[index];
+  const imageEl = document.getElementById('inverse-step-image');
+  const captionEl = document.getElementById('inverse-step-caption');
+  const counterEl = document.getElementById('inverse-step-counter');
+  const prevButton = document.getElementById('inverse-step-prev');
+  const nextButton = document.getElementById('inverse-step-next');
+
+  if (!step || !imageEl || !captionEl || !counterEl || !prevButton || !nextButton) {
+    return;
+  }
+
+  currentInverseStepIndex = index;
+  imageEl.src = step.src;
+  imageEl.alt = step.alt;
+  captionEl.innerHTML = step.caption;
+  counterEl.textContent = `Step ${index + 1} of ${inverseStepSlides.length}`;
+  prevButton.disabled = index === 0;
+  nextButton.disabled = index === inverseStepSlides.length - 1;
+}
+
+function changeInverseStep(direction) {
+  const nextIndex = currentInverseStepIndex + direction;
+  if (nextIndex < 0 || nextIndex >= inverseStepSlides.length) {
+    return;
+  }
+
+  renderInverseStep(nextIndex);
+}
+
+function initializeInverseSteps() {
+  const prevButton = document.getElementById('inverse-step-prev');
+  const nextButton = document.getElementById('inverse-step-next');
+  if (!prevButton || !nextButton) {
+    return;
+  }
+
+  prevButton.addEventListener('click', () => changeInverseStep(-1));
+  nextButton.addEventListener('click', () => changeInverseStep(1));
+  renderInverseStep(0);
 }
 
 function calculateCurveLength() {
@@ -611,6 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
   if (document.querySelector('input[name="sight-type"]')) {
     setHeights();
     updateCurveCalculations();
+    initializeInverseSteps();
     document.getElementById('curve-mode-forward')?.addEventListener('click', () => setCurveMode('forward'));
     document.getElementById('curve-mode-inverse')?.addEventListener('click', () => setCurveMode('inverse'));
     document.querySelectorAll('input[name="sight-type"]').forEach((input) => {

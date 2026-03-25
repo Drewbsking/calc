@@ -221,32 +221,63 @@ body {
     color: #0b2a4a;
 }
 
-.inverse-step-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 16px;
+.inverse-step-viewer {
+    padding: 18px;
+    border: 1px solid #d7dee8;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+    box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
 }
 
-.inverse-step-card {
-    margin: 0;
-    padding: 14px;
-    border: 1px solid #d7dee8;
-    border-radius: 12px;
+.inverse-step-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.inverse-step-nav {
+    border: 1px solid #cbd5e1;
+    border-radius: 999px;
     background: #fff;
-    box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+    color: #0b2a4a;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.inverse-step-nav:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.inverse-step-counter {
+    margin: 0;
+    color: #475569;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.inverse-step-stage {
+    margin: 0;
 }
 
 .inverse-step-image {
     display: block;
     width: 100%;
+    max-height: 560px;
+    object-fit: contain;
     border-radius: 10px;
     border: 1px solid #d7dee8;
-    margin-bottom: 10px;
+    background: #fff;
+    margin-bottom: 12px;
 }
 
-.inverse-step-card figcaption {
-    font-size: 14px;
-    line-height: 1.45;
+.inverse-step-caption {
+    font-size: 15px;
+    line-height: 1.55;
     color: #334155;
 }
 
@@ -579,8 +610,12 @@ footer {
     .curve-mode-button {
         width: 100%;
     }
-    .inverse-step-grid {
-        grid-template-columns: 1fr;
+    .inverse-step-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .inverse-step-counter {
+        text-align: center;
     }
     .equation-card {
         width: 100%;
