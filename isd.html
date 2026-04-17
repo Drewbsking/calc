@@ -12,20 +12,34 @@
     <div class="container">
         <div class="calculator">
             <h1>Intersection Sight Distance</h1>
-            <form id="intersectionForm">
-                <label for="caseSelect">Select Intersection Case:</label>
-                <select id="caseSelect" onchange="updateForm()">
-                    <option value="" disabled selected>Select a case</option>
-                    <option value="A">Case A: No Control</option>
-                    <option value="B">Case B: Stop Control - Left (B1), Right (B2), and Crossing (B3) Maneuver</option>
-                    <option value="C">Case C: Yield Control - Crossing (C1), and Left or Right (C2) Maneuver</option>
-                    <option value="D">Case D: Traffic Signal Control</option>
-                    <option value="E">Case E: All-Way Stop Control</option>
-                    <option value="F">Case F: Left Turn from Major Road</option>
-                    <option value="G">Case G: Roundabouts</option>
-                </select>
+            <p class="calculator-lede isd-lede">Based on AASHTO Chapter 9, intersection sight distance depends first on the intersection control type and the maneuver being checked, then grows as major-road speed increases. For stop- and yield-controlled movements, the required sight distance is further affected by design vehicle type, minor-road grade, the width to be cleared across lanes and median, intersection skew, and which maneuvers are legally permitted from the approach.</p>
+            <p class="calculator-lede isd-lede-detail">Some cases also depend on minor-road speed or vehicle length. In general, faster major-road traffic, heavier design vehicles, steeper upgrades, wider crossings, or more oblique intersections increase the required sight distance.</p>
+            <form id="intersectionForm" class="isd-form">
+                <section class="case-picker-card">
+                    <div class="case-picker-kicker">Step 1</div>
+                    <h2 class="case-picker-title">Select Intersection Case</h2>
+                    <p class="case-picker-copy">Choose the control condition and maneuver family first. The required engineering inputs will load below.</p>
+                    <label class="case-picker-label" for="caseSelect">Intersection case</label>
+                    <select id="caseSelect" onchange="updateForm()">
+                        <option value="" disabled selected>Select a case</option>
+                        <option value="A">Case A: No Control</option>
+                        <option value="B">Case B: Stop Control - Left (B1), Right (B2), and Crossing (B3) Maneuver</option>
+                        <option value="C">Case C: Yield Control - Crossing (C1), and Left or Right (C2) Maneuver</option>
+                        <option value="D">Case D: Traffic Signal Control</option>
+                        <option value="E">Case E: All-Way Stop Control</option>
+                        <option value="F">Case F: Left Turn from Major Road</option>
+                        <option value="G">Case G: Roundabouts</option>
+                    </select>
+                </section>
 
-                <div id="dynamicInputs"></div>
+                <section class="case-input-card">
+                    <div class="case-input-header">
+                        <div class="case-input-kicker">Step 2</div>
+                        <h2 class="case-input-title">Case Inputs</h2>
+                        <p class="case-input-copy">Select an intersection case to load the required parameters for that condition.</p>
+                    </div>
+                    <div id="dynamicInputs" class="case-input-placeholder">No case selected yet.</div>
+                </section>
 
                 <button type="button" class="calculate-button" onclick="calculateSightDistance()">Calculate</button>
             </form>
@@ -36,17 +50,19 @@
 
     <div class="drawing-container">
         <h2>Sight Triangle Visualization</h2>
-        <svg id="sight-triangle" width="800" height="400" xmlns="http://www.w3.org/2000/svg">
-            <line id="major-road" x1="0" y1="200" x2="800" y2="200" stroke="black" stroke-width="4"></line>
-            <text x="700" y="190" font-size="12" text-anchor="right">Major</text>
-
-            <line id="minor-road" x1="400" y1="200" x2="400" y2="400" stroke="black" stroke-width="2"></line>
-            <text x="200" y="100" font-size="12" transform="rotate(270, 390, 100)">Minor</text>
-
+        <svg id="sight-triangle" viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+            <g id="road-layer">
+                <rect id="major-road-surface" x="0" y="164" width="800" height="72" fill="#4b5563" stroke="#374151" stroke-width="2"></rect>
+                <g id="major-road-markings"></g>
+                <rect id="minor-road-surface" x="364" y="236" width="72" height="164" fill="#4b5563" stroke="#374151" stroke-width="2"></rect>
+                <g id="minor-road-markings"></g>
+            </g>
             <polygon id="sight-left" points="400,200 200,200 400,400" fill="rgba(0,0,255,0.2)" stroke="blue" stroke-width="1"></polygon>
             <polygon id="sight-right" points="400,190 600,190 400,400" fill="rgba(0,255,0,0.2)" stroke="green" stroke-width="1"></polygon>
+            <g id="vehicle-layer"></g>
+            <g id="road-label-layer"></g>
         </svg>
-        <img id="roundabout-image" src="img/Roundabout.png" alt="Roundabout" style="display: none; width: 800px; height: 400px;">
+        <img id="roundabout-image" src="img/Roundabout.png" alt="Roundabout" style="display: none;">
     </div>
     
     <div id="footer-placeholder"></div>
