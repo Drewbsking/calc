@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISS DIG Ticket Helper</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <style>
+        body.missdig-body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 24px;
+            background: linear-gradient(180deg, #eaf4ff 0%, #f8fafc 48%, #dbeafe 100%);
+            color: #0f172a;
+        }
+
+        .missdig-shell {
+            width: min(100%, 980px);
+            margin: 0 auto;
+        }
+
+        .missdig-body .container {
+            max-width: 980px;
+            padding: 0;
+        }
+
+        .missdig-grid {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
+            gap: 18px;
+            align-items: start;
+        }
+
+        .missdig-ticket-card,
+        .missdig-guide-card {
+            padding: 22px;
+            border-radius: 16px;
+            border: 1px solid #d7dee8;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .missdig-kicker {
+            width: fit-content;
+            margin: 0 0 10px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            color: #0c4a6e;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .missdig-panel-title {
+            margin: 0 0 8px;
+            color: #0b2a4a;
+            font-size: 24px;
+        }
+
+        .missdig-panel-copy {
+            margin: 0 0 18px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .missdig-ticket-display {
+            margin-top: 14px;
+            padding: 20px 18px;
+            border-radius: 16px;
+            background: linear-gradient(145deg, #0f172a, #1e3a8a);
+            color: #f8fafc;
+            font-size: clamp(24px, 5vw, 40px);
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-align: center;
+            word-break: break-word;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08);
+        }
+
+        .missdig-ticket-display.is-empty {
+            background: linear-gradient(145deg, #e2e8f0, #f8fafc);
+            color: #64748b;
+            letter-spacing: 0.02em;
+        }
+
+        .missdig-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 18px;
+        }
+
+        .missdig-actions .calculate-button,
+        .missdig-link-button,
+        .missdig-secondary-button {
+            flex: 1 1 220px;
+            margin-top: 0;
+            padding: 14px 16px;
+            border-radius: 10px;
+            font-weight: 700;
+            text-align: center;
+            box-sizing: border-box;
+        }
+
+        .missdig-link-button,
+        .missdig-secondary-button {
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #0b2a4a;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .missdig-link-button:hover,
+        .missdig-secondary-button:hover {
+            background: #e2e8f0;
+        }
+
+        .missdig-secondary-button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .missdig-status {
+            margin-top: 16px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.45;
+        }
+
+        .missdig-status[data-tone="success"] {
+            border-color: #86efac;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .missdig-status[data-tone="warning"] {
+            border-color: #fcd34d;
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .missdig-link-row {
+            display: flex;
+            gap: 10px;
+            align-items: stretch;
+        }
+
+        .missdig-link-row input {
+            margin: 0;
+            flex: 1 1 auto;
+            background: #ffffff;
+        }
+
+        .missdig-link-row button {
+            flex: 0 0 190px;
+        }
+
+        .missdig-helper-example {
+            margin: 18px 0 0;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #bfdbfe;
+            background: #eff6ff;
+        }
+
+        .missdig-helper-example h3 {
+            margin: 0 0 8px;
+            color: #0b2a4a;
+            font-size: 17px;
+        }
+
+        .missdig-helper-example p {
+            margin: 0 0 10px;
+            color: #334155;
+            line-height: 1.45;
+        }
+
+        .missdig-helper-example code {
+            display: block;
+            padding: 12px 14px;
+            border-radius: 10px;
+            background: #ffffff;
+            border: 1px solid #c7ddf7;
+            color: #0f172a;
+            word-break: break-all;
+            line-height: 1.45;
+        }
+
+        .missdig-steps-title {
+            margin: 20px 0 10px;
+            color: #0b2a4a;
+            font-size: 18px;
+        }
+
+        .missdig-step-list {
+            margin: 0;
+            padding-left: 20px;
+            color: #334155;
+            line-height: 1.55;
+        }
+
+        .missdig-step-list li + li {
+            margin-top: 8px;
+        }
+
+        .missdig-note {
+            max-width: 760px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: center;
+            line-height: 1.55;
+        }
+
+        @media (max-width: 760px) {
+            body.missdig-body {
+                padding: 16px;
+            }
+
+            .missdig-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .missdig-link-row {
+                flex-direction: column;
+            }
+
+            .missdig-link-row button {
+                flex: 1 1 auto;
+            }
+        }
+    </style>
+</head>
+<body class="missdig-body">
+    <div class="missdig-shell">
+        <header class="site-header">
+            <div class="site-identity">
+                <p class="site-eyebrow">Field toolbox</p>
+                <h1>Andy's Traffic Tools</h1>
+                <p class="site-tagline">Roadway + safety calculators collected in one dashboard.</p>
+            </div>
+            <nav class="site-nav">
+                <a href="../index.html">All tools</a>
+            </nav>
+        </header>
+
+        <main class="container">
+            <section class="calculator">
+                <p class="tool-category-label">Category: Field Utility</p>
+                <h1>MISS DIG Ticket Helper</h1>
+                <p class="calculator-lede">Load a ticket number from a QR code or query string, copy it, and jump straight to the MISS DIG positive response search page.</p>
+
+                <div class="missdig-grid">
+                    <div class="missdig-ticket-card">
+                        <p class="missdig-kicker">Ticket</p>
+                        <h2 class="missdig-panel-title">Copy-ready number</h2>
+                        <p class="missdig-panel-copy">This page accepts <code>?ticket=2026051500413</code> or the shorter <code>?t=2026051500413</code>.</p>
+
+                        <div class="form-group">
+                            <label for="ticketInput">Ticket number</label>
+                            <input type="text" id="ticketInput" inputmode="numeric" autocomplete="off" placeholder="Enter or scan a MISS DIG ticket number">
+                        </div>
+
+                        <div id="ticketDisplay" class="missdig-ticket-display is-empty">No ticket loaded</div>
+
+                        <div class="missdig-actions">
+                            <button type="button" id="copyTicketButton" class="calculate-button" disabled>Copy Ticket Number</button>
+                            <a id="searchLink" class="missdig-link-button" href="https://apps.missdig811.org/posr/searchtool" target="_blank" rel="noopener">Open MISS DIG Search</a>
+                        </div>
+
+                        <div id="statusMessage" class="missdig-status" data-tone="info" aria-live="polite">
+                            Enter a ticket number or open this page with <code>?ticket=...</code> in the URL.
+                        </div>
+                    </div>
+
+                    <aside class="missdig-guide-card" aria-label="QR code helper information">
+                        <p class="missdig-kicker">Share</p>
+                        <h2 class="missdig-panel-title">QR target link</h2>
+                        <p class="missdig-panel-copy">Point your QR code at this helper link. When scanned, the page will load the ticket and keep it ready to copy.</p>
+
+                        <div class="form-group">
+                            <label for="helperLink">Helper link</label>
+                            <div class="missdig-link-row">
+                                <input type="text" id="helperLink" readonly>
+                                <button type="button" id="copyLinkButton" class="missdig-secondary-button">Copy Helper Link</button>
+                            </div>
+                        </div>
+
+                        <div class="missdig-helper-example">
+                            <h3>QR example</h3>
+                            <p>Use a QR generator with a link in this format:</p>
+                            <code id="exampleLink">https://yourdomain.com/missdig/?ticket=2026051500413</code>
+                        </div>
+
+                        <h3 class="missdig-steps-title">Field steps</h3>
+                        <ol class="missdig-step-list">
+                            <li>Scan the QR code or open the helper link.</li>
+                            <li>Tap <strong>Copy Ticket Number</strong>.</li>
+                            <li>Tap <strong>Open MISS DIG Search</strong>.</li>
+                            <li>Paste the ticket number into the MISS DIG search field and run the search.</li>
+                        </ol>
+                    </aside>
+                </div>
+
+                <p class="note missdig-note">This page does not try to auto-fill the MISS DIG website. Browsers normally block one site from controlling another site's search form.</p>
+            </section>
+        </main>
+
+        <footer>
+            <p>Created by Andrew Bates.</p>
+        </footer>
+    </div>
+
+    <script src="../scripts/missdig.js"></script>
+</body>
+</html>
