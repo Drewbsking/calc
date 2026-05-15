@@ -24,15 +24,9 @@
             padding: 0;
         }
 
-        .missdig-grid {
-            display: grid;
-            grid-template-columns: minmax(0, 1.15fr) minmax(280px, 0.85fr);
-            gap: 18px;
-            align-items: start;
-        }
-
-        .missdig-ticket-card,
-        .missdig-guide-card {
+        .missdig-ticket-card {
+            max-width: 720px;
+            margin: 0 auto;
             padding: 22px;
             border-radius: 16px;
             border: 1px solid #d7dee8;
@@ -148,57 +142,11 @@
             color: #92400e;
         }
 
-        .missdig-link-row {
-            display: flex;
-            gap: 10px;
-            align-items: stretch;
-        }
-
-        .missdig-link-row input {
-            margin: 0;
-            flex: 1 1 auto;
-            background: #ffffff;
-        }
-
-        .missdig-link-row button {
-            flex: 0 0 190px;
-        }
-
-        .missdig-helper-example {
-            margin: 18px 0 0;
-            padding: 16px;
-            border-radius: 12px;
-            border: 1px solid #bfdbfe;
-            background: #eff6ff;
-        }
-
-        .missdig-helper-example h3 {
-            margin: 0 0 8px;
-            color: #0b2a4a;
-            font-size: 17px;
-        }
-
-        .missdig-helper-example p {
-            margin: 0 0 10px;
-            color: #334155;
-            line-height: 1.45;
-        }
-
-        .missdig-helper-example code {
-            display: block;
-            padding: 12px 14px;
-            border-radius: 10px;
-            background: #ffffff;
-            border: 1px solid #c7ddf7;
-            color: #0f172a;
-            word-break: break-all;
-            line-height: 1.45;
-        }
-
         .missdig-steps-title {
             margin: 20px 0 10px;
             color: #0b2a4a;
             font-size: 18px;
+            text-align: left;
         }
 
         .missdig-step-list {
@@ -214,8 +162,7 @@
 
         .missdig-note {
             max-width: 760px;
-            margin-left: auto;
-            margin-right: auto;
+            margin: 18px auto 0;
             text-align: center;
             line-height: 1.55;
         }
@@ -223,18 +170,6 @@
         @media (max-width: 760px) {
             body.missdig-body {
                 padding: 16px;
-            }
-
-            .missdig-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .missdig-link-row {
-                flex-direction: column;
-            }
-
-            .missdig-link-row button {
-                flex: 1 1 auto;
             }
         }
     </style>
@@ -258,56 +193,33 @@
                 <h1>MISS DIG Ticket Helper</h1>
                 <p class="calculator-lede">Load a ticket number from a QR code or query string, copy it, and jump straight to the MISS DIG positive response search page.</p>
 
-                <div class="missdig-grid">
-                    <div class="missdig-ticket-card">
-                        <p class="missdig-kicker">Ticket</p>
-                        <h2 class="missdig-panel-title">Copy-ready number</h2>
-                        <p class="missdig-panel-copy">This page accepts <code>?ticket=2026051500413</code> or the shorter <code>?t=2026051500413</code>.</p>
+                <div class="missdig-ticket-card">
+                    <p class="missdig-kicker">Ticket</p>
+                    <h2 class="missdig-panel-title">Copy-ready number</h2>
+                    <p class="missdig-panel-copy">Copy the ticket number, then open the MISS DIG search page and paste it into the ticket field.</p>
 
-                        <div class="form-group">
-                            <label for="ticketInput">Ticket number</label>
-                            <input type="text" id="ticketInput" inputmode="numeric" autocomplete="off" placeholder="Enter or scan a MISS DIG ticket number">
-                        </div>
-
-                        <div id="ticketDisplay" class="missdig-ticket-display is-empty">No ticket loaded</div>
-
-                        <div class="missdig-actions">
-                            <button type="button" id="copyTicketButton" class="calculate-button" disabled>Copy Ticket Number</button>
-                            <a id="searchLink" class="missdig-link-button" href="https://apps.missdig811.org/posr/searchtool" target="_blank" rel="noopener">Open MISS DIG Search</a>
-                        </div>
-
-                        <div id="statusMessage" class="missdig-status" data-tone="info" aria-live="polite">
-                            Enter a ticket number or open this page with <code>?ticket=...</code> in the URL.
-                        </div>
+                    <div id="ticketInputGroup" class="form-group">
+                        <label for="ticketInput">Ticket number</label>
+                        <input type="text" id="ticketInput" inputmode="numeric" autocomplete="off" placeholder="Enter a MISS DIG ticket number">
                     </div>
 
-                    <aside class="missdig-guide-card" aria-label="QR code helper information">
-                        <p class="missdig-kicker">Share</p>
-                        <h2 class="missdig-panel-title">QR target link</h2>
-                        <p class="missdig-panel-copy">Point your QR code at this helper link. When scanned, the page will load the ticket and keep it ready to copy.</p>
+                    <div id="ticketDisplay" class="missdig-ticket-display is-empty">No ticket loaded</div>
 
-                        <div class="form-group">
-                            <label for="helperLink">Helper link</label>
-                            <div class="missdig-link-row">
-                                <input type="text" id="helperLink" readonly>
-                                <button type="button" id="copyLinkButton" class="missdig-secondary-button">Copy Helper Link</button>
-                            </div>
-                        </div>
+                    <div class="missdig-actions">
+                        <button type="button" id="copyTicketButton" class="calculate-button" disabled>Copy Ticket Number</button>
+                        <a id="searchLink" class="missdig-link-button" href="https://apps.missdig811.org/posr/searchtool" target="_blank" rel="noopener">Open MISS DIG Search</a>
+                    </div>
 
-                        <div class="missdig-helper-example">
-                            <h3>QR example</h3>
-                            <p>Use a QR generator with a link in this format:</p>
-                            <code id="exampleLink">https://yourdomain.com/missdig/?ticket=2026051500413</code>
-                        </div>
+                    <div id="statusMessage" class="missdig-status" data-tone="info" aria-live="polite">
+                        Open this page with a ticket in the URL, or enter one below if needed.
+                    </div>
 
-                        <h3 class="missdig-steps-title">Field steps</h3>
-                        <ol class="missdig-step-list">
-                            <li>Scan the QR code or open the helper link.</li>
-                            <li>Tap <strong>Copy Ticket Number</strong>.</li>
-                            <li>Tap <strong>Open MISS DIG Search</strong>.</li>
-                            <li>Paste the ticket number into the MISS DIG search field and run the search.</li>
-                        </ol>
-                    </aside>
+                    <h3 class="missdig-steps-title">Quick steps</h3>
+                    <ol class="missdig-step-list">
+                        <li>Tap <strong>Copy Ticket Number</strong>.</li>
+                        <li>Tap <strong>Open MISS DIG Search</strong>.</li>
+                        <li>Paste the ticket number into the MISS DIG ticket field and run the search.</li>
+                    </ol>
                 </div>
 
                 <p class="note missdig-note">This page does not try to auto-fill the MISS DIG website. Browsers normally block one site from controlling another site's search form.</p>

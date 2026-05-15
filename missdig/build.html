@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MISS DIG QR Builder</title>
+    <link rel="stylesheet" href="../styles/styles.css">
+    <style>
+        body.missdig-builder-body {
+            margin: 0;
+            min-height: 100vh;
+            padding: 24px;
+            background: linear-gradient(180deg, #eaf4ff 0%, #f8fafc 48%, #dbeafe 100%);
+            color: #0f172a;
+        }
+
+        .missdig-builder-shell {
+            width: min(100%, 980px);
+            margin: 0 auto;
+        }
+
+        .missdig-builder-body .container {
+            max-width: 980px;
+            padding: 0;
+        }
+
+        .missdig-builder-card {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 24px;
+            border-radius: 16px;
+            border: 1px solid #d7dee8;
+            background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+            box-shadow: 0 12px 28px rgba(15, 23, 42, 0.08);
+        }
+
+        .missdig-builder-kicker {
+            width: fit-content;
+            margin: 0 0 10px;
+            padding: 5px 10px;
+            border-radius: 999px;
+            background: #e0f2fe;
+            border: 1px solid #bae6fd;
+            color: #0c4a6e;
+            font-size: 11px;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .missdig-builder-title {
+            margin: 0 0 8px;
+            color: #0b2a4a;
+            font-size: 24px;
+        }
+
+        .missdig-builder-copy {
+            margin: 0 0 18px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .missdig-builder-output {
+            margin-top: 16px;
+            padding: 16px;
+            border-radius: 14px;
+            border: 1px solid #c7ddf7;
+            background: #eff6ff;
+        }
+
+        .missdig-builder-output label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            color: #0b2a4a;
+        }
+
+        .missdig-builder-output input {
+            width: 100%;
+            margin: 0;
+            background: #ffffff;
+        }
+
+        .missdig-builder-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .missdig-builder-actions .calculate-button,
+        .missdig-builder-actions .ghost-button,
+        .missdig-builder-actions .missdig-builder-link {
+            flex: 1 1 210px;
+            margin-top: 0;
+            padding: 14px 16px;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .missdig-builder-link {
+            text-decoration: none;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #0b2a4a;
+        }
+
+        .missdig-builder-link:hover,
+        .ghost-button:hover {
+            background: #e2e8f0;
+        }
+
+        .missdig-builder-note-box {
+            margin-top: 18px;
+            padding: 14px 16px;
+            border-radius: 12px;
+            border: 1px solid #bbf7d0;
+            background: #f0fdf4;
+            color: #166534;
+            line-height: 1.5;
+            font-weight: 600;
+        }
+
+        .missdig-builder-steps {
+            margin: 18px 0 0;
+            padding-left: 20px;
+            color: #334155;
+            line-height: 1.55;
+        }
+
+        .missdig-builder-steps li + li {
+            margin-top: 8px;
+        }
+
+        .missdig-builder-status {
+            margin-top: 16px;
+            padding: 12px 14px;
+            border-radius: 10px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.45;
+        }
+
+        .missdig-builder-status[data-tone="success"] {
+            border-color: #86efac;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .missdig-builder-status[data-tone="warning"] {
+            border-color: #fcd34d;
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        @media (max-width: 760px) {
+            body.missdig-builder-body {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+<body class="missdig-builder-body">
+    <div class="missdig-builder-shell">
+        <header class="site-header">
+            <div class="site-identity">
+                <p class="site-eyebrow">Field toolbox</p>
+                <h1>Andy's Traffic Tools</h1>
+                <p class="site-tagline">Roadway + safety calculators collected in one dashboard.</p>
+            </div>
+            <nav class="site-nav">
+                <a href="../index.html">All tools</a>
+            </nav>
+        </header>
+
+        <main class="container">
+            <section class="calculator">
+                <p class="tool-category-label">Category: Field Utility</p>
+                <h1>MISS DIG QR Builder</h1>
+                <p class="calculator-lede">Build the clean QR destination link without showing any of the generator controls to the field user.</p>
+
+                <div class="missdig-builder-card">
+                    <p class="missdig-builder-kicker">Internal Tool</p>
+                    <h2 class="missdig-builder-title">Generate clean QR link</h2>
+                    <p class="missdig-builder-copy">Enter the ticket number here. The QR code should point to the generated link below, and the field user will only see the clean ticket helper page.</p>
+
+                    <div class="form-group">
+                        <label for="builderTicketInput">Ticket number</label>
+                        <input type="text" id="builderTicketInput" inputmode="numeric" autocomplete="off" placeholder="Enter a MISS DIG ticket number">
+                    </div>
+
+                    <div class="missdig-builder-output">
+                        <label for="builderLinkOutput">QR destination / coded value</label>
+                        <input type="text" id="builderLinkOutput" readonly>
+                    </div>
+
+                    <div class="missdig-builder-actions">
+                        <button type="button" id="copyBuilderLinkButton" class="calculate-button">Copy Clean Link</button>
+                        <a id="previewLandingButton" class="missdig-builder-link" href="../missdig/" target="_blank" rel="noopener">Open Clean Page</a>
+                        <button type="button" id="clearBuilderButton" class="ghost-button">Clear</button>
+                    </div>
+
+                    <div id="builderStatus" class="missdig-builder-status" data-tone="info" aria-live="polite">
+                        Enter a ticket number to generate the clean QR destination.
+                    </div>
+
+                    <div class="missdig-builder-note-box">
+                        The public QR page is still <code>/missdig/?ticket=...</code>. This builder page is separate, so the end user does not see the link generator.
+                    </div>
+
+                    <ol class="missdig-builder-steps">
+                        <li>Enter the ticket number.</li>
+                        <li>Copy the clean link.</li>
+                        <li>Paste that link into your QR generator or Invarion coded value field.</li>
+                    </ol>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <p>Created by Andrew Bates.</p>
+        </footer>
+    </div>
+
+    <script src="../scripts/missdig-builder.js"></script>
+</body>
+</html>

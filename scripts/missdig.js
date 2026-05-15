@@ -2,23 +2,21 @@
   const TICKET_PARAM_KEYS = ['ticket', 't'];
   const SEARCH_URL = 'https://apps.missdig811.org/posr/searchtool';
   const EMPTY_TICKET_TEXT = 'No ticket loaded';
+  const initialTicket = readTicketFromUrl();
+  const compactQrMode = initialTicket.length > 0;
 
+  const ticketInputGroup = document.getElementById('ticketInputGroup');
   const ticketInput = document.getElementById('ticketInput');
   const ticketDisplay = document.getElementById('ticketDisplay');
-  const helperLinkInput = document.getElementById('helperLink');
-  const exampleLink = document.getElementById('exampleLink');
   const copyTicketButton = document.getElementById('copyTicketButton');
-  const copyLinkButton = document.getElementById('copyLinkButton');
   const statusMessage = document.getElementById('statusMessage');
   const searchLink = document.getElementById('searchLink');
 
   if (
+    !ticketInputGroup ||
     !ticketInput ||
     !ticketDisplay ||
-    !helperLinkInput ||
-    !exampleLink ||
     !copyTicketButton ||
-    !copyLinkButton ||
     !statusMessage ||
     !searchLink
   ) {
@@ -82,10 +80,10 @@
     const hasTicket = currentTicket.length > 0;
 
     ticketInput.value = currentTicket;
-    helperLinkInput.value = helperUrl;
     ticketDisplay.textContent = hasTicket ? currentTicket : EMPTY_TICKET_TEXT;
     ticketDisplay.classList.toggle('is-empty', !hasTicket);
     copyTicketButton.disabled = !hasTicket;
+    ticketInputGroup.hidden = compactQrMode;
     searchLink.href = SEARCH_URL;
 
     if (replaceHistory) {
@@ -109,38 +107,22 @@
     }
   });
 
-  copyLinkButton.addEventListener('click', async function () {
-    const link = helperLinkInput.value;
-
-    try {
-      await copyText(link);
-      setStatus('Helper link copied. Use it as the QR code target.', 'success');
-    } catch (error) {
-      selectInputText(helperLinkInput);
-      setStatus('Clipboard access was blocked. The helper link is selected so you can copy it manually.', 'warning');
-    }
-  });
-
   ticketInput.addEventListener('input', function () {
     const ticket = normalizeTicket(ticketInput.value);
     updatePage(ticket);
 
     if (ticket) {
-      setStatus('Ticket updated. The helper link is now ready for a QR code or text message.', 'info');
+      setStatus('Ticket loaded. Copy it, then open MISS DIG Search.', 'info');
     } else {
-      setStatus('Enter a ticket number or open this page with ?ticket=... in the URL.', 'info');
+      setStatus('Open this page with a ticket in the URL, or enter one below if needed.', 'info');
     }
   });
 
-  const initialTicket = readTicketFromUrl();
-  const sampleUrl = buildHelperUrl('2026051500413');
-
-  exampleLink.textContent = sampleUrl;
   updatePage(initialTicket, { replaceHistory: false });
 
   if (initialTicket) {
     setStatus('Ticket loaded from the link. Tap Copy Ticket Number, then open MISS DIG Search.', 'success');
   } else {
-    setStatus('Enter a ticket number or open this page with ?ticket=... in the URL.', 'info');
+    setStatus('Open this page with a ticket in the URL, or enter one below if needed.', 'info');
   }
 }());
