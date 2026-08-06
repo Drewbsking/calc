@@ -963,6 +963,7 @@ th {
 
 .site-header {
     width: min(100%, 1100px);
+    box-sizing: border-box;
     margin: 0 auto 26px;
     padding: 32px 32px 28px;
     background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(30, 64, 175, 0.85));
@@ -1048,6 +1049,490 @@ footer {
 
 .external-links h2 {
     margin: 0 0 4px;
+}
+
+/* Driveway layout checker */
+.driveway-tool {
+    max-width: 1060px;
+}
+
+.driveway-tool,
+.driveway-tool * {
+    box-sizing: border-box;
+}
+
+.driveway-lede {
+    max-width: 780px;
+    margin: 8px auto 0;
+    color: #475569;
+    font-size: 17px;
+    line-height: 1.55;
+    text-align: center;
+}
+
+.driveway-source-note {
+    max-width: 850px;
+    margin: 20px auto 24px;
+    padding: 12px 16px;
+    border: 1px solid #bfdbfe;
+    border-left: 5px solid #2563eb;
+    border-radius: 10px;
+    background: #eff6ff;
+    color: #1e3a5f;
+    font-weight: 500;
+    line-height: 1.5;
+    text-align: left;
+}
+
+.driveway-source-note p,
+.driveway-disclaimer p {
+    margin: 0;
+}
+
+.driveway-form {
+    display: grid;
+    gap: 18px;
+}
+
+.driveway-form fieldset {
+    margin: 0;
+    padding: 20px;
+    border: 1px solid #d7dee8;
+    border-radius: 16px;
+    background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.driveway-form legend {
+    padding: 0 8px;
+    color: #0b2a4a;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.driveway-form .input-grid {
+    margin: 0;
+}
+
+.driveway-form input,
+.driveway-form select {
+    width: 100%;
+    margin: 6px 0 0;
+}
+
+.driveway-section-heading,
+.driveway-result-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.driveway-section-heading p {
+    margin: 0;
+    color: #64748b;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.driveway-row-heading {
+    margin-top: 20px;
+}
+
+.driveway-row-heading h2,
+.driveway-result-heading h2,
+.driveway-metrics-card h2,
+#residential-sight-fields h2 {
+    margin: 0 0 4px;
+    color: #0b2a4a;
+    font-size: 17px;
+    text-align: left;
+}
+
+#residential-sight-fields h2 {
+    margin-bottom: 10px;
+}
+
+.driveway-secondary-button {
+    flex: 0 0 auto;
+    padding: 9px 14px;
+    border: 1px solid #93c5fd;
+    border-radius: 999px;
+    background: #eff6ff;
+    color: #1d4ed8;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.driveway-secondary-button:hover {
+    background: #dbeafe;
+}
+
+.driveway-rows {
+    display: grid;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.driveway-row {
+    display: grid;
+    grid-template-columns: 42px minmax(180px, 1fr) minmax(180px, 1fr);
+    gap: 12px;
+    align-items: end;
+    padding: 12px;
+    border: 1px solid #dbe3ee;
+    border-radius: 12px;
+    background: #fff;
+}
+
+.driveway-row-number {
+    align-self: center;
+    display: grid;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    place-items: center;
+    background: #0b2a4a;
+    color: #fff;
+    font-weight: 800;
+}
+
+.driveway-check-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0 10px;
+    padding: 13px 15px;
+    border: 1px solid #cbd5e1;
+    border-radius: 12px;
+    background: #fff;
+    color: #0b2a4a;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.driveway-check-option input {
+    width: auto;
+    margin: 0;
+}
+
+.driveway-helper {
+    margin: 8px 0 0;
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.is-hidden {
+    display: none !important;
+}
+
+.driveway-results-card {
+    overflow: visible;
+}
+
+.driveway-status {
+    margin: -20px -20px 20px;
+    padding: 22px 24px;
+    border-radius: 8px 8px 0 0;
+    border-bottom: 1px solid transparent;
+}
+
+.driveway-status-pass {
+    border-color: #86efac;
+    background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
+    color: #14532d;
+}
+
+.driveway-status-review {
+    border-color: #fcd34d;
+    background: linear-gradient(135deg, #fffbeb, #fff7ed);
+    color: #78350f;
+}
+
+.driveway-status-fail {
+    border-color: #fca5a5;
+    background: linear-gradient(135deg, #fff1f2, #fef2f2);
+    color: #7f1d1d;
+}
+
+.driveway-status-kicker,
+.driveway-result-kicker {
+    margin: 0 0 5px;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.driveway-status h2 {
+    margin: 0 0 5px;
+    color: inherit;
+    font-size: 25px;
+    text-align: left;
+}
+
+.driveway-status p:last-child {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.driveway-result-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.7fr) minmax(250px, 0.8fr);
+    gap: 16px;
+}
+
+.driveway-plan-card,
+.driveway-metrics-card,
+.driveway-checks-card {
+    padding: 18px;
+    border: 1px solid #d7dee8;
+    border-radius: 14px;
+    background: #fff;
+}
+
+.driveway-plan-scale {
+    margin: 0;
+    color: #475569;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.driveway-plan {
+    width: 100%;
+    margin-top: 10px;
+    overflow: hidden;
+    border: 1px solid #dbe3ee;
+    border-radius: 12px;
+    background: #f8fafc;
+}
+
+.driveway-plan svg {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.driveway-plan-parcel {
+    fill: #ecfccb;
+    stroke: #84a759;
+    stroke-width: 1.5;
+}
+
+.driveway-plan-property-line {
+    stroke: #334155;
+    stroke-width: 2;
+}
+
+.driveway-plan-property-label,
+.driveway-plan-station {
+    fill: #475569;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.driveway-plan-opening {
+    fill: #cbd5e1;
+    stroke: #475569;
+    stroke-width: 1.5;
+}
+
+.driveway-plan-opening-fail {
+    fill: #fecaca;
+    stroke: #dc2626;
+}
+
+.driveway-plan-centerline {
+    stroke: #2563eb;
+    stroke-width: 1.25;
+    stroke-dasharray: 4 4;
+}
+
+.driveway-plan-label {
+    fill: #0b2a4a;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.driveway-plan-road {
+    fill: #475569;
+}
+
+.driveway-plan-road-center {
+    stroke: #f8fafc;
+    stroke-width: 2;
+    stroke-dasharray: 18 12;
+}
+
+.driveway-plan-road-label {
+    fill: #f8fafc;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 0.18em;
+}
+
+.driveway-plan-dimension {
+    stroke: #15803d;
+    stroke-width: 2;
+}
+
+.driveway-plan-dimension-end {
+    fill: #15803d;
+}
+
+.driveway-plan-dimension-fail {
+    stroke: #dc2626;
+}
+
+.driveway-plan-dimension-end-fail {
+    fill: #dc2626;
+}
+
+.driveway-plan-gap {
+    fill: #166534;
+    paint-order: stroke;
+    stroke: #fff;
+    stroke-width: 4px;
+    font-size: 11px;
+    font-weight: 800;
+}
+
+.driveway-plan-gap-fail {
+    fill: #b91c1c;
+}
+
+.driveway-metrics {
+    margin: 10px 0 0;
+}
+
+.driveway-metrics > div {
+    display: flex;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.driveway-metrics > div:last-child {
+    border-bottom: 0;
+}
+
+.driveway-metrics dt {
+    color: #475569;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.driveway-metrics dd {
+    margin: 0;
+    color: #0f172a;
+    font-size: 13px;
+    font-weight: 800;
+    text-align: right;
+}
+
+.driveway-checks-card {
+    margin-top: 16px;
+}
+
+.driveway-check-legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.driveway-check-legend span {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.driveway-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.driveway-dot-pass { background: #16a34a; }
+.driveway-dot-review { background: #d97706; }
+.driveway-dot-fail { background: #dc2626; }
+
+.driveway-checks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.driveway-check {
+    display: flex;
+    gap: 11px;
+    padding: 12px;
+    border: 1px solid #d7dee8;
+    border-left-width: 4px;
+    border-radius: 10px;
+    background: #f8fafc;
+}
+
+.driveway-check-pass { border-left-color: #16a34a; }
+.driveway-check-review { border-left-color: #d97706; background: #fffbeb; }
+.driveway-check-fail { border-left-color: #dc2626; background: #fff1f2; }
+
+.driveway-check-icon {
+    display: grid;
+    flex: 0 0 24px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    place-items: center;
+    background: #e2e8f0;
+    color: #334155;
+    font-size: 15px;
+    font-weight: 900;
+}
+
+.driveway-check-pass .driveway-check-icon { background: #dcfce7; color: #166534; }
+.driveway-check-review .driveway-check-icon { background: #fef3c7; color: #92400e; }
+.driveway-check-fail .driveway-check-icon { background: #fee2e2; color: #991b1b; }
+
+.driveway-check h3 {
+    margin: 1px 0 4px;
+    color: #0f172a;
+    font-size: 14px;
+}
+
+.driveway-check p {
+    margin: 0;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.45;
+}
+
+.driveway-disclaimer {
+    margin: 16px 0 0;
+    padding: 12px 14px;
+    border: 1px solid #fed7aa;
+    border-radius: 10px;
+    background: #fff7ed;
+    color: #9a3412;
+    font-weight: 600;
+    line-height: 1.45;
+    text-align: left;
+}
+
+@media (max-width: 800px) {
+    .driveway-result-grid,
+    .driveway-checks {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 600px) {
@@ -1300,4 +1785,28 @@ footer {
 #table-context {
     text-align: left;
     font-weight: 400;
+}
+
+@media (max-width: 600px) {
+    .driveway-form fieldset {
+        padding: 16px;
+    }
+
+    .driveway-row {
+        grid-template-columns: 34px 1fr;
+    }
+
+    .driveway-row .form-group:last-child {
+        grid-column: 2;
+    }
+
+    .driveway-section-heading,
+    .driveway-result-heading {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .driveway-secondary-button {
+        width: 100%;
+    }
 }

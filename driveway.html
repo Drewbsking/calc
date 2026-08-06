@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RCOC Driveway Layout Checker</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container driveway-tool">
+        <section class="calculator" aria-labelledby="driveway-heading">
+            <h1 id="driveway-heading">RCOC Driveway Layout Checker</h1>
+            <p class="driveway-lede">Lay out driveway center stations along a parcel frontage and check common RCOC size, spacing, frontage, corner-offset, and residential sight-distance rules.</p>
+
+            <div class="note driveway-source-note">
+                <p><strong>Quick-reference only:</strong> Based on the August 6, 2026 <a href="https://rcoc.miraheze.org/wiki/Driveway_Permit" target="_blank" rel="noopener">“Driveway Permit — TS — ENG — RCOC” staff reference</a>. Results do not replace a permit review or the complete RCOC Permit Rules, Specifications, and Guidelines.</p>
+            </div>
+
+            <form id="driveway-form" class="driveway-form" novalidate>
+                <fieldset>
+                    <legend>1. Parcel and access type</legend>
+                    <div class="input-grid">
+                        <div class="form-group">
+                            <label for="driveway-type">Driveway design</label>
+                            <select id="driveway-type">
+                                <option value="residential">Standard residential</option>
+                                <option value="subdivision">Residential — subdivision</option>
+                                <option value="commercial">Commercial — two-way</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="road-frontage">Road frontage, F (ft)</label>
+                            <input type="number" id="road-frontage" min="1" step="0.1" value="160">
+                        </div>
+                        <div class="form-group">
+                            <label for="driveway-count">Number of driveways</label>
+                            <select id="driveway-count">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div class="form-group driveway-arrangement-field is-hidden">
+                            <label for="residential-arrangement">Two-driveway arrangement</label>
+                            <select id="residential-arrangement">
+                                <option value="circle">Circle driveway</option>
+                                <option value="separate">Separate second driveway</option>
+                            </select>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>2. Driveway geometry</legend>
+                    <div class="driveway-section-heading">
+                        <p id="geometry-guidance">Typical values are loaded. Values elsewhere in a permitted range still require RCOC approval.</p>
+                        <button type="button" id="use-typical" class="driveway-secondary-button">Use typical geometry</button>
+                    </div>
+                    <div class="input-grid">
+                        <div class="form-group">
+                            <label for="intersecting-angle">Intersecting angle, A (degrees)</label>
+                            <input type="number" id="intersecting-angle" min="0" max="180" step="1" value="90">
+                        </div>
+                        <div class="form-group">
+                            <label for="entering-side" id="entering-side-label">Entering radius, C (ft) — all driveways</label>
+                            <input type="number" id="entering-side" min="0" step="0.1" value="10">
+                        </div>
+                        <div class="form-group">
+                            <label for="exiting-side" id="exiting-side-label">Exiting radius, D (ft) — all driveways</label>
+                            <input type="number" id="exiting-side" min="0" step="0.1" value="10">
+                        </div>
+                        <div class="form-group driveway-taper-depth-field is-hidden">
+                            <label for="taper-depth">Taper depth, Q (ft) — all driveways</label>
+                            <input type="number" id="taper-depth" min="0" step="0.1" value="10">
+                        </div>
+                    </div>
+
+                    <div class="driveway-section-heading driveway-row-heading">
+                        <div>
+                            <h2>Driveway stations and widths</h2>
+                            <p>Station is the driveway center measured from the left property line along the road frontage.</p>
+                        </div>
+                        <button type="button" id="evenly-space" class="driveway-secondary-button">Space evenly</button>
+                    </div>
+                    <div id="driveway-rows" class="driveway-rows"></div>
+                </fieldset>
+
+                <fieldset>
+                    <legend>3. Location checks</legend>
+                    <div id="residential-sight-fields">
+                        <h2>Residential sight distance</h2>
+                        <div class="input-grid">
+                            <div class="form-group">
+                                <label for="speed-limit">Posted speed limit</label>
+                                <select id="speed-limit">
+                                    <option value="25">25 mph</option>
+                                    <option value="30">30 mph</option>
+                                    <option value="35" selected>35 mph</option>
+                                    <option value="40">40 mph</option>
+                                    <option value="45">45 mph</option>
+                                    <option value="50">50 mph</option>
+                                    <option value="55">55 mph</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="available-sight-distance">Available sight distance (ft)</label>
+                                <input type="number" id="available-sight-distance" min="0" step="1" value="390">
+                            </div>
+                        </div>
+                        <p class="driveway-helper">Rule 6.2.3 measurement: 10 ft from the traveled edge on gravel or pavement edge on paved roads, using 3.5-ft eye and object heights.</p>
+                    </div>
+
+                    <label class="driveway-check-option" for="near-intersection">
+                        <input type="checkbox" id="near-intersection">
+                        <span>This driveway layout is adjacent to an intersection</span>
+                    </label>
+                    <div id="intersection-fields" class="input-grid is-hidden">
+                        <div class="form-group">
+                            <label for="intersection-centerline-offset">Radius point of curvature to intersecting road centerline (ft)</label>
+                            <input type="number" id="intersection-centerline-offset" min="0" step="0.1" value="77">
+                        </div>
+                        <div class="form-group">
+                            <label for="future-row-offset">Radius point of curvature to future cross-street ROW line (ft)</label>
+                            <input type="number" id="future-row-offset" min="0" step="0.1" value="17">
+                        </div>
+                    </div>
+                </fieldset>
+            </form>
+        </section>
+
+        <section class="calculator driveway-results-card" aria-labelledby="driveway-results-heading">
+            <div id="driveway-status" class="driveway-status" role="status">
+                <p class="driveway-status-kicker">Preliminary result</p>
+                <h2 id="driveway-results-heading">Checking layout…</h2>
+                <p id="driveway-status-detail"></p>
+            </div>
+
+            <div class="driveway-result-grid">
+                <section class="driveway-plan-card" aria-labelledby="parcel-sketch-heading">
+                    <div class="driveway-result-heading">
+                        <div>
+                            <p class="driveway-result-kicker">Scaled to frontage</p>
+                            <h2 id="parcel-sketch-heading">Parcel sketch</h2>
+                        </div>
+                        <p id="parcel-scale-label" class="driveway-plan-scale"></p>
+                    </div>
+                    <div id="driveway-plan" class="driveway-plan" role="img" aria-label="Plan view of the parcel frontage and proposed driveway openings"></div>
+                    <p class="driveway-helper">Concept sketch only. Opening limits use R = B + C + D and assume C is left of center and D is right of center.</p>
+                </section>
+
+                <section class="driveway-metrics-card" aria-labelledby="layout-numbers-heading">
+                    <p class="driveway-result-kicker">Calculated values</p>
+                    <h2 id="layout-numbers-heading">Layout numbers</h2>
+                    <dl id="driveway-metrics" class="driveway-metrics"></dl>
+                </section>
+            </div>
+
+            <section class="driveway-checks-card" aria-labelledby="rule-checks-heading">
+                <div class="driveway-result-heading">
+                    <div>
+                        <p class="driveway-result-kicker">Permit quick-reference</p>
+                        <h2 id="rule-checks-heading">Rule checks</h2>
+                    </div>
+                    <div class="driveway-check-legend" aria-label="Check status legend">
+                        <span><i class="driveway-dot driveway-dot-pass"></i>Pass</span>
+                        <span><i class="driveway-dot driveway-dot-review"></i>Review</span>
+                        <span><i class="driveway-dot driveway-dot-fail"></i>Revise</span>
+                    </div>
+                </div>
+                <div id="driveway-checks" class="driveway-checks"></div>
+            </section>
+
+            <div class="note driveway-disclaimer">
+                <p>RCOC may require changes based on sight distance, traffic, roadway operations, drainage, the complete permit rules, and site-specific conditions. Commercial sight distance and specialized designs require the applicable RCOC guidance.</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/driveway.js"></script>
+</body>
+</html>
