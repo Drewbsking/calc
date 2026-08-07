@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Two-Way Bridge Clearance Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container underclearance-tool">
+        <section class="calculator" aria-labelledby="underclearance-heading">
+            <h1 id="underclearance-heading">Two-Way Bridge Clearance Calculator</h1>
+            <p class="underclearance-lede">Enter six decimal-foot readings for each travel direction. The calculator follows each lane through both ends of the bridge and produces a separate feet–inches result for each direction.</p>
+
+            <div class="note underclearance-source-note">
+                <p><strong>Two-way layout:</strong> Each travel direction uses six readings: EM left, crown, and EM right at the entering and exiting ends of the bridge. See the <a href="https://rcoc.miraheze.org/wiki/Low_Clearance_Signs" target="_blank" rel="noopener">RCOC Low Clearance Signs guidance</a>.</p>
+            </div>
+
+            <aside class="underclearance-standard-summary" aria-labelledby="mmutcd-summary-heading">
+                <div class="underclearance-standard-heading">
+                    <div>
+                        <p class="underclearance-standard-kicker">Quick reference</p>
+                        <h2 id="mmutcd-summary-heading">What the MMUTCD says</h2>
+                    </div>
+                    <a href="https://mutcd.fhwa.dot.gov/pdfs/11th_Edition/Chapter2c.pdf" target="_blank" rel="noopener">Section 2C.25</a>
+                </div>
+                <ul>
+                    <li><strong>Advance warning:</strong> Use a W12-2 in advance when actual vertical clearance is less than 14'-6&quot;, or less than 12 inches above the statutory maximum vehicle height, whichever threshold is greater.</li>
+                    <li><strong>Displayed clearance:</strong> Show the clearance to the nearest inch without exceeding the actual clearance. A reduction of up to 3 inches should be used where frost action can change the clearance.</li>
+                    <li><strong>Overhead signs:</strong> W12-2a or lane-specific W12-2b signs may supplement the advance sign. Use additional overhead signs where clearance varies greatly, and keep the advance legend consistent with the lowest overhead value.</li>
+                </ul>
+                <div class="underclearance-compliance-grid">
+                    <div>
+                        <time datetime="2026-08-07">August 7, 2026</time>
+                        <p><strong>Michigan project-use date:</strong> The 2025 MMUTCD applies to applicable MDOT-let projects beginning with this bid letting. Table 1B-1 items are coordinated statewide.</p>
+                    </div>
+                    <div>
+                        <time datetime="2029-01-18">January 18, 2029</time>
+                        <p><strong>Low-clearance target date:</strong> Five years after the 11th Edition's January 18, 2024 effective date for the W12-2 advance-sign requirement and variable-clearance overhead-sign guidance.</p>
+                    </div>
+                </div>
+                <p class="underclearance-standard-sources">Sources: <a href="https://mutcd.fhwa.dot.gov/pdfs/11th_Edition/part1.pdf" target="_blank" rel="noopener">MUTCD Table 1B-1</a> and <a href="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Design/Design-Advisories/DA-2026-02-2025-MMUTCD.pdf" target="_blank" rel="noopener">MDOT Design Advisory 2026-02</a>.</p>
+            </aside>
+
+            <form id="underclearance-form" novalidate>
+                <div class="underclearance-form-heading">
+                    <div>
+                        <h2>Field measurements</h2>
+                        <p>A two-way bridge uses 12 readings total—six for each travel direction.</p>
+                    </div>
+                    <div class="underclearance-actions">
+                        <button type="button" class="underclearance-secondary-button" id="load-example">Load sample values</button>
+                        <button type="reset" class="underclearance-secondary-button">Clear</button>
+                    </div>
+                </div>
+
+                <section class="underclearance-direction-card" aria-labelledby="direction1-input-heading">
+                    <div class="underclearance-direction-heading">
+                        <div>
+                            <p class="underclearance-direction-kicker">Direction 1</p>
+                            <h3 id="direction1-input-heading">Travel Direction 1</h3>
+                        </div>
+                        <span>6 readings</span>
+                    </div>
+
+                    <div class="underclearance-measurements">
+                        <fieldset>
+                            <legend>Entering end</legend>
+                            <div class="underclearance-input-grid">
+                                <div class="form-group">
+                                    <label for="d1-entry-left">EM left (ft)</label>
+                                    <input type="number" id="d1-entry-left" class="clearance-input" data-direction="direction1" data-location="Entering end — EM left" min="0" step="any" inputmode="decimal" placeholder="14.87" required>
+                                    <output class="clearance-conversion" for="d1-entry-left">—</output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="d1-entry-crown">Crown (ft)</label>
+                                    <input type="number" id="d1-entry-crown" class="clearance-input" data-direction="direction1" data-location="Entering end — Crown" min="0" step="any" inputmode="decimal" placeholder="14.74" required>
+                                    <output class="clearance-conversion" for="d1-entry-crown">—</output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="d1-entry-right">EM right (ft)</label>
+                                    <input type="number" id="d1-entry-right" class="clearance-input" data-direction="direction1" data-location="Entering end — EM right" min="0" step="any" inputmode="decimal" placeholder="15.32" required>
+                                    <output class="clearance-conversion" for="d1-entry-right">—</output>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Exiting end</legend>
+                            <div class="underclearance-input-grid">
+                                <div class="form-group">
+                                    <label for="d1-exit-left">EM left (ft)</label>
+                                    <input type="number" id="d1-exit-left" class="clearance-input" data-direction="direction1" data-location="Exiting end — EM left" min="0" step="any" inputmode="decimal" placeholder="16.19" required>
+                                    <output class="clearance-conversion" for="d1-exit-left">—</output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="d1-exit-crown">Crown (ft)</label>
+                                    <input type="number" id="d1-exit-crown" class="clearance-input" data-direction="direction1" data-location="Exiting end — Crown" min="0" step="any" inputmode="decimal" placeholder="15.97" required>
+                                    <output class="clearance-conversion" for="d1-exit-crown">—</output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="d1-exit-right">EM right (ft)</label>
+                                    <input type="number" id="d1-exit-right" class="clearance-input" data-direction="direction1" data-location="Exiting end — EM right" min="0" step="any" inputmode="decimal" placeholder="16.70" required>
+                                    <output class="clearance-conversion" for="d1-exit-right">—</output>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="underclearance-existing-sign">
+                        <div class="form-group">
+                            <label for="direction1-existing-status">Existing clearance sign posted?</label>
+                            <select id="direction1-existing-status" class="existing-sign-status" data-direction="direction1">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="underclearance-existing-value" id="direction1-existing-value" hidden>
+                            <div class="form-group">
+                                <label for="direction1-existing-feet">Existing sign feet</label>
+                                <input type="number" id="direction1-existing-feet" class="existing-sign-feet" data-direction="direction1" min="0" step="1" inputmode="numeric" placeholder="14">
+                            </div>
+                            <div class="form-group">
+                                <label for="direction1-existing-inches">Existing sign inches</label>
+                                <input type="number" id="direction1-existing-inches" class="existing-sign-inches" data-direction="direction1" min="0" max="11" step="1" inputmode="numeric" placeholder="6">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="underclearance-direction-card" aria-labelledby="direction2-input-heading">
+                    <div class="underclearance-direction-heading">
+                        <div>
+                            <p class="underclearance-direction-kicker">Direction 2</p>
+                            <h3 id="direction2-input-heading">Travel Direction 2</h3>
+                        </div>
+                        <span>6 readings</span>
+                    </div>
+
+                    <div class="underclearance-measurements">
+                        <fieldset>
+                            <legend>Entering end</legend>
+                            <div class="underclearance-input-grid">
+                                <div class="form-group">
+                                    <label for="d2-entry-left">EM left (ft)</label>
+                                    <input type="number" id="d2-entry-left" class="clearance-input" data-direction="direction2" data-location="Entering end — EM left" min="0" step="any" inputmode="decimal" placeholder="16.87" required>
+                                    <output class="clearance-conversion" for="d2-entry-left">—</output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="d2-entry-crown">Crown (ft)</label>
+                                    <input type="number" id="d2-entry-crown" class="clearance-input" data-direction="direction2" data-location="Entering end — Crown" min="0" step="any" inputmode="decimal" placeholder="16.82" required>
+                                    <output class="clearance-conversion" for="d2-entry-crown">—</output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="d2-entry-right">EM right (ft)</label>
+                                    <input type="number" id="d2-entry-right" class="clearance-input" data-direction="direction2" data-location="Entering end — EM right" min="0" step="any" inputmode="decimal" placeholder="17.33" required>
+                                    <output class="clearance-conversion" for="d2-entry-right">—</output>
+                                </div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>Exiting end</legend>
+                            <div class="underclearance-input-grid">
+                                <div class="form-group">
+                                    <label for="d2-exit-left">EM left (ft)</label>
+                                    <input type="number" id="d2-exit-left" class="clearance-input" data-direction="direction2" data-location="Exiting end — EM left" min="0" step="any" inputmode="decimal" placeholder="15.47" required>
+                                    <output class="clearance-conversion" for="d2-exit-left">—</output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="d2-exit-crown">Crown (ft)</label>
+                                    <input type="number" id="d2-exit-crown" class="clearance-input" data-direction="direction2" data-location="Exiting end — Crown" min="0" step="any" inputmode="decimal" placeholder="15.73" required>
+                                    <output class="clearance-conversion" for="d2-exit-crown">—</output>
+                                </div>
+                                <div class="form-group">
+                                    <label for="d2-exit-right">EM right (ft)</label>
+                                    <input type="number" id="d2-exit-right" class="clearance-input" data-direction="direction2" data-location="Exiting end — EM right" min="0" step="any" inputmode="decimal" placeholder="16.24" required>
+                                    <output class="clearance-conversion" for="d2-exit-right">—</output>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div class="underclearance-existing-sign">
+                        <div class="form-group">
+                            <label for="direction2-existing-status">Existing clearance sign posted?</label>
+                            <select id="direction2-existing-status" class="existing-sign-status" data-direction="direction2">
+                                <option value="no">No</option>
+                                <option value="yes">Yes</option>
+                            </select>
+                        </div>
+                        <div class="underclearance-existing-value" id="direction2-existing-value" hidden>
+                            <div class="form-group">
+                                <label for="direction2-existing-feet">Existing sign feet</label>
+                                <input type="number" id="direction2-existing-feet" class="existing-sign-feet" data-direction="direction2" min="0" step="1" inputmode="numeric" placeholder="15">
+                            </div>
+                            <div class="form-group">
+                                <label for="direction2-existing-inches">Existing sign inches</label>
+                                <input type="number" id="direction2-existing-inches" class="existing-sign-inches" data-direction="direction2" min="0" max="11" step="1" inputmode="numeric" placeholder="4">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </form>
+
+            <section class="underclearance-results" aria-labelledby="results-heading">
+                <div class="underclearance-results-heading">
+                    <h2 id="results-heading">Directional results</h2>
+                    <p>The sign legend includes the 3-inch frost/resurfacing allowance and is rounded down to a whole inch.</p>
+                </div>
+
+                <article class="underclearance-direction-result" id="direction1-result">
+                    <div class="underclearance-empty" id="direction1-empty">Enter all six readings for Travel Direction 1.</div>
+                    <div id="direction1-calculation" hidden>
+                        <div class="underclearance-result-hero">
+                            <p class="underclearance-result-kicker">Travel Direction 1</p>
+                            <div class="underclearance-w12-sign" id="direction1-sign" role="img" aria-label="Travel Direction 1 calculated clearance sign">
+                                <div class="underclearance-w12-sign-face">
+                                    <span class="underclearance-w12-number" id="direction1-sign-feet">—</span>
+                                    <span class="underclearance-w12-unit">FT</span>
+                                    <span class="underclearance-w12-number" id="direction1-sign-inches">—</span>
+                                    <span class="underclearance-w12-unit">IN</span>
+                                </div>
+                            </div>
+                            <p class="underclearance-result-label">Calculated W12-2a overhead sign legend</p>
+                            <p id="direction1-threshold" class="underclearance-threshold-status"></p>
+                        </div>
+                        <div class="underclearance-action-card" id="direction1-action" role="status">
+                            <p class="underclearance-action-kicker">Recommended action</p>
+                            <h3 id="direction1-action-title">—</h3>
+                            <p id="direction1-action-detail">—</p>
+                        </div>
+                        <div class="underclearance-result-grid">
+                            <article class="underclearance-metric">
+                                <span>Actual minimum</span>
+                                <strong id="direction1-minimum">—</strong>
+                                <small id="direction1-location">—</small>
+                            </article>
+                            <article class="underclearance-metric">
+                                <span>Allowance</span>
+                                <strong>− 3&quot;</strong>
+                                <small>Frost / resurfacing</small>
+                            </article>
+                            <article class="underclearance-metric">
+                                <span>Sign legend</span>
+                                <strong id="direction1-rounded">—</strong>
+                                <small>Rounded down</small>
+                            </article>
+                        </div>
+                        <details class="underclearance-math-card">
+                            <summary>Show Travel Direction 1 calculation</summary>
+                            <ol id="direction1-math"></ol>
+                        </details>
+                    </div>
+                </article>
+
+                <article class="underclearance-direction-result" id="direction2-result">
+                    <div class="underclearance-empty" id="direction2-empty">Enter all six readings for Travel Direction 2.</div>
+                    <div id="direction2-calculation" hidden>
+                        <div class="underclearance-result-hero">
+                            <p class="underclearance-result-kicker">Travel Direction 2</p>
+                            <div class="underclearance-w12-sign" id="direction2-sign" role="img" aria-label="Travel Direction 2 calculated clearance sign">
+                                <div class="underclearance-w12-sign-face">
+                                    <span class="underclearance-w12-number" id="direction2-sign-feet">—</span>
+                                    <span class="underclearance-w12-unit">FT</span>
+                                    <span class="underclearance-w12-number" id="direction2-sign-inches">—</span>
+                                    <span class="underclearance-w12-unit">IN</span>
+                                </div>
+                            </div>
+                            <p class="underclearance-result-label">Calculated W12-2a overhead sign legend</p>
+                            <p id="direction2-threshold" class="underclearance-threshold-status"></p>
+                        </div>
+                        <div class="underclearance-action-card" id="direction2-action" role="status">
+                            <p class="underclearance-action-kicker">Recommended action</p>
+                            <h3 id="direction2-action-title">—</h3>
+                            <p id="direction2-action-detail">—</p>
+                        </div>
+                        <div class="underclearance-result-grid">
+                            <article class="underclearance-metric">
+                                <span>Actual minimum</span>
+                                <strong id="direction2-minimum">—</strong>
+                                <small id="direction2-location">—</small>
+                            </article>
+                            <article class="underclearance-metric">
+                                <span>Allowance</span>
+                                <strong>− 3&quot;</strong>
+                                <small>Frost / resurfacing</small>
+                            </article>
+                            <article class="underclearance-metric">
+                                <span>Sign legend</span>
+                                <strong id="direction2-rounded">—</strong>
+                                <small>Rounded down</small>
+                            </article>
+                        </div>
+                        <details class="underclearance-math-card">
+                            <summary>Show Travel Direction 2 calculation</summary>
+                            <ol id="direction2-math"></ol>
+                        </details>
+                    </div>
+                </article>
+            </section>
+
+            <div class="note underclearance-disclaimer">
+                <p><strong>Important:</strong> “Sign legend” and “sign required” are separate. The standard threshold is checked against the actual measured minimum before the 3-inch allowance. When the threshold is not met, the calculator recommends removing an existing sign; confirm that no separate site-specific requirement applies before removal.</p>
+            </div>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/underclearance.js"></script>
+</body>
+</html>
