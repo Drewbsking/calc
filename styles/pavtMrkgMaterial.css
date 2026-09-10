@@ -36,12 +36,13 @@
 .pm-optional { color: #728197; font-size: 11px; font-weight: 400; letter-spacing: 0; margin-left: 6px; }
 .pm-field { min-width: 0; }
 .pm-field label { display: block; margin: 0 0 8px; font-size: 13px; font-weight: 600; }
-.pm-page .pm-field input, .pm-page .pm-field select {
+.pm-page .pm-field input, .pm-page .pm-field select, .pm-page .pm-field textarea {
     width: 100%; margin: 0; padding: 11px 12px; border: 1px solid #cad5e2;
     border-radius: 8px; background: #fff; color: #172b44; font: inherit; font-size: 16px; min-height: 44px;
 }
+.pm-page .pm-field textarea { resize: vertical; line-height: 1.5; }
 .pm-page input::placeholder { color: #8592a4; opacity: 1; }
-.pm-page input:focus-visible, .pm-page select:focus-visible, .pm-page button:focus-visible,
+.pm-page input:focus-visible, .pm-page select:focus-visible, .pm-page textarea:focus-visible, .pm-page button:focus-visible,
 .pm-page summary:focus-visible, .pm-page a:focus-visible, .pm-marking-table:focus-visible {
     outline: 3px solid #79a8e5; outline-offset: 3px;
 }

@@ -90,10 +90,11 @@ const symbolMaterial = {
     RT_THRU_LT_ROUNDABOUT_ARROW: 28.31,
     SHARROW: 9.26,
     THRU_ARROW: 13.16,
-    THRU_LT_TURN_ARROW: 23.60,
+    THRU_LT_ROUNDABOUT_ARROW: 23.60,
+    THRU_LT_TURN_ARROW: 28.14,
     THRU_RT_TURN_ARROW: 28.14,
     TURN_ARROW_LT_OR_RT: 16.42,
-    WRONG_WAY_ARROW: 56.54,
+    WRONG_WAY_ARROW: 34.56,
     YIELD_TRIANGLE: 3.00
 };
 
@@ -132,13 +133,16 @@ function calculate() {
   const width = Number(document.getElementById('width').value);
   const feetPainted = readQuantity('feet', 'Feet painted');
   const markings = [];
+  const allMarkings = [];
   for (const [category, areas] of [['Legend', legendMaterial], ['Symbol', symbolMaterial]]) {
     for (const [id, unitArea] of Object.entries(areas)) {
       const input = document.getElementById(id);
       const label = input.closest('tr').cells[0].textContent.trim();
       const quantity = readQuantity(id, label, true);
+      const marking = { id, category, label, quantity, enteredValue: input.value, unitArea, area: quantity * unitArea };
+      allMarkings.push(marking);
       if (quantity > 0) {
-        markings.push({ category, label, quantity, unitArea, area: quantity * unitArea });
+        markings.push(marking);
       }
     }
   }
@@ -206,10 +210,12 @@ function calculate() {
     ? materialLbsUsed + totalLbsForSpecialMarkings
     : materialGallonsUsed + totalGallonsForSpecialMarkings;
   const totalBeadsUsed = beadLbsUsed + totalBeadsForSpecialMarkings;
+  const longLineArea = feetPainted * (width / 12);
+  const totalArea = longLineArea + totalSpecialMarkings;
 
   const quantities = [materialGallonsUsed, materialLbsUsed, beadLbsUsed, totalSpecialMarkings,
     totalGallonsForSpecialMarkings, totalLbsForSpecialMarkings, totalBeadsForSpecialMarkings,
-    totalBinderUsed, totalBeadsUsed];
+    totalBinderUsed, totalBeadsUsed, longLineArea, totalArea];
   if (!quantities.every(Number.isFinite)) {
     error.textContent = 'The entered quantities are too large to calculate. Reduce them and try again.';
     error.classList.remove('hidden');
@@ -257,8 +263,24 @@ function calculate() {
   emptyResult.classList.add('hidden');
   result.classList.remove('hidden');
   return {
+    material,
     materialName: materialSelect.selectedOptions[0].textContent,
-    width, feetPainted, markings, rateRows, quantityRows
+    width, feetPainted, feetEntry: document.getElementById('feet').value,
+    markings, allMarkings, rateRows, quantityRows,
+    rates: {
+      baseBinderPerMile: binder, baseBeadsPerMile: beads,
+      binderUnit: isThermoplastic ? 'lb' : 'gal', wetThickness, minThicknessBeads,
+      widthFactor: width / 4, widthFeet: width / 12, squareFeetPerMile,
+      binderPerMile: adjustedBinderPerMile, beadsPerMile,
+      binderPerSFT: isThermoplastic ? lbsPerSFT : gallonsPerSFT, beadsPerSFT
+    },
+    quantities: {
+      milesPainted: feetPainted / 5280, longLineArea, totalArea,
+      longLineBinder: isThermoplastic ? materialLbsUsed : materialGallonsUsed,
+      longLineBeads: beadLbsUsed, specialArea: totalSpecialMarkings,
+      specialBinder: isThermoplastic ? totalLbsForSpecialMarkings : totalGallonsForSpecialMarkings,
+      specialBeads: totalBeadsForSpecialMarkings, totalBinder: totalBinderUsed, totalBeads: totalBeadsUsed
+    }
   };
 }
 
@@ -279,54 +301,13 @@ function exportToPDF() {
     error.classList.remove('hidden');
     return;
   }
-  const { jsPDF } = window.jspdf;
-  const doc = new jsPDF();
-  const margin = 15;
-  const pageHeight = doc.internal.pageSize.getHeight();
-  const textWidth = doc.internal.pageSize.getWidth() - 2 * margin;
-  let yPosition = margin;
-
-  function writeText(text, heading = false, compact = false) {
-    doc.setFont('helvetica', heading ? 'bold' : 'normal');
-    doc.setFontSize(heading ? 13 : 10);
-    const lines = doc.splitTextToSize(String(text), textWidth);
-    // Reserve a body line after headings to avoid orphaned section titles.
-    if (heading && yPosition + (lines.length + 1) * 6 + 3 > pageHeight - margin) {
-      doc.addPage();
-      yPosition = margin;
-    }
-    for (const line of lines) {
-      if (yPosition + 6 > pageHeight - margin) {
-        doc.addPage();
-        yPosition = margin;
-      }
-      doc.text(line, margin, yPosition);
-      yPosition += 6;
-    }
-    yPosition += heading ? 3 : compact ? 0 : 1;
-  }
-
-  const projectName = document.getElementById('projectName').value.trim() || 'Unnamed Project';
-  const projectNumber = document.getElementById('projectNumber').value.trim() || 'No Number';
-  writeText('Pavement Marking Material', true);
-  writeText(`Project Name: ${projectName}`);
-  writeText(`Project Number: ${projectNumber}`);
-  writeText('Calculation Inputs', true);
-  writeText(`Material: ${calculation.materialName}`);
-  writeText(`Long-Line Width: ${calculation.width} inches`);
-  writeText(`Feet Painted (excluding unpainted gaps): ${calculation.feetPainted}`);
-  writeText('Application Rates', true);
-  writeText('MDOT 2020 Standard Specifications, Table 811-1; solid-line rates scaled to the selected width.');
-  Object.values(calculation.rateRows).forEach(text => writeText(text));
-  writeText('Material Quantities', true);
-  Object.values(calculation.quantityRows).forEach(text => writeText(text));
-  writeText('Special Marking Inputs', true);
-  if (calculation.markings.length === 0) writeText('None entered.');
-  for (const marking of calculation.markings) {
-    writeText(`${marking.category}: ${marking.label} | Quantity: ${marking.quantity} | Unit Area: ${marking.unitArea.toFixed(2)} sq ft | Total Area: ${marking.area.toFixed(2)} sq ft`, false, true);
-  }
-
-  doc.save(`${projectName}_report.pdf`);
+  const project = Object.fromEntries(
+    ['projectName', 'projectNumber', 'preparedBy', 'projectLocation', 'quantitySource', 'calculationNotes']
+      .map(id => [id, document.getElementById(id).value.trim()])
+  );
+  const doc = createPavementMarkingReport(calculation, project, window.jspdf.jsPDF);
+  const filename = (project.projectName || 'Unnamed Project').replace(/[<>:"/\\|?*\x00-\x1f]/g, '_').slice(0, 100);
+  doc.save(`${filename}_calculations.pdf`);
 }
 
 document.addEventListener('DOMContentLoaded', () => {

@@ -193,7 +193,7 @@
                         </div>
                     </details>
                     <details class="pm-marking-group" data-marking-group>
-                        <summary><span>Symbols</span><span class="pm-group-count" data-group-count>21 types</span><span class="pm-disclosure" aria-hidden="true">+</span></summary>
+                        <summary><span>Symbols</span><span class="pm-group-count" data-group-count>22 types</span><span class="pm-disclosure" aria-hidden="true">+</span></summary>
                         <div class="table-container pm-marking-table" tabindex="0" role="region" aria-label="Symbols quantities, scroll for more">
                             <table aria-label="Symbols quantities">
                                 <thead>
@@ -285,9 +285,14 @@
                                         <td id="THRU_ARROW_area">13.16</td>
                                     </tr>
                                     <tr>
+                                        <td>THRU, LT ROUNDABOUT ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="THRU_LT_ROUNDABOUT_ARROW" value="0" min="0" step="1" aria-label="THRU LT ROUNDABOUT ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="THRU_LT_ROUNDABOUT_ARROW_area">23.60</td>
+                                    </tr>
+                                    <tr>
                                         <td>THRU, LT TURN ARROW</td>
                                         <td><input type="number" inputmode="numeric" id="THRU_LT_TURN_ARROW" value="0" min="0" step="1" aria-label="THRU LT TURN ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
-                                        <td id="THRU_LT_TURN_ARROW_area">23.60</td>
+                                        <td id="THRU_LT_TURN_ARROW_area">28.14</td>
                                     </tr>
                                     <tr>
                                         <td>THRU, RT TURN ARROW</td>
@@ -302,7 +307,7 @@
                                     <tr>
                                         <td>WRONG WAY ARROW</td>
                                         <td><input type="number" inputmode="numeric" id="WRONG_WAY_ARROW" value="0" min="0" step="1" aria-label="WRONG WAY ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
-                                        <td id="WRONG_WAY_ARROW_area">56.54</td>
+                                        <td id="WRONG_WAY_ARROW_area">34.56</td>
                                     </tr>
                                     <tr>
                                         <td>YIELD TRIANGLE</td>
@@ -314,6 +319,7 @@
                         </div>
                     </details>
                         <p class="pm-help pm-selection-note" id="markingSelection">No special markings entered.</p>
+                        <p class="pm-help pm-selection-note">Material areas: <a href="https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=baac7af0-d2bf-49fd-8ea1-cd35cfb3c567&amp;fileName=PAVE-900-H.pdf#page=9">MDOT PAVE-900-H, sheet 9</a>.</p>
                     </section>
                 </form>
 
@@ -361,10 +367,14 @@
                         <details class="pm-result-details pm-project-details">
                             <summary>Project details <span class="pm-optional">Optional</span><span class="pm-disclosure" aria-hidden="true">+</span></summary>
                             <div class="pm-field"><label for="projectName">Project name</label><input type="text" id="projectName" placeholder="e.g. Maple Road striping"></div>
-                            <div class="pm-field"><label for="projectNumber">Project number</label><input type="text" id="projectNumber" placeholder="e.g. 2026-042"></div>
+                            <div class="pm-field"><label for="projectNumber">Project / federal-aid number</label><input type="text" id="projectNumber" placeholder="e.g. 2026-042"></div>
+                            <div class="pm-field"><label for="preparedBy">Prepared by</label><input type="text" id="preparedBy" placeholder="Name and organization"></div>
+                            <div class="pm-field"><label for="projectLocation">Location / project limits</label><input type="text" id="projectLocation" placeholder="Road, intersections, or station limits"></div>
+                            <div class="pm-field"><label for="quantitySource">Quantity source / plan sheets</label><textarea id="quantitySource" rows="2" placeholder="Plan sheets, field measurements, and dates"></textarea></div>
+                            <div class="pm-field"><label for="calculationNotes">Calculation notes</label><textarea id="calculationNotes" rows="3" placeholder="Scope, measurement assumptions, and supporting references"></textarea></div>
                         </details>
                         <button class="pm-export" type="button" onclick="exportToPDF()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v5h14v-5"/></svg> Export to PDF</button>
-                        <p class="pm-export-note">Includes inputs, rates, and a marking-by-marking breakdown.</p>
+                        <p class="pm-export-note">Full calculation report: formulas, substitutions, individual markings, source references, and totals.</p>
                     </div>
                 </aside>
             </div>
@@ -373,6 +383,7 @@
 
     <div id="footer-placeholder"></div>
     <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/pavtMrkgMaterialReport.js"></script>
     <script src="scripts/pavtMrkgMaterialScript.js"></script>
 </body>
 </html>
