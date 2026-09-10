@@ -5,315 +5,368 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pavement Marking Material</title>
     <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/pavtMrkgMaterial.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.0/jspdf.umd.min.js"></script>
 </head>
-<body>
+<body class="pm-page">
     <div id="header-placeholder"></div>
 
-    <main class="container">
-        <section class="calculator">
-            <h1>Pavement Marking Material</h1>
-
-            <h2>Material</h2>
-            <form id="markingForm">
-                <label for="material">Select Pavement Marking Material:</label>
-                <select id="material" name="material" required onchange="calculate()">
-                    <option value="">--Select Material--</option>
-                    <option value="waterborne">Waterborne (Low Temp)</option>
-                    <option value="regularWaterborne">Regular Dry Waterborne</option>
-                    <option value="sprayableThermoplastic">Sprayable Thermoplastic</option>
-                </select>
-
-                <h2>Long Lines</h2>
-                <label for="width">Width of Pavement Marking (inches):</label>
-                <input type="range" id="width" name="width" min="4" max="24" value="4" step="1" class="slider"
-                       oninput="updateWidthLabel(this.value); calculate();">
-                <span id="widthValue">4 inches</span>
-
-                <label for="feet">Feet of Pavement Marking Painted:</label>
-                <input type="number" id="feet" name="feet" step="0.01" required oninput="calculate()">
-
-                <h2>Special Markings:</h2>
-                <div class="table-container">
-                    <h3>Legends</h3>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Legend</th>
-                            <th>Quantity (Each)</th>
-                            <th>Unit Area (sq ft)</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>AHEAD</td>
-                            <td><input type="number" id="AHEAD" value="0" oninput="calculate()"></td>
-                            <td id="AHEAD_area">28.86</td>
-                        </tr>
-                        <tr>
-                            <td>BIKE</td>
-                            <td><input type="number" id="BIKE" value="0" oninput="calculate()"></td>
-                            <td id="BIKE_area">22.15</td>
-                        </tr>
-                        <tr>
-                            <td>BUS</td>
-                            <td><input type="number" id="BUS" value="0" oninput="calculate()"></td>
-                            <td id="BUS_area">18.55</td>
-                        </tr>
-                        <tr>
-                            <td>CANADA</td>
-                            <td><input type="number" id="CANADA" value="0" oninput="calculate()"></td>
-                            <td id="CANADA_area">32.87</td>
-                        </tr>
-                        <tr>
-                            <td>EAST</td>
-                            <td><input type="number" id="EAST" value="0" oninput="calculate()"></td>
-                            <td id="EAST_area">21.71</td>
-                        </tr>
-                        <tr>
-                            <td>EXIT</td>
-                            <td><input type="number" id="EXIT" value="0" oninput="calculate()"></td>
-                            <td id="EXIT_area">17.76</td>
-                        </tr>
-                        <tr>
-                            <td>LANE</td>
-                            <td><input type="number" id="LANE" value="0" oninput="calculate()"></td>
-                            <td id="LANE_area">22.30</td>
-                        </tr>
-                        <tr>
-                            <td>LEFT</td>
-                            <td><input type="number" id="LEFT" value="0" oninput="calculate()"></td>
-                            <td id="LEFT_area">19.11</td>
-                        </tr>
-                        <tr>
-                            <td>MERGE</td>
-                            <td><input type="number" id="MERGE" value="0" oninput="calculate()"></td>
-                            <td id="MERGE_area">33.28</td>
-                        </tr>
-                        <tr>
-                            <td>NO</td>
-                            <td><input type="number" id="NO" value="0" oninput="calculate()"></td>
-                            <td id="NO_area">12.92</td>
-                        </tr>
-                        <tr>
-                            <td>NORTH</td>
-                            <td><input type="number" id="NORTH" value="0" oninput="calculate()"></td>
-                            <td id="NORTH_area">29.53</td>
-                        </tr>
-                        <tr>
-                            <td>ONLY</td>
-                            <td><input type="number" id="ONLY" value="0" oninput="calculate()"></td>
-                            <td id="ONLY_area">20.90</td>
-                        </tr>
-                        <tr>
-                            <td>PED</td>
-                            <td><input type="number" id="PED" value="0" oninput="calculate()"></td>
-                            <td id="PED_area">17.63</td>
-                        </tr>
-                        <tr>
-                            <td>RIGHT</td>
-                            <td><input type="number" id="RIGHT" value="0" oninput="calculate()"></td>
-                            <td id="RIGHT_area">25.10</td>
-                        </tr>
-                        <tr>
-                            <td>SCHOOL</td>
-                            <td><input type="number" id="SCHOOL" value="0" oninput="calculate()"></td>
-                            <td id="SCHOOL_area">32.58</td>
-                        </tr>
-                        <tr>
-                            <td>SOUTH</td>
-                            <td><input type="number" id="SOUTH" value="0" oninput="calculate()"></td>
-                            <td id="SOUTH_area">27.83</td>
-                        </tr>
-                        <tr>
-                            <td>STOP</td>
-                            <td><input type="number" id="STOP" value="0" oninput="calculate()"></td>
-                            <td id="STOP_area">21.50</td>
-                        </tr>
-                        <tr>
-                            <td>TO</td>
-                            <td><input type="number" id="TO" value="0" oninput="calculate()"></td>
-                            <td id="TO_area">10.43</td>
-                        </tr>
-                        <tr>
-                            <td>TRAIL</td>
-                            <td><input type="number" id="TRAIL" value="0" oninput="calculate()"></td>
-                            <td id="TRAIL_area">22.10</td>
-                        </tr>
-                        <tr>
-                            <td>TURN</td>
-                            <td><input type="number" id="TURN" value="0" oninput="calculate()"></td>
-                            <td id="TURN_area">23.04</td>
-                        </tr>
-                        <tr>
-                            <td>WEST</td>
-                            <td><input type="number" id="WEST" value="0" oninput="calculate()"></td>
-                            <td id="WEST_area">24.42</td>
-                        </tr>
-                        <tr>
-                            <td>XING</td>
-                            <td><input type="number" id="XING" value="0" oninput="calculate()"></td>
-                            <td id="XING_area">20.13</td>
-                        </tr>
-                        <tr>
-                            <td>YIELD</td>
-                            <td><input type="number" id="YIELD" value="0" oninput="calculate()"></td>
-                            <td id="YIELD_area">22.91</td>
-                        </tr>
-                        </tbody>
-                    </table>
+    <main class="container pm-container">
+        <section class="calculator pm-calculator">
+            <header class="pm-heading">
+                <div>
+                    <h1>Pavement Marking Material</h1>
+                    <p>Estimate paint and glass beads for long lines, legends, and symbols.</p>
                 </div>
+                <a class="pm-estimate-link" href="#estimatePanel">View estimate <span aria-hidden="true">&#8599;</span></a>
+            </header>
 
-                <div class="table-container">
-                    <h3>Symbols</h3>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>Symbol</th>
-                            <th>Quantity (Each)</th>
-                            <th>Unit Area (sq ft)</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>ACCESSIBLE</td>
-                            <td><input type="number" id="ACCESSIBLE" value="0" oninput="calculate()"></td>
-                            <td id="ACCESSIBLE_area">11.11</td>
-                        </tr>
-                        <tr>
-                            <td>BICYCLE (ROAD)</td>
-                            <td><input type="number" id="BICYCLE_ROAD" value="0" oninput="calculate()"></td>
-                            <td id="BICYCLE_ROAD_area">10.54</td>
-                        </tr>
-                        <tr>
-                            <td>BICYCLE (LANE/PATH)</td>
-                            <td><input type="number" id="BICYCLE_LANE_PATH" value="0" oninput="calculate()"></td>
-                            <td id="BICYCLE_LANE_PATH_area">5.93</td>
-                        </tr>
-                        <tr>
-                            <td>BIKE TURN ARROW, LT OR RT</td>
-                            <td><input type="number" id="BIKE_TURN_ARROW_LT_OR_RT" value="0" oninput="calculate()"></td>
-                            <td id="BIKE_TURN_ARROW_LT_OR_RT_area">4.11</td>
-                        </tr>
-                        <tr>
-                            <td>DEDICATED LANE (HOV)</td>
-                            <td><input type="number" id="DEDICATED_LANE_HOV" value="0" oninput="calculate()"></td>
-                            <td id="DEDICATED_LANE_HOV_area">10.24</td>
-                        </tr>
-                        <tr>
-                            <td>DIRECT ARROW (BIKE)</td>
-                            <td><input type="number" id="DIRECT_ARROW_BIKE" value="0" oninput="calculate()"></td>
-                            <td id="DIRECT_ARROW_BIKE_area">5.07</td>
-                        </tr>
-                        <tr>
-                            <td>LEFT, RIGHT ARROW</td>
-                            <td><input type="number" id="LEFT_RIGHT_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="LEFT_RIGHT_ARROW_area">28.99</td>
-                        </tr>
-                        <tr>
-                            <td>LT ROUNDABOUT ARROW</td>
-                            <td><input type="number" id="LT_ROUNDABOUT_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="LT_ROUNDABOUT_ARROW_area">17.48</td>
-                        </tr>
-                        <tr>
-                            <td>LT, RT, THRU ARROW</td>
-                            <td><input type="number" id="LT_RT_THRU_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="LT_RT_THRU_ARROW_area">40.26</td>
-                        </tr>
-                        <tr>
-                            <td>MERGE ARROW</td>
-                            <td><input type="number" id="MERGE_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="MERGE_ARROW_area">42.17</td>
-                        </tr>
-                        <tr>
-                            <td>RAILROAD</td>
-                            <td><input type="number" id="RAILROAD" value="0" oninput="calculate()"></td>
-                            <td id="RAILROAD_area">60.89</td>
-                        </tr>
-                        <tr>
-                            <td>RAILROAD-ALTERNATE</td>
-                            <td><input type="number" id="RAILROAD_ALTERNATE" value="0" oninput="calculate()"></td>
-                            <td id="RAILROAD_ALTERNATE_area">59.06</td>
-                        </tr>
-                        <tr>
-                            <td>RT. LT ROUNDABOUT ARROW</td>
-                            <td><input type="number" id="RT_LT_ROUNDABOUT_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="RT_LT_ROUNDABOUT_ARROW_area">22.19</td>
-                        </tr>
-                        <tr>
-                            <td>RT, THRU, LT ROUNDABOUT ARROW</td>
-                            <td><input type="number" id="RT_THRU_LT_ROUNDABOUT_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="RT_THRU_LT_ROUNDABOUT_ARROW_area">28.31</td>
-                        </tr>
-                        <tr>
-                            <td>SHARROW</td>
-                            <td><input type="number" id="SHARROW" value="0" oninput="calculate()"></td>
-                            <td id="SHARROW_area">9.26</td>
-                        </tr>
-                        <tr>
-                            <td>THRU ARROW</td>
-                            <td><input type="number" id="THRU_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="THRU_ARROW_area">13.16</td>
-                        </tr>
-                        <tr>
-                            <td>THRU, LT TURN ARROW</td>
-                            <td><input type="number" id="THRU_LT_TURN_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="THRU_LT_TURN_ARROW_area">23.60</td>
-                        </tr>
-                        <tr>
-                            <td>THRU, RT TURN ARROW</td>
-                            <td><input type="number" id="THRU_RT_TURN_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="THRU_RT_TURN_ARROW_area">28.14</td>
-                        </tr>
-                        <tr>
-                            <td>TURN ARROW, LT OR RT</td>
-                            <td><input type="number" id="TURN_ARROW_LT_OR_RT" value="0" oninput="calculate()"></td>
-                            <td id="TURN_ARROW_LT_OR_RT_area">16.42</td>
-                        </tr>
-                        <tr>
-                            <td>WRONG WAY ARROW</td>
-                            <td><input type="number" id="WRONG_WAY_ARROW" value="0" oninput="calculate()"></td>
-                            <td id="WRONG_WAY_ARROW_area">56.54</td>
-                        </tr>
-                        <tr>
-                            <td>YIELD TRIANGLE</td>
-                            <td><input type="number" id="YIELD_TRIANGLE" value="0" oninput="calculate()"></td>
-                            <td id="YIELD_TRIANGLE_area">3.00</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </form>
+            <div class="pm-workspace">
+                <form id="markingForm" class="pm-inputs" onsubmit="event.preventDefault()">
+                    <section class="pm-card" aria-labelledby="setupHeading">
+                        <div class="pm-card-heading">
+                            <span class="pm-step" aria-hidden="true">01</span>
+                            <div><h2 id="setupHeading">Material &amp; long lines</h2><p>Choose a material, then enter the painted length.</p></div>
+                        </div>
+                        <div class="pm-field">
+                            <label for="material">Marking material</label>
+                            <select id="material" name="material" required onchange="calculate()">
+                                <option value="">Select a material</option>
+                                <option value="waterborne">Waterborne (Low Temp)</option>
+                                <option value="regularWaterborne">Regular Dry Waterborne</option>
+                                <option value="sprayableThermoplastic">Sprayable Thermoplastic</option>
+                            </select>
+                        </div>
+                        <div class="pm-line-inputs">
+                            <div class="pm-field">
+                                <div class="pm-label-row"><label for="width">Line width</label><output id="widthValue" for="width">4 inches</output></div>
+                                <input type="range" id="width" name="width" min="4" max="24" value="4" step="1" oninput="updateWidthLabel(this.value); calculate();">
+                                <div class="pm-range-labels" aria-hidden="true"><span>4 in</span><span>24 in</span></div>
+                            </div>
+                            <div class="pm-field">
+                                <label for="feet">Painted length</label>
+                                <div class="pm-input-unit"><input type="number" inputmode="decimal" id="feet" name="feet" min="0" step="0.01" placeholder="0" aria-describedby="feetHelp markingError" oninput="calculate()"><span aria-hidden="true">ft</span></div>
+                            </div>
+                        </div>
+                        <p class="pm-help" id="feetHelp">Exclude unpainted gaps. Leave length blank or enter 0 for special markings only.</p>
+                    </section>
 
-            <div id="result" class="result hidden">
-                <h1>Results</h1>
-                <div class="result-section" id="MDOTApplicationSection">
-                    <h2>Application Rates (PER MDOT SPEC BOOK):</h2>
-                    <p id="thickness">Minimum Dry Thickness: </p>
-                    <p id="thicknessBeads">Minimum Dry Thickness with Beads: </p>
-                    <p id="gallonsPerMile">Gallons of Paint per Mile: </p>
-                    <p id="lbsPerMile">Pounds of Paint per Mile: </p>
-                    <p id="beadsPerMile">Pounds of Beads per Mile: </p>
-                    <p id="gallonsPerSFT">Gallons of Paint per Square Foot</p>
-                    <p id="beadsPerSFT">Pounds of Beads per Square Foot</p>
-                </div>
+                    <section class="pm-card pm-special-card" aria-labelledby="specialHeading">
+                        <div class="pm-card-heading">
+                            <span class="pm-step" aria-hidden="true">02</span>
+                            <div><h2 id="specialHeading">Special markings <span class="pm-optional">Optional</span></h2><p>Enter the number of each legend or symbol.</p></div>
+                        </div>
+                        <div class="pm-search-bar">
+                            <div class="pm-field"><label class="pm-sr-only" for="markingSearch">Find a legend or symbol</label><input type="search" id="markingSearch" placeholder="Find a legend or symbol" oninput="filterMarkings()"></div>
+                            <label class="pm-filter-toggle" for="enteredOnly"><input type="checkbox" id="enteredOnly" onchange="filterMarkings()"> Entered only</label>
+                        </div>
+                        <p class="pm-filter-status" id="markingFilterStatus" role="status"></p>
+                    <details class="pm-marking-group" data-marking-group>
+                        <summary><span>Legends</span><span class="pm-group-count" data-group-count>23 types</span><span class="pm-disclosure" aria-hidden="true">+</span></summary>
+                        <div class="table-container pm-marking-table" tabindex="0" role="region" aria-label="Legends quantities, scroll for more">
+                            <table aria-label="Legends quantities">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Marking</th>
+                                        <th scope="col">Qty</th>
+                                        <th scope="col">sq ft / each</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>AHEAD</td>
+                                        <td><input type="number" inputmode="numeric" id="AHEAD" value="0" min="0" step="1" aria-label="AHEAD quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="AHEAD_area">28.86</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BIKE</td>
+                                        <td><input type="number" inputmode="numeric" id="BIKE" value="0" min="0" step="1" aria-label="BIKE quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="BIKE_area">22.15</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BUS</td>
+                                        <td><input type="number" inputmode="numeric" id="BUS" value="0" min="0" step="1" aria-label="BUS quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="BUS_area">18.55</td>
+                                    </tr>
+                                    <tr>
+                                        <td>CANADA</td>
+                                        <td><input type="number" inputmode="numeric" id="CANADA" value="0" min="0" step="1" aria-label="CANADA quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="CANADA_area">32.87</td>
+                                    </tr>
+                                    <tr>
+                                        <td>EAST</td>
+                                        <td><input type="number" inputmode="numeric" id="EAST" value="0" min="0" step="1" aria-label="EAST quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="EAST_area">21.71</td>
+                                    </tr>
+                                    <tr>
+                                        <td>EXIT</td>
+                                        <td><input type="number" inputmode="numeric" id="EXIT" value="0" min="0" step="1" aria-label="EXIT quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="EXIT_area">17.76</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LANE</td>
+                                        <td><input type="number" inputmode="numeric" id="LANE" value="0" min="0" step="1" aria-label="LANE quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="LANE_area">22.30</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LEFT</td>
+                                        <td><input type="number" inputmode="numeric" id="LEFT" value="0" min="0" step="1" aria-label="LEFT quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="LEFT_area">19.11</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MERGE</td>
+                                        <td><input type="number" inputmode="numeric" id="MERGE" value="0" min="0" step="1" aria-label="MERGE quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="MERGE_area">33.28</td>
+                                    </tr>
+                                    <tr>
+                                        <td>NO</td>
+                                        <td><input type="number" inputmode="numeric" id="NO" value="0" min="0" step="1" aria-label="NO quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="NO_area">12.92</td>
+                                    </tr>
+                                    <tr>
+                                        <td>NORTH</td>
+                                        <td><input type="number" inputmode="numeric" id="NORTH" value="0" min="0" step="1" aria-label="NORTH quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="NORTH_area">29.53</td>
+                                    </tr>
+                                    <tr>
+                                        <td>ONLY</td>
+                                        <td><input type="number" inputmode="numeric" id="ONLY" value="0" min="0" step="1" aria-label="ONLY quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="ONLY_area">20.90</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PED</td>
+                                        <td><input type="number" inputmode="numeric" id="PED" value="0" min="0" step="1" aria-label="PED quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="PED_area">17.63</td>
+                                    </tr>
+                                    <tr>
+                                        <td>RIGHT</td>
+                                        <td><input type="number" inputmode="numeric" id="RIGHT" value="0" min="0" step="1" aria-label="RIGHT quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="RIGHT_area">25.10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SCHOOL</td>
+                                        <td><input type="number" inputmode="numeric" id="SCHOOL" value="0" min="0" step="1" aria-label="SCHOOL quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="SCHOOL_area">32.58</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SOUTH</td>
+                                        <td><input type="number" inputmode="numeric" id="SOUTH" value="0" min="0" step="1" aria-label="SOUTH quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="SOUTH_area">27.83</td>
+                                    </tr>
+                                    <tr>
+                                        <td>STOP</td>
+                                        <td><input type="number" inputmode="numeric" id="STOP" value="0" min="0" step="1" aria-label="STOP quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="STOP_area">21.50</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TO</td>
+                                        <td><input type="number" inputmode="numeric" id="TO" value="0" min="0" step="1" aria-label="TO quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="TO_area">10.43</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TRAIL</td>
+                                        <td><input type="number" inputmode="numeric" id="TRAIL" value="0" min="0" step="1" aria-label="TRAIL quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="TRAIL_area">22.10</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TURN</td>
+                                        <td><input type="number" inputmode="numeric" id="TURN" value="0" min="0" step="1" aria-label="TURN quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="TURN_area">23.04</td>
+                                    </tr>
+                                    <tr>
+                                        <td>WEST</td>
+                                        <td><input type="number" inputmode="numeric" id="WEST" value="0" min="0" step="1" aria-label="WEST quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="WEST_area">24.42</td>
+                                    </tr>
+                                    <tr>
+                                        <td>XING</td>
+                                        <td><input type="number" inputmode="numeric" id="XING" value="0" min="0" step="1" aria-label="XING quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="XING_area">20.13</td>
+                                    </tr>
+                                    <tr>
+                                        <td>YIELD</td>
+                                        <td><input type="number" inputmode="numeric" id="YIELD" value="0" min="0" step="1" aria-label="YIELD quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="YIELD_area">22.91</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+                    <details class="pm-marking-group" data-marking-group>
+                        <summary><span>Symbols</span><span class="pm-group-count" data-group-count>21 types</span><span class="pm-disclosure" aria-hidden="true">+</span></summary>
+                        <div class="table-container pm-marking-table" tabindex="0" role="region" aria-label="Symbols quantities, scroll for more">
+                            <table aria-label="Symbols quantities">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Marking</th>
+                                        <th scope="col">Qty</th>
+                                        <th scope="col">sq ft / each</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>ACCESSIBLE</td>
+                                        <td><input type="number" inputmode="numeric" id="ACCESSIBLE" value="0" min="0" step="1" aria-label="ACCESSIBLE quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="ACCESSIBLE_area">11.11</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BICYCLE (ROAD)</td>
+                                        <td><input type="number" inputmode="numeric" id="BICYCLE_ROAD" value="0" min="0" step="1" aria-label="BICYCLE ROAD quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="BICYCLE_ROAD_area">10.54</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BICYCLE (LANE/PATH)</td>
+                                        <td><input type="number" inputmode="numeric" id="BICYCLE_LANE_PATH" value="0" min="0" step="1" aria-label="BICYCLE LANE PATH quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="BICYCLE_LANE_PATH_area">5.93</td>
+                                    </tr>
+                                    <tr>
+                                        <td>BIKE TURN ARROW, LT OR RT</td>
+                                        <td><input type="number" inputmode="numeric" id="BIKE_TURN_ARROW_LT_OR_RT" value="0" min="0" step="1" aria-label="BIKE TURN ARROW LT OR RT quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="BIKE_TURN_ARROW_LT_OR_RT_area">4.11</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DEDICATED LANE (HOV)</td>
+                                        <td><input type="number" inputmode="numeric" id="DEDICATED_LANE_HOV" value="0" min="0" step="1" aria-label="DEDICATED LANE HOV quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="DEDICATED_LANE_HOV_area">10.24</td>
+                                    </tr>
+                                    <tr>
+                                        <td>DIRECT ARROW (BIKE)</td>
+                                        <td><input type="number" inputmode="numeric" id="DIRECT_ARROW_BIKE" value="0" min="0" step="1" aria-label="DIRECT ARROW BIKE quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="DIRECT_ARROW_BIKE_area">5.07</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LEFT, RIGHT ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="LEFT_RIGHT_ARROW" value="0" min="0" step="1" aria-label="LEFT RIGHT ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="LEFT_RIGHT_ARROW_area">28.99</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LT ROUNDABOUT ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="LT_ROUNDABOUT_ARROW" value="0" min="0" step="1" aria-label="LT ROUNDABOUT ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="LT_ROUNDABOUT_ARROW_area">17.48</td>
+                                    </tr>
+                                    <tr>
+                                        <td>LT, RT, THRU ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="LT_RT_THRU_ARROW" value="0" min="0" step="1" aria-label="LT RT THRU ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="LT_RT_THRU_ARROW_area">40.26</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MERGE ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="MERGE_ARROW" value="0" min="0" step="1" aria-label="MERGE ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="MERGE_ARROW_area">42.17</td>
+                                    </tr>
+                                    <tr>
+                                        <td>RAILROAD</td>
+                                        <td><input type="number" inputmode="numeric" id="RAILROAD" value="0" min="0" step="1" aria-label="RAILROAD quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="RAILROAD_area">60.89</td>
+                                    </tr>
+                                    <tr>
+                                        <td>RAILROAD-ALTERNATE</td>
+                                        <td><input type="number" inputmode="numeric" id="RAILROAD_ALTERNATE" value="0" min="0" step="1" aria-label="RAILROAD ALTERNATE quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="RAILROAD_ALTERNATE_area">59.06</td>
+                                    </tr>
+                                    <tr>
+                                        <td>RT. LT ROUNDABOUT ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="RT_LT_ROUNDABOUT_ARROW" value="0" min="0" step="1" aria-label="RT LT ROUNDABOUT ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="RT_LT_ROUNDABOUT_ARROW_area">22.19</td>
+                                    </tr>
+                                    <tr>
+                                        <td>RT, THRU, LT ROUNDABOUT ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="RT_THRU_LT_ROUNDABOUT_ARROW" value="0" min="0" step="1" aria-label="RT THRU LT ROUNDABOUT ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="RT_THRU_LT_ROUNDABOUT_ARROW_area">28.31</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SHARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="SHARROW" value="0" min="0" step="1" aria-label="SHARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="SHARROW_area">9.26</td>
+                                    </tr>
+                                    <tr>
+                                        <td>THRU ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="THRU_ARROW" value="0" min="0" step="1" aria-label="THRU ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="THRU_ARROW_area">13.16</td>
+                                    </tr>
+                                    <tr>
+                                        <td>THRU, LT TURN ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="THRU_LT_TURN_ARROW" value="0" min="0" step="1" aria-label="THRU LT TURN ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="THRU_LT_TURN_ARROW_area">23.60</td>
+                                    </tr>
+                                    <tr>
+                                        <td>THRU, RT TURN ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="THRU_RT_TURN_ARROW" value="0" min="0" step="1" aria-label="THRU RT TURN ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="THRU_RT_TURN_ARROW_area">28.14</td>
+                                    </tr>
+                                    <tr>
+                                        <td>TURN ARROW, LT OR RT</td>
+                                        <td><input type="number" inputmode="numeric" id="TURN_ARROW_LT_OR_RT" value="0" min="0" step="1" aria-label="TURN ARROW LT OR RT quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="TURN_ARROW_LT_OR_RT_area">16.42</td>
+                                    </tr>
+                                    <tr>
+                                        <td>WRONG WAY ARROW</td>
+                                        <td><input type="number" inputmode="numeric" id="WRONG_WAY_ARROW" value="0" min="0" step="1" aria-label="WRONG WAY ARROW quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="WRONG_WAY_ARROW_area">56.54</td>
+                                    </tr>
+                                    <tr>
+                                        <td>YIELD TRIANGLE</td>
+                                        <td><input type="number" inputmode="numeric" id="YIELD_TRIANGLE" value="0" min="0" step="1" aria-label="YIELD TRIANGLE quantity" aria-describedby="markingError" oninput="calculate()"></td>
+                                        <td id="YIELD_TRIANGLE_area">3.00</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </details>
+                        <p class="pm-help pm-selection-note" id="markingSelection">No special markings entered.</p>
+                    </section>
+                </form>
 
-                <div class="result-section" id="PerDataSection">
-                    <h2>Application Rate for Entered Data:</h2>
-                    <p id="materialGallons">Gallons of Paint Used: </p>
-                    <p id="materialLbs">Pounds of Paint Used: </p>
-                    <p id="beadsUsed">Pounds of Beads Used: </p>
-                    <p id="specialMarkings">Total Special Markings Quantity (sq ft): </p>
-                    <p id="specialGallonsUsed">Gallons of Paint Used for Special Markings: </p>
-                    <p id="specialLbsUsed">Pounds of Paint Used for Special Markings: </p>
-                    <p id="specialBeadsUsed">Pounds of Beads Used for Special Markings: </p>
-                </div>
-
-                <div class="button-group">
-                    <input type="text" id="projectName" placeholder="Project Name (Optional)">
-                    <input type="text" id="projectNumber" placeholder="Project Number (Optional)">
-                    <button type="button" onclick="exportToPDF()">Export to PDF</button>
-                </div>
+                <aside class="pm-card pm-estimate" id="estimatePanel" aria-labelledby="estimateHeading">
+                    <div class="pm-estimate-heading"><h2 id="estimateHeading">Material estimate</h2><span class="pm-live"><span aria-hidden="true"></span> Live</span></div>
+                    <p class="pm-help" id="estimateStatus" role="status">Results update as you enter quantities.</p>
+                    <p id="markingError" role="alert" class="pm-error hidden"></p>
+                    <div class="pm-empty" id="emptyResult">
+                        <svg width="72" height="56" viewBox="0 0 72 56" fill="none" aria-hidden="true"><rect x="1" y="1" width="70" height="54" rx="12" fill="#eaf1fa"/><path d="M22 12v32M50 12v32" stroke="#9bb0ce" stroke-width="2"/><path d="M36 13v7m0 5v7m0 5v7" stroke="#315b8d" stroke-width="3" stroke-linecap="round"/></svg>
+                        <h3>Your estimate starts here</h3>
+                        <p>Select a material and add a painted length or special markings.</p>
+                    </div>
+                    <div id="result" class="result hidden">
+                        <p id="summaryMaterial" class="pm-material-name"></p>
+                        <div class="pm-totals">
+                            <div class="pm-total pm-total-primary"><span id="totalBinderLabel">Paint required</span><div><strong id="totalBinderUsed" data-result-value>0.00</strong> <span id="totalBinderUnit">gal</span></div></div>
+                            <div class="pm-total"><span>Glass beads</span><div><strong id="totalBeadsUsed" data-result-value>0.00</strong> <span>lb</span></div></div>
+                        </div>
+                        <p class="pm-help pm-total-note">Combined quantities for long lines and special markings.</p>
+                        <section id="PerDataSection" class="pm-breakdown" aria-labelledby="breakdownHeading">
+                            <h3 id="breakdownHeading">Quantity breakdown</h3>
+                            <table aria-label="Material quantity breakdown">
+                                <thead><tr><th scope="col">Marking</th><th scope="col" class="pm-gallons">Paint <small>gal</small></th><th scope="col" class="pm-pounds">Binder <small>lb</small></th><th scope="col">Beads <small>lb</small></th></tr></thead>
+                                <tbody>
+                                    <tr><th scope="row">Long lines</th><td id="materialGallons" class="pm-gallons" data-result-value>0.00</td><td id="materialLbs" class="pm-pounds" data-result-value>0.00</td><td id="beadsUsed" data-result-value>0.00</td></tr>
+                                    <tr><th scope="row">Special markings</th><td id="specialGallonsUsed" class="pm-gallons" data-result-value>0.00</td><td id="specialLbsUsed" class="pm-pounds" data-result-value>0.00</td><td id="specialBeadsUsed" data-result-value>0.00</td></tr>
+                                </tbody>
+                            </table>
+                            <p class="pm-area-total"><span>Special marking area</span><span><strong id="specialMarkings" data-result-value>0.00</strong> sq ft</span></p>
+                        </section>
+                        <details class="pm-result-details" id="MDOTApplicationSection">
+                            <summary>Application rates <span class="pm-disclosure" aria-hidden="true">+</span></summary>
+                            <p class="pm-help">Based on <a href="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Construction/Standard-Specifications-Construction/2020-Standard-Specifications-Construction.pdf#page=622">MDOT 2020 Table 811-1</a>. Solid-line rates scale with the selected width.</p>
+                            <dl class="pm-rates">
+                                <div><dt>Wet binder, without beads</dt><dd id="thickness" data-result-value></dd></div>
+                                <div><dt>Minimum dry, with beads</dt><dd id="thicknessBeads" data-result-value></dd></div>
+                                <div class="pm-gallons"><dt>Paint per mile <small>gal</small></dt><dd id="gallonsPerMile" data-result-value></dd></div>
+                                <div class="pm-pounds"><dt>Binder per mile <small>lb</small></dt><dd id="lbsPerMile" data-result-value></dd></div>
+                                <div><dt>Beads per mile <small>lb</small></dt><dd id="beadsPerMile" data-result-value></dd></div>
+                                <div class="pm-gallons"><dt>Paint per sq ft <small>gal</small></dt><dd id="gallonsPerSFT" data-result-value></dd></div>
+                                <div class="pm-pounds"><dt>Binder per sq ft <small>lb</small></dt><dd id="lbsPerSFT" data-result-value></dd></div>
+                                <div><dt>Beads per sq ft <small>lb</small></dt><dd id="beadsPerSFT" data-result-value></dd></div>
+                            </dl>
+                        </details>
+                        <details class="pm-result-details pm-project-details">
+                            <summary>Project details <span class="pm-optional">Optional</span><span class="pm-disclosure" aria-hidden="true">+</span></summary>
+                            <div class="pm-field"><label for="projectName">Project name</label><input type="text" id="projectName" placeholder="e.g. Maple Road striping"></div>
+                            <div class="pm-field"><label for="projectNumber">Project number</label><input type="text" id="projectNumber" placeholder="e.g. 2026-042"></div>
+                        </details>
+                        <button class="pm-export" type="button" onclick="exportToPDF()"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12m-4-4 4 4 4-4M5 16v5h14v-5"/></svg> Export to PDF</button>
+                        <p class="pm-export-note">Includes inputs, rates, and a marking-by-marking breakdown.</p>
+                    </div>
+                </aside>
             </div>
         </section>
     </main>
