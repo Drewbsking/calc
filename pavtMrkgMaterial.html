@@ -30,10 +30,11 @@
                         </div>
                         <div class="pm-field">
                             <label for="material">Marking material</label>
-                            <select id="material" name="material" required onchange="calculate()">
+                            <select id="material" name="material" required onchange="changeMaterial()">
                                 <option value="">Select a material</option>
-                                <option value="waterborne">Waterborne (Low Temp)</option>
-                                <option value="regularWaterborne">Regular Dry Waterborne</option>
+                                <option value="standardWaterborne">Waterborne</option>
+                                <option value="waterborne">Low Temperature Waterborne</option>
+                                <option value="regularDry">Regular Dry Paint</option>
                                 <option value="sprayableThermoplastic">Sprayable Thermoplastic</option>
                             </select>
                         </div>
@@ -49,12 +50,31 @@
                             </div>
                         </div>
                         <p class="pm-help" id="feetHelp">Exclude unpainted gaps. Leave length blank or enter 0 for special markings only.</p>
+                        <details class="pm-result-details pm-rate-settings">
+                            <summary>Rate basis &amp; project rates <span class="pm-disclosure" aria-hidden="true">+</span></summary>
+                            <div class="pm-field">
+                                <label for="rateMode">Application-rate basis</label>
+                                <select id="rateMode" onchange="calculate()">
+                                    <option value="mdot">MDOT Table 811-1</option>
+                                    <option value="project">Project / manufacturer rates</option>
+                                </select>
+                            </div>
+                            <p class="pm-help" id="rateBasisNote"></p>
+                            <fieldset id="projectRateFields" hidden disabled>
+                                <legend>Project rates for one solid line</legend>
+                                <p class="pm-help">Enter the manufacturer's or project-specified rates and reference width. These rates apply to long lines and special markings. Changing the material resets the rate basis to MDOT.</p>
+                                <div class="pm-field"><label for="rateReferenceWidth">Reference line width (inches)</label><input id="rateReferenceWidth" type="number" min="0" step="any" value="4" oninput="calculate()"></div>
+                                <div class="pm-field"><label for="projectBinderRate">Binder per mile (<span id="projectBinderUnit">gal</span>)</label><input id="projectBinderRate" type="number" min="0" step="any" oninput="calculate()"></div>
+                                <div class="pm-field"><label for="projectBeadRate">Glass beads per mile (lb)</label><input id="projectBeadRate" type="number" min="0" step="any" oninput="calculate()"></div>
+                                <div class="pm-field"><label for="rateReference">Rate source / specification reference</label><textarea id="rateReference" rows="3" oninput="calculate()" placeholder="Product, data-sheet date or special provision, rates, and applicable scope"></textarea></div>
+                            </fieldset>
+                        </details>
                     </section>
 
                     <section class="pm-card pm-special-card" aria-labelledby="specialHeading">
                         <div class="pm-card-heading">
                             <span class="pm-step" aria-hidden="true">02</span>
-                            <div><h2 id="specialHeading">Special markings <span class="pm-optional">Optional</span></h2><p>Enter the number of each legend or symbol.</p></div>
+                            <div><h2 id="specialHeading">Special markings <span class="pm-optional">Optional</span></h2><p>Enter the number of each legend or symbol. Open its size control for path markings or a project-specific area.</p></div>
                         </div>
                         <div class="pm-search-bar">
                             <div class="pm-field"><label class="pm-sr-only" for="markingSearch">Find a legend or symbol</label><input type="search" id="markingSearch" placeholder="Find a legend or symbol" oninput="filterMarkings()"></div>
@@ -334,6 +354,7 @@
                     </div>
                     <div id="result" class="result hidden">
                         <p id="summaryMaterial" class="pm-material-name"></p>
+                        <p id="summaryBasis" class="pm-help pm-basis-summary"></p>
                         <div class="pm-totals">
                             <div class="pm-total pm-total-primary"><span id="totalBinderLabel">Paint required</span><div><strong id="totalBinderUsed" data-result-value>0.00</strong> <span id="totalBinderUnit">gal</span></div></div>
                             <div class="pm-total"><span>Glass beads</span><div><strong id="totalBeadsUsed" data-result-value>0.00</strong> <span>lb</span></div></div>
@@ -352,16 +373,16 @@
                         </section>
                         <details class="pm-result-details" id="MDOTApplicationSection">
                             <summary>Application rates <span class="pm-disclosure" aria-hidden="true">+</span></summary>
-                            <p class="pm-help">Based on <a href="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Construction/Standard-Specifications-Construction/2020-Standard-Specifications-Construction.pdf#page=622">MDOT 2020 Table 811-1</a>. Solid-line rates scale with the selected width.</p>
+                            <p class="pm-help"><a href="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Construction/Standard-Specifications-Construction/2020-Standard-Specifications-Construction.pdf#page=622">MDOT 2020 Table 811-1</a> supplies exact solid-line rates at 4, 6, 8, and 12 inches; other widths are derived estimates. Special marking area rates use a fixed reference width, independent of the long-line width. Thicknesses below are MDOT references; project rates do not establish thickness compliance.</p>
                             <dl class="pm-rates">
                                 <div><dt>Wet binder, without beads</dt><dd id="thickness" data-result-value></dd></div>
                                 <div><dt>Minimum dry, with beads</dt><dd id="thicknessBeads" data-result-value></dd></div>
                                 <div class="pm-gallons"><dt>Paint per mile <small>gal</small></dt><dd id="gallonsPerMile" data-result-value></dd></div>
                                 <div class="pm-pounds"><dt>Binder per mile <small>lb</small></dt><dd id="lbsPerMile" data-result-value></dd></div>
                                 <div><dt>Beads per mile <small>lb</small></dt><dd id="beadsPerMile" data-result-value></dd></div>
-                                <div class="pm-gallons"><dt>Paint per sq ft <small>gal</small></dt><dd id="gallonsPerSFT" data-result-value></dd></div>
-                                <div class="pm-pounds"><dt>Binder per sq ft <small>lb</small></dt><dd id="lbsPerSFT" data-result-value></dd></div>
-                                <div><dt>Beads per sq ft <small>lb</small></dt><dd id="beadsPerSFT" data-result-value></dd></div>
+                                <div class="pm-gallons"><dt>Special marking paint per sq ft <small>gal</small></dt><dd id="gallonsPerSFT" data-result-value></dd></div>
+                                <div class="pm-pounds"><dt>Special marking binder per sq ft <small>lb</small></dt><dd id="lbsPerSFT" data-result-value></dd></div>
+                                <div><dt>Special marking beads per sq ft <small>lb</small></dt><dd id="beadsPerSFT" data-result-value></dd></div>
                             </dl>
                         </details>
                         <details class="pm-result-details pm-project-details">

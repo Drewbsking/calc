@@ -14,12 +14,12 @@ function filterMarkings() {
     let groupShown = 0;
     let groupEntered = 0;
     for (const row of rows) {
-      const input = row.querySelector('input');
-      const hasError = input.getAttribute('aria-invalid') === 'true';
+      const input = row.cells[1].querySelector('input');
+      const hasError = Boolean(row.querySelector('[aria-invalid="true"]'));
       const hasQuantity = !hasError && Number(input.value) > 0;
-      const matches = row.cells[0].textContent.toLowerCase().includes(query);
+      const matches = row.dataset.markingLabel.toLowerCase().includes(query);
       // Filtering changes the view only. Keep invalid entries reachable, too.
-      const editing = input === document.activeElement;
+      const editing = row.contains(document.activeElement);
       row.hidden = !hasError && !editing && (!matches || (enteredOnly && !hasQuantity));
       row.classList.toggle('pm-entered', hasQuantity);
       if (!row.hidden) groupShown++;
@@ -98,6 +98,85 @@ const symbolMaterial = {
     YIELD_TRIANGLE: 3.00
 };
 
+// MDOT 2020 Table 811-1, SOLID line columns, in width order 4, 6, 8, 12 inches.
+const pavementMaterials = {
+  standardWaterborne: { binder: [16.5, 24.7, 33, 49.4], beads: [132, 198, 264, 396], unit: 'gal', wet: 15, dry: 20 },
+  waterborne: { binder: [16.5, 24.7, 33, 49.4], beads: [132, 198, 264, 396], unit: 'gal', wet: 15, dry: 20 },
+  regularDry: { binder: [16, 24, 32, 48], beads: [96, 144, 192, 288], unit: 'gal', wet: 15, dry: 20 },
+  sprayableThermoplastic: { binder: [560, 840, 1120, 1680], beads: [200, 300, 400, 600], unit: 'lb', wet: 30, dry: 40 }
+};
+// Only these arrow shapes are covered by PAVE-900-H sheet 7's half-dimension note.
+const pathArrows = new Set(['THRU_ARROW', 'TURN_ARROW_LT_OR_RT', 'MERGE_ARROW', 'THRU_LT_TURN_ARROW', 'THRU_RT_TURN_ARROW']);
+
+function getApplicationRates(material, width, projectRates = null) {
+  const spec = pavementMaterials[material];
+  if (!spec) return null;
+  const column = [4, 6, 8, 12].indexOf(width);
+  const referenceWidth = projectRates ? projectRates.width : 4;
+  const referenceBinder = projectRates ? projectRates.binder : spec.binder[0];
+  const referenceBeads = projectRates ? projectRates.beads : spec.beads[0];
+  const referenceArea = 5280 * referenceWidth / 12;
+  const squareFeetPerMile = 5280 * width / 12;
+  const method = projectRates ? 'project' : column >= 0 ? 'table' : 'scaled';
+  const binderPerMile = method === 'table' ? spec.binder[column] : referenceBinder * width / referenceWidth;
+  const beadsPerMile = method === 'table' ? spec.beads[column] : referenceBeads * width / referenceWidth;
+  const basis = method === 'table' ? `MDOT Table 811-1: exact ${width}-inch solid-line column`
+    : method === 'project' ? `Project rates scaled from a ${referenceWidth}-inch solid line`
+      : `Derived estimate: 4-inch MDOT rates x ${width} / 4; this width is not tabulated`;
+  return {
+    method, basis, project: projectRates,
+    tableColumns: [4, 6, 8, 12].map((lineWidth, i) => ({ width: lineWidth, binder: spec.binder[i], beads: spec.beads[i] })),
+    baseBinderPerMile: spec.binder[0], baseBeadsPerMile: spec.beads[0],
+    binderUnit: spec.unit, wetThickness: spec.wet, minThicknessBeads: spec.dry,
+    referenceWidth, referenceBinder, referenceBeads, referenceArea,
+    widthFactor: width / referenceWidth, widthFeet: width / 12, squareFeetPerMile,
+    binderPerMile, beadsPerMile,
+    // Special markings use a fixed reference area rate, independent of line width.
+    binderPerSFT: referenceBinder / referenceArea, beadsPerSFT: referenceBeads / referenceArea,
+    longLineBinderPerSFT: binderPerMile / squareFeetPerMile,
+    longLineBeadsPerSFT: beadsPerMile / squareFeetPerMile
+  };
+}
+
+function changeMaterial() {
+  // Rates in gallons must never silently become rates in pounds, or vice versa.
+  document.getElementById('rateMode').value = 'mdot';
+  for (const id of ['projectBinderRate', 'projectBeadRate', 'rateReference']) document.getElementById(id).value = '';
+  document.getElementById('rateReferenceWidth').value = '4';
+  calculate();
+}
+
+function initializeMarkingSizes() {
+  for (const [id] of Object.entries({ ...legendMaterial, ...symbolMaterial })) {
+    const quantity = document.getElementById(id);
+    quantity.dataset.markingQuantity = '';
+    const row = quantity.closest('tr');
+    const cell = row.cells[0];
+    const label = cell.textContent.trim();
+    row.dataset.markingLabel = label;
+    const legend = id in legendMaterial;
+    const details = document.createElement('details');
+    details.className = 'pm-size-details';
+    details.innerHTML = `<summary>Size: MDOT standard</summary>
+      <label for="${id}_size">Marking size</label>
+      <select id="${id}_size" aria-label="${label} size">
+        <option value="standard">MDOT standard</option>
+        ${legend || pathArrows.has(id) ? '<option value="path">Shared-use path</option>' : ''}
+        <option value="custom">Project-specific area</option>
+      </select>
+      <div class="pm-area-entry" hidden>
+        <label for="${id}_unitArea">Net material area (sq ft/each)</label>
+        <input id="${id}_unitArea" type="number" min="0" step="any" inputmode="decimal" aria-label="${label} net material area">
+        <label for="${id}_areaSource">Area calculation / drawing reference</label>
+        <textarea id="${id}_areaSource" rows="2" aria-label="${label} area reference" placeholder="Dimensions, gap deductions, and plan sheet"></textarea>
+      </div>
+      <p class="pm-size-help"></p>`;
+    cell.append(details);
+    details.addEventListener('input', calculate);
+    details.addEventListener('change', calculate);
+  }
+}
+
 function calculate() {
   const result = document.getElementById('result');
   const error = document.getElementById('markingError');
@@ -110,6 +189,29 @@ function calculate() {
   status.textContent = 'Results update as you enter quantities.';
 
   const errors = [];
+  function invalidate(input, message) {
+    input.setCustomValidity(message);
+    input.setAttribute('aria-invalid', 'true');
+    errors.push(message);
+  }
+  function readPositive(id, label, allowZero = false) {
+    const input = document.getElementById(id);
+    const value = Number(input.value);
+    if (input.value.trim() === '' || input.validity.badInput || !Number.isFinite(value) || (allowZero ? value < 0 : value <= 0)) {
+      invalidate(input, `${label}: enter a ${allowZero ? 'nonnegative' : 'positive'} number.`);
+    }
+    return value;
+  }
+  function readReference(id, label) {
+    const input = document.getElementById(id);
+    const value = input.value.trim();
+    if (!value) invalidate(input, `${label}: provide the source and calculation basis.`);
+    return value;
+  }
+  document.querySelectorAll('#markingForm input, #markingForm textarea').forEach(input => {
+    input.setCustomValidity('');
+    input.removeAttribute('aria-invalid');
+  });
   function readQuantity(id, label, wholeNumber = false) {
     const input = document.getElementById(id);
     input.setCustomValidity('');
@@ -132,14 +234,56 @@ function calculate() {
   const material = materialSelect.value;
   const width = Number(document.getElementById('width').value);
   const feetPainted = readQuantity('feet', 'Feet painted');
+  const customRates = document.getElementById('rateMode').value === 'project';
+  const rateFields = document.getElementById('projectRateFields');
+  rateFields.hidden = !customRates;
+  rateFields.disabled = !customRates;
+  const binderUnit = pavementMaterials[material]?.unit || 'gal';
+  document.getElementById('projectBinderUnit').textContent = binderUnit;
+  let projectRates = null;
+  if (customRates) {
+    projectRates = {
+      width: readPositive('rateReferenceWidth', 'Rate reference width'),
+      binder: readPositive('projectBinderRate', 'Project binder rate'),
+      beads: readPositive('projectBeadRate', 'Project bead rate', true),
+      source: readReference('rateReference', 'Project rate reference'),
+      entries: Object.fromEntries(['rateReferenceWidth', 'projectBinderRate', 'projectBeadRate'].map(id => [id, document.getElementById(id).value]))
+    };
+  }
+  const rates = getApplicationRates(material, width, projectRates);
+  document.getElementById('rateBasisNote').textContent = rates ? rates.basis : 'Select a material to see the rate basis.';
   const markings = [];
   const allMarkings = [];
   for (const [category, areas] of [['Legend', legendMaterial], ['Symbol', symbolMaterial]]) {
-    for (const [id, unitArea] of Object.entries(areas)) {
+    for (const [id, standardArea] of Object.entries(areas)) {
       const input = document.getElementById(id);
-      const label = input.closest('tr').cells[0].textContent.trim();
+      const row = input.closest('tr');
+      const label = row.dataset.markingLabel;
       const quantity = readQuantity(id, label, true);
-      const marking = { id, category, label, quantity, enteredValue: input.value, unitArea, area: quantity * unitArea };
+      const sizeMode = document.getElementById(`${id}_size`).value;
+      const needsArea = sizeMode === 'custom' || (sizeMode === 'path' && category === 'Legend');
+      const areaInput = document.getElementById(`${id}_unitArea`);
+      const sourceInput = document.getElementById(`${id}_areaSource`);
+      row.querySelector('.pm-area-entry').hidden = !needsArea;
+      areaInput.disabled = sourceInput.disabled = !needsArea || quantity === 0;
+      const sizeLabel = sizeMode === 'path' ? 'Shared-use path' : sizeMode === 'custom' ? 'Project-specific area' : 'MDOT standard';
+      row.querySelector('.pm-size-details > summary').textContent = `Size: ${sizeLabel}`;
+      row.querySelector('.pm-size-help').textContent = sizeMode === 'path'
+        ? category === 'Legend' ? 'Sheets 1-6: halve vertical dimensions, retaining 2-inch template gaps. Enter the resulting net area and its calculation.'
+          : 'Sheet 7: half length x half width = 25% of the scheduled area.'
+        : sizeMode === 'custom' ? 'Enter the liquid-applied material area from the project detail, excluding unpainted gaps.' : '';
+      let unitArea = standardArea;
+      let areaBasis = 'PAVE-900-H sheet 9, Material column';
+      if (sizeMode === 'path' && pathArrows.has(id)) {
+        unitArea = standardArea * 0.5 * 0.5;
+        areaBasis = 'PAVE-900-H sheet 7: standard area x 0.5 x 0.5';
+      } else if (needsArea) {
+        unitArea = quantity > 0 ? readPositive(`${id}_unitArea`, `${label} net area`) : 0;
+        areaBasis = quantity > 0 ? readReference(`${id}_areaSource`, `${label} area reference`) : sourceInput.value.trim();
+      }
+      document.getElementById(`${id}_area`).textContent = needsArea && quantity === 0 ? 'Enter area' : unitArea.toLocaleString('en-US', { maximumFractionDigits: 6 });
+      const marking = { id, category, label, quantity, enteredValue: input.value, standardArea, sizeMode, sizeLabel,
+        unitArea, areaBasis, areaEntry: needsArea ? areaInput.value : '', area: quantity * unitArea };
       allMarkings.push(marking);
       if (quantity > 0) {
         markings.push(marking);
@@ -157,36 +301,14 @@ function calculate() {
     status.textContent = 'Check your entries to continue.';
     return null;
   }
-  if (!material) return null;
+  if (!rates) return null;
   if (feetPainted === 0 && markings.length === 0) {
     return null;
   }
 
-  let binder;
-  let beads;
-  let wetThickness;
-  let minThicknessBeads;
-  if (material === 'waterborne') {
-    binder = 16.5;
-    beads = 132;
-    wetThickness = 15;
-    minThicknessBeads = 20;
-  } else if (material === 'regularWaterborne') {
-    binder = 16.0;
-    beads = 96;
-    wetThickness = 15;
-    minThicknessBeads = 20;
-  } else if (material === 'sprayableThermoplastic') {
-    binder = 560;
-    beads = 200;
-    wetThickness = 30;
-    minThicknessBeads = 40;
-  } else {
-    return null;
-  }
-
-  const adjustedBinderPerMile = binder * (width / 4);
-  const adjustedBeadsPerMile = beads * (width / 4);
+  const { wetThickness, minThicknessBeads } = rates;
+  const adjustedBinderPerMile = rates.binderPerMile;
+  const adjustedBeadsPerMile = rates.beadsPerMile;
 
   const gallonsPerMile = material === 'sprayableThermoplastic' ? 0 : adjustedBinderPerMile;
   const lbsPerMile = material === 'sprayableThermoplastic' ? adjustedBinderPerMile : 0;
@@ -196,10 +318,9 @@ function calculate() {
   const materialLbsUsed = (lbsPerMile / 5280) * feetPainted;
   const beadLbsUsed = (beadsPerMile / 5280) * feetPainted;
 
-  const squareFeetPerMile = 5280 * (width / 12);
-  const gallonsPerSFT = gallonsPerMile / squareFeetPerMile;
-  const lbsPerSFT = lbsPerMile / squareFeetPerMile;
-  const beadsPerSFT = beadsPerMile / squareFeetPerMile;
+  const gallonsPerSFT = binderUnit === 'gal' ? rates.binderPerSFT : 0;
+  const lbsPerSFT = binderUnit === 'lb' ? rates.binderPerSFT : 0;
+  const beadsPerSFT = rates.beadsPerSFT;
   const totalSpecialMarkings = markings.reduce((total, marking) => total + marking.area, 0);
 
   const totalGallonsForSpecialMarkings = totalSpecialMarkings * gallonsPerSFT;
@@ -215,7 +336,8 @@ function calculate() {
 
   const quantities = [materialGallonsUsed, materialLbsUsed, beadLbsUsed, totalSpecialMarkings,
     totalGallonsForSpecialMarkings, totalLbsForSpecialMarkings, totalBeadsForSpecialMarkings,
-    totalBinderUsed, totalBeadsUsed, longLineArea, totalArea];
+    totalBinderUsed, totalBeadsUsed, longLineArea, totalArea,
+    rates.binderPerSFT, rates.beadsPerSFT, rates.longLineBinderPerSFT, rates.longLineBeadsPerSFT, rates.referenceArea];
   if (!quantities.every(Number.isFinite)) {
     error.textContent = 'The entered quantities are too large to calculate. Reduce them and try again.';
     error.classList.remove('hidden');
@@ -259,6 +381,7 @@ function calculate() {
   document.getElementById('totalBinderLabel').textContent = isThermoplastic ? 'Thermoplastic' : 'Paint required';
   document.getElementById('totalBinderUnit').textContent = isThermoplastic ? 'lb' : 'gal';
   document.getElementById('summaryMaterial').textContent = materialSelect.selectedOptions[0].textContent;
+  document.getElementById('summaryBasis').textContent = rates.basis;
   status.textContent = 'Calculated from your entries.';
   emptyResult.classList.add('hidden');
   result.classList.remove('hidden');
@@ -267,13 +390,7 @@ function calculate() {
     materialName: materialSelect.selectedOptions[0].textContent,
     width, feetPainted, feetEntry: document.getElementById('feet').value,
     markings, allMarkings, rateRows, quantityRows,
-    rates: {
-      baseBinderPerMile: binder, baseBeadsPerMile: beads,
-      binderUnit: isThermoplastic ? 'lb' : 'gal', wetThickness, minThicknessBeads,
-      widthFactor: width / 4, widthFeet: width / 12, squareFeetPerMile,
-      binderPerMile: adjustedBinderPerMile, beadsPerMile,
-      binderPerSFT: isThermoplastic ? lbsPerSFT : gallonsPerSFT, beadsPerSFT
-    },
+    rates,
     quantities: {
       milesPainted: feetPainted / 5280, longLineArea, totalArea,
       longLineBinder: isThermoplastic ? materialLbsUsed : materialGallonsUsed,
@@ -290,8 +407,9 @@ function exportToPDF() {
   const calculation = calculate();
   if (!calculation) {
     const invalid = document.getElementById('markingForm').querySelector(':invalid');
-    const group = invalid?.closest('[data-marking-group]');
-    if (group) group.open = true;
+    for (let parent = invalid?.parentElement; parent; parent = parent.parentElement) {
+      if (parent.tagName === 'DETAILS') parent.open = true;
+    }
     document.getElementById('markingForm').reportValidity();
     return;
   }
@@ -311,6 +429,7 @@ function exportToPDF() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  initializeMarkingSizes();
   document.getElementById('markingForm').addEventListener('focusout', event => {
     if (event.target.matches('.pm-marking-table input')) queueMicrotask(filterMarkings);
   });

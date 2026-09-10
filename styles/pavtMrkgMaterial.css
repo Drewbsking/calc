@@ -57,6 +57,18 @@
 .pm-input-unit > span { position: absolute; right: 13px; top: 12px; color: #6d7e94; font-size: 14px; pointer-events: none; }
 .pm-help { margin: 16px 0 0; color: #66768b; font-size: 13px; line-height: 1.6; font-weight: 400; }
 .pm-help a { color: #255e9f; }
+.pm-rate-settings { margin-top: 20px; }
+.pm-rate-settings .pm-field { margin-bottom: 14px; }
+.pm-rate-settings fieldset { min-width: 0; margin: 18px 0 0; padding: 14px; border: 1px solid #dce4ee; border-radius: 8px; }
+.pm-rate-settings legend { padding: 0 5px; font-size: 13px; font-weight: 600; }
+.pm-rate-settings fieldset .pm-help { margin: 0 0 14px; }
+.pm-size-details { margin-top: 6px; text-align: left; font-weight: 400; }
+.pm-page .pm-marking-group .pm-size-details summary { display: block; padding: 4px 0; min-height: 24px; border: 0; background: none; color: #255e9f; font-size: 11px; font-weight: 400; }
+.pm-size-details label { display: block; margin: 8px 0 4px; font-size: 11px; }
+.pm-page .pm-marking-table .pm-size-details select, .pm-page .pm-marking-table .pm-size-details textarea, .pm-page .pm-marking-table .pm-size-details input { width: 100%; max-width: 100%; box-sizing: border-box; padding: 8px; min-height: 40px; margin: 0; border: 1px solid #cad5e2; border-radius: 6px; background: white; color: #172b44; font: inherit; font-size: 13px; text-align: left; }
+.pm-size-details textarea { resize: vertical; }
+.pm-size-help { color: #65768c; font-size: 11px; line-height: 1.5; }
+.pm-size-help:empty { display: none; }
 .pm-search-bar { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; }
 .pm-search-bar > .pm-field { flex: 1; }
 .pm-page .pm-search-bar input[type="search"] { font-size: 14px; background: #f8fafc; }
@@ -85,7 +97,7 @@ details[open] > summary > .pm-disclosure { transform: rotate(45deg); }
 .pm-marking-table td:last-child { color: #76859a; font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
 .pm-page .pm-marking-table input { width: 100%; min-width: 0; min-height: 40px; margin: 0; padding: 8px; border: 1px solid #d6e0ec; border-radius: 6px; font-size: 16px; text-align: center; background: #fff; color: #183d67; box-sizing: border-box; }
 .pm-marking-table tr.pm-entered { background: #f0f6ff; }
-.pm-page input[aria-invalid="true"] { border-color: #c94747; background: #fff6f6; }
+.pm-page input[aria-invalid="true"], .pm-page textarea[aria-invalid="true"] { border-color: #c94747; background: #fff6f6; }
 .pm-selection-note { margin-top: 14px; font-size: 12px; }
 .pm-estimate { position: sticky; top: 20px; border-top: 3px solid #365f91; scroll-margin-top: 20px; }
 .pm-estimate-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
@@ -98,6 +110,7 @@ details[open] > summary > .pm-disclosure { transform: rotate(45deg); }
 .pm-empty p { margin: 0 auto; max-width: 230px; color: #7a8899; font-size: 13px; line-height: 1.7; }
 .pm-estimate .result { margin-top: 20px; font-size: 14px; font-weight: 400; }
 .pm-material-name { margin: 0 0 12px; font-size: 12px; font-weight: 600; color: #607490; }
+.pm-basis-summary { margin: 0 0 14px; font-size: 12px; }
 .pm-totals { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 10px; }
 .pm-total { padding: 16px 14px; border-radius: 10px; background: #edf3fa; color: #214c7b; }
 .pm-total-primary { background: #163e69; color: #fff; }
