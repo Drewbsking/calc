@@ -65,3 +65,43 @@ test('project rates supersede the table with an explicit reference width', () =>
   assert.equal(r.baseBinderPerMile, 16); // Retains the MDOT baseline for the report.
   assert.equal(rates('regularDry', 12, { ...project, beads: 0 }).beadsPerSFT, 0);
 });
+
+const longLine = (material, width, feetPainted, project = null) => sandbox.calculateLongLine(
+  { material, width, feetPainted }, rates(material, width, project));
+const noSpecials = { markings: [] };
+
+test('mixed paint and thermoplastic totals keep binder units and beads separate', () => {
+  const lines = [longLine('standardWaterborne', 6, 5280), longLine('sprayableThermoplastic', 12, 2640)];
+  const result = sandbox.summarizePavementQuantities(lines, noSpecials);
+  assert.equal(result.materials.length, 2);
+  assert.equal(result.totals.paintGallons, 24.7);
+  assert.equal(result.totals.binderPounds, 840);
+  assert.equal(result.totals.beadsPounds, 498);
+  assert.equal(result.totals.longLineFeet, 7920);
+  assert.equal(result.totals.totalArea, 5280);
+});
+
+test('multiple widths and per-row overrides aggregate under the matching material', () => {
+  const lines = [longLine('waterborne', 6, 5280), longLine('waterborne', 12, 5280),
+    longLine('waterborne', 8, 5280, { width: 4, binder: 20, beads: 150 })];
+  const result = sandbox.summarizePavementQuantities(lines, noSpecials);
+  assert.equal(result.materials.length, 1);
+  close(result.materials[0].totalBinder, 114.1);
+  close(result.materials[0].totalBeads, 894);
+  const removed = sandbox.summarizePavementQuantities(lines.slice(0, 2), noSpecials);
+  close(removed.totals.paintGallons, 74.1);
+});
+
+test('special markings use their independent material and are counted once', () => {
+  const lines = [longLine('waterborne', 6, 5280), longLine('waterborne', 12, 5280)];
+  const special = { material: 'regularDry', markings: [{ quantity: 2 }], area: 43, binder: 43 * 16 / 1760, beads: 43 * 96 / 1760 };
+  const result = sandbox.summarizePavementQuantities(lines, special);
+  assert.equal(result.materials.length, 2);
+  close(result.totals.paintGallons, 74.1 + 43 * 16 / 1760);
+  const same = sandbox.summarizePavementQuantities([longLine('regularDry', 4, 5280)], special);
+  assert.equal(same.materials.length, 1);
+  close(same.materials[0].totalBinder, 16 + 43 * 16 / 1760);
+  const only = sandbox.summarizePavementQuantities([], special);
+  assert.equal(only.totals.longLineFeet, 0);
+  close(only.totals.paintGallons, 43 * 16 / 1760);
+});

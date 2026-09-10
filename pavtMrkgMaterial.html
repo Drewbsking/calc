@@ -26,11 +26,21 @@
                     <section class="pm-card" aria-labelledby="setupHeading">
                         <div class="pm-card-heading">
                             <span class="pm-step" aria-hidden="true">01</span>
-                            <div><h2 id="setupHeading">Material &amp; long lines</h2><p>Choose a material, then enter the painted length.</p></div>
+                            <div><h2 id="setupHeading">Long lines</h2><p>Add a row for each material, width, or road segment.</p></div>
+                        </div>
+                        <div id="longLineRows"></div>
+                        <button class="pm-add-line" id="addLongLineButton" type="button" onclick="addLongLine()">+ Add long line</button>
+                        <p class="pm-help">Enter actual painted footage for each row, excluding gaps. Zero or blank footage contributes no material. Remove unused rows or leave them blank for a special-markings-only estimate.</p>
+                    </section>
+
+                    <section class="pm-card pm-special-card" aria-labelledby="specialHeading">
+                        <div class="pm-card-heading">
+                            <span class="pm-step" aria-hidden="true">02</span>
+                            <div><h2 id="specialHeading">Special markings <span class="pm-optional">Optional</span></h2><p>Enter the number of each legend or symbol. Open its size control for path markings or a project-specific area.</p></div>
                         </div>
                         <div class="pm-field">
-                            <label for="material">Marking material</label>
-                            <select id="material" name="material" required onchange="changeMaterial()">
+                            <label for="material">Special marking material</label>
+                            <select id="material" name="material" onchange="changeMaterial()">
                                 <option value="">Select a material</option>
                                 <option value="standardWaterborne">Waterborne</option>
                                 <option value="waterborne">Low Temperature Waterborne</option>
@@ -38,18 +48,6 @@
                                 <option value="sprayableThermoplastic">Sprayable Thermoplastic</option>
                             </select>
                         </div>
-                        <div class="pm-line-inputs">
-                            <div class="pm-field">
-                                <div class="pm-label-row"><label for="width">Line width</label><output id="widthValue" for="width">4 inches</output></div>
-                                <input type="range" id="width" name="width" min="4" max="24" value="4" step="1" oninput="updateWidthLabel(this.value); calculate();">
-                                <div class="pm-range-labels" aria-hidden="true"><span>4 in</span><span>24 in</span></div>
-                            </div>
-                            <div class="pm-field">
-                                <label for="feet">Painted length</label>
-                                <div class="pm-input-unit"><input type="number" inputmode="decimal" id="feet" name="feet" min="0" step="0.01" placeholder="0" aria-describedby="feetHelp markingError" oninput="calculate()"><span aria-hidden="true">ft</span></div>
-                            </div>
-                        </div>
-                        <p class="pm-help" id="feetHelp">Exclude unpainted gaps. Leave length blank or enter 0 for special markings only.</p>
                         <details class="pm-result-details pm-rate-settings">
                             <summary>Rate basis &amp; project rates <span class="pm-disclosure" aria-hidden="true">+</span></summary>
                             <div class="pm-field">
@@ -62,20 +60,13 @@
                             <p class="pm-help" id="rateBasisNote"></p>
                             <fieldset id="projectRateFields" hidden disabled>
                                 <legend>Project rates for one solid line</legend>
-                                <p class="pm-help">Enter the manufacturer's or project-specified rates and reference width. These rates apply to long lines and special markings. Changing the material resets the rate basis to MDOT.</p>
+                                <p class="pm-help">Enter the manufacturer's or project-specified rates and reference width. These rates apply to special markings. Changing the material resets the rate basis to MDOT.</p>
                                 <div class="pm-field"><label for="rateReferenceWidth">Reference line width (inches)</label><input id="rateReferenceWidth" type="number" min="0" step="any" value="4" oninput="calculate()"></div>
                                 <div class="pm-field"><label for="projectBinderRate">Binder per mile (<span id="projectBinderUnit">gal</span>)</label><input id="projectBinderRate" type="number" min="0" step="any" oninput="calculate()"></div>
                                 <div class="pm-field"><label for="projectBeadRate">Glass beads per mile (lb)</label><input id="projectBeadRate" type="number" min="0" step="any" oninput="calculate()"></div>
                                 <div class="pm-field"><label for="rateReference">Rate source / specification reference</label><textarea id="rateReference" rows="3" oninput="calculate()" placeholder="Product, data-sheet date or special provision, rates, and applicable scope"></textarea></div>
                             </fieldset>
                         </details>
-                    </section>
-
-                    <section class="pm-card pm-special-card" aria-labelledby="specialHeading">
-                        <div class="pm-card-heading">
-                            <span class="pm-step" aria-hidden="true">02</span>
-                            <div><h2 id="specialHeading">Special markings <span class="pm-optional">Optional</span></h2><p>Enter the number of each legend or symbol. Open its size control for path markings or a project-specific area.</p></div>
-                        </div>
                         <div class="pm-search-bar">
                             <div class="pm-field"><label class="pm-sr-only" for="markingSearch">Find a legend or symbol</label><input type="search" id="markingSearch" placeholder="Find a legend or symbol" oninput="filterMarkings()"></div>
                             <label class="pm-filter-toggle" for="enteredOnly"><input type="checkbox" id="enteredOnly" onchange="filterMarkings()"> Entered only</label>
@@ -350,41 +341,21 @@
                     <div class="pm-empty" id="emptyResult">
                         <svg width="72" height="56" viewBox="0 0 72 56" fill="none" aria-hidden="true"><rect x="1" y="1" width="70" height="54" rx="12" fill="#eaf1fa"/><path d="M22 12v32M50 12v32" stroke="#9bb0ce" stroke-width="2"/><path d="M36 13v7m0 5v7m0 5v7" stroke="#315b8d" stroke-width="3" stroke-linecap="round"/></svg>
                         <h3>Your estimate starts here</h3>
-                        <p>Select a material and add a painted length or special markings.</p>
+                        <p>Add painted footage to a long-line row, or select a special marking material and enter quantities.</p>
                     </div>
                     <div id="result" class="result hidden">
-                        <p id="summaryMaterial" class="pm-material-name"></p>
-                        <p id="summaryBasis" class="pm-help pm-basis-summary"></p>
-                        <div class="pm-totals">
-                            <div class="pm-total pm-total-primary"><span id="totalBinderLabel">Paint required</span><div><strong id="totalBinderUsed" data-result-value>0.00</strong> <span id="totalBinderUnit">gal</span></div></div>
-                            <div class="pm-total"><span>Glass beads</span><div><strong id="totalBeadsUsed" data-result-value>0.00</strong> <span>lb</span></div></div>
-                        </div>
-                        <p class="pm-help pm-total-note">Combined quantities for long lines and special markings.</p>
-                        <section id="PerDataSection" class="pm-breakdown" aria-labelledby="breakdownHeading">
-                            <h3 id="breakdownHeading">Quantity breakdown</h3>
-                            <table aria-label="Material quantity breakdown">
-                                <thead><tr><th scope="col">Marking</th><th scope="col" class="pm-gallons">Paint <small>gal</small></th><th scope="col" class="pm-pounds">Binder <small>lb</small></th><th scope="col">Beads <small>lb</small></th></tr></thead>
-                                <tbody>
-                                    <tr><th scope="row">Long lines</th><td id="materialGallons" class="pm-gallons" data-result-value>0.00</td><td id="materialLbs" class="pm-pounds" data-result-value>0.00</td><td id="beadsUsed" data-result-value>0.00</td></tr>
-                                    <tr><th scope="row">Special markings</th><td id="specialGallonsUsed" class="pm-gallons" data-result-value>0.00</td><td id="specialLbsUsed" class="pm-pounds" data-result-value>0.00</td><td id="specialBeadsUsed" data-result-value>0.00</td></tr>
-                                </tbody>
-                            </table>
-                            <p class="pm-area-total"><span>Special marking area</span><span><strong id="specialMarkings" data-result-value>0.00</strong> sq ft</span></p>
+                        <div id="materialSummary" class="pm-material-summaries"></div>
+                        <p class="pm-help pm-total-note">Totals include long lines and special markings for each material.</p>
+                        <p class="pm-area-total"><span>Total glass beads</span><span><strong id="combinedBeads">0.00</strong> lb</span></p>
+                        <p class="pm-area-total"><span>Long-line footage</span><span><strong id="totalLineFeet">0.00</strong> ft</span></p>
+                        <section class="pm-breakdown" aria-labelledby="breakdownHeading">
+                            <h3 id="breakdownHeading">Long-line breakdown</h3>
+                            <div id="lineSummary"></div>
                         </section>
-                        <details class="pm-result-details" id="MDOTApplicationSection">
-                            <summary>Application rates <span class="pm-disclosure" aria-hidden="true">+</span></summary>
-                            <p class="pm-help"><a href="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Construction/Standard-Specifications-Construction/2020-Standard-Specifications-Construction.pdf#page=622">MDOT 2020 Table 811-1</a> supplies exact solid-line rates at 4, 6, 8, and 12 inches; other widths are derived estimates. Special marking area rates use a fixed reference width, independent of the long-line width. Thicknesses below are MDOT references; project rates do not establish thickness compliance.</p>
-                            <dl class="pm-rates">
-                                <div><dt>Wet binder, without beads</dt><dd id="thickness" data-result-value></dd></div>
-                                <div><dt>Minimum dry, with beads</dt><dd id="thicknessBeads" data-result-value></dd></div>
-                                <div class="pm-gallons"><dt>Paint per mile <small>gal</small></dt><dd id="gallonsPerMile" data-result-value></dd></div>
-                                <div class="pm-pounds"><dt>Binder per mile <small>lb</small></dt><dd id="lbsPerMile" data-result-value></dd></div>
-                                <div><dt>Beads per mile <small>lb</small></dt><dd id="beadsPerMile" data-result-value></dd></div>
-                                <div class="pm-gallons"><dt>Special marking paint per sq ft <small>gal</small></dt><dd id="gallonsPerSFT" data-result-value></dd></div>
-                                <div class="pm-pounds"><dt>Special marking binder per sq ft <small>lb</small></dt><dd id="lbsPerSFT" data-result-value></dd></div>
-                                <div><dt>Special marking beads per sq ft <small>lb</small></dt><dd id="beadsPerSFT" data-result-value></dd></div>
-                            </dl>
-                        </details>
+                        <section class="pm-breakdown" id="specialSummary" hidden>
+                            <h3>Special markings</h3>
+                            <p id="specialSummaryText" class="pm-help"></p>
+                        </section>
                         <details class="pm-result-details pm-project-details">
                             <summary>Project details <span class="pm-optional">Optional</span><span class="pm-disclosure" aria-hidden="true">+</span></summary>
                             <div class="pm-field"><label for="projectName">Project name</label><input type="text" id="projectName" placeholder="e.g. Maple Road striping"></div>

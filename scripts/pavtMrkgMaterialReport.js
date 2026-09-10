@@ -2,11 +2,8 @@
 // It never reads formatted result text or the currently filtered marking rows.
 function createPavementMarkingReport(calculation, project, jsPDF, createdAt = new Date()) {
   const c = calculation;
-  const r = c.rates;
-  const q = c.quantities;
-  const unit = r.binderUnit;
-  const binderName = unit === 'gal' ? 'Paint' : 'Thermoplastic binder';
-  const reportVersion = '1.1';
+  const special = c.special;
+  const reportVersion = '2.0';
   const reportId = `PM-${createdAt.toISOString().replace(/[-:.]/g, '')}`;
   const rateSource = 'https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Construction/Standard-Specifications-Construction/2020-Standard-Specifications-Construction.pdf#page=622';
   const areaSource = 'https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=baac7af0-d2bf-49fd-8ea1-cd35cfb3c567&fileName=PAVE-900-H.pdf#page=9';
@@ -161,224 +158,208 @@ function createPavementMarkingReport(calculation, project, jsPDF, createdAt = ne
     y += 3;
   }
 
-  const subtotals = ['Legend', 'Symbol'].map(category => {
-    const entries = c.markings.filter(marking => marking.category === category);
-    const area = entries.reduce((sum, marking) => sum + marking.area, 0);
-    return { category, entries, area,
-      count: entries.reduce((sum, marking) => sum + marking.quantity, 0),
-      binder: area * r.binderPerSFT, beads: area * r.beadsPerSFT };
-  });
+  function rateRecord(title, materialName, r) {
+    ensure(40);
+    paragraph(title, { bold: true, color: blue, size: 10 });
+    paragraph(`Material: ${materialName}\nApplied basis: ${r.basis}`, { size: 9 });
+    table(['Rate / property', 'Value', 'Basis'], [
+      ['MDOT 4-inch binder', `${fmt(r.baseBinderPerMile)} ${r.binderUnit}/mi`, '[R1], solid line'],
+      ['MDOT 4-inch beads', `${fmt(r.baseBeadsPerMile)} lb/mi`, '[R1], solid line'],
+      ['Wet / minimum dry thickness', `${r.wetThickness} / ${r.minThicknessBeads} mils`, 'MDOT reference: without / with beads'],
+      ['Applied reference width', `${fmt(r.referenceWidth)} in`, r.project ? 'Project entry' : 'MDOT 4-inch baseline'],
+      ['Binder at reference width', `${fmt(r.referenceBinder)} ${r.binderUnit}/mi`, r.project ? 'Project entry' : '[R1]'],
+      ['Beads at reference width', `${fmt(r.referenceBeads)} lb/mi`, r.project ? 'Project entry' : '[R1]']
+    ], [70, 54, 60], { size: 8.5 });
+    if (r.project) {
+      metadata('PROJECT / MANUFACTURER RATE SOURCE', r.project.source);
+      paragraph(`Original entries: reference width = ${r.project.entries.rateReferenceWidth} in; binder = ${r.project.entries.projectBinderRate} ${r.binderUnit}/mi; beads = ${r.project.entries.projectBeadRate} lb/mi.`, { size: 9 });
+    }
+  }
+  function rawRates(r) {
+    return [
+      ['B_4 (MDOT)', raw(r.baseBinderPerMile), `${r.binderUnit}/mi`], ['G_4 (MDOT)', raw(r.baseBeadsPerMile), 'lb/mi'],
+      ['W_ref', raw(r.referenceWidth), 'in'], ['A_ref', raw(r.referenceArea), 'sq ft/mi'],
+      ['B_ref', raw(r.referenceBinder), `${r.binderUnit}/mi`], ['G_ref', raw(r.referenceBeads), 'lb/mi'],
+      ['k', raw(r.widthFactor), 'dimensionless'], ['W_ft', raw(r.widthFeet), 'ft'],
+      ['A_mi', raw(r.squareFeetPerMile), 'sq ft/mi'],
+      ['B_W', raw(r.binderPerMile), `${r.binderUnit}/mi`], ['G_W', raw(r.beadsPerMile), 'lb/mi'],
+      ['b_L', raw(r.longLineBinderPerSFT), `${r.binderUnit}/sq ft`], ['g_L', raw(r.longLineBeadsPerSFT), 'lb/sq ft'],
+      ['b_special', raw(r.binderPerSFT), `${r.binderUnit}/sq ft`], ['g_special', raw(r.beadsPerSFT), 'lb/sq ft']
+    ];
+  }
 
   pageHeader();
   paragraph('Pavement marking\nmaterial calculations', { size: 22, bold: true, color: blue, gap: 4 });
   paragraph('Quantity takeoff and application-rate worksheet', { size: 11, color: muted, gap: 7 });
-  paragraph(`Report ID: ${reportId}  |  Report format: ${reportVersion}`, { size: 8.5, color: muted, gap: 1 });
+  paragraph(`Report ID: ${reportId} | Report format: ${reportVersion}`, { size: 8.5, color: muted, gap: 1 });
   paragraph(`Exported: ${createdAt.toISOString()} (UTC)`, { size: 8.5, color: muted, gap: 6 });
-
   section('1', 'Project record and reported totals');
-  metadata('PROJECT NAME', project.projectName);
-  metadata('PROJECT / FEDERAL-AID NUMBER', project.projectNumber);
-  metadata('PREPARED BY', project.preparedBy);
-  metadata('LOCATION / PROJECT LIMITS', project.projectLocation);
-  paragraph(`Selected material: ${c.materialName}`, { bold: true, gap: 4 });
-  table(['Component', 'Area (sq ft)', `${binderName} (${unit})`, 'Beads (lb)'], [
-    ['Long lines', fmt(q.longLineArea, 2), fmt(q.longLineBinder, 2), fmt(q.longLineBeads, 2)],
-    ...subtotals.map(s => [`${s.category}s`, fmt(s.area, 2), fmt(s.binder, 2), fmt(s.beads, 2)]),
-    ['TOTAL', fmt(q.totalArea, 2), fmt(q.totalBinder, 2), fmt(q.totalBeads, 2)]
-  ], [62, 38, 43, 35], { numeric: [1, 2, 3] });
-  paragraph('Reported quantities are rounded to two decimal places. Totals are calculated before rounding individual rows.', { size: 8.5, color: muted });
+  for (const [label, key] of [['PROJECT NAME', 'projectName'], ['PROJECT / FEDERAL-AID NUMBER', 'projectNumber'], ['PREPARED BY', 'preparedBy'], ['LOCATION / PROJECT LIMITS', 'projectLocation']]) metadata(label, project[key]);
+  table(['Material', 'Area (sq ft)', 'Binder quantity', 'Beads (lb)'], c.materials.map(m => [
+    m.materialName, fmt(m.totalArea, 2), `${fmt(m.totalBinder, 2)} ${m.unit}`, fmt(m.totalBeads, 2)
+  ]), [65, 37, 44, 38], { numeric: [1, 2, 3] });
+  paragraph(`Paint total: ${fmt(c.totals.paintGallons, 2)} gal. Thermoplastic binder total: ${fmt(c.totals.binderPounds, 2)} lb. Glass beads: ${fmt(c.totals.beadsPounds, 2)} lb.`, { bold: true });
+  paragraph('Binder totals are separated by material and unit. Quantities are rounded to two decimals for reporting after summing unrounded components. Glass beads are separate from thermoplastic binder weight.', { size: 8.5, color: muted });
   metadata('QUANTITY SOURCE / PLAN SHEETS', project.quantitySource);
   metadata('PREPARER NOTES', project.calculationNotes);
 
-  section('2', 'Inputs, sources, and calculation basis', true);
-  table(['Input', 'Value used', 'Basis'], [
-    ['Selected material', c.materialName, 'User selection'],
-    ['Painted line length, L', `${fmt(c.feetPainted, 2)} ft`, c.feetEntry === '' ? 'Blank entry interpreted as zero' : `Entered: ${c.feetEntry}`],
-    ['Long-line width, W', `${integer(c.width)} in`, 'User selection'],
-    ['Special marking types entered', integer(c.markings.length), 'Positive counts; see sections 5 and 7'],
-    ['Application-rate basis', r.basis, r.project ? 'Project / manufacturer entry' : '[R1]'],
-    ['Area-rate reference width', `${fmt(r.referenceWidth, 6)} in`, r.project ? 'Project rate reference width' : '[R1], 4-inch solid-line column'],
-    ['Length conversion', '5,280 ft = 1 mi', 'Unit conversion'],
-    ['Width conversion', '12 in = 1 ft', 'Unit conversion']
-  ], [55, 59, 65]);
+  section('2', 'Sources and calculation basis', true);
   paragraph('[R1] MDOT 2020 Standard Specifications for Construction, Section 811, Table 811-1, printed page 8-60 (PDF page 622).', { bold: true, size: 9 });
   link('Open application-rate source: MDOT Table 811-1', rateSource);
-  table(['Reference property', 'Value', 'Use in calculation'], [
-    ['Binder rate, B_4', `${fmt(r.baseBinderPerMile, 2)} ${unit}/mi`, '4-inch solid-line baseline'],
-    ['Bead rate, G_4', `${fmt(r.baseBeadsPerMile, 2)} lb/mi`, '4-inch solid-line baseline'],
-    ['Wet binder thickness without beads', `${integer(r.wetThickness)} mils`, 'Reference thickness'],
-    ['Minimum dry thickness with beads', `${integer(r.minThicknessBeads)} mils`, 'Reference thickness']
-  ], [77, 39, 62]);
-  paragraph('Published solid-line rates for the selected material', { bold: true });
-  table(['Width (in)', `Binder (${unit}/mi)`, 'Beads (lb/mi)'],
-    r.tableColumns.map(row => [integer(row.width), fmt(row.binder, 2), fmt(row.beads, 2)]), [40, 69, 69], { numeric: [0, 1, 2] });
-  paragraph('Section 811.02 requires the manufacturer\'s recommended application rates to be submitted before work and gives those rates precedence when they differ from the table. This report uses the rate basis recorded below.', { size: 9 });
-  metadata('APPLIED RATE BASIS', r.basis);
-  if (r.project) {
-    metadata('PROJECT / MANUFACTURER RATE SOURCE', r.project.source);
-    table(['Project input', 'Entered text', 'Value used'], [
-      ['Reference width', r.project.entries.rateReferenceWidth, `${fmt(r.referenceWidth)} in`],
-      ['Binder at reference width', r.project.entries.projectBinderRate, `${fmt(r.referenceBinder)} ${unit}/mi`],
-      ['Beads at reference width', r.project.entries.projectBeadRate, `${fmt(r.referenceBeads)} lb/mi`]
-    ], [72, 46, 60]);
+  for (const m of c.materials) {
+    const r = c.longLines.find(line => line.material === m.material)?.rates || special.rates;
+    ensure(40);
+    paragraph(`Published solid-line rates: ${m.materialName}`, { bold: true, size: 9 });
+    table(['Width (in)', `Binder (${m.unit}/mi)`, 'Beads (lb/mi)'], r.tableColumns.map(row => [integer(row.width), fmt(row.binder, 2), fmt(row.beads, 2)]), [40, 70, 70], { numeric: [0, 1, 2], size: 8.5 });
   }
+  paragraph('Section 811.02 gives manufacturer-recommended application rates precedence when they differ from the table. Project rates and their source are recorded separately for each long-line row and for special markings.', { size: 9 });
   ensure(36);
-  paragraph('[R2] MDOT Standard Plan PAVE-900-H, Pavement Arrow & Message Details, sheet 9 of 10, Material column. Plan date: September 13, 2023.', { bold: true, size: 9 });
+  paragraph('[R2] MDOT PAVE-900-H, Pavement Arrow & Message Details. Material column on sheet 9 of 10; plan date September 13, 2023.', { bold: true, size: 9 });
   link('Open unit-area source: PAVE-900-H, sheet 9', areaSource);
-  paragraph('The liquid-applied material areas account for template gaps. Railroad symbol areas exclude stop bars. Removal and recessing areas are not used.', { size: 9 });
-  paragraph('Size basis is recorded separately for each marking. Sheet 7 path arrows use half of each dimension (area factor 0.25). Path legends on sheets 1-6 retain the 2-inch gaps when vertical dimensions are halved, so their net areas and calculation references are entered from the project detail. Other project areas are identified explicitly.', { size: 9 });
+  paragraph('Liquid-applied material areas account for allowable template gaps. Railroad areas exclude stop bars. Sheet 7 path arrows use half of each dimension (area factor 0.25). Path legends retain 2-inch gaps when vertical dimensions are halved; their net areas and calculation references are entered from the project detail.', { size: 9 });
   ensure(25);
-  paragraph('Calculation assumptions', { bold: true, gap: 2 });
+  paragraph('Calculation assumptions', { bold: true });
   [
-    'Painted footage excludes gaps and represents the total length of individual lines at one selected width. No automatic adjustment is made for broken or double lines.',
-    'MDOT mode uses the exact published solid-line columns at 4, 6, 8, and 12 inches. Other widths use the 4-inch rate multiplied by W / 4 and are labeled derived estimates. The broken-line table columns are not used because L records only the painted length.',
-    'Special marking rates use the 4-inch MDOT solid-line baseline divided by 1,760 sq ft/mi, independent of long-line width. This is an area-rate derivation, not a separately published special-marking rate. Project mode derives both long-line and special rates from the entered reference width and rates.',
-    'Quantities represent one application. No waste, overrun, extra coats, container rounding, or overlapping-area deductions are added. Thickness values are MDOT references; selecting project rates does not verify the resulting thickness. Quantities are computed from the application rates.',
-    'Blank quantity entries mean zero. Project rates and positive custom-area entries require values and source references. Search filters and collapsed sections do not remove quantities. Free-text preparer notes do not override the selected rate or size controls.',
-    'Calculations retain unrounded numeric values. Worked quantities show six decimal places and area rates show twelve. Displayed intermediate values are approximate; section 8 records the raw numeric values.'
-  ].forEach((text, i) => paragraph(`${i + 1}. ${text}`, { size: 8.5, gap: 2 }));
+    'Each long-line row has its own material, width, painted length, and rate basis. Length excludes gaps and represents individual painted lines; no automatic double-line or skip-pattern multiplier is applied. Conversion constants: 5,280 ft/mi and 12 in/ft.',
+    'MDOT mode uses exact solid-line columns at 4, 6, 8, and 12 inches. Other widths use the 4-inch rate x W / 4 and are labeled derived estimates. Broken-line columns are not used because footage already excludes gaps.',
+    'Special markings have an independent material and rate selection. Their area rates derive from the 4-inch MDOT baseline / 1,760 sq ft per mile, or from their own project reference rates / reference area. Long-line selections do not resize or change special markings.',
+    'Quantities represent one application. No waste, overrun, extra coats, procurement rounding, or overlap deductions are added. Thicknesses are MDOT references; selecting project rates does not verify thickness compliance.',
+    'Blank or zero long-line footage is inactive and retained in the input record. Positive footage requires a material and valid rates. Special quantities are nonnegative whole numbers. Active project rates and custom areas require source references. Filters and collapsed controls do not remove quantities.',
+    'Intermediate quantities show six decimals, area rates twelve. Calculations use unrounded JavaScript Number values. Section 8 records raw numeric values; final reporting uses two decimals. Free-text notes do not override numeric controls.'
+  ].forEach((note, i) => paragraph(`${i + 1}. ${note}`, { size: 8.5, gap: 2 }));
 
-  section('3', 'Unit conversions and application rates', true);
-  worked('3.1  Width ratio', 'k = W / W_ref',
-    `k = ${integer(c.width)} in / ${fmt(r.referenceWidth)} in`, `k = ${fmt(r.widthFactor)} (dimensionless)`,
-    r.method === 'table' ? 'The published column is used directly for long lines; this ratio does not replace it.' : 'This ratio scales the reference rates to the selected line width.');
-  worked('3.2  Width in feet', 'W_ft = W / 12',
-    `W_ft = ${integer(c.width)} in / (12 in/ft)`, `W_ft = ${fmt(r.widthFeet)} ft`);
-  worked('3.3  Painted length in miles', 'L_mi = L / 5,280',
-    `L_mi = ${fmt(c.feetPainted, 2)} ft / (5,280 ft/mi)`, `L_mi = ${fmt(q.milesPainted, 12)} mi`);
-  worked('3.4  Area of one mile at the selected width', 'A_mi = 5,280 x W_ft',
-    `A_mi = 5,280 ft/mi x (${integer(c.width)} in / 12 in/ft)`, `A_mi = ${fmt(r.squareFeetPerMile)} sq ft/mi`);
-  if (r.method === 'table') {
-    worked('3.5  Binder application rate per mile', 'B_W = published solid-line binder rate at W',
-      `Table 811-1: ${c.materialName}, ${integer(c.width)}-inch solid line`, `B_W = ${fmt(r.binderPerMile)} ${unit}/mi`);
-    worked('3.6  Bead application rate per mile', 'G_W = published solid-line bead rate at W',
-      `Table 811-1: ${c.materialName}, ${integer(c.width)}-inch solid line`, `G_W = ${fmt(r.beadsPerMile)} lb/mi`);
-  } else {
-    worked('3.5  Binder application rate per mile', 'B_W = B_ref x (W / W_ref)',
-      `B_W = ${fmt(r.referenceBinder)} ${unit}/mi x (${integer(c.width)} / ${fmt(r.referenceWidth)})`, `B_W = ${fmt(r.binderPerMile)} ${unit}/mi`, r.basis);
-    worked('3.6  Bead application rate per mile', 'G_W = G_ref x (W / W_ref)',
-      `G_W = ${fmt(r.referenceBeads)} lb/mi x (${integer(c.width)} / ${fmt(r.referenceWidth)})`, `G_W = ${fmt(r.beadsPerMile)} lb/mi`);
+  section('3', 'Long-line inputs and rate selections', true);
+  if (!c.longLines.length) paragraph('No active long-line rows. The long-line contribution is zero.');
+  for (const line of c.longLines) {
+    ensure(35);
+    paragraph(`${line.label}: ${line.materialName}`, { bold: true, size: 11, color: blue });
+    metadata('LINE / LOCATION REFERENCE', line.reference);
+    paragraph(`Painted length entered: ${line.feetEntry} ft. Width entered: ${line.widthEntry} in. Row identifier: ${line.id}.`, { size: 9 });
+    rateRecord(`${line.label} - application rates`, line.materialName, line.rates);
   }
-  worked('3.7  Reference area per mile', 'A_ref = 5,280 x (W_ref / 12)',
-    `A_ref = 5,280 ft/mi x (${fmt(r.referenceWidth)} in / 12 in/ft)`, `A_ref = ${fmt(r.referenceArea)} sq ft/mi`);
-  worked('3.8  Special marking binder rate per square foot', 'b = B_ref / A_ref',
-    `b = ${fmt(r.referenceBinder)} ${unit}/mi / ${fmt(r.referenceArea)} sq ft/mi`, `b = ${fmt(r.binderPerSFT, 12)} ${unit}/sq ft`);
-  worked('3.9  Special marking bead rate per square foot', 'g = G_ref / A_ref',
-    `g = ${fmt(r.referenceBeads)} lb/mi / ${fmt(r.referenceArea)} sq ft/mi`, `g = ${fmt(r.beadsPerSFT, 12)} lb/sq ft`);
-  worked('3.10  Long-line binder rate per square foot', 'b_L = B_W / A_mi',
-    `b_L = ${fmt(r.binderPerMile)} ${unit}/mi / ${fmt(r.squareFeetPerMile)} sq ft/mi`, `b_L = ${fmt(r.longLineBinderPerSFT, 12)} ${unit}/sq ft`);
-  worked('3.11  Long-line bead rate per square foot', 'g_L = G_W / A_mi',
-    `g_L = ${fmt(r.beadsPerMile)} lb/mi / ${fmt(r.squareFeetPerMile)} sq ft/mi`, `g_L = ${fmt(r.longLineBeadsPerSFT, 12)} lb/sq ft`);
 
-  section('4', 'Long-line calculations', true);
-  if (c.feetPainted === 0) paragraph('No long-line footage was entered. The following calculations evaluate the long-line contribution at L = 0 ft.', { color: muted });
-  worked('4.1  Long-line material area', 'A_L = L x W_ft',
-    `A_L = ${fmt(c.feetPainted, 2)} ft x (${integer(c.width)} in / 12 in/ft)`, `A_L = ${fmt(q.longLineArea)} sq ft`);
-  worked('4.2  Long-line binder quantity', 'B_L = (B_W / 5,280) x L',
-    `B_L = (${fmt(r.binderPerMile)} ${unit}/mi / 5,280 ft/mi) x ${fmt(c.feetPainted, 2)} ft`, `B_L = ${fmt(q.longLineBinder)} ${unit}`);
-  worked('4.3  Long-line bead quantity', 'G_L = (G_W / 5,280) x L',
-    `G_L = (${fmt(r.beadsPerMile)} lb/mi / 5,280 ft/mi) x ${fmt(c.feetPainted, 2)} ft`, `G_L = ${fmt(q.longLineBeads)} lb`);
-  worked('4.4  Area-method check: long-line binder', 'B_L,area = A_L x b_L',
-    `B_L,area = ${fmt(q.longLineArea)} sq ft x ${fmt(r.longLineBinderPerSFT, 12)} ${unit}/sq ft`,
-    `B_L,area = ${fmt(q.longLineArea * r.longLineBinderPerSFT)} ${unit}`);
-  worked('4.5  Area-method check: long-line beads', 'G_L,area = A_L x g_L',
-    `G_L,area = ${fmt(q.longLineArea)} sq ft x ${fmt(r.longLineBeadsPerSFT, 12)} lb/sq ft`,
-    `G_L,area = ${fmt(q.longLineArea * r.longLineBeadsPerSFT)} lb`);
+  section('4', 'Worked long-line calculations', true);
+  if (!c.longLines.length) paragraph('No long-line footage entered. A_L = 0 sq ft; long-line binder and beads = 0.');
+  for (const line of c.longLines) {
+    const r = line.rates;
+    const unit = r.binderUnit;
+    ensure(45);
+    paragraph(`${line.label}: ${line.materialName}`, { bold: true, color: blue, size: 11 });
+    paragraph(`L = ${fmt(line.feetPainted)} ft; W = ${integer(line.width)} in. ${r.basis}.`, { size: 9 });
+    const binderFormula = r.method === 'table' ? 'B_W = published solid-column rate' : 'B_W = B_ref x W / W_ref';
+    const beadFormula = r.method === 'table' ? 'G_W = published solid-column rate' : 'G_W = G_ref x W / W_ref';
+    const binderSub = r.method === 'table' ? `Table 811-1, ${line.materialName}, ${line.width}-inch solid` : `${fmt(r.referenceBinder)} ${unit}/mi x ${line.width} / ${fmt(r.referenceWidth)}`;
+    const beadSub = r.method === 'table' ? `Table 811-1, ${line.materialName}, ${line.width}-inch solid` : `${fmt(r.referenceBeads)} lb/mi x ${line.width} / ${fmt(r.referenceWidth)}`;
+    table(['Formula / step', 'Substitution', 'Result'], [
+      ['Width in feet: W_ft = W / 12', `${line.width} in / (12 in/ft)`, `${fmt(r.widthFeet)} ft`],
+      ['Length in miles: L_mi = L / 5,280', `${fmt(line.feetPainted)} ft / (5,280 ft/mi)`, `${fmt(line.feetPainted / 5280, 12)} mi`],
+      ['Width ratio: k = W / W_ref', `${line.width} / ${fmt(r.referenceWidth)}`, fmt(r.widthFactor)],
+      ['Reference area: A_ref = 5,280 x W_ref / 12', `5,280 x ${fmt(r.referenceWidth)} / 12`, `${fmt(r.referenceArea)} sq ft/mi`],
+      ['Area per mile: A_mi = 5,280 x W_ft', `5,280 x (${line.width} / 12)`, `${fmt(r.squareFeetPerMile)} sq ft/mi`],
+      [binderFormula, binderSub, `${fmt(r.binderPerMile)} ${unit}/mi`],
+      [beadFormula, beadSub, `${fmt(r.beadsPerMile)} lb/mi`],
+      ['Binder area rate: b_L = B_W / A_mi', `${fmt(r.binderPerMile)} / ${fmt(r.squareFeetPerMile)}`, `${fmt(r.longLineBinderPerSFT, 12)} ${unit}/sq ft`],
+      ['Bead area rate: g_L = G_W / A_mi', `${fmt(r.beadsPerMile)} / ${fmt(r.squareFeetPerMile)}`, `${fmt(r.longLineBeadsPerSFT, 12)} lb/sq ft`],
+      ['Painted area: A_L = L x W / 12', `${fmt(line.feetPainted)} ft x (${line.width} / 12) ft`, `${fmt(line.area)} sq ft`],
+      ['Binder: B_L = (L / 5,280) x B_W', `(${fmt(line.feetPainted)} / 5,280) x ${fmt(r.binderPerMile)}`, `${fmt(line.binder)} ${unit}`],
+      ['Beads: G_L = (L / 5,280) x G_W', `(${fmt(line.feetPainted)} / 5,280) x ${fmt(r.beadsPerMile)}`, `${fmt(line.beads)} lb`],
+      ['Binder check: A_L x b_L', `${fmt(line.area)} x ${fmt(r.longLineBinderPerSFT, 12)}`, `${fmt(line.area * r.longLineBinderPerSFT)} ${unit}`],
+      ['Bead check: A_L x g_L', `${fmt(line.area)} x ${fmt(r.longLineBeadsPerSFT, 12)}`, `${fmt(line.area * r.longLineBeadsPerSFT)} lb`]
+    ], [66, 69, 49], { size: 8.5 });
+    paragraph('The width ratio is used for project or derived rates. In MDOT mode at tabulated widths, the printed rate is used directly.', { size: 8.5, color: muted });
+  }
 
   section('5', 'Special marking calculations', true);
-  paragraph('For each item i, n_i is the entered count (each), a_i is the material area (sq ft/each), and A_i is the extended material area. Binder and beads are calculated for every positive entry below.');
-  paragraph('A_i = n_i x a_i;   B_i = A_i x b;   G_i = A_i x g', { bold: true, color: blue });
-  if (c.markings.length === 0) paragraph('No special markings entered. A_S = 0 sq ft, B_S = 0, and G_S = 0 lb. The complete zero-entry schedule is retained in section 7.');
-  c.markings.forEach((marking, index) => {
-    const lines = [
-      `Size: ${marking.sizeLabel}. Standard scheduled area = ${fmt(marking.standardArea, 2)} sq ft/each.`,
-      `Area basis: ${marking.areaBasis}`,
-      ...(marking.sizeMode === 'path' && !marking.areaEntry ? [`Unit area: ${fmt(marking.standardArea, 2)} x 0.5 x 0.5 = ${fmt(marking.unitArea)} sq ft/each`] : []),
-      ...(marking.areaEntry ? [`Entered net unit area: ${marking.areaEntry} sq ft/each`] : []),
-      `Area: ${integer(marking.quantity)} each x ${fmt(marking.unitArea)} sq ft/each = ${fmt(marking.area)} sq ft`,
-      `Binder: ${fmt(marking.area)} sq ft x ${fmt(r.binderPerSFT, 12)} ${unit}/sq ft = ${fmt(marking.area * r.binderPerSFT)} ${unit}`,
-      `Beads: ${fmt(marking.area)} sq ft x ${fmt(r.beadsPerSFT, 12)} lb/sq ft = ${fmt(marking.area * r.beadsPerSFT)} lb`
-    ];
-    type(9);
-    const title = `5.${index + 1}  ${marking.category}: ${marking.label}`;
-    const height = [...lines, title].reduce((sum, text) => sum + doc.splitTextToSize(text, width - 4).length * 4.8, 0) + 10;
-    ensure(Math.min(height, 100));
-    paragraph(title, { bold: true, size: 10, gap: 2 });
-    lines.forEach(text => paragraph(text, { size: 9, gap: 1, indent: 4 }));
-    y += 3;
-  });
-  ensure(48);
-  paragraph('Special marking subtotal by category', { bold: true });
-  table(['Category', 'Count (each)', 'Area (sq ft)', `Binder (${unit})`, 'Beads (lb)'], [
-    ...subtotals.map(s => [s.category, integer(s.count), fmt(s.area), fmt(s.binder), fmt(s.beads)]),
-    ['Special total', integer(subtotals.reduce((sum, s) => sum + s.count, 0)), fmt(q.specialArea), fmt(q.specialBinder), fmt(q.specialBeads)]
-  ], [38, 28, 37, 38, 37], { numeric: [1, 2, 3, 4], size: 8 });
-  worked('Special area summation', 'A_S = sum(A_i) = A_legends + A_symbols',
-    `A_S = ${fmt(subtotals[0].area)} + ${fmt(subtotals[1].area)} sq ft`, `A_S = ${fmt(q.specialArea)} sq ft`);
-  worked('Special binder subtotal', 'B_S = A_S x b',
-    `B_S = ${fmt(q.specialArea)} sq ft x ${fmt(r.binderPerSFT, 12)} ${unit}/sq ft`, `B_S = ${fmt(q.specialBinder)} ${unit}`);
-  worked('Special bead subtotal', 'G_S = A_S x g',
-    `G_S = ${fmt(q.specialArea)} sq ft x ${fmt(r.beadsPerSFT, 12)} lb/sq ft`, `G_S = ${fmt(q.specialBeads)} lb`);
+  if (!special.markings.length) paragraph('No special markings entered. Special area, binder, and beads are zero; the complete input schedule is retained in section 7.');
+  else {
+    const r = special.rates;
+    const unit = r.binderUnit;
+    rateRecord('Independent special marking rate selection', special.materialName, r);
+    worked('Reference area', 'A_ref = 5,280 x W_ref / 12', `A_ref = 5,280 x ${fmt(r.referenceWidth)} / 12`, `A_ref = ${fmt(r.referenceArea)} sq ft/mi`);
+    worked('Special binder area rate', 'b = B_ref / A_ref', `b = ${fmt(r.referenceBinder)} ${unit}/mi / ${fmt(r.referenceArea)} sq ft/mi`, `b = ${fmt(r.binderPerSFT, 12)} ${unit}/sq ft`);
+    worked('Special bead area rate', 'g = G_ref / A_ref', `g = ${fmt(r.referenceBeads)} lb/mi / ${fmt(r.referenceArea)} sq ft/mi`, `g = ${fmt(r.beadsPerSFT, 12)} lb/sq ft`);
+    paragraph('For each marking: A_i = count x net unit area; B_i = A_i x b; G_i = A_i x g.', { bold: true });
+    special.markings.forEach((m, index) => {
+      ensure(60);
+      paragraph(`5.${index + 1} ${m.category}: ${m.label}`, { bold: true, color: blue, size: 10 });
+      paragraph(`Size: ${m.sizeLabel}. Standard area = ${fmt(m.standardArea, 2)} sq ft/each.\nArea basis: ${m.areaBasis}`, { size: 9 });
+      if (m.sizeMode === 'path' && !m.areaEntry) paragraph(`Unit area: ${fmt(m.standardArea, 2)} x 0.5 x 0.5 = ${fmt(m.unitArea)} sq ft/each`, { size: 9 });
+      if (m.areaEntry) paragraph(`Entered net unit area: ${m.areaEntry} sq ft/each`, { size: 9 });
+      paragraph(`Area: ${integer(m.quantity)} each x ${fmt(m.unitArea)} sq ft/each = ${fmt(m.area)} sq ft\nBinder: ${fmt(m.area)} sq ft x ${fmt(r.binderPerSFT, 12)} ${unit}/sq ft = ${fmt(m.area * r.binderPerSFT)} ${unit}\nBeads: ${fmt(m.area)} sq ft x ${fmt(r.beadsPerSFT, 12)} lb/sq ft = ${fmt(m.area * r.beadsPerSFT)} lb`, { size: 9, indent: 4 });
+    });
+    const categories = ['Legend', 'Symbol'].map(category => {
+      const entries = special.markings.filter(m => m.category === category);
+      return { category, count: entries.reduce((sum, m) => sum + m.quantity, 0), area: entries.reduce((sum, m) => sum + m.area, 0) };
+    });
+    ensure(45);
+    paragraph('Special marking category subtotals', { bold: true });
+    table(['Category', 'Count', 'Area (sq ft)', `Binder (${unit})`, 'Beads (lb)'], categories.map(m => [m.category, integer(m.count), fmt(m.area), fmt(m.area * r.binderPerSFT), fmt(m.area * r.beadsPerSFT)]), [34, 23, 41, 43, 43], { numeric: [1, 2, 3, 4], size: 8 });
+    worked('Special area subtotal', 'A_S = A_legends + A_symbols', `A_S = ${fmt(categories[0].area)} + ${fmt(categories[1].area)}`, `A_S = ${fmt(special.area)} sq ft`);
+    worked('Special binder subtotal', 'B_S = A_S x b', `B_S = ${fmt(special.area)} x ${fmt(r.binderPerSFT, 12)}`, `B_S = ${fmt(special.binder)} ${unit}`);
+    worked('Special bead subtotal', 'G_S = A_S x g', `G_S = ${fmt(special.area)} x ${fmt(r.beadsPerSFT, 12)}`, `G_S = ${fmt(special.beads)} lb`);
+  }
 
-  section('6', 'Final totals and reconciliation', true);
-  worked('6.1  Total material area', 'A_total = A_L + A_S',
-    `A_total = ${fmt(q.longLineArea)} + ${fmt(q.specialArea)} sq ft`, `A_total = ${fmt(q.totalArea)} sq ft`);
-  worked('6.2  Total binder', 'B_total = B_L + B_S',
-    `B_total = ${fmt(q.longLineBinder)} + ${fmt(q.specialBinder)} ${unit}`, `B_total = ${fmt(q.totalBinder)} ${unit}; reported = ${fmt(q.totalBinder, 2)} ${unit}`);
-  worked('6.3  Total beads', 'G_total = G_L + G_S',
-    `G_total = ${fmt(q.longLineBeads)} + ${fmt(q.specialBeads)} lb`, `G_total = ${fmt(q.totalBeads)} lb; reported = ${fmt(q.totalBeads, 2)} lb`);
-  ensure(42);
-  const areaBinderCheck = q.longLineArea * r.longLineBinderPerSFT + q.specialArea * r.binderPerSFT;
-  const areaBeadCheck = q.longLineArea * r.longLineBeadsPerSFT + q.specialArea * r.beadsPerSFT;
-  paragraph('Reconciliation using each component area and rate', { bold: true });
-  paragraph('B_check = A_L x b_L + A_S x b; G_check = A_L x g_L + A_S x g. Separate area rates preserve the published long-line columns and the fixed special-marking reference.', { size: 9 });
-  table(['Check', 'Component total', 'Sum of area x rate', 'Difference'], [
-    [`Binder (${unit})`, fmt(q.totalBinder), fmt(areaBinderCheck), smallDifference(q.totalBinder - areaBinderCheck)],
-    ['Beads (lb)', fmt(q.totalBeads), fmt(areaBeadCheck), smallDifference(q.totalBeads - areaBeadCheck)]
-  ], [35, 48, 52, 43], { numeric: [1, 2, 3], size: 8 });
-  paragraph('Differences near zero can result from binary floating-point arithmetic and the order of operations. This check compares two aggregation methods; it does not independently verify field measurements or project specification applicability.', { size: 8.5, color: muted });
-  ensure(28);
-  paragraph('Final reporting precision', { bold: true });
-  paragraph(`Binder: ${fmt(q.totalBinder)} ${unit} -> ${fmt(q.totalBinder, 2)} ${unit}\nBeads: ${fmt(q.totalBeads)} lb -> ${fmt(q.totalBeads, 2)} lb\nFinal values are rounded for reporting, not rounded up for procurement.`, { size: 9 });
+  section('6', 'Material totals and reconciliation', true);
+  for (const m of c.materials) {
+    const lines = c.longLines.filter(line => line.material === m.material);
+    const matchingSpecial = special.markings.length && special.material === m.material;
+    const binderCheck = lines.reduce((sum, line) => sum + line.area * line.rates.longLineBinderPerSFT, 0) + (matchingSpecial ? special.area * special.rates.binderPerSFT : 0);
+    const beadCheck = lines.reduce((sum, line) => sum + line.area * line.rates.longLineBeadsPerSFT, 0) + (matchingSpecial ? special.area * special.rates.beadsPerSFT : 0);
+    ensure(45);
+    paragraph(m.materialName, { bold: true, color: blue, size: 11 });
+    paragraph(`Long-line binder sum: ${lines.length ? lines.map(line => `${line.label} (${fmt(line.binder)})`).join(' + ') : '0'} = ${fmt(m.longLineBinder)} ${m.unit}.`, { size: 9 });
+    paragraph(`Long-line bead sum: ${lines.length ? lines.map(line => `${line.label} (${fmt(line.beads)})`).join(' + ') : '0'} = ${fmt(m.longLineBeads)} lb.`, { size: 9 });
+    table(['Total formula', 'Substitution', 'Result / reported'], [
+      ['Area = long lines + specials', `${fmt(m.longLineArea)} + ${fmt(m.specialArea)}`, `${fmt(m.totalArea)} sq ft`],
+      ['Binder = long lines + specials', `${fmt(m.longLineBinder)} + ${fmt(m.specialBinder)}`, `${fmt(m.totalBinder)} ${m.unit}\nReported: ${fmt(m.totalBinder, 2)} ${m.unit}`],
+      ['Beads = long lines + specials', `${fmt(m.longLineBeads)} + ${fmt(m.specialBeads)}`, `${fmt(m.totalBeads)} lb\nReported: ${fmt(m.totalBeads, 2)} lb`]
+    ], [62, 60, 62], { size: 8.5 });
+    ensure(40);
+    paragraph('Area-method reconciliation: sum each row area x its own rate, then add matching special markings.', { size: 9 });
+    table(['Check', 'Component total', 'Sum of area x rate', 'Difference'], [
+      [`Binder (${m.unit})`, fmt(m.totalBinder), fmt(binderCheck), smallDifference(m.totalBinder - binderCheck)],
+      ['Beads (lb)', fmt(m.totalBeads), fmt(beadCheck), smallDifference(m.totalBeads - beadCheck)]
+    ], [35, 49, 55, 45], { numeric: [1, 2, 3], size: 8 });
+  }
+  paragraph(`All-material bead sum: ${c.materials.map(m => fmt(m.totalBeads)).join(' + ')} = ${fmt(c.totals.beadsPounds)} lb; reported = ${fmt(c.totals.beadsPounds, 2)} lb.`, { size: 9 });
+  paragraph('Near-zero residuals can arise from floating-point arithmetic. Reconciliation checks the aggregation methods, not field measurements or contract applicability. Final quantities are rounded for reporting; no procurement rounding is applied.', { size: 8.5, color: muted });
 
-  section('7', 'Complete input and unit-area schedule', true);
-  paragraph(`All ${c.allMarkings.length} available marking types are recorded, including zeros and blank entries. Unit areas are the selected standard, path, or project areas. Entered text is retained so scientific notation or a blank can be distinguished from the numeric count used. Custom areas with zero count are inactive and shown as zero.`);
+  section('7', 'Complete input schedules', true);
+  paragraph('Long-line rows, including zero or blank footage. Inactive rows contribute zero. Each row reference and original rate-entry text is retained below.', { size: 9 });
+  if (!c.allLongLines.length) paragraph('All long-line rows were removed.');
+  else table(['Row', 'Material', 'Width entered (in)', 'Footage entered (ft)', 'Status'], c.allLongLines.map(line => [line.label, line.materialName, line.widthEntry || '(blank)', line.feetEntry || '(blank)', line.feetPainted > 0 ? 'Included' : 'Inactive']), [23, 64, 31, 39, 27], { size: 8 });
+  for (const line of c.allLongLines) {
+    paragraph(`${line.label} (${line.id}) reference: ${line.reference || '(not entered)'}. Rate mode: ${line.rateInputs.rateMode}. Original project entries: width = ${line.rateInputs.rateReferenceWidth || '(blank)'}, binder = ${line.rateInputs.projectBinderRate || '(blank)'}, beads = ${line.rateInputs.projectBeadRate || '(blank)'}. Rate source: ${line.rateInputs.rateReference || '(not entered)'}.`, { size: 8.5 });
+  }
+  paragraph(`Special marking selection: ${special.materialName}. ${special.markings.length ? 'Applied to all entered special markings.' : 'Inactive: no special quantities.'}`, { bold: true, size: 9 });
+  paragraph(`Special rate mode: ${special.rateInputs.rateMode}; reference width entry: ${special.rateInputs.rateReferenceWidth || '(blank)'}; binder entry: ${special.rateInputs.projectBinderRate || '(blank)'}; bead entry: ${special.rateInputs.projectBeadRate || '(blank)'}. Source: ${special.rateInputs.rateReference || '(not entered)'}.`, { size: 8.5 });
+  paragraph(`All ${special.allMarkings.length} available marking types follow, including zeros and blanks. Standard unit areas come from [R2]. Size adjustments are identified; inactive custom areas show zero.`, { size: 9 });
   for (const category of ['Legend', 'Symbol']) {
-    ensure(30);
+    ensure(35);
     paragraph(`${category}s`, { bold: true, color: blue });
-    table(['Marking', 'Entered', 'Count used (each)', 'Unit area (sq ft/each)', 'Extended area (sq ft)'],
-      c.allMarkings.filter(m => m.category === category).map(m => [`${m.label}\n${m.sizeLabel}`, m.enteredValue === '' ? 'blank' : m.enteredValue,
-        integer(m.quantity), fmt(m.unitArea, 6), fmt(m.area, 6)]),
-      [78, 22, 25, 27, 32], { numeric: [2, 3, 4], size: 8 });
+    table(['Marking / adjusted size', 'Entered', 'Count used', 'Unit area (sq ft/each)', 'Area (sq ft)'], special.allMarkings.filter(m => m.category === category).map(m => [m.label + (m.sizeMode === 'standard' ? '' : `\n${m.sizeLabel}`), m.enteredValue || '(blank)', integer(m.quantity), fmt(m.unitArea), fmt(m.area)]), [76, 22, 22, 33, 31], { numeric: [2, 3, 4], size: 8 });
   }
 
   section('8', 'Raw numeric calculation record', true);
-  paragraph('These are the unrounded numeric values used by the calculator, serialized as decimal strings. They support reproduction of the results without using the rounded values printed in earlier sections. The calculator uses JavaScript Number arithmetic.');
-  ensure(35);
-  paragraph('Source and input record', { bold: true });
-  paragraph(`Material key: ${c.material}\nArea schedule: MDOT PAVE-900-H, plan date 2023-09-13, with selected size adjustments\nApplied rates: ${r.basis}\nRaw footage entry: ${c.feetEntry === '' ? '(blank)' : c.feetEntry}\nReport generator version: ${reportVersion}`, { size: 9 });
-  table(['Variable', 'Raw numeric value', 'Unit'], [
-    ['W', raw(c.width), 'in'], ['L', raw(c.feetPainted), 'ft'],
-    ['W_ft', raw(r.widthFeet), 'ft'], ['k', raw(r.widthFactor), 'dimensionless'],
-    ['L_mi', raw(q.milesPainted), 'mi'], ['A_mi', raw(r.squareFeetPerMile), 'sq ft/mi'],
-    ['B_4', raw(r.baseBinderPerMile), `${unit}/mi`], ['G_4', raw(r.baseBeadsPerMile), 'lb/mi'],
-    ['W_ref', raw(r.referenceWidth), 'in'], ['A_ref', raw(r.referenceArea), 'sq ft/mi'],
-    ['B_ref', raw(r.referenceBinder), `${unit}/mi`], ['G_ref', raw(r.referenceBeads), 'lb/mi'],
-    ['B_W', raw(r.binderPerMile), `${unit}/mi`], ['G_W', raw(r.beadsPerMile), 'lb/mi'],
-    ['b', raw(r.binderPerSFT), `${unit}/sq ft`], ['g', raw(r.beadsPerSFT), 'lb/sq ft'],
-    ['b_L', raw(r.longLineBinderPerSFT), `${unit}/sq ft`], ['g_L', raw(r.longLineBeadsPerSFT), 'lb/sq ft'],
-    ['A_L', raw(q.longLineArea), 'sq ft'], ['A_S', raw(q.specialArea), 'sq ft'],
-    ['A_total', raw(q.totalArea), 'sq ft'], ['B_L', raw(q.longLineBinder), unit],
-    ['B_S', raw(q.specialBinder), unit], ['B_total', raw(q.totalBinder), unit],
-    ['G_L', raw(q.longLineBeads), 'lb'], ['G_S', raw(q.specialBeads), 'lb'], ['G_total', raw(q.totalBeads), 'lb']
-  ], [36, 94, 48], { numeric: [1], size: 8, rowPadding: 2 });
-  if (c.allMarkings.some(m => m.sizeMode !== 'standard')) {
-    ensure(30);
-    paragraph('Raw marking-size input record', { bold: true });
-    c.allMarkings.filter(m => m.sizeMode !== 'standard').forEach(m => {
-      paragraph(`${m.label}: ${m.sizeLabel}; count = ${raw(m.quantity)}; standard area = ${raw(m.standardArea)}; area used = ${raw(m.unitArea)}; extended area = ${raw(m.area)} sq ft. Entered area: ${m.areaEntry || '(automatic / blank)'}. Source: ${m.areaBasis || '(not entered; inactive)'}.`, { size: 8.5 });
-    });
+  paragraph('Raw numeric values are serialized as decimal strings to support reproduction without using rounded intermediates. The calculation uses JavaScript Number arithmetic. Units are retained independently for every material.');
+  for (const line of c.longLines) {
+    ensure(35);
+    paragraph(`${line.label}: ${line.materialName} (${line.id})`, { bold: true, color: blue });
+    table(['Variable', 'Raw numeric value', 'Unit'], [
+      ['W', raw(line.width), 'in'], ['L', raw(line.feetPainted), 'ft'], ['L_mi', raw(line.feetPainted / 5280), 'mi'],
+      ...rawRates(line.rates), ['A_L', raw(line.area), 'sq ft'], ['B_L', raw(line.binder), line.rates.binderUnit], ['G_L', raw(line.beads), 'lb']
+    ], [42, 94, 48], { numeric: [1], size: 8, rowPadding: 2 });
   }
+  if (special.rates) {
+    ensure(35);
+    paragraph(`Special markings: ${special.materialName}`, { bold: true, color: blue });
+    table(['Variable', 'Raw numeric value', 'Unit'], [...rawRates(special.rates), ['A_S', raw(special.area), 'sq ft'], ['B_S', raw(special.binder), special.rates.binderUnit], ['G_S', raw(special.beads), 'lb']], [42, 94, 48], { numeric: [1], size: 8, rowPadding: 2 });
+  }
+  for (const m of special.allMarkings.filter(m => m.sizeMode !== 'standard')) paragraph(`${m.label}: size = ${m.sizeLabel}; count = ${raw(m.quantity)}; standard area = ${raw(m.standardArea)}; unit area used = ${raw(m.unitArea)}; extended area = ${raw(m.area)} sq ft. Entered area: ${m.areaEntry || '(automatic / blank)'}. Source: ${m.areaBasis || '(not entered; inactive)'}.`, { size: 8.5 });
+  ensure(35);
+  paragraph('Raw material totals', { bold: true });
+  table(['Material', 'Binder', 'Unit', 'Beads (lb)', 'Area (sq ft)'], c.materials.map(m => [m.materialName, raw(m.totalBinder), m.unit, raw(m.totalBeads), raw(m.totalArea)]), [58, 42, 16, 36, 32], { numeric: [1, 3, 4], size: 8 });
+  paragraph(`Raw project totals: paint = ${raw(c.totals.paintGallons)} gal; thermoplastic binder = ${raw(c.totals.binderPounds)} lb; beads = ${raw(c.totals.beadsPounds)} lb; long lines = ${raw(c.totals.longLineFeet)} ft; area = ${raw(c.totals.totalArea)} sq ft.`, { size: 8.5 });
 
   const pageCount = doc.getNumberOfPages();
   for (let page = 1; page <= pageCount; page++) {

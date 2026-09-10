@@ -47,6 +47,24 @@
     outline: 3px solid #79a8e5; outline-offset: 3px;
 }
 .pm-line-inputs { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; margin-top: 24px; }
+.pm-long-line { padding: 18px; margin-bottom: 16px; border: 1px solid #dce4ee; border-radius: 10px; background: #fbfcfe; }
+.pm-line-heading { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 14px; }
+.pm-line-heading h3 { margin: 0; color: #315e90; font-size: 14px; }
+.pm-remove-line { margin: 0; padding: 6px 10px; min-height: 36px; border: 1px solid #dce4ee; border-radius: 6px; background: #fff; color: #7c4040; font: inherit; font-size: 12px; cursor: pointer; }
+.pm-add-line { width: 100%; min-height: 44px; padding: 10px 14px; border: 1px dashed #7b9bbd; border-radius: 8px; background: #f2f7fd; color: #245c9c; font: inherit; font-weight: 600; cursor: pointer; }
+.pm-add-line:hover { background: #e7f0fc; }
+.pm-line-reference { margin-top: 16px; }
+.pm-long-line .pm-line-inputs { margin-top: 16px; gap: 16px; }
+.pm-line-basis { font-size: 11px; margin-top: 12px; }
+.pm-line-quantity { margin: 8px 0 0; font-size: 12px; font-weight: 600; color: #315e90; }
+.pm-material-summary { padding: 15px; margin-bottom: 12px; border-radius: 9px; background: #edf3fa; color: #214c7b; }
+.pm-material-summary h3 { margin: 0; font-size: 13px; line-height: 1.5; }
+.pm-material-summary p { margin: 6px 0 0; font-size: 12px; }
+.pm-material-summary .pm-material-amount { font-size: 26px; font-weight: 650; overflow-wrap: anywhere; }
+.pm-line-summary { padding: 10px 0; border-bottom: 1px solid #e8edf3; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+.pm-line-summary p { margin: 5px 0 0; color: #607490; }
+.pm-line-summary p:empty { display: none; }
+.pm-special-card > .pm-rate-settings { margin-bottom: 22px; }
 .pm-label-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-height: 25px; margin-bottom: 8px; }
 .pm-label-row label { margin: 0; }
 .pm-label-row output { padding: 3px 8px; background: #eaf2fd; color: #255a99; border-radius: 5px; font-size: 12px; font-weight: 600; white-space: nowrap; }
@@ -97,7 +115,7 @@ details[open] > summary > .pm-disclosure { transform: rotate(45deg); }
 .pm-marking-table td:last-child { color: #76859a; font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; }
 .pm-page .pm-marking-table input { width: 100%; min-width: 0; min-height: 40px; margin: 0; padding: 8px; border: 1px solid #d6e0ec; border-radius: 6px; font-size: 16px; text-align: center; background: #fff; color: #183d67; box-sizing: border-box; }
 .pm-marking-table tr.pm-entered { background: #f0f6ff; }
-.pm-page input[aria-invalid="true"], .pm-page textarea[aria-invalid="true"] { border-color: #c94747; background: #fff6f6; }
+.pm-page input[aria-invalid="true"], .pm-page select[aria-invalid="true"], .pm-page textarea[aria-invalid="true"] { border-color: #c94747; background: #fff6f6; }
 .pm-selection-note { margin-top: 14px; font-size: 12px; }
 .pm-estimate { position: sticky; top: 20px; border-top: 3px solid #365f91; scroll-margin-top: 20px; }
 .pm-estimate-heading { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
