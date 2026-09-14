@@ -1,0 +1,131 @@
+.rpm-container { max-width: 1160px; color: #172b40; }
+.rpm-container *, .rpm-container *::before, .rpm-container *::after { box-sizing: border-box; }
+.rpm-container [hidden] { display: none !important; }
+.rpm-calculator { padding: 28px; overflow: visible; }
+.rpm-heading { border-bottom: 1px solid #dce3e9; margin-bottom: 24px; padding-bottom: 22px; }
+.rpm-heading h1 { color: #0b2a4a; font-size: clamp(27px, 3vw, 36px); margin: 6px 0 10px; text-align: left; }
+.rpm-heading > p:not(.rpm-eyebrow) { margin: 0; color: #475569; line-height: 1.5; }
+.rpm-eyebrow { font-size: 11px; font-weight: 800; letter-spacing: .13em; text-transform: uppercase; color: #416779; margin: 0 0 8px; }
+.rpm-container h2 { margin: 0 0 18px; color: #0b2a4a; font-size: 19px; }
+.rpm-container h3 { margin: 0 0 10px; font-size: 17px; color: #0b2a4a; }
+.rpm-container a { color: #175c8f; text-underline-offset: 3px; }
+.rpm-source-bar { display: flex; flex-wrap: wrap; gap: 12px 24px; margin-top: 18px; font-size: 13px; }
+.rpm-source-bar a:first-child { font-weight: 700; }
+.rpm-workspace { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 28px; align-items: start; }
+.rpm-inputs, .rpm-preview { min-width: 0; }
+.rpm-panel + .rpm-panel { border-top: 1px solid #dce3e9; padding-top: 24px; margin-top: 24px; }
+.rpm-step { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; margin-right: 8px; background: #e9f0f5; color: #355a70; border-radius: 6px; font-size: 12px; vertical-align: middle; }
+.rpm-container .form-group { margin-bottom: 14px; min-width: 0; }
+.rpm-container label { font-size: 14px; }
+.rpm-container input, .rpm-container select, .rpm-container textarea { width: 100%; margin: 4px 0 0; background: #fff; color: #172b40; border: 1px solid #b8c6d0; border-radius: 6px; padding: 11px 10px; font-size: 15px; }
+.rpm-container select { text-overflow: ellipsis; }
+.rpm-container textarea { resize: vertical; line-height: 1.6; }
+.rpm-container :is(input, select, textarea, button, summary, a, [tabindex]):focus-visible { outline: 3px solid #277bb8; outline-offset: 3px; }
+.rpm-two { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+.rpm-help { margin: 7px 0 14px; font-size: 13px; line-height: 1.6; color: #516373; }
+.rpm-practice { padding: 14px; background: #eaf3f6; border-left: 3px solid #155d79; color: #23485d; font-size: 14px; line-height: 1.6; }
+.rpm-practice strong { display: block; }
+#informationOnlyNote > p { margin: 0 0 12px; }
+.rpm-subheading { margin-top: 28px !important; }
+.rpm-curve-entry { border: 1px solid #cad8e2; border-radius: 8px; padding: 16px; margin: 14px 0; background: #f8fafc; }
+.rpm-curve-entry header { display: flex; justify-content: space-between; gap: 12px; align-items: center; margin-bottom: 12px; }
+.rpm-curve-entry header h3 { margin: 0; }
+.rpm-curve-entry .rpm-remove { min-height: 34px; padding: 5px 10px; font-size: 12px; }
+.rpm-curve-summary { border-top: 1px solid #dce3e9; padding-top: 10px; margin: 0; font-size: 13px; color: #245b48; line-height: 1.6; }
+.rpm-curve-summary[data-invalid="true"] { color: #9b2016; }
+.rpm-preview-picker { margin-top: 18px; }
+.rpm-row-actions button { flex-basis: 150px; }
+.rpm-method-table { margin-bottom: 10px; }
+.rpm-reference-browser { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 24px; }
+#referenceRule { margin-top: 14px; }
+.rpm-sample-controls { margin-top: 12px; }
+.rpm-count-details { margin: 10px 0; }
+.rpm-rule-card { border: 1px solid #cad8e2; border-radius: 12px; padding: 22px; background: #f3f7fa; }
+.rpm-rule-top { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; }
+.rpm-rule-top h2 { margin: 0; }
+.rpm-badge { padding: 5px 8px; border-radius: 4px; background: #dcece6; color: #175340; font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: .04em; }
+.rpm-badge[data-level="standard"] { background: #dfe8f7; color: #244a80; }
+.rpm-badge[data-level="guidance"] { background: #f5ebce; color: #735515; }
+.rpm-rule-value { font-size: clamp(24px, 2.4vw, 30px); font-weight: 750; line-height: 1.25; color: #0b2a4a; margin: 20px 0 8px; }
+#ruleSource { font-size: 13px; }
+.rpm-rule-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; border-top: 1px solid #d2dde5; margin-top: 20px; padding-top: 17px; }
+.rpm-rule-metrics span, .rpm-rule-metrics strong { display: block; }
+.rpm-rule-metrics span { font-size: 12px; color: #536777; margin-bottom: 6px; }
+.rpm-rule-metrics strong { font-size: 22px; color: #0b2a4a; overflow-wrap: anywhere; }
+.rpm-diagram { margin: 18px 0 0; }
+.rpm-diagram svg { display: block; width: 100%; height: auto; border-radius: 6px; background: #243643; }
+.rpm-diagram figcaption { font-size: 12px; line-height: 1.5; margin: 9px 0 14px; color: #475d70; }
+.rpm-callout { padding: 12px 14px; background: #fff8e7; border-left: 3px solid #c29130; color: #735219; font-size: 13px; line-height: 1.6; }
+.rpm-estimate { padding: 22px 0 0; }
+.rpm-estimate h2 { margin-bottom: 8px; }
+.rpm-status { font-size: 12px; color: #245b48; line-height: 1.5; }
+.rpm-status[data-review="true"] { color: #855d1b; }
+.rpm-cost { font-size: clamp(32px, 4vw, 44px); font-weight: 750; color: #0b2a4a; margin: 16px 0 20px; overflow-wrap: anywhere; font-variant-numeric: tabular-nums; }
+.rpm-totals { margin: 0; }
+.rpm-totals > div { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; border-top: 1px solid #dce3e9; padding: 12px 0; }
+.rpm-totals dt { font-size: 14px; color: #526371; }
+.rpm-totals dd { margin: 0; font-size: 18px; font-weight: 700; }
+.rpm-formula { background: #eef4f7; padding: 12px; border-radius: 6px; line-height: 1.6; font-size: 13px; }
+.rpm-limit { font-size: 12px; line-height: 1.6; color: #687786; margin: 20px 0 0; }
+.rpm-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.rpm-actions button { flex: 1 1 140px; margin: 0; }
+.rpm-actions .calculate-button { flex-basis: 100%; background: #155d79; }
+.rpm-actions .calculate-button:hover { background: #0b465e; }
+.rpm-container button { min-height: 44px; font-size: 14px; border-radius: 6px; }
+.rpm-secondary { padding: 10px 12px; border: 1px solid #b8c6d0; color: #24485f; background: #fff; font: inherit; cursor: pointer; }
+.rpm-secondary:hover { background: #edf3f7; }
+.rpm-error { padding: 12px; border-left: 3px solid #b42318; background: #fff0ed; font-size: 14px; color: #9b2016; line-height: 1.5; }
+.rpm-error:empty { display: none; }
+.rpm-container summary { cursor: pointer; color: #224b66; padding: 12px 0; font-size: 14px; font-weight: 650; }
+.rpm-breakdown { margin: 14px 0 20px; border-top: 1px solid #dce3e9; }
+.rpm-table-wrap { overflow-x: auto; }
+.rpm-table-wrap table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+.rpm-table-wrap caption { text-align: left; font-size: 12px; color: #637382; padding: 8px 0; line-height: 1.5; }
+.rpm-table-wrap th, .rpm-table-wrap td { text-align: right; padding: 10px 9px; border-bottom: 1px solid #dce3e9; font-size: 12px; white-space: nowrap; }
+.rpm-table-wrap th:first-child, .rpm-table-wrap td:first-child { text-align: left; }
+.rpm-breakdown th:first-child { max-width: 160px; white-space: normal; overflow-wrap: anywhere; }
+.rpm-reference-section, .rpm-photo-section { padding: 28px; line-height: 1.65; font-size: 14px; }
+.rpm-section-heading { display: flex; justify-content: space-between; align-items: start; gap: 16px; }
+.rpm-section-heading > p { font-size: 12px; color: #627383; margin: 0; }
+.rpm-reference-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 22px; margin: 20px 0; }
+.rpm-reference-grid article { border-top: 2px solid #c9d8e1; padding-top: 16px; }
+.rpm-reference-grid article p { font-size: 13px; color: #526575; }
+.rpm-source-pages { border-top: 1px solid #dce3e9; margin-top: 22px; }
+.rpm-source-pages > p { font-size: 13px; color: #526575; }
+.rpm-source-pages figure { margin: 0; }
+.rpm-source-pages img { width: 100%; height: auto; border: 1px solid #d0dae1; }
+.rpm-source-pages figcaption { font-size: 12px; color: #5c6f80; }
+.rpm-photo-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+.rpm-photo-grid figure { margin: 0; display: grid; grid-template-columns: minmax(100px, 170px) minmax(0, 1fr); gap: 18px; align-items: start; }
+.rpm-photo-grid img { display: block; width: 100%; height: auto; border-radius: 5px; }
+.rpm-photo-grid figcaption { font-size: 12px; color: #536574; line-height: 1.6; }
+.rpm-photo-grid strong, .rpm-photo-grid span { display: block; margin-bottom: 8px; }
+.rpm-photo-grid strong { font-size: 15px; color: #183c54; }
+@media (max-width: 850px) {
+    .rpm-workspace { grid-template-columns: minmax(0, 1fr); }
+    .rpm-reference-browser { grid-template-columns: minmax(0, 1fr); }
+    .rpm-photo-grid figure { grid-template-columns: 1fr; }
+    .rpm-photo-grid img { max-width: 350px; }
+}
+@media (max-width: 540px) {
+    .rpm-container { padding: 0; }
+    .rpm-calculator, .rpm-reference-section, .rpm-photo-section { padding: 18px; }
+    .rpm-two, .rpm-photo-grid { grid-template-columns: minmax(0, 1fr); }
+    .rpm-section-heading { display: block; }
+    .rpm-section-heading > p { margin-bottom: 20px; }
+    .rpm-rule-card { padding: 16px; }
+}
+@media print {
+    body { background: #fff; padding: 0; }
+    #header-placeholder, #footer-placeholder, .rpm-actions, #printEstimate, .rpm-photo-section, .rpm-source-pages, .rpm-source-bar, #otherApplications, #sampleControls { display: none; }
+    .rpm-container { max-width: none; }
+    .rpm-calculator, .rpm-reference-section { box-shadow: none; padding: 0; }
+    .rpm-workspace { display: block; }
+    .rpm-preview { margin-top: 20px; }
+    .rpm-rule-card, .rpm-estimate { break-inside: avoid; }
+    .rpm-container input, .rpm-container select, .rpm-container textarea { border-color: #d1d5db; }
+    .rpm-diagram { max-width: 450px; }
+    .rpm-table-wrap { overflow: visible; }
+    .rpm-table-wrap th, .rpm-table-wrap td { white-space: normal; font-size: 10px; padding: 7px 5px; }
+    .rpm-curve-entry .rpm-remove, .rpm-preview-picker { display: none; }
+}
