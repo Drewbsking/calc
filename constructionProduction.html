@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Estimate construction duration or maximum complete production in a closure using editable operations, production rates, and working calendars.">
+  <title>Construction Production Calculator | Andy's Traffic Tools</title>
+  <link rel="stylesheet" href="styles/constructionProduction.css">
+</head>
+<body>
+  <header class="site-bar"><a href="index.html">Andy's Traffic Tools</a><span>Construction planning</span><a href="#quick">Quick calculators</a></header>
+  <main>
+    <div class="heading"><p class="eyebrow">Field calculator</p><h1>Construction Production Calculator</h1><p>Plan the work from a quantity. Or find the quantity that fits the time.</p></div>
+    <nav class="mode-picker" aria-label="Calculator mode">
+      <button type="button" data-mode="duration" aria-pressed="true"><span>Quantity → Time</span><strong>Calculate Project Duration</strong><small>How long will this project take?</small></button>
+      <button type="button" data-mode="maximum" aria-pressed="false"><span>Time → Quantity</span><strong>Calculate Maximum Production</strong><small>How much work can we completely finish?</small></button>
+    </nav>
+    <noscript><p class="notice error">JavaScript is required to run this calculator.</p></noscript>
+    <p id="storage-status" class="help" role="status">Scenarios and rate libraries are saved in this browser.</p>
+    <form id="calculator-form" novalidate>
+      <section class="panel" aria-labelledby="project-heading">
+        <div class="section-heading"><h2 id="project-heading"><span class="step">01</span> Project / closure inputs</h2><label class="inline-field">Template <select id="template"><option value="concrete">Concrete remove &amp; replace</option><option value="hma">HMA mill &amp; fill</option><option value="overlay">HMA overlay</option><option value="custom">Custom project</option></select></label><button type="button" id="load-template">Load template</button></div>
+        <p class="help">Loading a template replaces the operation list. Duplicate your scenario first to keep a comparison.</p>
+        <div class="field-grid">
+          <label class="wide">Project / scenario name<input id="project-name" autocomplete="off"></label>
+          <label><span id="quantity-label">Project quantity</span><input id="project-quantity" type="number" min="0" step="any"></label>
+          <label>Project unit<select id="project-unit"></select></label>
+        </div>
+        <div id="closure-inputs" hidden>
+          <div class="field-grid">
+            <label>Available time input<select id="closure-type"><option value="workdays">Available workdays</option><option value="dates">Start / completion date and time</option></select></label>
+            <label id="closure-days-field">Available workdays<input id="closure-days" type="number" min="0.01" step="any"></label>
+            <label class="closure-date" hidden>Closure starts<input id="closure-start" type="datetime-local"></label>
+            <label class="closure-date" hidden>Required completion<input id="closure-end" type="datetime-local"></label>
+          </div>
+          <p class="help">Only enabled working shifts inside the window count. A fractional available workday uses that fraction of the last shift. Requested quantity is an optional fit check; maximum production is solved independently.</p>
+        </div>
+        <details class="calendar-details" open><summary>Working calendar <span id="week-summary"></span></summary>
+          <div class="field-grid">
+            <label id="start-date-field">Start date (optional)<input id="start-date" type="date"></label>
+            <label>Hours per workday / rate basis<input id="hours-per-day" type="number" min="0.1" max="24" step="any"></label>
+            <label>Daily shift starts<input id="shift-start" type="time"></label>
+            <label>Workdays per week<select id="days-per-week"><option value="1">1 day</option><option value="2">2 days</option><option value="3">3 days</option><option value="4">4 days</option><option value="5">5 days</option><option value="6">6 days</option><option value="7">7 days</option></select></label>
+          </div>
+          <fieldset class="weekdays"><legend>Actual working weekdays</legend><div id="weekdays"></div></fieldset>
+          <details><summary>Holidays, variable shifts &amp; night work</summary>
+            <label>Holidays / non-working shift dates (YYYY-MM-DD, separated by commas)<input id="holidays" placeholder="2026-11-26, 2026-12-25"></label>
+            <p class="help">Optional hours by weekday override the shift length; leave blank for the default. Rates per workday always use the hours-per-workday basis above. Overnight shifts belong to their starting date. Times use the site's local civil clock; daylight-saving hour changes are not modeled.</p>
+            <div id="daily-hours" class="daily-hours"></div>
+          </details>
+        </details>
+      </section>
+      <section class="panel" aria-labelledby="operations-heading">
+        <div class="section-heading"><h2 id="operations-heading"><span class="step">02</span> Operations</h2><span id="operation-count" class="tag"></span></div>
+        <p class="help">Each enabled operation must finish. Sequential work shares unused shift time. “Next workday” reserves a separate day. Concurrent work needs independent crews.</p>
+        <div id="operations"></div>
+        <div class="actions"><label class="inline-field">Add work item<select id="add-operation-type"></select></label><button type="button" id="add-operation">+ Add operation</button><button type="button" id="add-lift">+ Add HMA lift</button></div>
+      </section>
+      <section class="panel" aria-labelledby="assumptions-heading">
+        <h2 id="assumptions-heading"><span class="step">03</span> Production assumptions &amp; scheduling</h2>
+        <div class="field-grid">
+          <label>Rate library<select id="library-select"></select></label>
+          <label>Production level<select id="production-level"><option value="low">Low</option><option value="average">Average</option><option value="high">High</option><option value="rate">Record's base rate</option></select></label>
+          <label>HMA density (LB/CF)<input id="density" type="number" min="1" step="any"></label>
+          <div class="field-action"><button type="button" id="apply-rates">Apply library rates to operations</button></div>
+        </div>
+        <div class="rule-options">
+          <label class="check"><input id="allow-same-day" type="checkbox"> Allow sequential operations to transition within a workday</label>
+          <label class="check"><input id="allow-concurrent" type="checkbox"> Allow concurrent operations with independent crews</label>
+          <label class="check"><input id="separate-lifts" type="checkbox"> Require each HMA lift on a separate workday</label>
+        </div>
+        <p class="help">136 work items from <a href="MDOT_Production_Rates_November_2023%20(1).pdf" target="_blank" rel="noopener">MDOT Roadway &amp; Bridge Production Rates — November 2023</a>. Rates and comments are preserved from the source, including flagged inconsistencies. These are planning assumptions, not guaranteed production. Rate edits take effect when you select “Apply library rates.”</p>
+        <p class="help">Days/item rates are converted to items/workday; curing and lead times use calendar activities. Months use an explicit 30-day planning conversion. Additional setup, testing, or cure allowances mentioned in source notes must be added to your sequence.</p>
+        <details id="rate-library"><summary>Production Rate Library — edit, copy, or add rates</summary>
+          <div id="rate-records"></div>
+          <div class="actions"><button type="button" id="add-rate">+ Add rate record</button></div>
+          <div class="field-grid library-copy"><label class="wide">New library name<input id="new-library-name" placeholder="RCOC historical rates"></label><label>Source type<select id="new-library-kind"><option>Agency</option><option>Contractor</option><option>Historical</option><option>Custom</option></select></label><div class="field-action"><button type="button" id="copy-library">Copy current library</button></div></div>
+        </details>
+      </section>
+      <div class="calculator-actions"><button type="submit" class="primary">Calculate</button><button type="button" id="reset">Reset</button><button type="button" id="duplicate">Duplicate Scenario</button><button type="button" id="print">Print</button><span id="calculation-status" role="status">Ready to calculate</span></div>
+    </form>
+    <section id="results" class="panel results" aria-live="polite" aria-atomic="true" tabindex="-1"></section>
+    <section class="panel" id="comparisons"><div class="section-heading"><h2>Scenario comparison</h2><button type="button" id="clear-comparisons">Clear saved comparisons</button></div><p class="help">Duplicate Scenario saves a snapshot here and opens an editable copy. Compare alternatives using the same project unit and calendar assumptions.</p><div id="comparison-table"></div></section>
+    <section id="quick" class="panel"><h2>Quick calculators</h2><p class="help">Focused calculations using the same quantity and production functions.</p>
+      <div class="quick-links"><button type="button" data-quick-template="concrete">Concrete remove &amp; replace</button><button type="button" data-quick-template="hma">HMA mill &amp; fill</button></div>
+      <form id="quick-form" novalidate><div class="field-grid">
+        <label>Calculation<select id="quick-type"><option value="hma">HMA tonnage</option><option value="concrete">Concrete CY</option><option value="units">Area / other unit conversions</option><option value="rate">Production-rate conversions</option></select></label>
+        <label><span id="quick-value-label">Area</span><input id="quick-value" type="number" min="0" step="any" value="68400"></label>
+        <label>From unit<select id="quick-from"></select></label>
+        <label id="quick-to-field" hidden>To unit<select id="quick-to"></select></label>
+        <label id="quick-thickness-field">Thickness (inches)<input id="quick-thickness" type="number" min="0.01" step="any" value="1.5"></label>
+        <label id="quick-density-field">Density (LB/CF)<input id="quick-density" type="number" min="1" step="any" value="145"></label>
+        <label class="quick-rate" hidden>From time basis<select id="quick-period-from"></select></label>
+        <label class="quick-rate" hidden>To time basis<select id="quick-period-to"></select></label>
+        <label id="quick-hours-field" hidden>Hours per workday<input id="quick-hours" type="number" min="0.1" max="24" step="any" value="8"></label>
+      </div><button type="submit">Calculate quick result</button><output id="quick-result" role="status"></output></form>
+    </section>
+    <footer><p>Planning assumptions, made visible. Confirm production and construction requirements for your project.</p><a href="docs/construction-production.md">Calculation model &amp; scheduling conventions</a></footer>
+  </main>
+  <script src="scripts/production/units.js"></script>
+  <script src="scripts/production/quantities.js"></script>
+  <script src="scripts/production/production.js"></script>
+  <script src="scripts/production/calendar.js"></script>
+  <script src="scripts/production/mdotRates2023.js"></script>
+  <script src="scripts/production/presets.js"></script>
+  <script src="scripts/production/engine.js"></script>
+  <script src="scripts/constructionProductionPage.js"></script>
+</body>
+</html>
