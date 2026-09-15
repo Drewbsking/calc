@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Roadway Access Analysis | RCOC Tools</title>
+  <meta name="description" content="Trace a roadway alignment, mark access points, and report access density, types, and gaps by station." />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="styles/styles.css" />
+  <link rel="stylesheet" href="styles/accessDensity.css" />
+</head>
+<body class="access-density-page">
+  <div id="header-placeholder"></div>
+  <main class="alignment-app">
+    <aside class="alignment-panel" aria-label="Alignment controls">
+      <h1>Roadway Alignment</h1>
+      <p class="alignment-intro">Trace the road centerline, then mark driveways and road accesses.</p>
+      <label class="study-name" for="studyName">Study name / road
+        <input id="studyName" type="text" maxlength="120" placeholder="Enter the road name" required aria-describedby="studyNameError" />
+      </label>
+      <p id="studyNameError" class="study-name-error" role="status" hidden>Enter the study name (the road being studied) before opening reports.</p>
+      <div class="alignment-actions" role="group" aria-label="Drawing actions">
+        <button id="drawBtn" type="button" aria-pressed="true">DRAW ALIGNMENT</button>
+        <button id="curveBtn" type="button" aria-pressed="false" title="Place the alignment start first." disabled>ADD CURVE</button>
+        <button id="finishBtn" type="button" disabled>FINISH</button>
+        <button id="resetBtn" type="button">RESET</button>
+        <button id="accessBtn" type="button" aria-pressed="false" disabled>ADD ACCESS POINTS</button>
+        <button id="reportsBtn" type="button" disabled>REPORTS</button>
+      </div>
+      <p id="alignmentStatus" class="alignment-status" role="status">Click the map to establish Station 0+00.</p>
+      <dl class="alignment-summary">
+        <div><dt>End station</dt><dd id="endStation">0+00</dd></div>
+        <div><dt>Total length</dt><dd id="alignmentLength">0 ft</dd></div>
+      </dl>
+      <section class="station-inquiry" aria-labelledby="inquiryHeading">
+        <h2 id="inquiryHeading">Station inquiry</h2>
+        <output id="inquiryStation" aria-label="Nearest station">&mdash;</output>
+        <p id="inquiryDetail">Move near the alignment to read a station.</p>
+      </section>
+      <section class="access-list" aria-labelledby="accessHeading">
+        <h2 id="accessHeading">Access points</h2>
+        <div class="access-table-scroll">
+          <table aria-label="Access points sorted by station">
+            <thead><tr><th scope="col" aria-sort="ascending">Station</th><th scope="col">Type</th><th scope="col">Name</th></tr></thead>
+            <tbody id="accessRows"></tbody>
+          </table>
+        </div>
+        <p id="accessEmpty">Create an alignment, then select Add Access Points.</p>
+      </section>
+      <details class="alignment-help">
+        <summary>How to use</summary>
+        <ul>
+          <li><strong>Study name / road:</strong> enter the road being studied. The name appears on every report page and in the PDF filename.</li>
+          <li><strong>Draw Alignment:</strong> click the start, then each tangent endpoint.</li>
+          <li><strong>Add Curve:</strong> the last alignment point becomes PC, the end of the tangent. Click MID on the curve first, then PT. Place the alignment start before adding a curve.</li>
+          <li>After PT, click ahead along the red guide to extend the tangent, or select Add Curve again.</li>
+          <li>Drag PC or PT to adjust the curve along its tangents; drag MID to change the radius. Moving PC on a straight between two curves rotates that straight and refits both curves to keep smooth connections.</li>
+          <li>Dragging a straight-section endpoint changes that line and refits its adjoining curves. Edits that cannot fit keep the last valid shape.</li>
+          <li>Draw Alignment cancels an unfinished curve. Finish ends drawing; either drawing button resumes it.</li>
+          <li>Stations appear every 500 ft. On touch screens, finish drawing, then tap near the alignment to read a station.</li>
+          <li><strong>Add Access Points:</strong> click a driveway or road access. Press R for Residential, C for Commercial, or N for Named Road / Access. Enter a name for named accesses.</li>
+          <li>Save (Enter) or click the next location to keep adding; the last type is reused. Points and edits are kept as you enter them. Use Delete to remove a point.</li>
+          <li>Residential markers are green circles, Commercial markers are orange squares, and named accesses are purple diamonds. Click a table row to locate and edit a point. Drag its marker to move it.</li>
+          <li>Access stations update when points or the alignment move. Reset clears both the alignment and access points.</li>
+          <li><strong>Reports:</strong> print or save a PDF with access-based speed recommendations and MCL references. Charts default to 1,000-ft intervals; speed analysis uses sliding 2,640-ft windows. Matching road names within 100 ft share one label; each access still counts separately.</li>
+          <li>Pinch to zoom, or use Shift+drag on desktop for box zoom.</li>
+        </ul>
+        <p>Lengths follow the traced centerline, including circular arc lengths. Measurements are map-derived.</p>
+      </details>
+      <noscript><p class="alignment-error">JavaScript is required to draw an alignment.</p></noscript>
+    </aside>
+    <div id="alignmentMap" role="region" aria-label="Roadway alignment map"></div>
+  </main>
+  <dialog id="reportsDialog" class="reports-dialog" aria-labelledby="reportsHeading">
+    <div class="reports-toolbar">
+      <h2 id="reportsHeading">Reports</h2>
+      <button id="reportClose" type="button">Back to map</button>
+      <label>Report
+        <select id="reportType">
+          <option value="all">Complete PDF report</option>
+          <option value="map">Study Map</option>
+          <option value="speed">Speed Recommendation - MCL</option>
+          <option value="hypothetical">Hypothetical Speed - Every 100 ft</option>
+          <option value="density">1 - Access Point Density</option>
+          <option value="stacked">2 - Stacked Access Type</option>
+          <option value="commercial">3 - Commercial / Named Access</option>
+          <option value="gaps">4 - Access Gaps</option>
+        </select>
+      </label>
+      <label>Chart interval (ft)<input id="reportInterval" type="number" min="1" step="1" value="1000" /></label>
+      <div class="reports-export">
+        <button id="reportPrint" type="button">Print</button>
+        <button id="reportPDF" type="button">Save PDF Report</button>
+      </div>
+      <nav class="reports-pagination" aria-label="Report pages">
+        <button id="reportPrevious" type="button">Previous</button>
+        <span id="reportPageNumber" aria-live="polite"></span>
+        <button id="reportNext" type="button">Next</button>
+      </nav>
+      <label id="reportShortHighwayControl" class="report-short-highway" hidden>
+        <input id="reportShortHighway" type="checkbox" />
+        This alignment covers the entire highway, which is shorter than 1/2 mile. Use 528-ft proration under MCL 257.627(5)(c).
+      </label>
+      <p class="reports-export-help">Every PDF includes the study map, MCL speed recommendation, and a separate hypothetical graph using each 100-ft section's density. Print and PDF include all pages of the selected report.</p>
+      <p id="reportMessage" role="status"></p>
+    </div>
+    <div id="reportPages"></div>
+  </dialog>
+  <div id="footer-placeholder"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="scripts/layoutScript.js"></script>
+  <script src="scripts/accessDensityCore.js"></script>
+  <script src="scripts/accessDensityPoints.js"></script>
+  <script src="scripts/accessDensityReportCore.js"></script>
+  <script src="scripts/accessDensityReportCharts.js"></script>
+  <script src="scripts/accessDensityReportMap.js"></script>
+  <script src="scripts/accessDensityReports.js"></script>
+  <script src="scripts/accessDensity.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/4.2.1/jspdf.umd.min.js" defer></script>
+</body>
+</html>
