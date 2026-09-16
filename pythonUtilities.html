@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Python utilities for TCO cleanup, filename changes, text placeholders, folder checks, and CSV-to-MediaWiki tables. Download scripts with clear Windows instructions.">
+    <title>Python Utilities | Andy's Traffic Tools</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/pythonUtilities.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main class="container utilities-page">
+        <header class="utilities-heading">
+            <a class="utilities-back" href="index.html">&larr; All tools</a>
+            <p class="utilities-eyebrow">Small scripts for everyday file tasks</p>
+            <h1>Python Utilities</h1>
+            <p>Pick a script, edit its marked settings, and run it on your computer.</p>
+            <p class="utilities-tco-note"><strong>Built from TCO cleanup work.</strong> Many of these scripts were written to clean up Traffic Control Order (TCO) files. Their examples reflect those jobs; match the settings and filename format to your own files. Historical values are not a current TCO naming standard.</p>
+            <div class="utilities-tags" aria-label="Catalog and requirements">
+                <span>19 utilities</span><span>Python 3</span><span>No extra packages</span><span>Windows instructions</span>
+            </div>
+        </header>
+
+        <nav class="utilities-panel" aria-labelledby="catalog-title">
+            <h2 id="catalog-title">Choose a task</h2>
+            <p>Related originals are combined into configurable utilities. <a href="#getting-started">First time using a script? Start here.</a></p>
+            <div class="utilities-catalog">
+                <div><h3><a href="#category-text">Text &amp; missing numbers</a></h3><ul>
+                    <li><a href="#fill-empty-txt">Fill Empty TXT Files</a></li>
+                    <li><a href="#append-tco-note">Append a TCO Investigation Note</a></li>
+                    <li><a href="#missing-sequence">Create Missing TCO Number Placeholders</a></li>
+                </ul></div>
+                <div><h3><a href="#category-tco">TCO filename sections</a></h3><ul>
+                    <li><a href="#stop-yield-separator">Add a Hyphen After YS or SS</a></li>
+                    <li><a href="#pad-sequence">Pad the Second TCO Section</a></li>
+                    <li><a href="#append-folder">Add Revision and Folder Name</a></li>
+                    <li><a href="#normalize-tco">Clean TCO Prefix, Spaces and Third Section</a></li>
+                    <li><a href="#replace-third-section">Replace the Third TCO Section</a></li>
+                    <li><a href="#expand-year">Expand a Two-Digit TCO Year</a></li>
+                    <li><a href="#comma-revision">Keep Text Before a Comma and Add a Revision</a></li>
+                </ul></div>
+                <div><h3><a href="#category-filenames">Filename cleanup</a></h3><ul>
+                    <li><a href="#rename-files">Replace Spaces in PDF and Word Filenames</a></li>
+                    <li><a href="#move-token">Move a Filename Section to the End</a></li>
+                    <li><a href="#append-suffix">Append a Filename Suffix</a></li>
+                    <li><a href="#remove-suffix">Remove a Trailing Filename Suffix</a></li>
+                    <li><a href="#trim-before-marker">Trim Before a Filename Marker</a></li>
+                    <li><a href="#find-replace">Find and Replace Filename Text</a></li>
+                </ul></div>
+                <div><h3><a href="#category-reports">Folder &amp; filename checks</a></h3><ul>
+                    <li><a href="#missing-marker">List Filenames Missing a Marker</a></li>
+                    <li><a href="#empty-folders">Find Empty Folders</a></li>
+                </ul></div>
+                <div><h3><a href="#category-conversion">CSV &amp; wiki tables</a></h3><ul>
+                    <li><a href="#csv-to-mediawiki">Convert a Pay-Item CSV to MediaWiki</a></li>
+                </ul></div>
+            </div>
+        </nav>
+
+        <section class="utilities-panel" id="getting-started" aria-labelledby="getting-started-title">
+            <h2 id="getting-started-title">Edit the marked settings</h2>
+            <p>Every download has a clearly marked settings box near the top. Folder utilities use <code>FOLDER_PATH</code>; the CSV converter uses <code>CSV_FILE_PATH</code> for a single input file. Some scripts also need a marker, suffix, number range, or other job setting.</p>
+            <pre class="utilities-path-example" tabindex="0" aria-label="Folder path setting example"><code># FOLDER_PATH: paste the folder you want to process.
+FOLDER_PATH = r"C:\CHANGE_ME\YourFolder"</code></pre>
+            <p>For example, use <code>FOLDER_PATH = r"C:\Work\Turning Prohibitions"</code>. Keep the <code>r</code> and quotation marks. Spaces are fine; do not put a backslash at the end of the path.</p>
+            <ol class="utilities-setup">
+                <li><strong>Check Python.</strong> Open Windows Terminal and enter <code>py --version</code>. If Python is missing, follow the <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">official Python Windows setup instructions</a>. No additional packages are needed.</li>
+                <li><strong>Find your folder path.</strong> In File Explorer, open the folder you want to process, click the address bar, and copy the full path. Paste it between the quotes in the script. Any mapped drive must be connected when the script runs.</li>
+                <li><strong>Review that utility's settings.</strong> Each listing identifies its file types and whether it includes subfolders. The third-section replacement and year conversion require you to supply the historical job settings before they will run.</li>
+                <li><strong>Edit and save the download.</strong> Use Notepad or another text editor. If using Save As, choose <strong>All files</strong> and keep the <code>.py</code> extension, rather than <code>.py.txt</code>.</li>
+            </ol>
+            <p class="utilities-run-note"><strong>When you run a script:</strong> file-changing utilities apply their operation immediately, except Find and Replace, which previews changes and asks for confirmation. Report tools only print findings. The CSV converter creates a new text file and leaves the source CSV unchanged. Subfolder behavior is shown on each listing. Existing files are not overwritten, and symbolic links are not processed. All work happens on your computer; the website does not receive your files.</p>
+        </section>
+
+        <!-- Repeat a data-python-utility section for each standalone download.
+             data-download is the source of both the code display and copy action. -->
+        <div class="utilities-group-heading" id="category-text">
+            <h2>Text &amp; missing numbers</h2><p>Work with TXT placeholders and gaps in TCO number sequences.</p>
+        </div>
+        <section class="utilities-panel utility" id="fill-empty-txt" data-python-utility aria-labelledby="fill-empty-txt-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">01</span>
+                <div><p class="utilities-eyebrow">.txt &middot; Selected folder only</p>
+                    <h2 id="fill-empty-txt-title">Fill Empty TXT Files</h2></div>
+            </div>
+            <p>Write each zero-byte TXT file's own filename into its body, including the extension.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>Oak at Main.txt — empty (0 bytes)</dd></div>
+                <div><dt>After / result</dt><dd>File contains: Oak at Main.txt</dd></div>
+            </dl>
+            <p class="utility-behavior">Files containing text, spaces, or blank lines stay unchanged. Uppercase extensions are included.</p>
+            <p class="utility-originals">Original: <code>add Text.py</code></p>
+            <a class="utility-download" href="python/fill_empty_txt_files.py" download="fill_empty_txt_files.py" data-download aria-label="Download Python file: Fill Empty TXT Files">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Fill Empty TXT Files settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>fill_empty_txt_files.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\fill_empty_txt_files.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Fill Empty TXT Files">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Fill Empty TXT Files Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="append-tco-note" data-python-utility aria-labelledby="append-tco-note-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">02</span>
+                <div><p class="utilities-eyebrow">.txt &middot; Selected folder only</p>
+                    <h2 id="append-tco-note-title">Append a TCO Investigation Note</h2></div>
+            </div>
+            <p>Append a filename-specific investigation note to TXT files, retaining any existing text.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>TP-123.txt containing TP-123.txt</dd></div>
+                <div><dt>After / result</dt><dd>Existing text, followed by a TCO investigation note</dd></div>
+            </dl>
+            <p class="utility-behavior">The original note says the TCO is either missing or rescinded and needs investigation. This is a cleanup note, not a verified determination of TCO status. Identical notes already present are not appended again.</p>
+            <p class="utility-originals">Original: <code>add to text.py</code></p>
+            <a class="utility-download" href="python/append_tco_note.py" download="append_tco_note.py" data-download aria-label="Download Python file: Append a TCO Investigation Note">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Append a TCO Investigation Note settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+NOTE_TEMPLATE = &quot;this TCO {filename} is either missing or has been rescinded. Need further investigation.&quot;
+# Keep {filename} where the name should appear; other text is editable.
+RECURSIVE = False</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>append_tco_note.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\append_tco_note.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Append a TCO Investigation Note">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Append a TCO Investigation Note Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="missing-sequence" data-python-utility aria-labelledby="missing-sequence-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">03</span>
+                <div><p class="utilities-eyebrow">Reads numbered filenames; creates .txt &middot; Selected folder only</p>
+                    <h2 id="missing-sequence-title">Create Missing TCO Number Placeholders</h2></div>
+            </div>
+            <p>Find gaps in a TP or YS number sequence and create TXT placeholders for the missing numbers.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>TP-10.pdf and TP-12.pdf</dd></div>
+                <div><dt>After / result</dt><dd>Creates empty TP-11.txt</dd></div>
+            </dl>
+            <p class="utility-behavior">PRESET = &quot;TP&quot; fills gaps from the lowest to highest existing number, creating empty TP-11.txt-style files. PRESET = &quot;YS&quot; starts at 50 and creates YS-051-.txt-style names with the original missing-or-never-taken note. You can set an explicit START_NUMBER and END_NUMBER. Empty folders require an explicit range. Placeholders do not establish the actual status of a TCO.</p>
+            <p class="utility-originals">Originals: <code>add Files in sequance.py</code>, <code>add Text files.py</code></p>
+            <a class="utility-download" href="python/create_missing_sequence_files.py" download="create_missing_sequence_files.py" data-download aria-label="Download Python file: Create Missing TCO Number Placeholders">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Create Missing TCO Number Placeholders settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+PRESET = &quot;TP&quot;  # &quot;TP&quot; for turning prohibitions, or &quot;YS&quot; for the YS job.
+START_NUMBER = None  # None: lowest existing TP number, or 50 for YS.
+END_NUMBER = None  # None: highest existing number.
+RECURSIVE = False  # Keep False: one number sequence per selected folder.</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>create_missing_sequence_files.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\create_missing_sequence_files.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Create Missing TCO Number Placeholders">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Create Missing TCO Number Placeholders Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <div class="utilities-group-heading" id="category-tco">
+            <h2>TCO filename sections</h2><p>Apply a specific naming operation to records with the matching filename structure.</p>
+        </div>
+        <section class="utilities-panel utility" id="stop-yield-separator" data-python-utility aria-labelledby="stop-yield-separator-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">04</span>
+                <div><p class="utilities-eyebrow">All file types &middot; Includes subfolders</p>
+                    <h2 id="stop-yield-separator-title">Add a Hyphen After YS or SS</h2></div>
+            </div>
+            <p>Change YS followed by a space to YS-, and SS followed by a space to SS-, in filenames.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>YS 050-1200-2024.pdf</dd></div>
+                <div><dt>After / result</dt><dd>YS-050-1200-2024.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">Matches uppercase YS and SS exactly. Existing destination names are skipped rather than assigned an extra number.</p>
+            <p class="utility-originals">Original: <code>add dash after SS.py</code></p>
+            <a class="utility-download" href="python/normalize_stop_yield_separator.py" download="normalize_stop_yield_separator.py" data-download aria-label="Download Python file: Add a Hyphen After YS or SS">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Add a Hyphen After YS or SS settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+RECURSIVE = True  # True includes subfolders; False processes only this folder.
+EXTENSIONS = ()  # Empty means all file types.</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>normalize_stop_yield_separator.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\normalize_stop_yield_separator.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Add a Hyphen After YS or SS">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Add a Hyphen After YS or SS Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="pad-sequence" data-python-utility aria-labelledby="pad-sequence-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">05</span>
+                <div><p class="utilities-eyebrow">.pdf, .docx &middot; Includes subfolders</p>
+                    <h2 id="pad-sequence-title">Pad the Second TCO Section</h2></div>
+            </div>
+            <p>Add leading zeros to a numeric second section in a hyphen-separated TCO filename.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>YS-7-1200-2024.pdf</dd></div>
+                <div><dt>After / result</dt><dd>YS-007-1200-2024.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">The original width is three digits. Longer numbers and nonnumeric sections stay unchanged.</p>
+            <p class="utility-originals">Original: <code>second part three.py</code></p>
+            <a class="utility-download" href="python/pad_tco_sequence_number.py" download="pad_tco_sequence_number.py" data-download aria-label="Download Python file: Pad the Second TCO Section">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Pad the Second TCO Section settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+WIDTH = 3  # Minimum number of digits in the second section.
+RECURSIVE = True
+EXTENSIONS = (&quot;.pdf&quot;, &quot;.docx&quot;)</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>pad_tco_sequence_number.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\pad_tco_sequence_number.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Pad the Second TCO Section">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Pad the Second TCO Section Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="append-folder" data-python-utility aria-labelledby="append-folder-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">06</span>
+                <div><p class="utilities-eyebrow">All file types &middot; Includes subfolders</p>
+                    <h2 id="append-folder-title">Add Revision and Folder Name</h2></div>
+            </div>
+            <p>Append the containing folder's name to TCO filenames with four or five hyphen-separated sections. Four-section names first receive a default revision.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>YS-050-1200-2024.pdf in Oak Estates</dd></div>
+                <div><dt>After / result</dt><dd>YS-050-1200-2024-R0-Oak Estates.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">Uses each file's immediate parent folder, including the selected root folder. Already appended names and names with other section counts are skipped.</p>
+            <p class="utility-originals">Original: <code>append folder to file name..py</code></p>
+            <a class="utility-download" href="python/append_folder_to_tco_filename.py" download="append_folder_to_tco_filename.py" data-download aria-label="Download Python file: Add Revision and Folder Name">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Add Revision and Folder Name settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+DEFAULT_REVISION = &quot;R0&quot;  # Used only when the original name has four sections.
+RECURSIVE = True
+EXTENSIONS = ()</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>append_folder_to_tco_filename.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\append_folder_to_tco_filename.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Add Revision and Folder Name">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Add Revision and Folder Name Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="normalize-tco" data-python-utility aria-labelledby="normalize-tco-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">07</span>
+                <div><p class="utilities-eyebrow">.pdf, .docx &middot; Selected folder only</p>
+                    <h2 id="normalize-tco-title">Clean TCO Prefix, Spaces and Third Section</h2></div>
+            </div>
+            <p>Apply the original combined cleanup: remove a leading TCO label, replace spaces with hyphens, and append 00 to a two-digit third section. Each step can be switched off.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>TCO TS 007 12 2024.pdf</dd></div>
+                <div><dt>After / result</dt><dd>TS-007-1200-2024.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">The third-section operation appends zeros (12 becomes 1200), rather than adding leading zeros. For the add-00-only original, disable the first two steps and set EXTENSIONS to PDF only. Nonnumeric sections are skipped for the numeric step.</p>
+            <p class="utility-originals">Originals: <code>add 00 to thrid section.py</code>, <code>take away tco add 0000 and add -.py</code></p>
+            <a class="utility-download" href="python/normalize_tco_filename.py" download="normalize_tco_filename.py" data-download aria-label="Download Python file: Clean TCO Prefix, Spaces and Third Section">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Clean TCO Prefix, Spaces and Third Section settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+REMOVE_TCO_PREFIX = True  # Remove &quot;TCO &quot; only at the start.
+REPLACE_SPACES = True
+EXPAND_THIRD_SECTION = True  # Append THIRD_SECTION_SUFFIX to two-digit numbers.
+THIRD_SECTION_SUFFIX = &quot;00&quot;
+RECURSIVE = False
+EXTENSIONS = (&quot;.pdf&quot;, &quot;.docx&quot;)</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>normalize_tco_filename.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\normalize_tco_filename.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Clean TCO Prefix, Spaces and Third Section">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Clean TCO Prefix, Spaces and Third Section Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="replace-third-section" data-python-utility aria-labelledby="replace-third-section-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">08</span>
+                <div><p class="utilities-eyebrow">.pdf, .docx &middot; Includes subfolders</p>
+                    <h2 id="replace-third-section-title">Replace the Third TCO Section</h2></div>
+            </div>
+            <p>Replace a matching third section in a hyphen-separated TCO filename with a chosen value.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>YS-050-1200-2024.pdf</dd></div>
+                <div><dt>After / result</dt><dd>YS-050-2500-2024.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">Historical example only: the old job used 2500 when the third section contained &quot;0&quot; or &quot;25&quot; anywhere. Its purpose is unconfirmed. Set REPLACEMENT and MATCH_TEXT explicitly before running; the download starts with these settings blank. Matches are substrings, not exact numbers.</p>
+            <p class="utility-originals">Original: <code>rename thrid part.py</code></p>
+            <a class="utility-download" href="python/replace_tco_third_section.py" download="replace_tco_third_section.py" data-download aria-label="Download Python file: Replace the Third TCO Section">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH, REPLACEMENT and MATCH_TEXT</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Replace the Third TCO Section settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+REPLACEMENT = &quot;&quot;  # REQUIRED: choose the replacement. Old job example: &quot;2500&quot;.
+MATCH_TEXT = ()  # REQUIRED: choose matching substrings. Old example: (&quot;0&quot;, &quot;25&quot;).
+RECURSIVE = True
+EXTENSIONS = (&quot;.pdf&quot;, &quot;.docx&quot;)</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>replace_tco_third_section.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\replace_tco_third_section.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Replace the Third TCO Section">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Replace the Third TCO Section Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="expand-year" data-python-utility aria-labelledby="expand-year-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">09</span>
+                <div><p class="utilities-eyebrow">.pdf, .docx, .jpg &middot; Includes subfolders</p>
+                    <h2 id="expand-year-title">Expand a Two-Digit TCO Year</h2></div>
+            </div>
+            <p>Expand the fourth hyphen-separated section from a two-digit year to a four-digit year.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>YS-050-1200-24.pdf</dd></div>
+                <div><dt>After / result</dt><dd>YS-050-1200-2024.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">Historical example only: cutoff 25 turns 00–24 into 2000–2024 and 25–99 into 1925–1999. Its purpose is unconfirmed. YEAR_CUTOFF starts unset and must be chosen for your records. For example, cutoff 27 maps 26 to 2026, while cutoff 25 maps 26 to 1926. No cutoff is selected automatically.</p>
+            <p class="utility-originals">Original: <code>years.py</code></p>
+            <a class="utility-download" href="python/expand_tco_year.py" download="expand_tco_year.py" data-download aria-label="Download Python file: Expand a Two-Digit TCO Year">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and YEAR_CUTOFF</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Expand a Two-Digit TCO Year settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+YEAR_CUTOFF = None  # REQUIRED: choose a number from 0 to 100. Old job used 25.
+# Years below the cutoff become 20xx; the rest become 19xx.
+# Example: cutoff 25 turns 24 into 2024, but 25 into 1925.
+RECURSIVE = True
+EXTENSIONS = (&quot;.pdf&quot;, &quot;.docx&quot;, &quot;.jpg&quot;)</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>expand_tco_year.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\expand_tco_year.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Expand a Two-Digit TCO Year">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Expand a Two-Digit TCO Year Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="comma-revision" data-python-utility aria-labelledby="comma-revision-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">10</span>
+                <div><p class="utilities-eyebrow">All file types &middot; Selected folder only</p>
+                    <h2 id="comma-revision-title">Keep Text Before a Comma and Add a Revision</h2></div>
+            </div>
+            <p>Keep the filename text before the first comma, discard the text after it, and add a revision suffix before the extension.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>TS-007-1200-2024, scanned copy.pdf</dd></div>
+                <div><dt>After / result</dt><dd>TS-007-1200-2024-R0.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">Despite its old filename, this script keeps the LEFT side of the comma. It does not repeat a revision suffix already at the end.</p>
+            <p class="utility-originals">Original: <code>to the right of comma.py</code></p>
+            <a class="utility-download" href="python/trim_after_comma_add_revision.py" download="trim_after_comma_add_revision.py" data-download aria-label="Download Python file: Keep Text Before a Comma and Add a Revision">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Keep Text Before a Comma and Add a Revision settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+REVISION_SUFFIX = &quot;-R0&quot;  # Text to append before the extension.
+RECURSIVE = False
+EXTENSIONS = ()</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>trim_after_comma_add_revision.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\trim_after_comma_add_revision.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Keep Text Before a Comma and Add a Revision">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Keep Text Before a Comma and Add a Revision Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <div class="utilities-group-heading" id="category-filenames">
+            <h2>Filename cleanup</h2><p>Trim, replace, or move text in filenames.</p>
+        </div>
+        <section class="utilities-panel utility" id="rename-files" data-python-utility aria-labelledby="rename-files-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">11</span>
+                <div><p class="utilities-eyebrow">.pdf, .docx &middot; Selected folder only</p>
+                    <h2 id="rename-files-title">Replace Spaces in PDF and Word Filenames</h2></div>
+            </div>
+            <p>Replace spaces with hyphens in PDF and Word filenames while preserving document contents.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>Turning Prohibition.pdf; Meeting Notes.docx</dd></div>
+                <div><dt>After / result</dt><dd>Turning-Prohibition.pdf; Meeting-Notes.docx</dd></div>
+            </dl>
+            <p class="utility-behavior">Names without spaces and existing destination names are skipped.</p>
+            <p class="utility-originals">Original: <code>add dash.py</code></p>
+            <a class="utility-download" href="python/replace_spaces_in_filenames.py" download="replace_spaces_in_filenames.py" data-download aria-label="Download Python file: Replace Spaces in PDF and Word Filenames">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Replace Spaces in PDF and Word Filenames settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>replace_spaces_in_filenames.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\replace_spaces_in_filenames.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Replace Spaces in PDF and Word Filenames">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Replace Spaces in PDF and Word Filenames Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="move-token" data-python-utility aria-labelledby="move-token-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">12</span>
+                <div><p class="utilities-eyebrow">All file types &middot; Selected folder only</p>
+                    <h2 id="move-token-title">Move a Filename Section to the End</h2></div>
+            </div>
+            <p>Move a whole hyphen-separated section, originally NLT, to the end of a filename before its extension.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>TP-NLT-123.pdf</dd></div>
+                <div><dt>After / result</dt><dd>TP-123-NLT.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">Matches a whole section, not NLT embedded inside another word. Already-final sections stay in place.</p>
+            <p class="utility-originals">Original: <code>move text in file name.py</code></p>
+            <a class="utility-download" href="python/move_filename_token_to_end.py" download="move_filename_token_to_end.py" data-download aria-label="Download Python file: Move a Filename Section to the End">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Move a Filename Section to the End settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+TOKEN = &quot;NLT&quot;  # Whole section to move; match is case-sensitive.
+RECURSIVE = False
+EXTENSIONS = ()</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>move_filename_token_to_end.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\move_filename_token_to_end.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Move a Filename Section to the End">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Move a Filename Section to the End Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="append-suffix" data-python-utility aria-labelledby="append-suffix-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">13</span>
+                <div><p class="utilities-eyebrow">All file types &middot; Selected folder only</p>
+                    <h2 id="append-suffix-title">Append a Filename Suffix</h2></div>
+            </div>
+            <p>Add a chosen suffix before the extension. The original TCO job used -NTORH for its Hours folder.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>TP-123.pdf</dd></div>
+                <div><dt>After / result</dt><dd>TP-123-NTORH.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">Set SUFFIX for the current job. Names already ending in that exact suffix are skipped.</p>
+            <p class="utility-originals">Original: <code>suffix.py</code></p>
+            <a class="utility-download" href="python/append_filename_suffix.py" download="append_filename_suffix.py" data-download aria-label="Download Python file: Append a Filename Suffix">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Append a Filename Suffix settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+SUFFIX = &quot;-NTORH&quot;  # Text to add before the file extension.
+RECURSIVE = False
+EXTENSIONS = ()</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>append_filename_suffix.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\append_filename_suffix.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Append a Filename Suffix">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Append a Filename Suffix Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="remove-suffix" data-python-utility aria-labelledby="remove-suffix-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">14</span>
+                <div><p class="utilities-eyebrow">.txt &middot; Selected folder only</p>
+                    <h2 id="remove-suffix-title">Remove a Trailing Filename Suffix</h2></div>
+            </div>
+            <p>Remove a chosen suffix from the end of a filename's stem. The original job removed -NLT from TXT placeholder names.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>TP-123-NLT.txt</dd></div>
+                <div><dt>After / result</dt><dd>TP-123.txt</dd></div>
+            </dl>
+            <p class="utility-behavior">Only the trailing suffix is removed; the same text elsewhere in the name stays unchanged. The match is case-sensitive.</p>
+            <p class="utility-originals">Original: <code>strip ending.py</code></p>
+            <a class="utility-download" href="python/remove_filename_suffix.py" download="remove_filename_suffix.py" data-download aria-label="Download Python file: Remove a Trailing Filename Suffix">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Remove a Trailing Filename Suffix settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+SUFFIX = &quot;-NLT&quot;  # Exact trailing text to remove before the extension.
+RECURSIVE = False
+EXTENSIONS = (&quot;.txt&quot;,)</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>remove_filename_suffix.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\remove_filename_suffix.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Remove a Trailing Filename Suffix">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Remove a Trailing Filename Suffix Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="trim-before-marker" data-python-utility aria-labelledby="trim-before-marker-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">15</span>
+                <div><p class="utilities-eyebrow">All file types &middot; Selected folder only</p>
+                    <h2 id="trim-before-marker-title">Trim Before a Filename Marker</h2></div>
+            </div>
+            <p>Remove text before the first chosen marker, keeping the marker and the rest of the filename.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>Scanned copy TS 123.pdf</dd></div>
+                <div><dt>After / result</dt><dd>TS 123.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">Choose MARKER = &quot;TS &quot;, &quot;63&quot;, or &quot; P &quot; to match the three original jobs. The space-P-space preset produces P 123.pdf after trimming outer spaces. Matches are case-sensitive.</p>
+            <p class="utility-originals">Originals: <code>strip before 63.py</code>, <code>strip before space p space.py</code>, <code>strip before TS.py</code></p>
+            <a class="utility-download" href="python/trim_before_filename_marker.py" download="trim_before_filename_marker.py" data-download aria-label="Download Python file: Trim Before a Filename Marker">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Trim Before a Filename Marker settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+MARKER = &quot;TS &quot;  # Original presets: &quot;TS &quot;, &quot;63&quot;, or &quot; P &quot;.
+RECURSIVE = False
+EXTENSIONS = ()</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>trim_before_filename_marker.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\trim_before_filename_marker.py</code></pre></li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Trim Before a Filename Marker">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Trim Before a Filename Marker Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="find-replace" data-python-utility aria-labelledby="find-replace-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">16</span>
+                <div><p class="utilities-eyebrow">All file types &middot; Includes subfolders by default</p>
+                    <h2 id="find-replace-title">Find and Replace Filename Text</h2></div>
+            </div>
+            <p>Replace literal text in filenames. Also covers the original job that removed TCO text and trimmed the remaining outer spaces.</p>
+            <dl class="utility-example">
+                <div><dt>Before / input</dt><dd>TCO TS 123.pdf</dd></div>
+                <div><dt>After / result</dt><dd>TS 123.pdf</dd></div>
+            </dl>
+            <p class="utility-behavior">For the TCO-removal job use FIND_TEXT = &quot;TCO&quot;, REPLACE_WITH = &quot;&quot;, TRIM_OUTER_SPACES = True, and RECURSIVE = False. The general find-and-replace original searched subfolders and asked for confirmation; this version previews changes before asking you to type yes. Replacement text cannot contain folder separators. This utility can also replace extension text when the find text matches it.</p>
+            <p class="utility-originals">Originals: <code>fiund and replaec.py</code>, <code>take away leading text.py</code></p>
+            <a class="utility-download" href="python/find_replace_filenames.py" download="find_replace_filenames.py" data-download aria-label="Download Python file: Find and Replace Filename Text">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Find and Replace Filename Text settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+FIND_TEXT = &quot;TCO&quot;  # Exact, case-sensitive text to find anywhere in the filename.
+REPLACE_WITH = &quot;&quot;  # Empty text removes the match.
+TRIM_OUTER_SPACES = True
+RECURSIVE = True
+EXTENSIONS = ()</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>find_replace_filenames.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\find_replace_filenames.py</code></pre> Review the printed changes and type <code>yes</code> only when they match your intended replacements.</li>
+                    <li>Read the file-by-file results and summary in the terminal.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Find and Replace Filename Text">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Find and Replace Filename Text Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <div class="utilities-group-heading" id="category-reports">
+            <h2>Folder &amp; filename checks</h2><p>Find items needing attention without changing files.</p>
+        </div>
+        <section class="utilities-panel utility" id="missing-marker" data-python-utility aria-labelledby="missing-marker-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">17</span>
+                <div><p class="utilities-eyebrow">All file types &middot; Selected folder only · Report only</p>
+                    <h2 id="missing-marker-title">List Filenames Missing a Marker</h2></div>
+            </div>
+            <p>Print filenames that do not contain a chosen marker. The original parking-restriction check looked for space-P-space.</p>
+            <dl class="utility-example">
+                <div><dt>Look for</dt><dd>Scan 123.pdf; Oak P 123.pdf</dd></div>
+                <div><dt>Report</dt><dd>Reports Scan 123.pdf only</dd></div>
+            </dl>
+            <p class="utility-behavior">MARKER = &quot; P &quot; includes a space on each side and matches case-sensitively. This report does not rename or edit files.</p>
+            <p class="utility-originals">Original: <code>check for P.py</code></p>
+            <a class="utility-download" href="python/report_missing_filename_marker.py" download="report_missing_filename_marker.py" data-download aria-label="Download Python file: List Filenames Missing a Marker">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="List Filenames Missing a Marker settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+MARKER = &quot; P &quot;  # Exact text expected in a filename.
+RECURSIVE = False</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>report_missing_filename_marker.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\report_missing_filename_marker.py</code></pre></li>
+                    <li>Read the reported paths and summary in the terminal. This tool does not change or delete files.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: List Filenames Missing a Marker">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="List Filenames Missing a Marker Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="empty-folders" data-python-utility aria-labelledby="empty-folders-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">18</span>
+                <div><p class="utilities-eyebrow">Folders &middot; Includes subfolders · Report only</p>
+                    <h2 id="empty-folders-title">Find Empty Folders</h2></div>
+            </div>
+            <p>List folders containing no files or subfolders, including the starting folder if it is empty.</p>
+            <dl class="utility-example">
+                <div><dt>Look for</dt><dd>Oak Estates folder with no contents</dd></div>
+                <div><dt>Report</dt><dd>Reports the empty folder's full path</dd></div>
+            </dl>
+            <p class="utility-behavior">This report does not delete folders. A folder containing only an empty subfolder is not itself empty. Symbolic links and directory junctions are not followed.</p>
+            <p class="utility-originals">Original: <code>empty folders.py</code></p>
+            <a class="utility-download" href="python/find_empty_folders.py" download="find_empty_folders.py" data-download aria-label="Download Python file: Find Empty Folders">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Change <strong>FOLDER_PATH and the job settings shown below</strong> near the top of the downloaded script. The values below show how the download starts.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Find Empty Folders settings"><code>FOLDER_PATH = r&quot;C:\CHANGE_ME\YourFolder&quot;
+RECURSIVE = True  # True checks subfolders too; False checks only FOLDER_PATH.</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>find_empty_folders.py</code> and open it in Notepad or another text editor.</li>
+                    <li>Edit the marked settings and save the file with its <code>.py</code> extension. <a href="#getting-started">See the setup instructions.</a></li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\find_empty_folders.py</code></pre></li>
+                    <li>Read the reported paths and summary in the terminal. This tool does not change or delete files.</li>
+                </ol>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Find Empty Folders">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Find Empty Folders Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <div class="utilities-group-heading" id="category-conversion">
+            <h2>CSV &amp; wiki tables</h2><p>Prepare a table for a wiki page from a CSV export.</p>
+        </div>
+        <section class="utilities-panel utility" id="csv-to-mediawiki" data-python-utility aria-labelledby="csv-to-mediawiki-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">19</span>
+                <div><p class="utilities-eyebrow">.csv input &middot; .txt output &middot; One file at a time</p>
+                    <h2 id="csv-to-mediawiki-title">Convert a Pay-Item CSV to MediaWiki</h2></div>
+            </div>
+            <p>Turn a pay-item CSV export into a MediaWiki table ready to paste into a wiki page's source editor. The table columns are <code>PayItemCode</code>, <code>Units</code>, <code>Description</code>, and <code>AUP</code>, in that order.</p>
+            <dl class="utility-example">
+                <div><dt>CSV input</dt><dd><pre tabindex="0"><code>PayItemCode,Units,Description,AUP
+0012345,Ea,"Example, item",12.50</code></pre></dd></div>
+                <div><dt>MediaWiki output</dt><dd><pre tabindex="0"><code>{| class="wikitable"
+! PayItemCode !! Units !! Description !! AUP
+|-
+| 0012345 || Ea || Example, item || 12.50
+|}</code></pre></dd></div>
+            </dl>
+            <p class="utility-behavior">The CSV must include those four headers; their order can vary, and extra columns are ignored. Quoted commas, blank cells, UTF-8 text, and line breaks in cells are supported. Item codes keep leading zeros and values keep their original decimal formatting. Literal wiki characters are escaped. The default output is <code>MediaWiki_Table.txt</code> beside the CSV; choose another output path if that file already exists.</p>
+            <p class="utility-originals">Original: <code>CVS to WIki/CVS to Wiki Table.py</code>. This version needs no pandas installation.</p>
+            <a class="utility-download" href="python/csv_to_mediawiki.py" download="csv_to_mediawiki.py" data-download aria-label="Download Python file: Convert a Pay-Item CSV to MediaWiki">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Set <strong>CSV_FILE_PATH</strong> to the full input filename. Leave <strong>OUTPUT_FILE_PATH</strong> blank to save beside it, or enter a new output filename.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="CSV to MediaWiki settings"><code>CSV_FILE_PATH = r"C:\CHANGE_ME\pay_items.csv"
+OUTPUT_FILE_PATH = ""
+CSV_ENCODING = "utf-8-sig"</code></pre>
+                <ol class="utility-steps">
+                    <li>Prepare a comma-separated CSV with the four required headers. If exporting from a spreadsheet, choose <strong>CSV UTF-8</strong>.</li>
+                    <li>Download <code>csv_to_mediawiki.py</code>, open it in a text editor, edit the marked file paths, and save. For example: <code>CSV_FILE_PATH = r"C:\Work\pay_items.csv"</code>. An optional output could be <code>OUTPUT_FILE_PATH = r"C:\Work\Pay_Items_Wiki.txt"</code>.</li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\csv_to_mediawiki.py</code></pre></li>
+                    <li>Open the output text file shown in the terminal. Copy its contents into the wiki page's <strong>source editor</strong> and preview the table. See <a href="https://www.mediawiki.org/wiki/Help:Tables" target="_blank" rel="noopener">MediaWiki's table instructions</a>.</li>
+                </ol>
+                <p>If a header is missing or a CSV row is malformed, the script explains the problem without creating output. For an encoding error, export the CSV as UTF-8. Running the script does not publish or edit a wiki page.</p>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Convert a Pay-Item CSV to MediaWiki">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="CSV to MediaWiki Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utilities-help" aria-labelledby="utilities-help-title">
+            <h2 id="utilities-help-title">If something needs attention</h2>
+            <dl>
+                <dt>“Set FOLDER_PATH” or “Folder not found”</dt>
+                <dd>Replace the example path, save the script, and check that the folder exists and any network drive is connected.</dd>
+                <dt>A job setting is missing</dt>
+                <dd>Review the listing's settings. The historical third-section and year rules deliberately start incomplete because their old values may not fit your records.</dd>
+                <dt>“Permission denied” or a file is in use</dt>
+                <dd>Close the file in other apps and check that you can edit files in that folder. The script reports the problem and continues with other files.</dd>
+                <dt>“Destination already exists”</dt>
+                <dd>The operation was skipped for that file. For example, if both <code>Meeting Notes.docx</code> and <code>Meeting-Notes.docx</code> exist, neither is overwritten.</dd>
+                <dt>Python cannot open the script</dt>
+                <dd>Open the terminal in the folder containing the downloaded script and check that its filename ends in <code>.py</code>.</dd>
+                <dt>The <code>py</code> command is not recognized</dt>
+                <dd>If Python is installed, try <code>python</code> in place of <code>py</code>. Otherwise, use the setup link above.</dd>
+                <dt>The summary says 0 changed</dt>
+                <dd>Check the settings, folder, supported file types, and example naming pattern. A file may already match the desired result. Skipped counts also include other file types and excluded entries.</dd>
+            </dl>
+        </section>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/pythonUtilities.js"></script>
+</body>
+</html>

@@ -1,0 +1,463 @@
+{| class="wikitable"
+! PayItemCode !! Units !! Description !! AUP
+|-
+| 8100010 || Ea || Band, Sign || 95.756
+|-
+| 8100020 || Ea || Bridge Sign Connection, Bolt Replacement || 1922.409
+|-
+| 8100031 || Ea || Bridge Sign Connection, Conc, Type A1 || 2035.434
+|-
+| 8100032 || Ea || Bridge Sign Connection, Conc, Type A2 || 4100.0
+|-
+| 8100033 || Ea || Bridge Sign Connection, Conc, Type C || 10189.286
+|-
+| 8100034 || Ea || Bridge Sign Connection, Conc, Type D || 12300.0
+|-
+| 8100035 || Ea || Bridge Sign Connection, Conc, Type E || 0.0
+|-
+| 8100036 || Ea || Bridge Sign Connection, Conc, Type F || 0.0
+|-
+| 8100037 || Ea || Bridge Sign Connection, Conc, Type K || 0.0
+|-
+| 8100038 || Ea || Bridge Sign Connection, Conc, Type L || 0.0
+|-
+| 8100039 || Ea || Bridge Sign Connection, Conc, Type M || 0.0
+|-
+| 8100040 || Ea || Bridge Sign Connection, Conc, Type O || 0.0
+|-
+| 8100041 || Ea || Bridge Sign Connection, Conc, Type P || 0.0
+|-
+| 8100042 || Ea || Bridge Sign Connection, Conc, Type Q || 0.0
+|-
+| 8100043 || Ea || Bridge Sign Connection, Conc, Type R || 0.0
+|-
+| 8100044 || Ea || Bridge Sign Connection, Conc, Type S || 0.0
+|-
+| 8100045 || Ea || Bridge Sign Connection, Conc, Type T || 0.0
+|-
+| 8100046 || Ea || Bridge Sign Connection, Conc, Type U || 0.0
+|-
+| 8100047 || Ea || Bridge Sign Connection, Conc, Type V || 0.0
+|-
+| 8100048 || Ea || Bridge Sign Connection, Conc, Type W || 0.0
+|-
+| 8100060 || Ea || Bridge Sign Connection, Steel, Type A1 || 1928.922
+|-
+| 8100061 || Ea || Bridge Sign Connection, Steel, Type B || 2150.0
+|-
+| 8100062 || Ea || Bridge Sign Connection, Steel, Type C || 12500.0
+|-
+| 8100063 || Ea || Bridge Sign Connection, Steel, Type D || 0.0
+|-
+| 8100064 || Ea || Bridge Sign Connection, Steel, Type E || 13900.0
+|-
+| 8100065 || Ea || Bridge Sign Connection, Steel, Type F || 8590.625
+|-
+| 8100066 || Ea || Bridge Sign Connection, Steel, Type G || 11950.0
+|-
+| 8100067 || Ea || Bridge Sign Connection, Steel, Type H || 9956.818
+|-
+| 8100068 || Ea || Bridge Sign Connection, Steel, Type I || 12166.667
+|-
+| 8100069 || Ea || Bridge Sign Connection, Steel, Type J || 17250.0
+|-
+| 8100080 || Ea || Bridge Sign Connection, Type A, Rem || 692.294
+|-
+| 8100081 || Ea || Bridge Sign Connection, Type B, Rem || 400.0
+|-
+| 8100082 || Ea || Bridge Sign Connection, Type C, Rem || 2152.083
+|-
+| 8100083 || Ea || Bridge Sign Connection, Type D, Rem || 2166.667
+|-
+| 8100084 || Ea || Bridge Sign Connection, Type E, Rem || 2292.857
+|-
+| 8100085 || Ea || Bridge Sign Connection, Type F, Rem || 2333.333
+|-
+| 8100086 || Ea || Bridge Sign Connection, Type G, Rem || 0.0
+|-
+| 8100087 || Ea || Bridge Sign Connection, Type H, Rem || 0.0
+|-
+| 8100088 || Ea || Bridge Sign Connection, Type I, Rem || 0.0
+|-
+| 8100089 || Ea || Bridge Sign Connection, Type J, Rem || 0.0
+|-
+| 8100090 || Ea || Cantilever, Rem || 4251.989
+|-
+| 8100101 || Ea || Cantilever, Type C, Erect, Salv || 0.0
+|-
+| 8100103 || Ea || Cantilever, Type D, Erect, Salv || 0.0
+|-
+| 8100104 || Ea || Cantilever, Type E || 44458.724
+|-
+| 8100105 || Ea || Cantilever, Type E, Erect, Salv || 22400.0
+|-
+| 8100110 || Ea || Cantilever, Type J || 148000.0
+|-
+| 8100111 || Ea || Cantilever, Type J, Erect, Salv || 0.0
+|-
+| 8100120 || Ea || Column, Breakaway, W8 x 13 || 1474.872
+|-
+| 8100121 || Ea || Column, Breakaway, W8 x 18 || 1627.715
+|-
+| 8100131 || Ea || Delineator Reflector, Red || 6.289
+|-
+| 8100132 || Ea || Delineator Reflector, Yellow || 6.19
+|-
+| 8100133 || Ea || Delineator Reflector, Green || 6.608
+|-
+| 8100134 || Ea || Delineator Reflector, White || 6.14
+|-
+| 8100139 || Ea || Delineator, Reflective Sheeting, 3 inch by 12 inch, Red || 4.886
+|-
+| 8100144 || Ea || Delineator, Reflective Sheeting, 3 inch by 12 inch, Green || 3.879
+|-
+| 8100145 || Ea || Delineator, Reflective Sheeting, 3 inch by 12 inch, White || 4.667
+|-
+| 8100146 || Ea || Delineator, Reflective Sheeting, 3 inch by 12 inch, Yellow || 4.87
+|-
+| 8100160 || Ea || Fdn, Breakaway, W8 x 13 || 1167.738
+|-
+| 8100161 || Ea || Fdn, Breakaway, W8 x 18 || 1246.171
+|-
+| 8100170 || Ft || Fdn, Cantilever Sign Structure Type E, 48 inch dia, Cased || 1260.276
+|-
+| 8100171 || Ft || Fdn, Cantilever Sign Structure Type E, 48 inch dia, Uncased || 821.25
+|-
+| 8100172 || Ft || Fdn, Cantilever Sign Structure Type E, 54 inch dia, Cased || 0.0
+|-
+| 8100173 || Ft || Fdn, Cantilvr Sign Structure Type E, 54 inch dia, Uncased || 0.0
+|-
+| 8100174 || Ft || Fdn, Cantilever Sign Structure Type E, 60 inch dia, Cased || 0.0
+|-
+| 8100175 || Ft || Fdn, Cantilvr Sign Structure Type E, 60 inch dia, Uncased || 0.0
+|-
+| 8100176 || Ft || Fdn, Cantilever Sign Structure Type E, 72 inch dia, Cased || 0.0
+|-
+| 8100177 || Ft || Fdn, Cantilvr Sign Structure Type E, 72 inch dia, Uncased || 0.0
+|-
+| 8100178 || Ft || Fdn, Cantilever Sign Structure Type J, 48 inch dia, Cased || 0.0
+|-
+| 8100179 || Ft || Fdn, Cantilvr Sign Structure Type J, 48 inch dia, Uncased || 0.0
+|-
+| 8100180 || Ft || Fdn, Cantilever Sign Structure Type J, 54 inch dia, Cased || 0.0
+|-
+| 8100181 || Ft || Fdn, Cantilvr Sign Structure Type J, 54 inch dia, Uncased || 0.0
+|-
+| 8100182 || Ft || Fdn, Cantilever Sign Structure Type J, 60 inch dia, Cased || 0.0
+|-
+| 8100183 || Ft || Fdn, Cantilvr Sign Structure Type J, 60 inch dia, Uncased || 0.0
+|-
+| 8100184 || Ft || Fdn, Cantilever Sign Structure Type J, 72 inch dia, Cased || 0.0
+|-
+| 8100185 || Ft || Fdn, Cantilvr Sign Structure Type J, 72 inch dia, Uncased || 0.0
+|-
+| 8100190 || Ea || Fdn, Cantilever, Rem || 2369.672
+|-
+| 8100206 || Ea || Fdn, Cantilever, Type E 1 || 0.0
+|-
+| 8100207 || Ea || Fdn, Cantilever, Type E 2 || 0.0
+|-
+| 8100208 || Ea || Fdn, Cantilever, Type E 3 || 43000.0
+|-
+| 8100220 || Ea || Fdn, Column Breakaway, Rem || 334.565
+|-
+| 8100230 || Cyd || Fdn, Entire, Cantilever, Rem || 512.662
+|-
+| 8100240 || Cyd || Fdn, Entire, Truss, Rem || 525.323
+|-
+| 8100250 || Ft || Fdn, Truss Sign Structure Type E, 48 inch dia, Cased || 1393.552
+|-
+| 8100251 || Ft || Fdn, Truss Sign Structure Type E, 48 inch dia, Uncased || 717.847
+|-
+| 8100252 || Ft || Fdn, Truss Sign Structure Type E, 54 inch dia, Cased || 1697.523
+|-
+| 8100253 || Ft || Fdn, Truss Sign Structure Type E, 54 inch dia, Uncased || 0.0
+|-
+| 8100254 || Ft || Fdn, Truss Sign Structure Type E, 60 inch dia, Cased || 0.0
+|-
+| 8100255 || Ft || Fdn, Truss Sign Structure Type E, 60 inch dia, Uncased || 2150.0
+|-
+| 8100256 || Ft || Fdn, Truss Sign Structure Type E, 72 inch dia, Cased || 0.0
+|-
+| 8100257 || Ft || Fdn, Truss Sign Structure Type E, 72 inch dia, Uncased || 0.0
+|-
+| 8100260 || Ea || Fdn, Truss, Rem || 3436.265
+|-
+| 8100270 || Ea || Fdn, Truss, Type C || 0.0
+|-
+| 8100271 || Ea || Fdn, Truss, Type D || 68000.0
+|-
+| 8100272 || Ea || Fdn, Truss, Type E || 85000.0
+|-
+| 8100280 || Ea || Fdn, Wood Support, Rem || 147.501
+|-
+| 8100290 || Ea || Glare Screen Connection, Conc || 0.0
+|-
+| 8100291 || Ea || Glare Screen Connection, Conc, Perforated Steel Square Tube || 673.152
+|-
+| 8100300 || Ea || Installing MDOT Supplied Sign, Type I || 1769.828
+|-
+| 8100301 || Ea || Installing MDOT Supplied Sign, Type II || 93.235
+|-
+| 8100302 || Ea || Installing MDOT Supplied Sign, Type III || 56.71
+|-
+| 8100303 || Ea || Installing MDOT Supplied Sign, Type IV || 0.0
+|-
+| 8100310 || Ea || Median Barrier Connection, Conc || 546.143
+|-
+| 8100311 || Ea || Median Barrier Connection, Conc, Perforated Steel Square Tube || 529.07
+|-
+| 8100320 || Ea || Overhead Lane Assignment Structure || 0.0
+|-
+| 8100330 || Ea || Perforated Steel Square Tube Breakaway System || 995.643
+|-
+| 8100331 || Ea || Fdn, Perforated Steel Square Tube Sign Breakaway System, Rem || 161.797
+|-
+| 8100340 || Ea || Post Hole Through Conc for Steel Post || 104.593
+|-
+| 8100341 || Ea || Post Hole Through Conc for Wood Post || 137.342
+|-
+| 8100349 || Ea || Delineator, Rem || 4.095
+|-
+| 8100360 || Ea || Post, Flexible, Delineator || 49.648
+|-
+| 8100361 || Ea || Post, Rigid, Delineator || 35.687
+|-
+| 8100370 || Ft || Post, Steel, 2 pound || 6.504
+|-
+| 8100371 || Ft || Post, Steel, 3 pound || 8.518
+|-
+| 8100380 || Ft || Post, Wood, 4 inch by 6 inch || 24.019
+|-
+| 8100381 || Ft || Post, Wood, 4 inch by 6 inch, Direct Embedment || 100.0
+|-
+| 8100382 || Ft || Post, Wood, 6 inch by 8 inch || 124.808
+|-
+| 8100383 || Ft || Post, Wood, 6 inch by 8 inch, Direct Embedment || 0.0
+|-
+| 8100390 || Ea || Sign, Type I, Erect, Salv || 699.828
+|-
+| 8100391 || Ea || Sign, Type I, Rem || 501.672
+|-
+| 8100392 || Sft || Sign, Type IA || 35.863
+|-
+| 8100393 || Sft || Sign, Type IB || 37.549
+|-
+| 8100394 || Sft || Sign, Type IC || 0.0
+|-
+| 8100396 || Ea || Sign, Type II, Erect, Salv || 71.559
+|-
+| 8100397 || Ea || Sign, Type II, Rem || 7.177
+|-
+| 8100398 || Sft || Sign, Type IIA || 21.663
+|-
+| 8100399 || Sft || Sign, Type IIB || 22.404
+|-
+| 8100400 || Sft || Sign, Type IIC || 0.0
+|-
+| 8100402 || Ea || Sign, Type III, Erect, Salv || 57.094
+|-
+| 8100403 || Ea || Sign, Type III, Rem || 14.858
+|-
+| 8100404 || Sft || Sign, Type IIIA || 22.075
+|-
+| 8100405 || Sft || Sign, Type IIIB || 18.161
+|-
+| 8100406 || Sft || Sign, Type IIIC || 22.597
+|-
+| 8100408 || Ea || Sign, Type IV, Erect, Salv || 31.667
+|-
+| 8100409 || Ea || Sign, Type IV, Rem || 25.0
+|-
+| 8100410 || Sft || Sign, Type IVA || 18.0
+|-
+| 8100411 || Sft || Sign, Type IVB || 19.289
+|-
+| 8100412 || Sft || Sign, Type IVC || 0.0
+|-
+| 8100420 || LSUM || Transporting Salv MDOT Materials || 0.0
+|-
+| 8100421 || Ea || Sign, Type V, Rem || 6.887
+|-
+| 8100422 || Ea || Sign, Type V, Erect, Salv || 61.215
+|-
+| 8100423 || Ea || Installing MDOT Supplied Sign, Type V || 166.667
+|-
+| 8100424 || Sft || Sign, Type VA || 20.808
+|-
+| 8100425 || Sft || Sign, Type VB || 29.951
+|-
+| 8100426 || Sft || Sign, Type VC || 0.0
+|-
+| 8100440 || Ea || Truss, Rem || 5620.171
+|-
+| 8100450 || Ea || Truss, Type C, 50 foot || 0.0
+|-
+| 8100451 || Ea || Truss, Type C, 50 foot, Erect, Salv || 0.0
+|-
+| 8100452 || Ea || Truss, Type C, 55 foot || 0.0
+|-
+| 8100453 || Ea || Truss, Type C, 55 foot, Erect, Salv || 0.0
+|-
+| 8100454 || Ea || Truss, Type C, 60 foot || 0.0
+|-
+| 8100455 || Ea || Truss, Type C, 60 foot, Erect, Salv || 0.0
+|-
+| 8100456 || Ea || Truss, Type C, 65 foot || 0.0
+|-
+| 8100457 || Ea || Truss, Type C, 65 foot, Erect, Salv || 0.0
+|-
+| 8100458 || Ea || Truss, Type C, 70 foot || 0.0
+|-
+| 8100459 || Ea || Truss, Type C, 70 foot, Erect, Salv || 0.0
+|-
+| 8100460 || Ea || Truss, Type C, 75 foot || 0.0
+|-
+| 8100461 || Ea || Truss, Type C, 75 foot, Erect, Salv || 0.0
+|-
+| 8100462 || Ea || Truss, Type C, 80 foot || 0.0
+|-
+| 8100463 || Ea || Truss, Type C, 80 foot, Erect, Salv || 0.0
+|-
+| 8100464 || Ea || Truss, Type C, 85 foot || 0.0
+|-
+| 8100465 || Ea || Truss, Type C, 85 foot, Erect, Salv || 0.0
+|-
+| 8100466 || Ea || Truss, Type C, 90 foot || 0.0
+|-
+| 8100467 || Ea || Truss, Type C, 90 foot, Erect, Salv || 0.0
+|-
+| 8100468 || Ea || Truss, Type C, 95 foot || 0.0
+|-
+| 8100469 || Ea || Truss, Type C, 95 foot, Erect, Salv || 0.0
+|-
+| 8100470 || Ea || Truss, Type C, 100 foot || 0.0
+|-
+| 8100471 || Ea || Truss, Type C, 100 foot, Erect, Salv || 0.0
+|-
+| 8100472 || Ea || Truss, Type D, 100 foot || 0.0
+|-
+| 8100473 || Ea || Truss, Type D, 100 foot, Erect, Salv || 0.0
+|-
+| 8100474 || Ea || Truss, Type D, 105 foot || 0.0
+|-
+| 8100475 || Ea || Truss, Type D, 105 foot, Erect, Salv || 0.0
+|-
+| 8100476 || Ea || Truss, Type D, 110 foot || 0.0
+|-
+| 8100477 || Ea || Truss, Type D, 110 foot, Erect, Salv || 0.0
+|-
+| 8100478 || Ea || Truss, Type D, 115 foot || 0.0
+|-
+| 8100479 || Ea || Truss, Type D, 115 foot, Erect, Salv || 0.0
+|-
+| 8100480 || Ea || Truss, Type D, 120 foot || 0.0
+|-
+| 8100481 || Ea || Truss, Type D, 120 foot, Erect, Salv || 0.0
+|-
+| 8100482 || Ea || Truss, Type D, 125 foot || 0.0
+|-
+| 8100483 || Ea || Truss, Type D, 125 foot, Erect, Salv || 0.0
+|-
+| 8100484 || Ea || Truss, Type E, 50 foot || 0.0
+|-
+| 8100485 || Ea || Truss, Type E, 55 foot || 238900.0
+|-
+| 8100486 || Ea || Truss, Type E, 60 foot || 236500.0
+|-
+| 8100487 || Ea || Truss, Type E, 65 foot || 0.0
+|-
+| 8100488 || Ea || Truss, Type E, 70 foot || 218225.55
+|-
+| 8100489 || Ea || Truss, Type E, 75 foot || 205000.0
+|-
+| 8100490 || Ea || Truss, Type E, 80 foot || 245300.702
+|-
+| 8100491 || Ea || Truss, Type E, 85 foot || 236626.337
+|-
+| 8100492 || Ea || Truss, Type E, 90 foot || 248700.0
+|-
+| 8100493 || Ea || Truss, Type E, 95 foot || 252198.22
+|-
+| 8100494 || Ea || Truss, Type E, 100 foot || 259466.369
+|-
+| 8100495 || Ea || Truss, Type E, 105 foot || 258750.0
+|-
+| 8100496 || Ea || Truss, Type E, 110 foot || 329026.417
+|-
+| 8100497 || Ea || Truss, Type E, 115 foot || 315000.0
+|-
+| 8100498 || Ea || Truss, Type E, 120 foot || 0.0
+|-
+| 8100499 || Ea || Truss, Type E, 125 foot || 310000.0
+|-
+| 8100500 || Ea || Truss, Type E, 130 foot || 351945.07
+|-
+| 8100501 || Ea || Truss, Type E, 135 foot || 0.0
+|-
+| 8100502 || Ea || Truss, Type E, 140 foot || 0.0
+|-
+| 8100520 || Ea || Truss, Type E, Wall Mtd Support, Face || 0.0
+|-
+| 8100521 || Ea || Truss, Type E, Wall Mtd Support, Top || 0.0
+|-
+| 8100549 || Ea || Post, Flexible, Delineator, Surface Mtd, 30 inch || 0.0
+|-
+| 8100550 || Ea || Post, Flexible, Delineator, Surface Mtd, 24 inch || 0.0
+|-
+| 8100551 || Ea || Post, Flexible, Delineator, Surface Mtd, 36 inch || 100.0
+|-
+| 8100552 || Ea || Post, Flexible, Delineator, Surface Mtd, 48 inch || 0.0
+|-
+| 8100555 || Ea || Post, Flexible, Delineator, Ground Mtd || 55.453
+|-
+| 8100600 || Ea || Truss Connection, Hanger Mtd || 0.0
+|-
+| 8100601 || Ea || Sign Connection, Wall Mtd || 0.0
+|-
+| 8100613 || Ea || Reflective Panel for Permanent Sign Support, 3 foot || 23.535
+|-
+| 8100616 || Ea || Reflective Panel for Permanent Sign Support, 6 foot || 33.841
+|-
+| 8100650 || Ea || Bracket, H || 337.398
+|-
+| 8102001 || Ea || Sign, Type I, Rem, Salv || 496.869
+|-
+| 8102002 || Ea || Sign, Type II, Rem, Salv || 55.434
+|-
+| 8102003 || Ea || Sign, Type III, Rem, Salv || 57.577
+|-
+| 8102005 || Ea || Sign, Type V, Rem, Salv || 58.397
+|-
+| 8102010 || Ea || Ground Mtd Sign Support, Rem || 30.836
+|-
+| 8107001 || Ft || _ || 0.0
+|-
+| 8107010 || Sft || _ || 0.0
+|-
+| 8107050 || Ea || _ || 0.0
+|-
+| 8107050 || Ea || Bulletin Board, Rem || 0.0
+|-
+| 8107050 || Ea || Decorative Sign, Rem, RCOC || 0.0
+|-
+| 8107050 || Ea || Ground Mtd Sign Support, Rem || 0.0
+|-
+| 8107050 || Ea || Outdoor Message Center || 0.0
+|-
+| 8107050 || Ea || Post Hole Through Conc for Steel Post, 10 inch dia || 0.0
+|-
+| 8107050 || Ea || Post HoleThrough Conc for Steel Post, 10 inch dia || 0.0
+|-
+| 8107050 || Ea || Post, Flexible, Delineator, RCOC || 0.0
+|-
+| 8107050 || Ea || Salvage and Erect Street Sign, RCOC || 0.0
+|-
+| 8107050 || Ea || Street Sign Post || 0.0
+|-
+| 8107051 || LSUM || _ || 0.0
+|-
+| 8107052 || Sft || _ || 0.0
+|-
+| 8107060 || Dlr || _ || 0.0
+|}
