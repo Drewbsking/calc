@@ -21,13 +21,14 @@ Modified: `index.html`, adding the tool under **Maps & GIS** using the existing 
 
 ## Data and behavior
 
-The tool uses the `/query` endpoints of the official [Roads layer](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/0) and [Municipal District layer](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseAdminDataMapService/MapServer/2). Requests omit credentials. Only the boundaries use `where=1=1`; roads always use a validated name predicate.
+The tool uses the `/query` endpoints of the official [Roads layer](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/0) and [Municipal District layer](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseAdminDataMapService/MapServer/2). Requests omit credentials. Only the boundaries use `where=1=1`; road feature queries always use a validated name predicate. A separate [map-service export](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/export) renders all road centerlines in the current view as a transparent image using only Roads layer 0. It does not download all road features or add other transportation layers.
 
 - Begins with is the default. Exact, Begins with and Contains are the only accepted modes. Optional exclusions become `AND StreetName NOT LIKE '%term%'`.
 - Terms are trimmed and limited to 80 characters. Non-exact searches need at least two characters. Apostrophes are doubled in SQL literals. Wildcards, control characters, and punctuation outside ordinary road-name punctuation are rejected before a request. All REST parameters are encoded with `URLSearchParams`.
 - Road requests include all 15 requested attributes, geometry in EPSG:4326, GeoJSON, `OBJECTID` ordering and pages of 2,000. Pagination checks both ArcGIS transfer-limit locations and advances `resultOffset` by the returned page length. A full page without a flag is followed by another request. Repeated record IDs are deduplicated; a stalled page produces an error. At 10,000 segments, the tool stops and explicitly asks for a narrower search.
 - Results group by full cartographic name, left community, right community and jurisdiction. All segment geometries remain on the map. Details retain the distinct segment address ranges rather than inventing a continuous range across gaps, and include differing road codes/speeds within a group. Missing or zero address/speed values are shown as unavailable.
-- Communities have thin gray outlines and nearly transparent fill. Hover/touch tooltips show name and type. Blue matching centerlines become thicker brown lines when selected. There is no basemap or tile layer.
+- All road centerlines remain visible as thin gray lines beneath the community boundaries and search results, including before searching, after no matches, and after Clear. Communities have thin gray outlines and nearly transparent fill. Hover/touch tooltips show community name and type. Blue matching centerlines become thicker brown lines when selected. There is no imagery basemap or tile layer. Road names remain in the results/details panel and click popups, rather than permanent map labels.
+- The road-network image refreshes after panning, zooming or resizing. Requests are debounced and superseded requests are cancelled; a newly loaded image replaces the previous one using the extent returned by ArcGIS. The last loaded image remains visible while refreshing. A separate error message and retry button handle export/image failures without disabling name searches.
 - Both map clicks and keyboard-accessible result buttons select, emphasize and zoom to all segments in that group. Details are available in the panel and map popup. GIS values are inserted through DOM `textContent`, never `innerHTML`.
 - A new search or Clear aborts the previous search. An identity check also prevents late responses from replacing current results. Boundary loading is independent and cannot override a road selection; failures offer a Retry boundaries button. Requests time out after 30 seconds.
 
@@ -77,7 +78,9 @@ Validation completed September 17, 2026 and repeated September 21, 2026:
 | Existing Python test suite | 57 passed |
 | JavaScript syntax and diff whitespace checks | Passed |
 
-Tests do not hard-code live GIS result counts. Pagination edge cases, the 10,000-segment cap, grouping, cancellation and error handling also have deterministic fixtures in the Node tests. The browser suite performs 15 grouped checks.
+Tests do not hard-code live GIS result counts. Pagination edge cases, the 10,000-segment cap, grouping, cancellation and error handling also have deterministic fixtures in the Node tests.
+
+The all-roads follow-up passed the 11 focused road-search Node tests and 20 browser checks, including live road-network rendering, layer order, persistence after no matches and Clear, pan/zoom refresh, export-error recovery, and verification that road feature queries still require a search name. Desktop, selected-road and mobile screenshots were inspected. The unrelated full test suites were not repeated for this change.
 
 ## Limitations
 

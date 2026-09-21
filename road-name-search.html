@@ -47,13 +47,16 @@
                 <div class="road-map-heading">
                     <h2>Oakland County</h2>
                     <div class="road-map-legend" aria-label="Map legend">
+                        <span><i class="all-roads-swatch" aria-hidden="true"></i>All roads</span>
                         <span><i class="boundary-swatch" aria-hidden="true"></i>Communities</span>
                         <span><i class="road-swatch" aria-hidden="true"></i>Matches</span>
                         <span><i class="selected-swatch" aria-hidden="true"></i>Selected road</span>
                     </div>
                 </div>
-                <div id="road-map" role="region" aria-label="Community boundaries and matching road centerlines"></div>
+                <div id="road-map" role="region" aria-label="All road centerlines, community boundaries and highlighted search matches"></div>
                 <div class="road-boundary-status">
+                    <p id="all-roads-status" role="status" aria-live="polite">Loading road centerlines...</p>
+                    <button id="retry-all-roads" type="button" class="road-search-secondary" hidden>Retry road centerlines</button>
                     <p id="boundary-status" role="status" aria-live="polite">Loading community boundaries...</p>
                     <button id="retry-boundaries" type="button" class="road-search-secondary" hidden>Retry boundaries</button>
                 </div>

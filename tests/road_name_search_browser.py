@@ -9,12 +9,14 @@ No expected live record counts are hard-coded. Screenshots go to tmp/road-name-s
 import asyncio
 import json
 from pathlib import Path
+from urllib.parse import parse_qs, urlparse
 
 from playwright.async_api import async_playwright
 
 BASE = "http://127.0.0.1:8765"
 ROAD_QUERY = "**/EnterpriseTransportationDataMapService/MapServer/0/query?*"
 BOUNDARY_QUERY = "**/EnterpriseAdminDataMapService/MapServer/2/query?*"
+ROAD_EXPORT = "**/EnterpriseTransportationDataMapService/MapServer/export?*"
 OUTPUT = Path(__file__).resolve().parents[1] / "tmp" / "road-name-search-qa"
 
 
@@ -31,7 +33,20 @@ async def main():
         context = await browser.new_context(viewport={"width": 1440, "height": 1050})
         page = await context.new_page()
         errors = []
+        road_requests = []
+        export_requests = []
         page.on("pageerror", lambda error: errors.append(str(error)))
+        page.on("request", lambda request: road_requests.append(request.url)
+                if "/EnterpriseTransportationDataMapService/MapServer/0/query?" in request.url else None)
+        page.on("request", lambda request: export_requests.append(request.url)
+                if "/EnterpriseTransportationDataMapService/MapServer/export?" in request.url else None)
+
+        async def wait_all_roads():
+            await page.wait_for_function("document.querySelector('#all-roads-status').dataset.state === 'ready'", timeout=45000)
+            assert await page.evaluate("""() => {
+                const images = Object.values(__qaMap._layers).filter(l => l instanceof L.ImageOverlay && l.options.pane === 'all-roads');
+                return images.length === 1 && images[0].options.opacity === 1 && images[0].getElement().naturalWidth > 0;
+            }""")
 
         # Capture the real Leaflet instance for assertions, without exposing it in production.
         async def instrument(route):
@@ -46,8 +61,17 @@ async def main():
         county_zoom = await page.evaluate("__qaMap.getZoom()")
         assert await page.evaluate("Object.values(__qaMap._layers).some(l => l.feature?.geometry?.type.includes('Polygon'))")
         assert not await page.evaluate("Object.values(__qaMap._layers).some(l => l instanceof L.TileLayer)")
+        await wait_all_roads()
+        export_params = parse_qs(urlparse(export_requests[-1]).query)
+        assert export_params["layers"] == ["show:0"]
+        assert export_params["transparent"] == ["true"]
+        dynamic_layers = json.loads(export_params["dynamicLayers"][0])
+        assert len(dynamic_layers) == 1 and dynamic_layers[0]["source"] == {"type": "mapLayer", "mapLayerId": 0}
+        assert dynamic_layers[0]["drawingInfo"]["showLabels"] is False
+        assert await page.evaluate("Number(__qaMap.getPane('all-roads').style.zIndex) < Number(__qaMap.getPane('community-boundaries').style.zIndex) && Number(__qaMap.getPane('community-boundaries').style.zIndex) < Number(__qaMap.getPane('matching-roads').style.zIndex)")
         await page.screenshot(path=str(OUTPUT / "county.png"), full_page=True)
         passed("Public boundaries load without login; county fit and no basemap layers")
+        passed("All road centerlines load as a transparent gray layer beneath communities and matches")
 
         async def search(name, mode="begins", exclusion=""):
             await page.locator("#road-name").fill(name)
@@ -74,12 +98,15 @@ async def main():
             assert "No matching roads" in summary, summary
             assert await page.locator(".road-result").count() == 0
             assert await line_count() == 0
+            await wait_all_roads()
         passed("Excluded island and Exact isla both return no current matches and remove prior lines")
+        passed("Nonmatching roads stay visible when a search has no results")
 
         summary = await search("Woodward")
         assert await page.locator(".road-result").count() > 0, summary
         assert await line_count() > 0
         assert all("woodward" in name.lower() for name in await page.locator(".road-result strong").all_text_contents())
+        await wait_all_roads()
         await page.screenshot(path=str(OUTPUT / "desktop.png"), full_page=True)
         match_view = await page.evaluate("__qaMap.getBounds().toBBoxString()")
         await page.locator(".road-result").first.focus()
@@ -91,6 +118,8 @@ async def main():
                       "Left address ranges", "Right address ranges", "Speed limit(s)", "Centerline segments"]:
             assert field in detail_text
         await page.locator(".leaflet-popup").last.wait_for(state="visible")
+        await wait_all_roads()
+        await page.screenshot(path=str(OUTPUT / "all-roads-selection.png"), full_page=True)
         passed("Normal search draws roads; keyboard result activation emphasizes, zooms and shows details")
 
         await page.locator(".leaflet-popup-close-button").click()
@@ -118,6 +147,13 @@ async def main():
             return __qaMap.getBounds().contains(L.featureGroup(communities).getBounds());
         }""")
         passed("Clear resets controls, results, selection and county-wide view")
+        await wait_all_roads()
+        original_image = await page.locator(".leaflet-all-roads-pane img").get_attribute("src")
+        await page.evaluate("__qaMap.setZoom(__qaMap.getZoom() + 1, {animate: false})")
+        await page.evaluate("__qaMap.panBy([80, 40], {animate: false})")
+        await wait_all_roads()
+        assert await page.locator(".leaflet-all-roads-pane img").get_attribute("src") != original_image
+        passed("Clear retains all roads; pan and zoom refresh the road network for the new viewport")
 
         for name in ["O'Brien", "St. John", "A & B"]:
             summary = await search(name, "exact")
@@ -131,6 +167,7 @@ async def main():
         await page.set_viewport_size({"width": 390, "height": 844})
         await search("wood", "contains")
         assert await page.locator(".road-result").count() > 0
+        await wait_all_roads()
         await page.screenshot(path=str(OUTPUT / "mobile.png"), full_page=True)
         layout = await page.evaluate("""() => ({
             page: document.documentElement.scrollWidth, viewport: innerWidth,
@@ -168,6 +205,17 @@ async def main():
         await page.locator("#retry-boundaries").click()
         await page.wait_for_function("document.querySelector('#boundary-status').dataset.state === 'ready'")
         passed("Boundary failure has an independent message and working retry")
+
+        await page.route(ROAD_EXPORT, arcgis_failure)
+        await page.evaluate("__qaMap.panBy([40, 0], {animate: false})")
+        await page.wait_for_function("document.querySelector('#all-roads-status').dataset.state === 'error'")
+        await search("Woodward")
+        assert await page.locator(".road-result").count() > 0
+        await page.wait_for_function("document.querySelector('#all-roads-status').dataset.state === 'error'")
+        await page.unroute(ROAD_EXPORT, arcgis_failure)
+        await page.locator("#retry-all-roads").click()
+        await wait_all_roads()
+        passed("Road-context service errors leave name searches usable and offer a working retry")
 
         # Hold an older request while starting a new one, then release the stale response.
         held = asyncio.Event()
@@ -229,6 +277,8 @@ async def main():
         assert not await page.evaluate("Boolean(window.gisInjected)")
         await page.unroute(ROAD_QUERY, hostile_data)
         passed("GIS text is safely displayed in rows, details and popups without executing markup")
+        assert all(parse_qs(urlparse(url).query)["where"][0].startswith("StreetName ") for url in road_requests)
+        passed("All feature queries still require a road name; background roads do not trigger a whole-layer download")
 
         await page.goto(BASE + "/index.html")
         link = page.locator('a[href="road-name-search.html"]')

@@ -1,13 +1,13 @@
 # Python utilities: archive review
 
-Reviewed all 24 Python scripts supplied in `python/OLD`, including the later CSV-to-MediaWiki converter. The catalog now provides 19 standalone downloads: the two existing tools plus 17 additions. Related variations are combined and their original uses are documented on the page.
+Reviewed all 25 Python scripts supplied in `python/OLD`, including the later CSV-to-MediaWiki converter and wrapped-data cleaner. The catalog now provides 20 standalone downloads: the two existing tools plus 18 additions. Related variations are combined and their original uses are documented on the page.
 
 Many scripts originated in Traffic Control Order (TCO) file cleanup. Job-specific values are examples, not current TCO naming standards. Originals were inspected as source only; they were not run against their embedded paths.
 
 ## Decisions
 
 - Combine related variations, keeping named presets or settings for their original uses.
-- Removed superseded source files after verifying their replacements. The mapping below preserves the history of all 24 original scripts. The CSV converter's supplied output is preserved as `tests/fixtures/csv_to_mediawiki_legacy.txt` for regression checks.
+- Removed superseded source files after verifying their replacements. The mapping below preserves the history of all 25 original scripts. The CSV converter's supplied output is preserved as `tests/fixtures/csv_to_mediawiki_legacy.txt` for regression checks.
 - Some old TCO rules could not be confirmed. The replacement utility starts with REPLACEMENT and MATCH_TEXT blank; year conversion starts with YEAR_CUTOFF unset. These scripts reject execution until users supply those settings.
 - Keep downloads standalone and dependency-free. Each has a settings box, a main guard, generic folder placeholders, per-file reporting, and a final summary.
 - Preserve the original folder scope in each listing. New utilities skip symbolic links and directory junctions.
@@ -26,6 +26,7 @@ Many scripts originated in Traffic Control Order (TCO) file cleanup. Job-specifi
 | `add to text.py` | [Append a TCO Investigation Note](../python/append_tco_note.py) | Added; Selected folder only |
 | `append folder to file name..py` | [Add Revision and Folder Name](../python/append_folder_to_tco_filename.py) | Added; Includes subfolders |
 | `check for P.py` | [List Filenames Missing a Marker](../python/report_missing_filename_marker.py) | Added; Selected folder only · Report only |
+| `clean_data.py` | [Join Wrapped Data Lines](../python/clean_wrapped_data.py) | Added; One CSV or text input, one new CSV output |
 | `CVS to WIki/CVS to Wiki Table.py` | [Convert a Pay-Item CSV to MediaWiki](../python/csv_to_mediawiki.py) | Added; One CSV input, one TXT output |
 | `empty folders.py` | [Find Empty Folders](../python/find_empty_folders.py) | Added; Includes subfolders · Report only |
 | `fiund and replaec.py` | [Find and Replace Filename Text](../python/find_replace_filenames.py) | Combined variation; Includes subfolders by default |
@@ -43,6 +44,8 @@ Many scripts originated in Traffic Control Order (TCO) file cleanup. Job-specifi
 | `years.py` | [Expand a Two-Digit TCO Year](../python/expand_tco_year.py) | Added; Includes subfolders |
 
 ## Clarified behavior and corrections
+
+- **Wrapped-data cleanup:** preserves the original rule that any comma-containing line starts a record and subsequent comma-free lines are appended with a comma and space. Replaces Tkinter dialogs with marked input/output path settings. Ignores blank lines to avoid the original stray delimiters, and rejects leading continuation text rather than inventing an empty first field. This is a format-specific line joiner, not a general CSV parser: quoted commas also start records. The input is preserved, existing outputs are rejected, and the default output is `<input name>_cleaned.csv` beside the input.
 
 - **CSV-to-MediaWiki:** replaces pandas with the standard CSV library. Requires PayItemCode, Units, Description, and AUP headers; allows reordered headers and ignores extra columns. Preserves text values, leading zeros, and decimal formatting. UTF-8 BOMs, quoted commas, and multiline cells are supported; literal wiki syntax is escaped. Creates MediaWiki_Table.txt beside the input by default, with an optional output path. Rejects existing output files and malformed CSV before creating output. The original 230-row sample is covered by a format regression test.
 

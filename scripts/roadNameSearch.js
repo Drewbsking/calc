@@ -12,6 +12,8 @@
     const details = document.getElementById('road-details');
     const boundaryStatus = document.getElementById('boundary-status');
     const retryBoundaries = document.getElementById('retry-boundaries');
+    const allRoadsStatus = document.getElementById('all-roads-status');
+    const retryAllRoads = document.getElementById('retry-all-roads');
 
     function setStatus(message, state = 'ready') {
         status.textContent = message;
@@ -21,12 +23,15 @@
     if (!window.L || !core) {
         setStatus('The map library could not load. Check your connection and reload this page.', 'error');
         boundaryStatus.textContent = 'The map is unavailable.';
+        allRoadsStatus.textContent = '';
         document.getElementById('search-button').disabled = true;
         form.addEventListener('submit', event => event.preventDefault());
         return;
     }
 
     const map = L.map('road-map', { preferCanvas: true }).setView([42.66, -83.38], 10);
+    map.createPane('all-roads').style.zIndex = 300;
+    map.getPane('all-roads').style.pointerEvents = 'none';
     map.createPane('community-boundaries').style.zIndex = 350;
     map.createPane('matching-roads').style.zIndex = 450;
     const boundaryLayer = L.geoJSON(null, {
@@ -44,6 +49,96 @@
     let countyBounds = null;
     let controller = null;
     let selected = null;
+
+    // Render only Roads layer 0 for the viewport. This keeps the full network
+    // visible without downloading all its features or changing name queries.
+    const exportURL = 'https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/export';
+    let allRoadsLayer = null;
+    let pendingRoadsLayer = null;
+    let allRoadsRequest = null;
+    let allRoadsDebounce;
+    let allRoadsTimeout;
+
+    function queueAllRoads() {
+        clearTimeout(allRoadsDebounce);
+        clearTimeout(allRoadsTimeout);
+        allRoadsRequest?.abort();
+        allRoadsRequest = null;
+        pendingRoadsLayer?.remove();
+        pendingRoadsLayer = null;
+        allRoadsStatus.textContent = 'Loading road centerlines...';
+        allRoadsStatus.dataset.state = 'loading';
+        retryAllRoads.hidden = true;
+        allRoadsDebounce = setTimeout(loadAllRoads, 150);
+    }
+
+    async function loadAllRoads() {
+        const request = new AbortController();
+        allRoadsRequest = request;
+        const fail = () => {
+            if (allRoadsRequest !== request) return;
+            clearTimeout(allRoadsTimeout);
+            pendingRoadsLayer?.remove();
+            pendingRoadsLayer = null;
+            allRoadsRequest = null;
+            allRoadsStatus.textContent = 'Road centerlines could not refresh. Check your connection and retry. Road-name searches are still available.';
+            allRoadsStatus.dataset.state = 'error';
+            retryAllRoads.hidden = false;
+        };
+        allRoadsTimeout = setTimeout(() => { request.abort(); fail(); }, 30000);
+        try {
+            const bounds = map.getBounds();
+            const sw = L.CRS.EPSG3857.project(bounds.getSouthWest());
+            const ne = L.CRS.EPSG3857.project(bounds.getNorthEast());
+            const size = map.getSize();
+            const scale = Math.min(1, 4096 / Math.max(size.x, size.y));
+            const params = new URLSearchParams({
+                bbox: [sw.x, sw.y, ne.x, ne.y].join(','), bboxSR: '3857', imageSR: '3857',
+                size: [Math.max(1, Math.round(size.x * scale)), Math.max(1, Math.round(size.y * scale))].join(','),
+                layers: 'show:0', format: 'png32', transparent: 'true', f: 'json',
+                dynamicLayers: JSON.stringify([{
+                    id: 0, source: { type: 'mapLayer', mapLayerId: 0 },
+                    drawingInfo: { showLabels: false, renderer: { type: 'simple', symbol: {
+                        type: 'esriSLS', style: 'esriSLSSolid', color: [148, 156, 166, 255], width: 0.65
+                    } } }
+                }])
+            });
+            const response = await fetch(exportURL + '?' + params, { signal: request.signal, credentials: 'omit' });
+            if (!response.ok) throw new Error('Road map export failed.');
+            const data = await response.json();
+            if (allRoadsRequest !== request) return;
+            if (data.error || !data.href || !data.extent) throw new Error('Invalid road map export.');
+            const imageURL = new URL(data.href);
+            if (imageURL.origin !== new URL(exportURL).origin) throw new Error('Unexpected road map image source.');
+            const e = data.extent;
+            if (![e.xmin, e.ymin, e.xmax, e.ymax].every(Number.isFinite)) throw new Error('Invalid road map extent.');
+            // Use the returned extent: ArcGIS can adjust it to the image aspect ratio.
+            const imageBounds = L.latLngBounds(
+                L.CRS.EPSG3857.unproject(L.point(e.xmin, e.ymin)),
+                L.CRS.EPSG3857.unproject(L.point(e.xmax, e.ymax))
+            );
+            const layer = L.imageOverlay(imageURL.href, imageBounds, { pane: 'all-roads', opacity: 0, interactive: false });
+            pendingRoadsLayer = layer;
+            layer.once('load', () => {
+                if (allRoadsRequest !== request) return;
+                clearTimeout(allRoadsTimeout);
+                allRoadsLayer?.remove();
+                allRoadsLayer = layer.setOpacity(1);
+                pendingRoadsLayer = null;
+                allRoadsRequest = null;
+                allRoadsStatus.textContent = 'All road centerlines shown in gray; search matches highlighted above them.';
+                allRoadsStatus.dataset.state = 'ready';
+            });
+            layer.once('error', fail);
+            layer.addTo(map);
+        } catch (error) {
+            fail();
+        }
+    }
+
+    map.on('moveend resize', queueAllRoads);
+    retryAllRoads.addEventListener('click', queueAllRoads);
+    queueAllRoads();
 
     function fitCounty() {
         if (countyBounds) map.fitBounds(countyBounds, { padding: [16, 16], animate: false });

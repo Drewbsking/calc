@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Python utilities for TCO cleanup, filename changes, text placeholders, folder checks, and CSV-to-MediaWiki tables. Download scripts with clear Windows instructions.">
+    <meta name="description" content="Python utilities for TCO cleanup, filename changes, text placeholders, folder checks, wrapped data cleanup, and CSV-to-MediaWiki tables. Download scripts with clear Windows instructions.">
     <title>Python Utilities | Andy's Traffic Tools</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/pythonUtilities.css">
@@ -18,7 +18,7 @@
             <p>Pick a script, edit its marked settings, and run it on your computer.</p>
             <p class="utilities-tco-note"><strong>Built from TCO cleanup work.</strong> Many of these scripts were written to clean up Traffic Control Order (TCO) files. Their examples reflect those jobs; match the settings and filename format to your own files. Historical values are not a current TCO naming standard.</p>
             <div class="utilities-tags" aria-label="Catalog and requirements">
-                <span>19 utilities</span><span>Python 3</span><span>No extra packages</span><span>Windows instructions</span>
+                <span>20 utilities</span><span>Python 3</span><span>No extra packages</span><span>Windows instructions</span>
             </div>
         </header>
 
@@ -52,15 +52,16 @@
                     <li><a href="#missing-marker">List Filenames Missing a Marker</a></li>
                     <li><a href="#empty-folders">Find Empty Folders</a></li>
                 </ul></div>
-                <div><h3><a href="#category-conversion">CSV &amp; wiki tables</a></h3><ul>
+                <div><h3><a href="#category-conversion">Data cleanup &amp; wiki tables</a></h3><ul>
                     <li><a href="#csv-to-mediawiki">Convert a Pay-Item CSV to MediaWiki</a></li>
+                    <li><a href="#clean-wrapped-data">Join Wrapped Data Lines</a></li>
                 </ul></div>
             </div>
         </nav>
 
         <section class="utilities-panel" id="getting-started" aria-labelledby="getting-started-title">
             <h2 id="getting-started-title">Edit the marked settings</h2>
-            <p>Every download has a clearly marked settings box near the top. Folder utilities use <code>FOLDER_PATH</code>; the CSV converter uses <code>CSV_FILE_PATH</code> for a single input file. Some scripts also need a marker, suffix, number range, or other job setting.</p>
+            <p>Every download has a clearly marked settings box near the top. Folder utilities use <code>FOLDER_PATH</code>. The MediaWiki converter uses <code>CSV_FILE_PATH</code>, and the wrapped-data cleaner uses <code>INPUT_FILE_PATH</code>, for a single input file. Some scripts also need a marker, suffix, number range, or other job setting.</p>
             <pre class="utilities-path-example" tabindex="0" aria-label="Folder path setting example"><code># FOLDER_PATH: paste the folder you want to process.
 FOLDER_PATH = r"C:\CHANGE_ME\YourFolder"</code></pre>
             <p>For example, use <code>FOLDER_PATH = r"C:\Work\Turning Prohibitions"</code>. Keep the <code>r</code> and quotation marks. Spaces are fine; do not put a backslash at the end of the path.</p>
@@ -70,7 +71,7 @@ FOLDER_PATH = r"C:\CHANGE_ME\YourFolder"</code></pre>
                 <li><strong>Review that utility's settings.</strong> Each listing identifies its file types and whether it includes subfolders. The third-section replacement and year conversion require you to supply the historical job settings before they will run.</li>
                 <li><strong>Edit and save the download.</strong> Use Notepad or another text editor. If using Save As, choose <strong>All files</strong> and keep the <code>.py</code> extension, rather than <code>.py.txt</code>.</li>
             </ol>
-            <p class="utilities-run-note"><strong>When you run a script:</strong> file-changing utilities apply their operation immediately, except Find and Replace, which previews changes and asks for confirmation. Report tools only print findings. The CSV converter creates a new text file and leaves the source CSV unchanged. Subfolder behavior is shown on each listing. Existing files are not overwritten, and symbolic links are not processed. All work happens on your computer; the website does not receive your files.</p>
+            <p class="utilities-run-note"><strong>When you run a script:</strong> file-changing utilities apply their operation immediately, except Find and Replace, which previews changes and asks for confirmation. Report tools only print findings. The MediaWiki converter and wrapped-data cleaner create new output files and leave their inputs unchanged. Subfolder behavior is shown on each listing. Existing files are not overwritten, and symbolic links are not processed. All work happens on your computer; the website does not receive your files.</p>
         </section>
 
         <!-- Repeat a data-python-utility section for each standalone download.
@@ -825,7 +826,7 @@ RECURSIVE = True  # True checks subfolders too; False checks only FOLDER_PATH.</
         </section>
 
         <div class="utilities-group-heading" id="category-conversion">
-            <h2>CSV &amp; wiki tables</h2><p>Prepare a table for a wiki page from a CSV export.</p>
+            <h2>Data cleanup &amp; wiki tables</h2><p>Join wrapped records or prepare a wiki table from a CSV export.</p>
         </div>
         <section class="utilities-panel utility" id="csv-to-mediawiki" data-python-utility aria-labelledby="csv-to-mediawiki-title">
             <div class="utility-heading">
@@ -869,6 +870,52 @@ CSV_ENCODING = "utf-8-sig"</code></pre>
                 </div>
                 <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
                 <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="CSV to MediaWiki Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="clean-wrapped-data" data-python-utility aria-labelledby="clean-wrapped-data-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">20</span>
+                <div><p class="utilities-eyebrow">.csv or .txt input &middot; .csv output &middot; One file at a time</p>
+                    <h2 id="clean-wrapped-data-title">Join Wrapped Data Lines</h2></div>
+            </div>
+            <p>Join records that have been split across several text lines. Each line containing a comma starts a new record; following lines without commas are appended to that record using <code>, </code>.</p>
+            <dl class="utility-example">
+                <div><dt>Before</dt><dd><pre tabindex="0"><code>1001, Main Street
+Northbound
+1002, Oak Road
+Southbound</code></pre></dd></div>
+                <div><dt>After</dt><dd><pre tabindex="0"><code>1001, Main Street, Northbound
+1002, Oak Road, Southbound</code></pre></dd></div>
+            </dl>
+            <p class="utility-behavior">Use this for data where every record starts on a line containing a comma and continuation lines contain no commas. Any comma, including one inside quotes, starts a new record. Outer whitespace is trimmed, blank lines are ignored, and existing text and numeric formatting are preserved. This operation does not validate CSV columns or quoted multiline fields.</p>
+            <p class="utility-behavior">The default output is <code>&lt;input name&gt;_cleaned.csv</code> beside the input. The source is unchanged, and existing output files are never replaced. If nonblank text appears before the first comma-containing record, the script reports the line number without creating output.</p>
+            <p class="utility-originals">Original: <code>clean_data.py</code>. Uses editable path settings instead of desktop file dialogs.</p>
+            <a class="utility-download" href="python/clean_wrapped_data.py" download="clean_wrapped_data.py" data-download aria-label="Download Python file: Join Wrapped Data Lines">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Set <strong>INPUT_FILE_PATH</strong> to the full input filename. Leave <strong>OUTPUT_FILE_PATH</strong> blank to save beside it, or enter a new output filename.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Wrapped data cleaner settings"><code>INPUT_FILE_PATH = r"C:\CHANGE_ME\wrapped_data.csv"
+OUTPUT_FILE_PATH = ""
+INPUT_ENCODING = "utf-8-sig"</code></pre>
+                <ol class="utility-steps">
+                    <li>Check that your CSV or text file follows the before-and-after example. A continuation line containing a comma will be treated as a separate record.</li>
+                    <li>Download <code>clean_wrapped_data.py</code>, open it in a text editor, edit the marked file path, and save. For example: <code>INPUT_FILE_PATH = r"C:\Work\wrapped_data.txt"</code>.</li>
+                    <li>Open the folder containing the downloaded script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\clean_wrapped_data.py</code></pre></li>
+                    <li>Open the output path printed in the terminal and review the joined records. If the output already exists, set <code>OUTPUT_FILE_PATH</code> to a different filename.</li>
+                </ol>
+                <p>UTF-8 files with or without a byte order mark are supported. If you see an encoding error, save the input as UTF-8. An empty input produces a clear message and no output file.</p>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Join Wrapped Data Lines">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Wrapped data cleaner Python source" hidden><code data-source-code></code></pre>
                 <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
             </details>
         </section>

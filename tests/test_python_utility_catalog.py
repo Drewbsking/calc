@@ -14,6 +14,10 @@ from unittest import mock
 
 ROOT = Path(__file__).resolve().parents[1]
 DOWNLOADS = sorted((ROOT / "python").glob("*.py"))
+FILE_INPUT_SETTINGS = {
+    "csv_to_mediawiki": "CSV_FILE_PATH",
+    "clean_wrapped_data": "INPUT_FILE_PATH",
+}
 
 
 def load(name):
@@ -25,7 +29,8 @@ def load(name):
 
 MODULES = {
     path.stem: load(path.stem) for path in DOWNLOADS
-    if path.stem not in ("fill_empty_txt_files", "replace_spaces_in_filenames", "csv_to_mediawiki")
+    if path.stem not in ("fill_empty_txt_files", "replace_spaces_in_filenames")
+    and path.stem not in FILE_INPUT_SETTINGS
 }
 RENAME_CASES = [
     ("normalize_stop_yield_separator", "YS 050-1200-2024.pdf", "YS-050-1200-2024.pdf", {}),
@@ -318,7 +323,7 @@ class CatalogTests(unittest.TestCase):
                 process = subprocess.run([sys.executable, "-B", str(path)], cwd=self.root,
                                          capture_output=True, text=True, check=False)
                 self.assertEqual(process.returncode, 1, process.stderr)
-                setting = "CSV_FILE_PATH" if path.stem == "csv_to_mediawiki" else "FOLDER_PATH"
+                setting = FILE_INPUT_SETTINGS.get(path.stem, "FOLDER_PATH")
                 self.assertIn("Set " + setting, process.stdout)
                 self.assertEqual(process.stderr, "")
         self.assertEqual(list(self.root.iterdir()), [])
@@ -360,7 +365,7 @@ class CatalogPageTests(unittest.TestCase):
         page = CatalogHTML()
         page.feed((ROOT / "pythonUtilities.html").read_text(encoding="utf-8"))
         self.assertEqual(len(page.ids), len(set(page.ids)))
-        self.assertEqual(len(page.downloads), 19)
+        self.assertEqual(len(page.downloads), 20)
         self.assertEqual({item["download"] for item in page.downloads}, {path.name for path in DOWNLOADS})
         for link in page.links:
             if link.startswith("#"):
@@ -384,8 +389,8 @@ class CatalogPageTests(unittest.TestCase):
         rows = [line.split("|") for line in review.splitlines() if line.startswith("| " + chr(96))]
         originals = {row[1].strip().strip(chr(96)) for row in rows}
         replacements = {row[2].split("](../python/", 1)[1].split(")", 1)[0] for row in rows}
-        self.assertEqual(len(rows), 24)
-        self.assertEqual(len(originals), 24)
+        self.assertEqual(len(rows), 25)
+        self.assertEqual(len(originals), 25)
         self.assertEqual(replacements, {path.name for path in DOWNLOADS})
 
 

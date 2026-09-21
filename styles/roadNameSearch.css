@@ -27,7 +27,7 @@
 #road-name-help { margin: -6px 0 16px; }
 .road-search-example { margin: 12px 0 0; }
 .road-search-status { background: #e7f3fe; border: 1px solid #c7ddf7; border-radius: 6px; padding: 12px; margin: 18px 0; font-variant-numeric: tabular-nums; }
-.road-search-status[data-state="error"], #boundary-status[data-state="error"] { color: #9b1c1c; }
+.road-search-status[data-state="error"], #boundary-status[data-state="error"], #all-roads-status[data-state="error"] { color: #9b1c1c; }
 .road-search-status[data-state="error"] { background: #fff1f2; border-color: #f0b4bc; }
 .road-search-status[data-state="warning"] { background: #fff7e6; border-color: #dca950; }
 .road-results-list { display: grid; gap: 8px; list-style: none; margin: 12px 0 0; padding: 4px; max-height: 380px; overflow-y: auto; }
@@ -47,12 +47,14 @@
 .road-map-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .road-map-legend i { display: inline-block; width: 22px; border-top-style: solid; }
 .boundary-swatch { border-top: 1px solid #7c8590; }
+.all-roads-swatch { border-top: 1px solid #949ca6; }
 .road-swatch { border-top: 4px solid #005a9c; }
 .selected-swatch { border-top: 7px solid #a13b00; }
 #road-map { height: clamp(480px, 70vh, 800px); width: 100%; background: #f7f8fa; }
 .road-boundary-status { padding: 10px 18px; font-size: 13px; color: #475569; }
 .road-boundary-status p { margin: 0; }
-#retry-boundaries { margin-top: 8px; }
+#retry-boundaries, #retry-all-roads { margin-top: 8px; }
+#all-roads-status { margin-bottom: 6px; }
 .road-source-note { margin: 20px 0 0; }
 .road-source-note a { color: #005dc1; }
 .road-popup { max-height: 280px; overflow-y: auto; overflow-wrap: anywhere; }
