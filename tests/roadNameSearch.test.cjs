@@ -164,3 +164,45 @@ test('boundaries use only the requested public municipal query', async () => {
     } });
     await assert.rejects(core.loadBoundaries({ fetcher: async () => response([]) }), /complete/);
 });
+
+test('dataset dates use one fresh server-side maximum with no geometry or feature download', async () => {
+    const timestamp = Date.UTC(2025, 0, 1);
+    for (const [source, path, field] of [
+        ['roads', 'EnterpriseTransportationDataMapService/MapServer/0/query', 'RevisionDate'],
+        ['boundaries', 'EnterpriseAdminDataMapService/MapServer/2/query', 'REVISIONDATE']
+    ]) {
+        const result = await core.loadRevisionDate(source, { fetcher: async (url, options) => {
+            const request = new URL(url);
+            assert.ok(request.pathname.endsWith(path));
+            assert.equal(request.searchParams.get('where'), field + ' IS NOT NULL');
+            assert.equal(request.searchParams.get('returnGeometry'), 'false');
+            assert.equal(request.searchParams.get('f'), 'json');
+            assert.equal(request.searchParams.has('outFields'), false);
+            assert.deepEqual(JSON.parse(request.searchParams.get('outStatistics')), [{
+                statisticType: 'max', onStatisticField: field, outStatisticFieldName: 'LatestRevisionDate'
+            }]);
+            assert.equal(options.credentials, 'omit');
+            assert.equal(options.cache, 'no-store');
+            return { ok: true, json: async () => ({ features: [{ attributes: { LatestRevisionDate: timestamp } }] }) };
+        } });
+        assert.equal(result, timestamp);
+    }
+});
+
+test('missing revision dates stay unavailable; malformed dates and service failures are rejected', async () => {
+    const fetcher = value => async () => ({ ok: true, json: async () => ({ features: [{ attributes: { LatestRevisionDate: value } }] }) });
+    assert.equal(await core.loadRevisionDate('roads', { fetcher: fetcher(null) }), null);
+    for (const invalid of ['', '2025-01-01', undefined, Infinity, {}, 1e20]) {
+        await assert.rejects(core.loadRevisionDate('roads', { fetcher: fetcher(invalid) }), /revision.date/i);
+    }
+    await assert.rejects(core.loadRevisionDate('boundaries', { fetcher: async () => ({ ok: true, json: async () => ({ features: [] }) }) }), /revision-date/);
+    await assert.rejects(core.loadRevisionDate('boundaries', { fetcher: async () => ({ ok: true, json: async () => ({ error: { message: 'Unavailable' } }) }) }), /Unavailable/);
+});
+
+test('only the two known dataset date sources can be requested', async () => {
+    let requests = 0;
+    for (const source of ['toString', '__proto__', 'other']) {
+        await assert.rejects(core.loadRevisionDate(source, { fetcher: async () => { requests++; } }), /Unknown data source/);
+    }
+    assert.equal(requests, 0);
+});

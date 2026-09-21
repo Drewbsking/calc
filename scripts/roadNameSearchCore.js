@@ -49,7 +49,7 @@
         return where;
     }
 
-    async function fetchGeoJSON(url, params, signal, fetcher = fetch) {
+    async function fetchJSON(url, params, signal, fetcher = fetch, cache = 'default') {
         const controller = new AbortController();
         const abort = () => controller.abort();
         if (signal?.aborted) controller.abort();
@@ -58,14 +58,11 @@
         const timer = setTimeout(() => { timedOut = true; controller.abort(); }, 30000);
         try {
             const response = await fetcher(url + '?' + new URLSearchParams(params), {
-                signal: controller.signal, credentials: 'omit'
+                signal: controller.signal, credentials: 'omit', cache
             });
             if (!response.ok) throw new Error('The GIS service returned HTTP ' + response.status + '.');
             const data = await response.json();
             if (data.error) throw new Error('ArcGIS service error: ' + (data.error.message || 'The query could not be completed.'));
-            if (data.type !== 'FeatureCollection' || !Array.isArray(data.features)) {
-                throw new Error('The GIS service returned an unexpected response.');
-            }
             return data;
         } catch (error) {
             if (timedOut && !signal?.aborted) throw new Error('The GIS service took too long to respond. Please try again.');
@@ -74,6 +71,41 @@
             clearTimeout(timer);
             signal?.removeEventListener('abort', abort);
         }
+    }
+
+    async function fetchGeoJSON(url, params, signal, fetcher) {
+        const data = await fetchJSON(url, params, signal, fetcher);
+        if (data.type !== 'FeatureCollection' || !Array.isArray(data.features)) {
+            throw new Error('The GIS service returned an unexpected response.');
+        }
+        return data;
+    }
+
+    async function loadRevisionDate(source, { signal, fetcher } = {}) {
+        const sources = {
+            roads: { url: ROADS_URL, field: 'RevisionDate' },
+            boundaries: { url: BOUNDARIES_URL, field: 'REVISIONDATE' }
+        };
+        if (!Object.prototype.hasOwnProperty.call(sources, source)) throw new Error('Unknown data source.');
+        const { url, field } = sources[source];
+        // A single server-computed value, not a download of the dataset.
+        // This is a feature revision date, not a service publication/update date.
+        const data = await fetchJSON(url, {
+            where: field + ' IS NOT NULL', returnGeometry: 'false', f: 'json',
+            outStatistics: JSON.stringify([{
+                statisticType: 'max', onStatisticField: field, outStatisticFieldName: 'LatestRevisionDate'
+            }])
+        }, signal, fetcher, 'no-store');
+        const attributes = data.features?.[0]?.attributes;
+        if (!attributes || !Object.prototype.hasOwnProperty.call(attributes, 'LatestRevisionDate')) {
+            throw new Error('The GIS service returned an unexpected revision-date response.');
+        }
+        const timestamp = attributes.LatestRevisionDate;
+        if (timestamp === null) return null;
+        if (typeof timestamp !== 'number' || !Number.isFinite(new Date(timestamp).getTime())) {
+            throw new Error('The GIS service returned an invalid revision date.');
+        }
+        return timestamp;
     }
 
     async function searchRoads(search, mode, exclusion, { signal, onProgress, fetcher } = {}) {
@@ -168,5 +200,5 @@
         ];
     }
 
-    return { buildWhere, searchRoads, loadBoundaries, groupRoads, groupDetails, MAX_SEGMENTS };
+    return { buildWhere, searchRoads, loadBoundaries, loadRevisionDate, groupRoads, groupDetails, MAX_SEGMENTS };
 });

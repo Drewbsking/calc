@@ -57,6 +57,12 @@
 #all-roads-status { margin-bottom: 6px; }
 .road-source-note { margin: 20px 0 0; }
 .road-source-note a { color: #005dc1; }
+.road-source-note p { margin: 8px 0; }
+.road-source-dates { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 280px), 1fr)); gap: 12px; margin: 12px 0; }
+.road-source-dates > div { padding: 12px 14px; background: #fff; border: 1px solid #d0d8e4; border-radius: 6px; }
+.road-source-dates dt { font-weight: 700; margin-bottom: 6px; }
+.road-source-dates dd { margin: 0; }
+.road-date-checked { display: block; margin-top: 4px; }
 .road-popup { max-height: 280px; overflow-y: auto; overflow-wrap: anywhere; }
 .road-popup h3 { margin: 0 0 8px; font-size: 16px; color: #0b2a4a; }
 .road-community-tooltip { font-size: 12px; }

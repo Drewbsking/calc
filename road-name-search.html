@@ -62,7 +62,21 @@
                 </div>
             </section>
         </div>
-        <p class="road-source-note">Data: Oakland County public GIS &mdash; <a href="https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/0" target="_blank" rel="noopener">Road centerlines</a> and <a href="https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseAdminDataMapService/MapServer/2" target="_blank" rel="noopener">Municipal District boundaries</a>. Road details reflect the published records.</p>
+        <section class="road-source-note" aria-labelledby="source-dates-heading">
+            <h2 id="source-dates-heading">Data sources and dates</h2>
+            <p>Live Oakland County public GIS. Revision dates are checked each time this page opens.</p>
+            <dl class="road-source-dates">
+                <div>
+                    <dt><a href="https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/0" target="_blank" rel="noopener">Road centerlines</a></dt>
+                    <dd id="roads-revision-date" role="status" aria-live="polite">Checking latest recorded feature revision...</dd>
+                </div>
+                <div>
+                    <dt><a href="https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseAdminDataMapService/MapServer/2" target="_blank" rel="noopener">Municipal District boundaries</a></dt>
+                    <dd id="boundaries-revision-date" role="status" aria-live="polite">Checking latest recorded feature revision...</dd>
+                </div>
+            </dl>
+            <p>Dates show the newest recorded feature revision, in UTC. Neither source publishes a dataset-wide last-update date, so these dates do not confirm that every road or boundary is current.</p>
+        </section>
         <noscript><p>JavaScript is required to search roads and display the map.</p></noscript>
     </main>
     <div id="footer-placeholder"></div>

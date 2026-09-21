@@ -312,4 +312,37 @@
 
     retryBoundaries.addEventListener('click', showBoundaries);
     showBoundaries();
+
+    async function showRevisionDate(source, elementId) {
+        const target = document.getElementById(elementId);
+        try {
+            const timestamp = await core.loadRevisionDate(source);
+            target.replaceChildren();
+            if (timestamp === null) {
+                target.textContent = 'No feature revision date is published in the records.';
+                target.dataset.state = 'unavailable';
+            } else {
+                const time = document.createElement('time');
+                time.dateTime = new Date(timestamp).toISOString();
+                time.textContent = new Intl.DateTimeFormat('en-US', {
+                    year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC'
+                }).format(timestamp) + ' (UTC)';
+                target.append('Latest recorded feature revision: ', time);
+                target.dataset.state = 'ready';
+            }
+            const checked = document.createElement('span');
+            checked.className = 'road-date-checked';
+            checked.textContent = 'Checked: ' + new Intl.DateTimeFormat('en-US', {
+                year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+                hour12: false, timeZone: 'UTC', timeZoneName: 'short'
+            }).format(new Date());
+            target.append(checked);
+        } catch (error) {
+            target.textContent = 'Revision date could not be checked. Reload the page to retry. Searches remain available.';
+            target.dataset.state = 'error';
+        }
+    }
+
+    showRevisionDate('roads', 'roads-revision-date');
+    showRevisionDate('boundaries', 'boundaries-revision-date');
 })();

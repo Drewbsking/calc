@@ -21,7 +21,7 @@ Modified: `index.html`, adding the tool under **Maps & GIS** using the existing 
 
 ## Data and behavior
 
-The tool uses the `/query` endpoints of the official [Roads layer](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/0) and [Municipal District layer](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseAdminDataMapService/MapServer/2). Requests omit credentials. Only the boundaries use `where=1=1`; road feature queries always use a validated name predicate. A separate [map-service export](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/export) renders all road centerlines in the current view as a transparent image using only Roads layer 0. It does not download all road features or add other transportation layers.
+The tool uses the `/query` endpoints of the official [Roads layer](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/0) and [Municipal District layer](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseAdminDataMapService/MapServer/2). Requests omit credentials. Only the boundaries use `where=1=1`; road geometry queries always use a validated name predicate. Date lookups use separate aggregate-only queries. A separate [map-service export](https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/export) renders all road centerlines in the current view as a transparent image using only Roads layer 0. It does not download all road features or add other transportation layers.
 
 - Begins with is the default. Exact, Begins with and Contains are the only accepted modes. Optional exclusions become `AND StreetName NOT LIKE '%term%'`.
 - Terms are trimmed and limited to 80 characters. Non-exact searches need at least two characters. Apostrophes are doubled in SQL literals. Wildcards, control characters, and punctuation outside ordinary road-name punctuation are rejected before a request. All REST parameters are encoded with `URLSearchParams`.
@@ -31,6 +31,14 @@ The tool uses the `/query` endpoints of the official [Roads layer](https://gisse
 - The road-network image refreshes after panning, zooming or resizing. Requests are debounced and superseded requests are cancelled; a newly loaded image replaces the previous one using the extent returned by ArcGIS. The last loaded image remains visible while refreshing. A separate error message and retry button handle export/image failures without disabling name searches.
 - Both map clicks and keyboard-accessible result buttons select, emphasize and zoom to all segments in that group. Details are available in the panel and map popup. GIS values are inserted through DOM `textContent`, never `innerHTML`.
 - A new search or Clear aborts the previous search. An identity check also prevents late responses from replacing current results. Boundary loading is independent and cannot override a road selection; failures offer a Retry boundaries button. Requests time out after 30 seconds.
+
+## Dataset dates
+
+The **Data sources and dates** section checks both live sources on each page load with browser caching disabled. Each query returns only `MAX(RevisionDate)` for roads or `MAX(REVISIONDATE)` for boundaries, using `where=<field> IS NOT NULL`, `returnGeometry=false` and `f=json`. It does not download the records or their geometry.
+
+The displayed **latest recorded feature revision** is the newest non-null revision field across that layer, formatted in UTC. A separate **Checked** timestamp identifies when the lookup completed; it is not a dataset update date. Empty revision fields show an unavailable message, and failed lookups show a retry-by-reloading message without blocking maps, name searches or the other source's date.
+
+At the September 21, 2026 check, the live maxima were August 28, 2026 for roads and October 19, 2007 for municipal boundaries. These observations are documented here, not hard-coded in the tool. Neither layer exposes a dataset-wide last-edit timestamp in its layer/service metadata. Metadata creation dates are not used as evidence of data freshness. The old boundary revision field does not establish whether the geometry has remained unchanged or whether revision tracking has been maintained, so the tool does not claim all boundaries are current.
 
 ## Local preview and tests
 
@@ -81,6 +89,8 @@ Validation completed September 17, 2026 and repeated September 21, 2026:
 Tests do not hard-code live GIS result counts. Pagination edge cases, the 10,000-segment cap, grouping, cancellation and error handling also have deterministic fixtures in the Node tests.
 
 The all-roads follow-up passed the 11 focused road-search Node tests and 20 browser checks, including live road-network rendering, layer order, persistence after no matches and Clear, pan/zoom refresh, export-error recovery, and verification that road feature queries still require a search name. Desktop, selected-road and mobile screenshots were inspected. The unrelated full test suites were not repeated for this change.
+
+The dataset-date follow-up passed 14 focused Node tests and 23 browser checks. Additional coverage verifies live date loading, aggregate-only requests with no geometry, cache avoidance, malformed/null values, a failed date lookup without blocking search, and UTC date rendering in a browser set to Pacific time. Desktop and mobile date panels were visually inspected. No live revision dates are hard-coded in the tests or application.
 
 ## Limitations
 

@@ -30,7 +30,7 @@ async def main():
 
     async with async_playwright() as p:
         browser = await p.chromium.launch(channel="chrome", headless=True)
-        context = await browser.new_context(viewport={"width": 1440, "height": 1050})
+        context = await browser.new_context(viewport={"width": 1440, "height": 1050}, timezone_id="America/Los_Angeles")
         page = await context.new_page()
         errors = []
         road_requests = []
@@ -56,6 +56,11 @@ async def main():
 
         await page.route("**/scripts/roadNameSearch.js", instrument)
         await page.goto(BASE + "/road-name-search.html")
+        await page.wait_for_function("['roads', 'boundaries'].every(source => document.querySelector('#' + source + '-revision-date').dataset.state === 'ready')")
+        assert await page.locator(".road-source-dates time").count() == 2
+        assert await page.locator(".road-date-checked").count() == 2
+        assert "dataset-wide last-update date" in await page.locator(".road-source-note").inner_text()
+        passed("Both live revision dates load with UTC labels and a separate check time")
         await page.wait_for_function("document.querySelector('#boundary-status').dataset.state === 'ready'")
         assert await page.locator("#match-mode").input_value() == "begins"
         county_zoom = await page.evaluate("__qaMap.getZoom()")
@@ -277,8 +282,50 @@ async def main():
         assert not await page.evaluate("Boolean(window.gisInjected)")
         await page.unroute(ROAD_QUERY, hostile_data)
         passed("GIS text is safely displayed in rows, details and popups without executing markup")
-        assert all(parse_qs(urlparse(url).query)["where"][0].startswith("StreetName ") for url in road_requests)
-        passed("All feature queries still require a road name; background roads do not trigger a whole-layer download")
+        for url in road_requests:
+            params = parse_qs(urlparse(url).query)
+            if "outStatistics" in params:
+                assert params["where"] == ["RevisionDate IS NOT NULL"]
+                assert params["returnGeometry"] == ["false"]
+            else:
+                assert params["where"][0].startswith("StreetName ")
+        passed("Feature downloads still require a road name; date queries return only a statistic")
+
+        async def fixture_dates(route):
+            params = parse_qs(urlparse(route.request.url).query)
+            if "outStatistics" not in params:
+                await route.continue_()
+                return
+            value = 1735689600000 if "/EnterpriseTransportationDataMapService/" in route.request.url else None
+            await route.fulfill(json={"features": [{"attributes": {"LatestRevisionDate": value}}]})
+
+        await page.route(ROAD_QUERY, fixture_dates)
+        await page.route(BOUNDARY_QUERY, fixture_dates)
+        await page.reload()
+        await page.wait_for_function("document.querySelector('#roads-revision-date').dataset.state === 'ready' && document.querySelector('#boundaries-revision-date').dataset.state === 'unavailable'")
+        assert await page.locator("#roads-revision-date time").inner_text() == "January 1, 2025 (UTC)"
+        assert "No feature revision date" in await page.locator("#boundaries-revision-date").inner_text()
+        assert "1970" not in await page.locator("#boundaries-revision-date").inner_text()
+        await page.screenshot(path=str(OUTPUT / "date-states.png"), full_page=True)
+        await page.unroute(ROAD_QUERY, fixture_dates)
+        await page.unroute(BOUNDARY_QUERY, fixture_dates)
+        passed("UTC midnight dates do not shift to the previous day; missing dates do not become 1970")
+
+        async def date_failure(route):
+            if "outStatistics" in parse_qs(urlparse(route.request.url).query):
+                await route.abort("failed")
+            else:
+                await route.continue_()
+
+        await page.route(ROAD_QUERY, date_failure)
+        await page.reload()
+        await page.wait_for_function("document.querySelector('#roads-revision-date').dataset.state === 'error' && document.querySelector('#boundaries-revision-date').dataset.state === 'ready'")
+        await search("isla")
+        assert await page.locator(".road-result").count() > 0
+        assert await page.locator("#roads-revision-date time").count() == 0
+        assert "could not be checked" in await page.locator("#roads-revision-date").inner_text()
+        await page.unroute(ROAD_QUERY, date_failure)
+        passed("A date-service failure leaves the other date and road searches available")
 
         await page.goto(BASE + "/index.html")
         link = page.locator('a[href="road-name-search.html"]')
