@@ -7,6 +7,7 @@ Uses live GIS responses for normal searches and intercepted responses for failur
 No expected live record counts are hard-coded. Screenshots go to tmp/road-name-search-qa/.
 """
 import asyncio
+import base64
 import json
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -78,6 +79,57 @@ async def main():
         passed("Public boundaries load without login; county fit and no basemap layers")
         passed("All road centerlines load as a transparent gray layer beneath communities and matches")
 
+        # Check the actual exported pixels as well as the labeling request.
+        # Primary labels are dark; the all-roads renderer remains light gray.
+        async def label_pixel_count():
+            source = await page.locator(".leaflet-all-roads-pane img").get_attribute("src")
+            response = await context.request.get(source)
+            assert response.ok
+            encoded = base64.b64encode(await response.body()).decode("ascii")
+            return await page.evaluate("""async encoded => {
+                const image = new Image();
+                image.src = 'data:image/png;base64,' + encoded;
+                await image.decode();
+                const canvas = document.createElement('canvas');
+                canvas.width = image.width; canvas.height = image.height;
+                const ctx = canvas.getContext('2d');
+                ctx.drawImage(image, 0, 0);
+                const pixels = ctx.getImageData(0, 0, image.width, image.height).data;
+                let count = 0;
+                for (let i = 0; i < pixels.length; i += 4) {
+                    if (pixels[i] === 51 && pixels[i + 1] === 65 && pixels[i + 2] === 85 && pixels[i + 3] > 200) count++;
+                }
+                return count;
+            }""", encoded)
+
+        assert await label_pixel_count() == 0
+        for zoom in [12, 14]:
+            await page.evaluate("zoom => __qaMap.setView([42.65, -83.37], zoom, {animate: false})", zoom)
+            await wait_all_roads()
+            params = parse_qs(urlparse(export_requests[-1]).query)
+            layer = json.loads(params["dynamicLayers"][0])[0]
+            assert "definitionExpression" not in layer
+            assert "layerDefs" not in params
+            drawing = layer["drawingInfo"]
+            assert drawing["showLabels"] is True
+            assert drawing["renderer"]["type"] == "simple"
+            label = drawing["labelingInfo"][0]
+            assert label["where"] == "Act51RoadType IN ('County Primary', 'City Major', 'Highway State', 'Highway Interstate', 'Highway US')"
+            assert label["labelExpression"] == "[CartographicName]"
+            assert label["labelPlacement"] == "esriServerLinePlacementAboveAlong"
+            assert await label_pixel_count() > 10
+            await page.locator("#road-map").screenshot(path=str(OUTPUT / f"primary-labels-zoom{zoom}.png"))
+        passed("Primary, city major and highway labels render at zooms 12 and 14 without filtering out other centerlines")
+
+        await page.evaluate("__qaMap.setZoom(11, {animate: false})")
+        await wait_all_roads()
+        assert json.loads(parse_qs(urlparse(export_requests[-1]).query)["dynamicLayers"][0])[0]["drawingInfo"]["showLabels"] is False
+        assert await label_pixel_count() == 0
+        assert "Zoom in" in await page.locator("#all-roads-status").inner_text()
+        await page.locator("#clear-button").click()
+        await wait_all_roads()
+        passed("Zooming out hides road labels and Clear restores the county view with all centerlines")
+
         async def search(name, mode="begins", exclusion=""):
             await page.locator("#road-name").fill(name)
             await page.locator("#match-mode").select_option(mode)
@@ -125,6 +177,9 @@ async def main():
         await page.locator(".leaflet-popup").last.wait_for(state="visible")
         await wait_all_roads()
         await page.screenshot(path=str(OUTPUT / "all-roads-selection.png"), full_page=True)
+        selection_params = parse_qs(urlparse(export_requests[-1]).query)
+        assert json.loads(selection_params["dynamicLayers"][0])[0]["drawingInfo"]["showLabels"] is True
+        assert await label_pixel_count() > 10
         passed("Normal search draws roads; keyboard result activation emphasizes, zooms and shows details")
 
         await page.locator(".leaflet-popup-close-button").click()

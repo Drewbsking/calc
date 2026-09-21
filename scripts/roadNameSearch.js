@@ -53,6 +53,9 @@
     // Render only Roads layer 0 for the viewport. This keeps the full network
     // visible without downloading all its features or changing name queries.
     const exportURL = 'https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/export';
+    const roadLabelMinZoom = 12;
+    // Filter labels only: the renderer below still draws every road centerline.
+    const primaryRoadLabelWhere = "Act51RoadType IN ('County Primary', 'City Major', 'Highway State', 'Highway Interstate', 'Highway US')";
     let allRoadsLayer = null;
     let pendingRoadsLayer = null;
     let allRoadsRequest = null;
@@ -92,15 +95,31 @@
             const ne = L.CRS.EPSG3857.project(bounds.getNorthEast());
             const size = map.getSize();
             const scale = Math.min(1, 4096 / Math.max(size.x, size.y));
+            const zoom = map.getZoom();
+            const showRoadLabels = zoom >= roadLabelMinZoom;
             const params = new URLSearchParams({
                 bbox: [sw.x, sw.y, ne.x, ne.y].join(','), bboxSR: '3857', imageSR: '3857',
                 size: [Math.max(1, Math.round(size.x * scale)), Math.max(1, Math.round(size.y * scale))].join(','),
                 layers: 'show:0', format: 'png32', transparent: 'true', f: 'json',
                 dynamicLayers: JSON.stringify([{
                     id: 0, source: { type: 'mapLayer', mapLayerId: 0 },
-                    drawingInfo: { showLabels: false, renderer: { type: 'simple', symbol: {
-                        type: 'esriSLS', style: 'esriSLSSolid', color: [148, 156, 166, 255], width: 0.65
-                    } } }
+                    drawingInfo: {
+                        showLabels: showRoadLabels,
+                        labelingInfo: [{
+                            labelPlacement: 'esriServerLinePlacementAboveAlong',
+                            labelExpression: '[CartographicName]', useCodedValues: false,
+                            where: primaryRoadLabelWhere, minScale: 0, maxScale: 0,
+                            symbol: {
+                                type: 'esriTS', color: [51, 65, 85, 255],
+                                haloColor: [255, 255, 255, 255], haloSize: 1.5,
+                                font: { family: 'Arial', size: zoom >= 14 ? 10 : 9,
+                                    style: 'normal', weight: 'normal', decoration: 'none' }
+                            }
+                        }],
+                        renderer: { type: 'simple', symbol: {
+                            type: 'esriSLS', style: 'esriSLSSolid', color: [148, 156, 166, 255], width: 0.65
+                        } }
+                    }
                 }])
             });
             const response = await fetch(exportURL + '?' + params, { signal: request.signal, credentials: 'omit' });
@@ -126,7 +145,9 @@
                 allRoadsLayer = layer.setOpacity(1);
                 pendingRoadsLayer = null;
                 allRoadsRequest = null;
-                allRoadsStatus.textContent = 'All road centerlines shown in gray; search matches highlighted above them.';
+                allRoadsStatus.textContent = 'All road centerlines shown in gray; search matches highlighted above them. ' +
+                    (showRoadLabels ? 'Primary road, city major road and highway names are labeled where space allows.' :
+                        'Zoom in to see primary road, city major road and highway names.');
                 allRoadsStatus.dataset.state = 'ready';
             });
             layer.once('error', fail);
