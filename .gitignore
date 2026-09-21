@@ -1,0 +1,6 @@
+# Road-name search browser QA output
+/tmp/road-name-search-qa/
+
+# Generated Python bytecode
+__pycache__/
+*.pyc

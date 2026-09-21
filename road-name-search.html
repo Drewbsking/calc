@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Road Centerline Name Search | Andy's Traffic Tools</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/roadNameSearch.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main class="road-search-app">
+        <div class="road-search-heading">
+            <h1>Road Centerline Name Search</h1>
+            <p>Find Oakland County roads by name and see their centerline segments and communities.</p>
+        </div>
+        <div class="road-search-layout">
+            <section class="road-search-panel" aria-label="Search and results">
+                <form id="road-search-form">
+                    <label for="road-name">Road name</label>
+                    <input id="road-name" name="road-name" type="text" maxlength="80" required autocomplete="off" aria-describedby="road-name-help">
+                    <p id="road-name-help" class="road-search-note">Search the name without a prefix or street type (for example, Woodward). Use at least two characters for Begins with or Contains.</p>
+                    <label for="match-mode">Match mode</label>
+                    <select id="match-mode" name="match-mode">
+                        <option value="exact">Exact</option>
+                        <option value="begins" selected>Begins with</option>
+                        <option value="contains">Contains</option>
+                    </select>
+                    <label for="exclude-name">Exclude names containing <span class="road-search-optional">(optional)</span></label>
+                    <input id="exclude-name" name="exclude-name" type="text" maxlength="80" autocomplete="off">
+                    <div class="road-search-actions">
+                        <button id="search-button" type="submit">Search</button>
+                        <button id="clear-button" type="button" class="road-search-secondary">Clear</button>
+                    </div>
+                    <p class="road-search-example">Example: Search: <strong>Isla</strong> &middot; Exclude: <strong>Island</strong></p>
+                </form>
+                <p id="search-status" class="road-search-status" role="status" aria-live="polite" aria-atomic="true">Enter a road name to search.</p>
+                <section id="road-results" aria-labelledby="results-heading" aria-busy="false">
+                    <h2 id="results-heading">Road / location matches</h2>
+                    <p class="road-search-note">Choose a result or centerline to zoom to that road and see its details.</p>
+                    <ul id="road-results-list" class="road-results-list"></ul>
+                </section>
+                <section id="road-details" class="road-details" aria-label="Selected road details" hidden></section>
+            </section>
+            <section class="road-map-panel" aria-label="Road centerline map">
+                <div class="road-map-heading">
+                    <h2>Oakland County</h2>
+                    <div class="road-map-legend" aria-label="Map legend">
+                        <span><i class="boundary-swatch" aria-hidden="true"></i>Communities</span>
+                        <span><i class="road-swatch" aria-hidden="true"></i>Matches</span>
+                        <span><i class="selected-swatch" aria-hidden="true"></i>Selected road</span>
+                    </div>
+                </div>
+                <div id="road-map" role="region" aria-label="Community boundaries and matching road centerlines"></div>
+                <div class="road-boundary-status">
+                    <p id="boundary-status" role="status" aria-live="polite">Loading community boundaries...</p>
+                    <button id="retry-boundaries" type="button" class="road-search-secondary" hidden>Retry boundaries</button>
+                </div>
+            </section>
+        </div>
+        <p class="road-source-note">Data: Oakland County public GIS &mdash; <a href="https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseTransportationDataMapService/MapServer/0" target="_blank" rel="noopener">Road centerlines</a> and <a href="https://gisservices.oakgov.com/arcgis/rest/services/Enterprise/EnterpriseAdminDataMapService/MapServer/2" target="_blank" rel="noopener">Municipal District boundaries</a>. Road details reflect the published records.</p>
+        <noscript><p>JavaScript is required to search roads and display the map.</p></noscript>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/roadNameSearchCore.js"></script>
+    <script src="scripts/roadNameSearch.js"></script>
+</body>
+</html>

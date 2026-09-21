@@ -1,0 +1,68 @@
+.road-search-app {
+    max-width: 1400px;
+    margin: 0 auto;
+    color: #0f172a;
+    line-height: 1.45;
+}
+
+.road-search-heading { margin-bottom: 22px; }
+.road-search-heading h1 { margin: 0 0 8px; color: #0b2a4a; }
+.road-search-heading p { margin: 0; color: #475569; text-align: center; }
+.road-search-layout { display: grid; grid-template-columns: minmax(300px, 380px) minmax(0, 1fr); gap: 20px; align-items: start; }
+.road-search-panel, .road-map-panel { background: #fff; border-radius: 10px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1); min-width: 0; }
+.road-search-panel { padding: 20px; }
+.road-search-app h2 { font-size: 18px; text-align: left; margin: 0 0 10px; color: #0b2a4a; }
+.road-search-app label { display: block; font-weight: 700; margin-bottom: 6px; }
+.road-search-optional { font-weight: 400; }
+.road-search-app input, .road-search-app select { box-sizing: border-box; width: 100%; min-height: 44px; padding: 10px 12px; margin: 0 0 14px; border: 1px solid #94a3b8; border-radius: 6px; background: #fff; color: #0f172a; font: inherit; }
+.road-search-app button { min-height: 44px; padding: 10px 14px; border: 1px solid #005dc1; border-radius: 6px; background: #005dc1; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+.road-search-app button:hover { background: #004b9b; }
+.road-search-app .road-search-secondary { background: #f6f7fb; border-color: #94a3b8; color: #0b2a4a; }
+.road-search-app .road-search-secondary:hover { background: #e0e9fb; }
+.road-search-app :focus-visible { outline: 3px solid #a13b00; outline-offset: 3px; }
+.road-search-app button:disabled { opacity: 0.65; cursor: not-allowed; }
+.road-search-actions { display: flex; gap: 10px; }
+.road-search-actions button { flex: 1; }
+.road-search-note, .road-search-example, .road-source-note { font-size: 13px; color: #475569; }
+#road-name-help { margin: -6px 0 16px; }
+.road-search-example { margin: 12px 0 0; }
+.road-search-status { background: #e7f3fe; border: 1px solid #c7ddf7; border-radius: 6px; padding: 12px; margin: 18px 0; font-variant-numeric: tabular-nums; }
+.road-search-status[data-state="error"], #boundary-status[data-state="error"] { color: #9b1c1c; }
+.road-search-status[data-state="error"] { background: #fff1f2; border-color: #f0b4bc; }
+.road-search-status[data-state="warning"] { background: #fff7e6; border-color: #dca950; }
+.road-results-list { display: grid; gap: 8px; list-style: none; margin: 12px 0 0; padding: 4px; max-height: 380px; overflow-y: auto; }
+.road-search-app .road-result { display: block; width: 100%; text-align: left; background: #f8fafc; color: #0f172a; border: 1px solid #cbd5e1; font-weight: 400; overflow-wrap: anywhere; }
+.road-search-app .road-result:hover { background: #e7f3fe; }
+.road-search-app .road-result[aria-pressed="true"] { background: #fff7e6; border: 2px solid #a13b00; padding: 9px 13px; }
+.road-result strong, .road-result span { display: block; }
+.road-result strong { color: #0b2a4a; }
+.road-result span { font-size: 13px; margin-top: 4px; }
+.road-details { margin-top: 18px; padding-top: 16px; border-top: 1px solid #cbd5e1; overflow-wrap: anywhere; }
+.road-detail-list { margin: 0; font-size: 13px; }
+.road-detail-list dt { font-weight: 700; margin-top: 8px; }
+.road-detail-list dd { margin: 2px 0 0; }
+.road-map-panel { overflow: hidden; }
+.road-map-heading { padding: 16px 18px; }
+.road-map-legend { display: flex; flex-wrap: wrap; gap: 8px 18px; font-size: 12px; color: #475569; }
+.road-map-legend span { display: inline-flex; align-items: center; gap: 6px; }
+.road-map-legend i { display: inline-block; width: 22px; border-top-style: solid; }
+.boundary-swatch { border-top: 1px solid #7c8590; }
+.road-swatch { border-top: 4px solid #005a9c; }
+.selected-swatch { border-top: 7px solid #a13b00; }
+#road-map { height: clamp(480px, 70vh, 800px); width: 100%; background: #f7f8fa; }
+.road-boundary-status { padding: 10px 18px; font-size: 13px; color: #475569; }
+.road-boundary-status p { margin: 0; }
+#retry-boundaries { margin-top: 8px; }
+.road-source-note { margin: 20px 0 0; }
+.road-source-note a { color: #005dc1; }
+.road-popup { max-height: 280px; overflow-y: auto; overflow-wrap: anywhere; }
+.road-popup h3 { margin: 0 0 8px; font-size: 16px; color: #0b2a4a; }
+.road-community-tooltip { font-size: 12px; }
+
+@media (max-width: 800px) {
+    .road-search-layout { grid-template-columns: 1fr; }
+    .road-search-panel { padding: 16px; }
+    .road-results-list { max-height: 300px; }
+    #road-map { height: 480px; height: max(400px, 60svh); }
+    .road-search-heading h1 { font-size: 26px; }
+}
