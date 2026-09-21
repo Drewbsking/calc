@@ -39,6 +39,8 @@
                 <section id="road-results" aria-labelledby="results-heading" aria-busy="false">
                     <h2 id="results-heading">Road / location matches</h2>
                     <p class="road-search-note">Choose a result or centerline to zoom to that road and see its details.</p>
+                    <button id="download-csv" type="button" class="road-search-secondary" aria-describedby="csv-help" disabled>Download CSV (newest first)</button>
+                    <p id="csv-help" class="road-search-note">One row per matching centerline segment, sorted by its recorded revision date. This can reflect any record edit, not specifically a road-name change. Dates use UTC; missing dates sort last.</p>
                     <ul id="road-results-list" class="road-results-list"></ul>
                 </section>
                 <section id="road-details" class="road-details" aria-label="Selected road details" hidden></section>
