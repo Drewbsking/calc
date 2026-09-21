@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Python utilities for TCO cleanup, filename changes, folder checks, data cleanup, CSV-to-MediaWiki tables, and PDF-to-MP3 audio. Download scripts with clear Windows instructions.">
+    <meta name="description" content="Python utilities for TCO cleanup, filename changes, folder checks, data cleanup, CSV-to-MediaWiki tables, audio, UD-10 reports, SVG-to-DXF conversion, and seasonal factor heatmaps. Download scripts with clear Windows instructions.">
     <title>Python Utilities | Andy's Traffic Tools</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/pythonUtilities.css">
@@ -18,7 +18,7 @@
             <p>Pick a script, edit its marked settings, and run it on your computer.</p>
             <p class="utilities-tco-note"><strong>Built from TCO cleanup work.</strong> Many of these scripts were written to clean up Traffic Control Order (TCO) files. Their examples reflect those jobs; match the settings and filename format to your own files. Historical values are not a current TCO naming standard.</p>
             <div class="utilities-tags" aria-label="Catalog and requirements">
-                <span>21 utilities</span><span>Python 3</span><span>Package setup noted per tool</span><span>Windows instructions</span>
+                <span>25 utilities</span><span>Python 3</span><span>Package setup noted per tool</span><span>Windows instructions</span>
             </div>
         </header>
 
@@ -58,23 +58,33 @@
                 </ul></div>
                 <div><h3><a href="#category-audio">PDF &amp; audio</a></h3><ul>
                     <li><a href="#pdf-to-mp3">Convert PDF to MP3</a></li>
+                    <li><a href="#transcribe-audio">Transcribe Audio to Text</a></li>
+                </ul></div>
+                <div><h3><a href="#category-crash-reports">Crash reports</a></h3><ul>
+                    <li><a href="#download-ud10">Download UD-10 Reports from a CSV</a></li>
+                </ul></div>
+                <div><h3><a href="#category-cad">CAD &amp; vector files</a></h3><ul>
+                    <li><a href="#batch-svg-to-dxf">Batch Convert SVG to DXF</a></li>
+                </ul></div>
+                <div><h3><a href="#category-traffic-data">Traffic data</a></h3><ul>
+                    <li><a href="#seasonal-factors">Seasonal Factor Heatmaps</a></li>
                 </ul></div>
             </div>
         </nav>
 
         <section class="utilities-panel" id="getting-started" aria-labelledby="getting-started-title">
             <h2 id="getting-started-title">Edit the marked settings</h2>
-            <p>Every download has a clearly marked settings box near the top. Folder utilities use <code>FOLDER_PATH</code>. For a single input file, the MediaWiki converter uses <code>CSV_FILE_PATH</code>, the wrapped-data cleaner uses <code>INPUT_FILE_PATH</code>, and the PDF-to-MP3 converter uses <code>PDF_FILE_PATH</code>. Some scripts also need a marker, suffix, number range, or other job setting.</p>
+            <p>Every download has a clearly marked settings box near the top. Folder utilities use <code>FOLDER_PATH</code>. For a single input file, the MediaWiki converter and UD-10 downloader use <code>CSV_FILE_PATH</code>, the wrapped-data cleaner uses <code>INPUT_FILE_PATH</code>, the PDF-to-MP3 converter uses <code>PDF_FILE_PATH</code>, audio transcription uses <code>AUDIO_FILE_PATH</code>, and seasonal factor heatmaps use <code>EXCEL_FILE_PATH</code>. Some scripts also need a marker, suffix, number range, or other job setting.</p>
             <pre class="utilities-path-example" tabindex="0" aria-label="Folder path setting example"><code># FOLDER_PATH: paste the folder you want to process.
 FOLDER_PATH = r"C:\CHANGE_ME\YourFolder"</code></pre>
             <p>For example, use <code>FOLDER_PATH = r"C:\Work\Turning Prohibitions"</code>. Keep the <code>r</code> and quotation marks. Spaces are fine; do not put a backslash at the end of the path.</p>
             <ol class="utilities-setup">
-                <li><strong>Check Python.</strong> Open Windows Terminal and enter <code>py --version</code>. If Python is missing, follow the <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">official Python Windows setup instructions</a>. Only the <a href="#pdf-to-mp3">PDF-to-MP3 converter</a> needs extra packages; its listing includes the install command.</li>
+                <li><strong>Check Python.</strong> Open Windows Terminal and enter <code>py --version</code>. If Python is missing, follow the <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">official Python Windows setup instructions</a>. The <a href="#pdf-to-mp3">PDF-to-MP3 converter</a>, <a href="#transcribe-audio">audio transcription tool</a>, and <a href="#seasonal-factors">seasonal factor heatmaps</a> need extra packages. The <a href="#batch-svg-to-dxf">SVG-to-DXF converter</a> needs desktop Inkscape. Their listings include setup instructions.</li>
                 <li><strong>Find your folder path.</strong> In File Explorer, open the folder you want to process, click the address bar, and copy the full path. Paste it between the quotes in the script. Any mapped drive must be connected when the script runs.</li>
                 <li><strong>Review that utility's settings.</strong> Each listing identifies its file types and whether it includes subfolders. The third-section replacement and year conversion require you to supply the historical job settings before they will run.</li>
                 <li><strong>Edit and save the download.</strong> Use Notepad or another text editor. If using Save As, choose <strong>All files</strong> and keep the <code>.py</code> extension, rather than <code>.py.txt</code>.</li>
             </ol>
-            <p class="utilities-run-note"><strong>When you run a script:</strong> file-changing utilities apply their operation immediately, except Find and Replace, which previews changes and asks for confirmation. Report tools only print findings. The MediaWiki converter, wrapped-data cleaner, and PDF-to-MP3 converter create new output files and leave their inputs unchanged. Subfolder behavior is shown on each listing. Existing files are not overwritten, and symbolic links are not processed. The website does not receive your files. The PDF-to-MP3 script sends extracted text to Google's speech service and requires internet access; the other utilities work locally.</p>
+            <p class="utilities-run-note"><strong>When you run a script:</strong> file-changing utilities apply their operation immediately, except Find and Replace, which previews changes and asks for confirmation. Folder and filename checks only print findings. The converters, audio transcription tool, and UD-10 downloader create output files and leave their inputs unchanged. Subfolder behavior is shown on each listing. Existing files are preserved unless you explicitly enable DXF replacement in the SVG-to-DXF converter. Symbolic links are not processed. The website does not receive your files. The PDF-to-MP3 script sends extracted text to Google's speech service. The UD-10 downloader sends each crash ID to SEMCOG to retrieve its report. Both require internet access. Whisper downloads its model on first use, then transcribes audio locally. The other utilities work locally.</p>
         </section>
 
         <!-- Repeat a data-python-utility section for each standalone download.
@@ -924,7 +934,7 @@ INPUT_ENCODING = "utf-8-sig"</code></pre>
         </section>
 
         <div class="utilities-group-heading" id="category-audio">
-            <h2>PDF &amp; audio</h2><p>Listen to the text in a PDF as a spoken MP3.</p>
+            <h2>PDF &amp; audio</h2><p>Turn PDF text into spoken audio, or transcribe a recording to text.</p>
         </div>
         <section class="utilities-panel utility" id="pdf-to-mp3" data-python-utility aria-labelledby="pdf-to-mp3-title">
             <div class="utility-heading">
@@ -978,6 +988,219 @@ SLOW = False</code></pre>
                 </div>
                 <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
                 <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="PDF to MP3 Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <section class="utilities-panel utility" id="transcribe-audio" data-python-utility aria-labelledby="transcribe-audio-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">22</span>
+                <div><p class="utilities-eyebrow">Audio input &middot; .txt output &middot; One file at a time</p>
+                    <h2 id="transcribe-audio-title">Transcribe Audio to Text</h2></div>
+            </div>
+            <p>Turn a WAV, MP3, or other recording that FFmpeg can read into a text transcript with Whisper. The script prints the transcript in the terminal and saves it as a UTF-8 text file.</p>
+            <dl class="utility-example">
+                <div><dt>Example input</dt><dd><code>C:\Work\Meeting.wav</code><span>A recording containing spoken audio</span></dd></div>
+                <div><dt>Default output</dt><dd><code>C:\Work\Meeting_transcription.txt</code><span>The recognized speech, in the recording's language</span></dd></div>
+            </dl>
+            <p class="utility-behavior"><strong>Runs on your computer:</strong> Whisper requires the <code>openai-whisper</code> package and FFmpeg. First use of a model requires internet access to download it; recordings are processed locally. The script uses your CPU with the original <code>base</code> model. Long recordings may take a while.</p>
+            <p class="utility-behavior">The audio stays unchanged. By default, the transcript is saved beside it as <code>&lt;audio name&gt;_transcription.txt</code>. Existing files are never replaced. This creates a plain transcript without timestamps or speaker labels; review the wording, names, and numbers against the recording.</p>
+            <p class="utility-originals">Original: <code>Transcribe.py</code>. Replaces the fixed meeting path and <code>transcription.txt</code> output with editable settings.</p>
+            <a class="utility-download" href="python/transcribe_audio.py" download="transcribe_audio.py" data-download aria-label="Download Python file: Transcribe Audio to Text">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Set <strong>AUDIO_FILE_PATH</strong> to the full recording filename. Leave <strong>OUTPUT_FILE_PATH</strong> blank to save beside it, or enter a new <code>.txt</code> filename. Leave <strong>LANGUAGE</strong> blank for automatic detection, or use <code>"en"</code> for English.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Audio transcription settings"><code>AUDIO_FILE_PATH = r"C:\CHANGE_ME\Meeting.wav"
+OUTPUT_FILE_PATH = ""
+MODEL_NAME = "base"
+LANGUAGE = ""</code></pre>
+                <ol class="utility-steps">
+                    <li>Install Whisper in Windows Terminal:
+                        <pre class="utility-command" tabindex="0"><code>py -m pip install openai-whisper</code></pre>
+                        Use the <code>openai-whisper</code> package; the package named <code>whisper</code> is unrelated. If installation fails for your Python version, check the <a href="https://github.com/openai/whisper#setup" target="_blank" rel="noopener">official Whisper setup instructions</a> for supported versions.</li>
+                    <li>Install <a href="https://ffmpeg.org/download.html" target="_blank" rel="noopener">FFmpeg</a>, add the folder containing <code>ffmpeg.exe</code> to your Windows <strong>Path</strong> environment variable, and reopen the terminal. Confirm it is available:
+                        <pre class="utility-command" tabindex="0"><code>ffmpeg -version</code></pre></li>
+                    <li>Download <code>transcribe_audio.py</code>, open it in a text editor, and edit the marked settings. For example: <code>AUDIO_FILE_PATH = r"C:\Work\Meeting.wav"</code>. Save the script.</li>
+                    <li>Open the folder containing the script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\transcribe_audio.py</code></pre></li>
+                    <li>Wait for <strong>Transcript saved to</strong>, then open the output text file. Keep the terminal open while it runs; press <kbd>Ctrl+C</kbd> to cancel. If the transcript already exists, choose another <code>OUTPUT_FILE_PATH</code>.</li>
+                </ol>
+                <p>Keep <code>MODEL_NAME = "base"</code> to match the original script. <code>"tiny"</code> is faster; <code>"small"</code> uses more resources. <code>LANGUAGE</code> identifies the spoken language and does not translate it.</p>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Transcribe Audio to Text">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Audio transcription Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <div class="utilities-group-heading" id="category-crash-reports">
+            <h2>Crash reports</h2><p>Download a set of SEMCOG UD-10 PDFs from a crash-ID list.</p>
+        </div>
+        <section class="utilities-panel utility" id="download-ud10" data-python-utility aria-labelledby="download-ud10-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">23</span>
+                <div><p class="utilities-eyebrow">.csv input &middot; .pdf downloads &middot; One list at a time</p>
+                    <h2 id="download-ud10-title">Download UD-10 Reports from a CSV</h2></div>
+            </div>
+            <p>Read crash IDs from the first column of a CSV and download each available UD-10 crash report from SEMCOG. Uses Python's standard library and an internet connection.</p>
+            <dl class="utility-example">
+                <div><dt>Example input</dt><dd>
+                    <a href="python/examples/ud10/Crash_IDs_for_2019.csv" download="Crash_IDs_for_2019.csv">Download Crash_IDs_for_2019.csv</a>
+                    <span>547 unique crash IDs &middot; 4.9 KB</span>
+                    <pre tabindex="0" aria-label="First three crash IDs in the example CSV"><code>Crash_ID
+1652746
+1914109
+1664156</code></pre>
+                </dd></div>
+                <div><dt>Default output</dt><dd><code>UD10_reports\UD10_1652746.pdf</code><span>One PDF per available crash ID, in a new folder beside the CSV</span></dd></div>
+            </dl>
+            <p class="utility-behavior">The CSV needs a header row, such as <code>Crash_ID</code>, with digit-only IDs in its first column. Extra columns are ignored. Blank IDs are skipped, duplicates are requested once, and leading zeros are preserved. Invalid IDs are reported before any downloads begin.</p>
+            <p class="utility-behavior">Existing report files are skipped. Each download is checked for a PDF header and end marker; incomplete files are removed. The terminal reports downloads, skipped files, and errors. The script pauses between requests and stops if SEMCOG denies access or limits requests. Report availability depends on SEMCOG.</p>
+            <p class="utility-originals">Original: <code>ud10.py</code>. Uses the report endpoint from the <a href="ud10.html">single-report UD-10 tool</a>, replacing the old page's submit button and Chrome automation. No pandas, Selenium, or browser setup is needed.</p>
+            <a class="utility-download" href="python/download_ud10_reports.py" download="download_ud10_reports.py" data-download aria-label="Download Python file: Download UD-10 Reports from a CSV">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Set <strong>CSV_FILE_PATH</strong> to your crash-ID list. Leave <strong>OUTPUT_FOLDER</strong> blank to create <code>UD10_reports</code> beside the CSV, or enter another folder path.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="UD-10 downloader settings"><code>CSV_FILE_PATH = r"C:\CHANGE_ME\Crash_IDs_for_2019.csv"
+OUTPUT_FOLDER = ""
+MAX_REPORTS = 0
+DELAY_SECONDS = 1.0
+TIMEOUT_SECONDS = 30</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>download_ud10_reports.py</code> and the example CSV above, or prepare your own CSV with a header and crash IDs in the first column.</li>
+                    <li>Open the script in a text editor and set the full CSV path, for example <code>CSV_FILE_PATH = r"C:\Work\Crash_IDs_for_2019.csv"</code>. To try just the first ID, set <code>MAX_REPORTS = 1</code>; <code>0</code> processes all unique IDs. Save the script.</li>
+                    <li>Open the folder containing the script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\download_ud10_reports.py</code></pre></li>
+                    <li>Review the terminal's summary and open the output folder to view the PDFs. If a download times out, increase <code>TIMEOUT_SECONDS</code> and rerun. Previously saved reports are skipped.</li>
+                </ol>
+                <p>Keep the terminal open while downloads run. Press <kbd>Ctrl+C</kbd> to cancel; completed PDFs are kept. If SEMCOG is unavailable, retry later. You can check one ID with the <a href="ud10.html">single-report tool</a>.</p>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Download UD-10 Reports from a CSV">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="UD-10 downloader Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <div class="utilities-group-heading" id="category-cad">
+            <h2>CAD &amp; vector files</h2><p>Prepare vector drawings for CAD software.</p>
+        </div>
+        <section class="utilities-panel utility" id="batch-svg-to-dxf" data-python-utility aria-labelledby="batch-svg-to-dxf-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">24</span>
+                <div><p class="utilities-eyebrow">.svg input &middot; .dxf output &middot; Includes subfolders</p>
+                    <h2 id="batch-svg-to-dxf-title">Batch Convert SVG to DXF</h2></div>
+            </div>
+            <p>Convert a folder of SVG vector graphics into DXF drawings using Inkscape. The script searches subfolders, runs conversions in parallel, and records the result for each file in a CSV report.</p>
+            <dl class="utility-example">
+                <div><dt>Example SVG input</dt><dd><code>C:\Work\SVGs\Signs\Stop.svg</code><span>Set FOLDER_PATH to C:\Work\SVGs</span></dd></div>
+                <div><dt>Default DXF output</dt><dd><code>C:\Work\SVGs\Signs\Stop.dxf</code><span>Or set OUTPUT_FOLDER to C:\Work\CAD to create C:\Work\CAD\Signs\Stop.dxf</span></dd></div>
+            </dl>
+            <p class="utility-behavior"><strong>Requires Inkscape installed on your computer.</strong> No extra Python packages are needed. SVG originals are unchanged. Existing DXFs are skipped by default; set <code>OVERWRITE = True</code> or pass <code>--overwrite</code> to replace them after a successful conversion. Failed exports leave existing DXFs intact.</p>
+            <p class="utility-behavior">The default report is <code>conversion_report.csv</code> in the output folder, or the selected SVG folder when no separate output is set. Later runs create numbered reports such as <code>conversion_report_2.csv</code>. An explicit report filename must be new. Reports list input, output, status, elapsed seconds, and any Inkscape message.</p>
+            <p class="utility-behavior">Scale, layers, curves, and text depend on Inkscape's DXF export. Open a converted drawing in your CAD software and check its units and geometry before using it. Symbolic links and directory junctions are skipped.</p>
+            <p class="utility-originals">Original: <code>batch_svg_to_dxf.py</code>. The command-line options are retained alongside the editable settings.</p>
+            <a class="utility-download" href="python/batch_svg_to_dxf.py" download="batch_svg_to_dxf.py" data-download aria-label="Download Python file: Batch Convert SVG to DXF">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Set <strong>FOLDER_PATH</strong> to the folder containing your SVGs. Leave <strong>OUTPUT_FOLDER</strong> blank to save beside each SVG, or choose another folder to mirror the subfolder structure.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="SVG to DXF converter settings"><code>FOLDER_PATH = r"C:\CHANGE_ME\YourFolder"
+INKSCAPE_PATH = ""
+OUTPUT_FOLDER = ""
+REPORT_FILE_PATH = ""
+WORKERS = 2
+OVERWRITE = False
+TIMEOUT_SECONDS = 120</code></pre>
+                <ol class="utility-steps">
+                    <li>Install <a href="https://inkscape.org/release/" target="_blank" rel="noopener">Inkscape</a>. The script checks PATH and common Windows installation locations. If it cannot find Inkscape, set <code>INKSCAPE_PATH</code> to its executable, for example <code>r"C:\Program Files\Inkscape\bin\inkscape.exe"</code>.</li>
+                    <li>Download <code>batch_svg_to_dxf.py</code>, open it in a text editor, edit the marked settings, and save. For example: <code>FOLDER_PATH = r"C:\Work\SVGs"</code>.</li>
+                    <li>Open the folder containing the script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\batch_svg_to_dxf.py</code></pre></li>
+                    <li>Review the terminal's summary and the CSV report path. A failed file does not stop the other conversions. If Inkscape needs longer for a complex drawing, increase <code>TIMEOUT_SECONDS</code>; reduce <code>WORKERS</code> if your computer is busy.</li>
+                </ol>
+                <p>You can also pass the folder and options on the command line. These override the corresponding settings:</p>
+                <pre class="utility-command" tabindex="0"><code>py .\batch_svg_to_dxf.py "C:\Work\SVGs" --mirror-out "C:\Work\CAD" --workers 2
+py .\batch_svg_to_dxf.py --help</code></pre>
+                <p>Other options are <code>--inkscape</code>, <code>--report</code>, <code>--overwrite</code>, and <code>--timeout</code>. Quote paths containing spaces. Conversion happens on your computer; this page does not upload or convert drawings.</p>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Batch Convert SVG to DXF">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="SVG to DXF converter Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <div class="utilities-group-heading" id="category-traffic-data">
+            <h2>Traffic data</h2><p>Visualize seasonal patterns in your traffic factor tables.</p>
+        </div>
+        <section class="utilities-panel utility" id="seasonal-factors" data-python-utility aria-labelledby="seasonal-factors-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">25</span>
+                <div><p class="utilities-eyebrow">.xlsx input &middot; Yearly .png heatmaps &middot; Runs locally</p>
+                    <h2 id="seasonal-factors-title">Seasonal Factor Heatmaps</h2></div>
+            </div>
+            <p>Read a seasonal factor table from Excel and create one heatmap per year. Each chart arranges January through December down the rows and Monday through Sunday across the columns. All selected years share a color scale centered at 1.00 so you can compare them.</p>
+            <dl class="utility-example">
+                <div><dt>Example workbook</dt><dd>
+                    <a href="python/examples/seasonal-factors/Seasonal%20Factor%20Table.xlsx" download="Seasonal Factor Table.xlsx">Download Seasonal Factor Table.xlsx</a>
+                    <span>300 monthly records &middot; 1999&ndash;2023 &middot; Default charts: 2021&ndash;2023</span>
+                </dd></div>
+                <div><dt>Supplied chart examples</dt><dd>
+                    <a href="python/examples/seasonal-factors/heatmap_2021_common_scale.png">2021 PNG</a> &middot;
+                    <a href="python/examples/seasonal-factors/heatmap_2022_common_scale.png">2022 PNG</a> &middot;
+                    <a href="python/examples/seasonal-factors/heatmap_2023_common_scale.png">2023 PNG</a>
+                    <span>PDFs: <a href="python/examples/seasonal-factors/21-23%20Seasonal%20Factors.pdf">21&ndash;23 Seasonal Factors.pdf</a> &middot; <a href="python/examples/seasonal-factors/Seasonal.pdf">Seasonal.pdf</a></span>
+                </dd></div>
+            </dl>
+            <p class="utility-behavior">New charts use bold text for factors from <strong>0.95 to 1.05</strong>, inclusive. Missing months or blank factor cells appear gray with a dash. Invalid values, duplicate months, and requested years with no numeric factors are reported before charts are created. This tool plots the supplied factors; it does not calculate them from traffic counts.</p>
+            <p class="utility-behavior">The script creates <code>seasonal_heatmaps</code> beside the workbook and saves files such as <code>heatmap_2021_common_scale.png</code> at 300 DPI. The workbook and existing images are preserved. If any target image already exists, choose another <code>OUTPUT_FOLDER</code>. The linked images and PDFs are the supplied examples; the updated script creates PNGs with revised styling.</p>
+            <p class="utility-originals">The example workbook, three PNG charts, and two PDFs linked above are preserved in <code>python/examples/seasonal-factors/</code>. Download the maintained Python script below.</p>
+            <a class="utility-download" href="python/seasonal_factor_plots.py" download="seasonal_factor_plots.py" data-download aria-label="Download Python file: Seasonal Factor Heatmaps">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Set <strong>EXCEL_FILE_PATH</strong> to your workbook and choose the first and last years to plot. Leave <strong>OUTPUT_FOLDER</strong> blank to use <code>seasonal_heatmaps</code> beside the workbook.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="Seasonal factor heatmap settings"><code>EXCEL_FILE_PATH = r"C:\CHANGE_ME\Seasonal Factor Table.xlsx"
+SHEET_NAME = "Seasonal_Factor_Table"
+START_YEAR = 2021
+END_YEAR = 2023
+OUTPUT_FOLDER = ""
+DPI = 300</code></pre>
+                <ol class="utility-steps">
+                    <li>Download the Python script and example workbook above, or use your own workbook with the same columns.</li>
+                    <li>Install the two packages in Windows Terminal:
+                        <pre class="utility-command" tabindex="0"><code>py -m pip install openpyxl matplotlib</code></pre></li>
+                    <li>Open the script in a text editor, set the full workbook path, year range, and optional output folder, then save.</li>
+                    <li>Open the folder containing the script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\seasonal_factor_plots.py</code></pre></li>
+                    <li>Open the output folder printed in the terminal to view the PNG charts. Saving does not open plot windows or wait for you to close them.</li>
+                </ol>
+                <p>The worksheet's first row must contain <code>YEAR</code>, <code>MONTH</code>, <code>MONFAC</code>, <code>TUEFAC</code>, <code>WEDFAC</code>, <code>THURFAC</code>, <code>FRIFAC</code>, <code>SATFAC</code>, and <code>SUNFAC</code>. Column order does not matter. Use whole years, month abbreviations Jan&ndash;Dec, and positive numeric factors. Additional columns such as <code>ID</code> and <code>MONTHFAC</code> are ignored.</p>
+                <p>If your workbook uses formulas, recalculate and save it in Excel first; the script reads saved values. No workbook is uploaded to this website. Package installation requires internet; generating charts works locally.</p>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Seasonal Factor Heatmaps">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Seasonal Factor Heatmaps Python source" hidden><code data-source-code></code></pre>
                 <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
             </details>
         </section>

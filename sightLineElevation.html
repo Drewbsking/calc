@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Interpolate sight line elevation at any distance between an eye point and a target. Enter elevations and distances in feet.">
+    <title>Sight Line Elevation Checker | Andy's Traffic Tools</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/sightLine.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+    <main class="sl-app" data-sight-line-tool="elevation">
+        <nav class="sl-nav" aria-label="Related tools"><a href="index.html">&larr; All tools</a><a id="related-tool" href="sightLineProfile.html">Compare with ground elevations &rarr;</a></nav>
+        <header class="sl-heading">
+            <p class="sl-eyebrow">Sight distance</p>
+            <h1>Sight Line Elevation Checker</h1>
+            <p>Find the elevation of a straight sight line at a distance measured from the eye point.</p>
+        </header>
+        <div class="sl-layout">
+            <section class="sl-panel sl-inputs" aria-labelledby="inputs-title">
+                <h2 id="inputs-title">Sight line inputs</h2>
+                <p class="sl-help">Use elevations on the same vertical datum. Include the eye and target heights above their ground elevations.</p>
+                <form id="sight-line-form" novalidate>
+                    <label for="eye-elevation">Eye point elevation (ft)</label>
+                    <input id="eye-elevation" name="eye" type="number" step="any" value="1003.5" required aria-describedby="elevation-help">
+                    <label for="target-elevation">Target point elevation (ft)</label>
+                    <input id="target-elevation" name="target" type="number" step="any" value="1002" required aria-describedby="elevation-help">
+                    <p id="elevation-help" class="sl-help">Enter total elevations, not just heights above the ground.</p>
+                    <label for="total-distance">Total distance, eye to target (ft)</label>
+                    <input id="total-distance" name="length" type="number" step="any" min="0" value="300" required>
+                    <div class="sl-distance-control">
+                        <label for="check-distance">Distance from eye to check (ft)</label>
+                        <input id="check-distance" type="number" step="any" min="0" value="150" required>
+                        <label class="sl-help" for="distance-slider">Move the check point along the line</label>
+                        <input id="distance-slider" type="range" min="0" max="300" step="any" value="150">
+                    </div>
+                    <button id="load-example" type="button" class="sl-secondary">Load example</button>
+                    <p class="sl-help sl-example-note">Initial values are an illustrative example. Results update as you type.</p>
+                </form>
+            </section>
+            <div class="sl-output">
+                <p id="sight-line-error" class="sl-error" role="alert" hidden></p>
+                <section id="sight-line-results" class="sl-panel" aria-labelledby="results-title" hidden>
+                    <h2 id="results-title">Elevation at the check point</h2>
+                    <div class="sl-metric" role="status" aria-live="polite" aria-atomic="true">
+                        <output id="checked-elevation" class="sl-value"></output>
+                        <p id="checked-location"></p>
+                    </div>
+                    <figure class="sl-figure">
+                        <div class="sl-chart-scroll" tabindex="0" role="region" aria-label="Sight line diagram; scroll horizontally on small screens">
+                            <svg id="sight-line-chart" viewBox="0 0 800 365" role="img" aria-label="Sight line with the check point marked"></svg>
+                        </div>
+                        <figcaption><span class="sl-legend sight">Sight line</span><span class="sl-legend check">Check point</span><span class="sl-scale-note">Horizontal and vertical scales differ.</span></figcaption>
+                        <p class="sl-mobile-hint">Scroll the chart horizontally to see the full line.</p>
+                    </figure>
+                    <div class="sl-method">
+                        <h3>Linear interpolation</h3>
+                        <p>Z(x) = Z<sub>eye</sub> + (Z<sub>target</sub> &minus; Z<sub>eye</sub>) &times; x / L</p>
+                        <p id="calculation" class="sl-calculation"></p>
+                        <p class="sl-help">x is the distance from the eye; L is the total distance. Use the same distance basis for both.</p>
+                    </div>
+                </section>
+            </div>
+        </div>
+        <p class="sl-footnote">This tool interpolates between the two endpoint elevations. Use the <a href="sightLineProfile.html">ground profile tool</a> to compare the line with measured ground points.</p>
+        <noscript><p class="sl-error">Enable JavaScript to calculate sight line elevations.</p></noscript>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="scripts/layoutScript.js"></script>
+    <script src="scripts/sightLineCore.js"></script>
+    <script src="scripts/sightLineChart.js"></script>
+    <script src="scripts/sightLinePage.js"></script>
+</body>
+</html>

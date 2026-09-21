@@ -19,6 +19,10 @@ FILE_INPUT_SETTINGS = {
     "csv_to_mediawiki": "CSV_FILE_PATH",
     "clean_wrapped_data": "INPUT_FILE_PATH",
     "pdf_to_mp3": "PDF_FILE_PATH",
+    "transcribe_audio": "AUDIO_FILE_PATH",
+    "download_ud10_reports": "CSV_FILE_PATH",
+    "batch_svg_to_dxf": "FOLDER_PATH",
+    "seasonal_factor_plots": "EXCEL_FILE_PATH",
 }
 
 
@@ -367,7 +371,7 @@ class CatalogPageTests(unittest.TestCase):
         page = CatalogHTML()
         page.feed((ROOT / "pythonUtilities.html").read_text(encoding="utf-8"))
         self.assertEqual(len(page.ids), len(set(page.ids)))
-        self.assertEqual(len(page.downloads), 21)
+        self.assertEqual(len(page.downloads), 25)
         self.assertEqual({item["download"] for item in page.downloads}, {path.name for path in DOWNLOADS})
         for link in page.links:
             if link.startswith("#"):
@@ -391,8 +395,8 @@ class CatalogPageTests(unittest.TestCase):
         rows = [line.split("|") for line in review.splitlines() if line.startswith("| " + chr(96))]
         originals = {row[1].strip().strip(chr(96)) for row in rows}
         replacements = {row[2].split("](../python/", 1)[1].split(")", 1)[0] for row in rows}
-        self.assertEqual(len(rows), 26)
-        self.assertEqual(len(originals), 26)
+        self.assertEqual(len(rows), 30)
+        self.assertEqual(len(originals), 30)
         self.assertEqual(replacements, {path.name for path in DOWNLOADS})
 
 

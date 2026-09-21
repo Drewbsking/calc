@@ -1,0 +1,88 @@
+.sl-app { max-width: 1220px; margin: 24px auto 40px; color: #172b40; line-height: 1.5; }
+.sl-app *, .sl-app *::before, .sl-app *::after { box-sizing: border-box; }
+.sl-app [hidden] { display: none !important; }
+.sl-app a { color: #005dc1; text-underline-offset: 3px; }
+.sl-app :is(a, button, input, textarea, [tabindex]):focus-visible { outline: 3px solid #005dc1; outline-offset: 3px; }
+.sl-nav { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; margin-bottom: 24px; }
+.sl-heading { margin-bottom: 24px; }
+.sl-heading h1 { font-size: clamp(26px, 4vw, 36px); margin: 4px 0 10px; }
+.sl-app h1, .sl-app h2, .sl-app h3 { text-align: left; color: #0b2a4a; line-height: 1.25; }
+.sl-app h2 { font-size: 21px; margin: 0 0 16px; }
+.sl-app h3 { font-size: 17px; margin: 0 0 12px; }
+.sl-app p { margin: 0 0 14px; }
+.sl-eyebrow { color: #526174; font-size: 13px; font-weight: 700; }
+.sl-layout { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 24px; align-items: start; }
+.sl-panel { min-width: 0; padding: 24px; border: 1px solid #dbe3ec; border-radius: 10px; background: #fff; box-shadow: 0 4px 14px #0f172a08; }
+.sl-output { min-width: 0; }
+.sl-inputs label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 5px; }
+.sl-inputs input, .sl-inputs textarea { display: block; width: 100%; margin: 0 0 16px; padding: 10px 12px; border: 1px solid #b9c8d9; border-radius: 5px; background: #fff; color: #172b40; font: inherit; font-size: 16px; }
+.sl-inputs textarea { resize: vertical; min-height: 170px; font-family: Consolas, monospace; line-height: 1.6; }
+.sl-inputs input[type="range"] { padding: 0; accent-color: #005dc1; cursor: pointer; }
+.sl-app .sl-help { color: #526174; font-size: 13px; font-weight: 400; }
+.sl-distance-control { border-top: 1px solid #dbe3ec; padding-top: 18px; margin-top: 22px; }
+.sl-app .sl-secondary { width: auto; min-height: 42px; margin: 0; padding: 9px 14px; background: #edf5ff; border: 1px solid #adc5de; border-radius: 5px; color: #0b2a4a; font: inherit; font-size: 14px; font-weight: 700; cursor: pointer; }
+.sl-app .sl-secondary:hover:enabled { background: #dceaff; }
+.sl-app .sl-secondary:disabled { cursor: default; opacity: 0.5; }
+.sl-app .sl-example-note { margin: 12px 0 0; }
+.sl-error { padding: 16px 18px; color: #8c2020; background: #fff1f1; border: 1px solid #efb5b5; border-radius: 6px; }
+.sl-metrics { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 14px; }
+.sl-metric { padding: 16px 20px; background: #edf5ff; border-radius: 7px; }
+.sl-metric > span { font-size: 13px; color: #475569; }
+.sl-value { display: block; font-size: clamp(25px, 3vw, 33px); font-weight: 700; color: #0b2a4a; overflow-wrap: anywhere; }
+.sl-metric p { margin: 2px 0 0; font-size: 14px; }
+.sl-summary { padding: 12px 15px; border-radius: 6px; font-weight: 700; }
+.sl-summary[data-state="above"] { color: #8c3610; background: #fff0dc; border-left: 4px solid #d17018; }
+.sl-summary[data-state="touching"] { color: #765715; background: #fff8de; border-left: 4px solid #a57d1b; }
+.sl-summary[data-state="below"] { color: #174d3f; background: #eaf6ef; border-left: 4px solid #278264; }
+.sl-figure { margin: 24px 0 18px; }
+.sl-chart-scroll, .sl-table-scroll { overflow-x: auto; max-width: 100%; }
+.sl-chart-scroll svg { display: block; width: 100%; min-width: 610px; height: auto; }
+.sl-figure figcaption { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: center; font-size: 13px; padding-top: 10px; }
+.sl-legend { display: inline-flex; align-items: center; gap: 7px; }
+.sl-legend::before { content: ''; display: inline-block; width: 20px; border-top: 3px solid; }
+.sl-legend.sight::before { color: #c2410c; }
+.sl-legend.ground::before { color: #2563a6; }
+.sl-legend.check::before { color: #005dc1; border-top-width: 7px; width: 7px; border-radius: 50%; }
+.sl-legend.obstruction::before { height: 11px; border: 1px solid #ca7415; background: #f8c578; }
+.sl-scale-note { display: block; flex-basis: 100%; color: #526174; }
+.sl-grid-line { stroke: #dfe6ee; stroke-width: 1; }
+.sl-tick { fill: #526174; font: 12px Arial, sans-serif; }
+.sl-axis-label { fill: #172b40; font: 14px Arial, sans-serif; }
+.sl-sight-line { stroke: #c2410c; stroke-width: 3; fill: none; }
+.sl-ground-line { stroke: #2563a6; stroke-width: 2.5; fill: none; }
+.sl-obstruction { fill: #f8c578; fill-opacity: 0.65; }
+.sl-endpoint { fill: #c2410c; }
+.sl-point-label { fill: #9c3210; font: bold 12px Arial, sans-serif; }
+.sl-ground-point { stroke: #2563a6; stroke-width: 2; fill: #fff; }
+.sl-ground-point.above { fill: #f8c578; }
+.sl-check-guide { stroke: #005dc1; stroke-width: 1.5; stroke-dasharray: 5 4; }
+.sl-check-point { fill: #005dc1; stroke: #fff; stroke-width: 2; }
+.sl-method { padding-top: 18px; border-top: 1px solid #dbe3ec; }
+.sl-calculation { color: #344b65; overflow-wrap: anywhere; }
+.sl-table-heading { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; margin: 24px 0 12px; }
+.sl-table-heading h3 { margin: 0; }
+.sl-app table { width: 100%; min-width: 580px; border-collapse: collapse; margin: 0; }
+.sl-app th, .sl-app td { padding: 10px; border: 0; border-bottom: 1px solid #dbe3ec; text-align: right; font-size: 13px; }
+.sl-app th { background: #edf3fa; color: #172b40; font-weight: 700; }
+.sl-app th:last-child, .sl-app td:last-child { text-align: left; }
+.sl-status-cell { font-weight: 700; }
+.sl-status-cell.above { color: #9c3210; background: #fff5e8; }
+.sl-status-cell.touching { color: #765715; background: #fff8de; }
+.sl-status-cell.below { color: #174d3f; }
+.sl-footnote { margin-top: 24px; padding: 18px 22px; border-left: 3px solid #9fb5cb; background: #eef2f6; color: #475569; font-size: 14px; }
+.sl-footnote h2 { font-size: 17px; }
+.sl-footnote p:last-child { margin-bottom: 0; }
+.sl-sr-only { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+.sl-mobile-hint { display: none; }
+@media (max-width: 850px) {
+    .sl-layout { grid-template-columns: minmax(0, 1fr); }
+    .sl-panel { padding: 20px 16px; }
+    .sl-app { margin-top: 16px; }
+}
+@media (max-width: 420px) {
+    .sl-metrics { grid-template-columns: minmax(0, 1fr); }
+    .sl-metric { padding: 14px; }
+}
+@media (max-width: 700px) {
+    .sl-app .sl-mobile-hint { display: block; margin: 10px 0 0; color: #526174; font-size: 13px; }
+}
