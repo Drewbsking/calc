@@ -10,7 +10,6 @@
     const results = document.getElementById('road-results');
     const list = document.getElementById('road-results-list');
     const details = document.getElementById('road-details');
-    const downloadCSV = document.getElementById('download-csv');
     const boundaryStatus = document.getElementById('boundary-status');
     const retryBoundaries = document.getElementById('retry-boundaries');
     const allRoadsStatus = document.getElementById('all-roads-status');
@@ -50,7 +49,6 @@
     let countyBounds = null;
     let controller = null;
     let selected = null;
-    let exportResult = null;
 
     // Render only Roads layer 0 for the viewport. This keeps the full network
     // visible without downloading all its features or changing name queries.
@@ -147,9 +145,6 @@
     }
 
     function resetResults() {
-        exportResult = null;
-        downloadCSV.disabled = true;
-        downloadCSV.textContent = 'Download CSV (newest first)';
         map.closePopup();
         roadLayers.clearLayers();
         list.replaceChildren();
@@ -212,9 +207,7 @@
             jurisdiction.textContent = group.jurisdiction || 'Jurisdiction not provided';
             const count = document.createElement('span');
             count.textContent = group.features.length.toLocaleString() + (group.features.length === 1 ? ' segment' : ' segments');
-            const revision = document.createElement('span');
-            revision.textContent = 'Latest segment revision: ' + core.formatRevisionDate(group.latestRevisionDate);
-            button.append(title, location, jurisdiction, count, revision);
+            button.append(title, location, jurisdiction, count);
             const item = document.createElement('li');
             item.append(button);
             fragment.append(item);
@@ -266,9 +259,6 @@
             });
             if (controller !== request) return;
             const count = displayResults(result.features);
-            exportResult = result;
-            downloadCSV.disabled = result.features.length === 0;
-            downloadCSV.textContent = result.capped ? 'Download partial CSV (newest first)' : 'Download CSV (newest first)';
             const summary = count.toLocaleString() + ' road / location matches; ' + result.features.length.toLocaleString() + ' selected centerline segments.';
             if (result.capped) {
                 setStatus('Search limit reached: showing the first ' + core.MAX_SEGMENTS.toLocaleString() + ' segments. Results are incomplete; narrow your search. ' + summary, 'warning');
@@ -286,20 +276,6 @@
                 results.setAttribute('aria-busy', 'false');
             }
         }
-    });
-
-    downloadCSV.addEventListener('click', () => {
-        if (!exportResult?.features.length || controller) return;
-        const csv = core.resultsCSV(exportResult.features, { capped: exportResult.capped });
-        // UTF-8 BOM helps spreadsheet applications recognize road names with accents.
-        const url = URL.createObjectURL(new Blob(['\uFEFF', csv], { type: 'text/csv;charset=utf-8' }));
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = 'road-name-search' + (exportResult.capped ? '-partial' : '') + '-' + new Date().toISOString().slice(0, 10) + '.csv';
-        document.body.append(link);
-        link.click();
-        link.remove();
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
     });
 
     document.getElementById('clear-button').addEventListener('click', () => {

@@ -15,7 +15,7 @@
         'OBJECTID', 'DirectionalPrefix', 'StreetName', 'StreetType', 'DirectionalSuffix',
         'CartographicName', 'LowAddressLeft', 'HighAddressLeft', 'LowAddressRight',
         'HighAddressRight', 'CVTTaxNameLeft', 'CVTTaxNameRight', 'JurisdictionName',
-        'RoadCode', 'SpeedLimit', 'RevisionDate'
+        'RoadCode', 'SpeedLimit'
     ];
 
     function cleanTerm(value, label) {
@@ -168,56 +168,12 @@
             const right = textValue(p.CVTTaxNameRight);
             const jurisdiction = textValue(p.JurisdictionName);
             const key = JSON.stringify([name, left, right, jurisdiction]);
-            if (!groups.has(key)) groups.set(key, { key, name, left, right, jurisdiction, features: [], latestRevisionDate: null });
-            const group = groups.get(key);
-            group.features.push(feature);
-            const timestamp = revisionTime(p);
-            if (timestamp !== null && (group.latestRevisionDate === null || timestamp > group.latestRevisionDate)) {
-                group.latestRevisionDate = timestamp;
-            }
+            if (!groups.has(key)) groups.set(key, { key, name, left, right, jurisdiction, features: [] });
+            groups.get(key).features.push(feature);
         }
         return Array.from(groups.values()).sort((a, b) =>
             a.name.localeCompare(b.name) || a.left.localeCompare(b.left) ||
             a.right.localeCompare(b.right) || a.jurisdiction.localeCompare(b.jurisdiction));
-    }
-
-    function revisionTime(properties) {
-        const value = properties.RevisionDate;
-        // ArcGIS returns date fields as epoch milliseconds, including in GeoJSON.
-        return typeof value === 'number' && Number.isFinite(new Date(value).getTime()) ? value : null;
-    }
-
-    function formatRevisionDate(timestamp) {
-        if (timestamp === null) return 'Not provided';
-        return new Intl.DateTimeFormat('en-US', {
-            year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
-            second: '2-digit', hourCycle: 'h23', timeZone: 'UTC', timeZoneName: 'short'
-        }).format(timestamp);
-    }
-
-    function resultsCSV(features, { capped = false } = {}) {
-        const fields = ROAD_FIELDS.filter(field => field !== 'RevisionDate');
-        const rows = features.map(feature => ({
-            properties: feature.properties || {}, timestamp: revisionTime(feature.properties || {})
-        })).sort((a, b) => {
-            if (a.timestamp !== b.timestamp) {
-                if (a.timestamp === null) return 1;
-                if (b.timestamp === null) return -1;
-                return b.timestamp - a.timestamp;
-            }
-            return a.properties.OBJECTID - b.properties.OBJECTID;
-        });
-        const cell = value => {
-            let text = value == null ? '' : String(value);
-            // Keep GIS text from becoming a spreadsheet formula. Quoting alone is insufficient.
-            if (typeof value === 'string' && /^[\s\uFEFF]*[=+@-]|^[\t\r\n]/u.test(text)) text = "'" + text;
-            return '"' + text.replace(/"/g, '""') + '"';
-        };
-        const records = [['RevisionDateUTC', ...fields, 'SearchResultsComplete'], ...rows.map(row => [
-            row.timestamp === null ? '' : new Date(row.timestamp).toISOString(),
-            ...fields.map(field => row.properties[field]), !capped
-        ])];
-        return records.map(row => row.map(cell).join(',')).join('\r\n') + '\r\n';
     }
 
     function addressRange(properties, side) {
@@ -240,11 +196,9 @@
             ['Left address ranges', unique(p => addressRange(p, 'Left'))],
             ['Right address ranges', unique(p => addressRange(p, 'Right'))],
             ['Speed limit(s)', unique(p => Number(p.SpeedLimit) > 0 ? p.SpeedLimit + ' mph' : '')],
-            ['Latest segment revision (UTC)', formatRevisionDate(group.latestRevisionDate)],
             ['Centerline segments', String(group.features.length)]
         ];
     }
 
-    return { buildWhere, searchRoads, loadBoundaries, loadRevisionDate, groupRoads, groupDetails,
-        formatRevisionDate, resultsCSV, MAX_SEGMENTS };
+    return { buildWhere, searchRoads, loadBoundaries, loadRevisionDate, groupRoads, groupDetails, MAX_SEGMENTS };
 });

@@ -7,7 +7,6 @@ Uses live GIS responses for normal searches and intercepted responses for failur
 No expected live record counts are hard-coded. Screenshots go to tmp/road-name-search-qa/.
 """
 import asyncio
-import csv
 import json
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
@@ -57,7 +56,6 @@ async def main():
 
         await page.route("**/scripts/roadNameSearch.js", instrument)
         await page.goto(BASE + "/road-name-search.html")
-        assert await page.locator("#download-csv").is_disabled()
         await page.wait_for_function("['roads', 'boundaries'].every(source => document.querySelector('#' + source + '-revision-date').dataset.state === 'ready')")
         assert await page.locator(".road-source-dates time").count() == 2
         assert await page.locator(".road-date-checked").count() == 2
@@ -93,37 +91,18 @@ async def main():
         async def line_count():
             return await page.evaluate("Object.values(__qaMap._layers).filter(l => l.feature?.geometry?.type.includes('LineString')).length")
 
-        async def download_results(label):
-            async with page.expect_download() as pending:
-                await page.locator("#download-csv").click()
-            download = await pending.value
-            path = OUTPUT / (label + "-" + download.suggested_filename)
-            await download.save_as(path)
-            with path.open(encoding="utf-8-sig", newline="") as stream:
-                rows = list(csv.DictReader(stream))
-            return download.suggested_filename, rows
-
         summary = await search("isla")
         assert await page.locator(".road-result").count() > 0, summary
         assert all("island" in name.lower() for name in await page.locator(".road-result strong").all_text_contents())
         assert await line_count() > 0
         assert await page.locator(".road-result").count() < await line_count()
         passed("Begins with isla returns Island roads, grouped without losing segments: " + summary)
-        _, rows = await download_results("live")
-        assert len(rows) == await line_count()
-        assert all(row["RevisionDateUTC"].endswith("Z") for row in rows)
-        assert [row["RevisionDateUTC"] for row in rows] == sorted((row["RevisionDateUTC"] for row in rows), reverse=True)
-        assert all(row["SearchResultsComplete"] == "true" for row in rows)
-        assert all("island" in row["CartographicName"].lower() for row in rows)
-        assert "Latest segment revision:" in await page.locator(".road-result").first.inner_text()
-        passed("Live CSV download contains every matching segment with UTC revision dates sorted newest first")
 
         for mode, exclusion in [("begins", "island"), ("exact", "")]:
             summary = await search("isla", mode, exclusion)
             assert "No matching roads" in summary, summary
             assert await page.locator(".road-result").count() == 0
             assert await line_count() == 0
-            assert await page.locator("#download-csv").is_disabled()
             await wait_all_roads()
         passed("Excluded island and Exact isla both return no current matches and remove prior lines")
         passed("Nonmatching roads stay visible when a search has no results")
@@ -141,7 +120,7 @@ async def main():
         assert await page.evaluate("__qaMap.getBounds().toBBoxString()") != match_view
         detail_text = await page.locator("#road-details").inner_text()
         for field in ["Woodward", "Left community", "Right community", "Jurisdiction", "Road code(s)",
-                      "Left address ranges", "Right address ranges", "Speed limit(s)", "Latest segment revision (UTC)", "Centerline segments"]:
+                      "Left address ranges", "Right address ranges", "Speed limit(s)", "Centerline segments"]:
             assert field in detail_text
         await page.locator(".leaflet-popup").last.wait_for(state="visible")
         await wait_all_roads()
@@ -162,7 +141,6 @@ async def main():
         passed("Clicking a real rendered centerline opens its grouped details")
 
         await page.locator("#clear-button").click()
-        assert await page.locator("#download-csv").is_disabled()
         assert await line_count() == 0
         assert await page.locator(".road-result").count() == 0
         assert not await page.locator("#road-details").is_visible()
@@ -213,7 +191,6 @@ async def main():
 
         await page.route(ROAD_QUERY, network_failure)
         assert "Check your connection" in await search("isla")
-        assert await page.locator("#download-csv").is_disabled()
         assert await line_count() == 0
         await page.unroute(ROAD_QUERY, network_failure)
 
@@ -265,15 +242,12 @@ async def main():
         await page.locator("#search-button").click()
         await asyncio.wait_for(held.wait(), 10)
         assert await page.locator("#search-status").get_attribute("data-state") == "loading"
-        assert await page.locator("#download-csv").is_disabled()
         await search("Woodward")
         before_release = await page.locator("#search-status").inner_text()
         release.set()
         await page.wait_for_timeout(200)
         assert await page.locator("#search-status").inner_text() == before_release
         assert await page.locator(".road-result").count() > 0
-        _, rows = await download_results("latest-search")
-        assert all("woodward" in row["CartographicName"].lower() for row in rows)
         await page.unroute(ROAD_QUERY, delayed_old_search)
         passed("A newer search cancels an older one; a late response cannot replace current results")
 
@@ -287,46 +261,9 @@ async def main():
         release.set()
         await page.wait_for_timeout(200)
         assert await page.locator(".road-result").count() == 0
-        assert await page.locator("#download-csv").is_disabled()
         assert "Enter a road name" in await page.locator("#search-status").inner_text()
         await page.unroute(ROAD_QUERY, delayed_old_search)
         passed("Clear cancels pending work and prevents late results from returning")
-        passed("CSV availability follows search state; late responses cannot restore stale downloads")
-
-        fixture_name = 'Rue Émile, "North"\r\nExtension'
-
-        async def csv_fixture(route):
-            await route.fulfill(json={"type": "FeatureCollection", "features": [{
-                "type": "Feature", "properties": {"OBJECTID": identifier, "CartographicName": fixture_name,
-                    "RevisionDate": revision, "JurisdictionName": "=1+1", "RoadCode": "001"},
-                "geometry": {"type": "LineString", "coordinates": [[-83.4, 42.6], [-83.39, 42.61]]}
-            } for identifier, revision in [(1, None), (2, 1735689600000), (3, 1767225600000)]]})
-
-        await page.route(ROAD_QUERY, csv_fixture)
-        await search("test")
-        assert await page.locator(".road-result").count() == 1
-        await page.locator(".road-result").click()
-        assert "Jan 1, 2026, 00:00:00 UTC" in await page.locator("#road-details").inner_text()
-        _, rows = await download_results("csv-fixture")
-        assert [row["OBJECTID"] for row in rows] == ["3", "2", "1"]
-        assert rows[-1]["RevisionDateUTC"] == ""
-        assert all(row["CartographicName"] == fixture_name and row["JurisdictionName"] == "'=1+1" and row["RoadCode"] == "001" for row in rows)
-        passed("CSV round-trips Unicode, commas, quotes and line breaks, escapes formulas, and places missing dates last")
-
-        # Exercise the UI's cap handling without rendering 10,000 test geometries.
-        await page.evaluate("""() => {
-            window.__uncappedSearch = RoadNameSearch.searchRoads;
-            RoadNameSearch.searchRoads = async (...args) => ({...await __uncappedSearch(...args), capped: true});
-        }""")
-        await search("test")
-        assert "partial CSV" in await page.locator("#download-csv").inner_text()
-        assert "incomplete" in await page.locator("#search-status").inner_text()
-        filename, rows = await download_results("partial")
-        assert "-partial-" in filename
-        assert all(row["SearchResultsComplete"] == "false" for row in rows)
-        await page.evaluate("() => { RoadNameSearch.searchRoads = __uncappedSearch; }")
-        await page.unroute(ROAD_QUERY, csv_fixture)
-        passed("Capped exports are labeled partial in the button, filename and CSV data")
 
         unsafe_name = '<img src=x onerror="window.gisInjected=true">'
 

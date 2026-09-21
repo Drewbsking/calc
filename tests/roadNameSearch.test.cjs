@@ -63,7 +63,7 @@ test('pagination follows short pages with transfer flags and encodes every reque
         assert.deepEqual(params.get('outFields').split(','), [
             'OBJECTID', 'DirectionalPrefix', 'StreetName', 'StreetType', 'DirectionalSuffix',
             'CartographicName', 'LowAddressLeft', 'HighAddressLeft', 'LowAddressRight',
-            'HighAddressRight', 'CVTTaxNameLeft', 'CVTTaxNameRight', 'JurisdictionName', 'RoadCode', 'SpeedLimit', 'RevisionDate'
+            'HighAddressRight', 'CVTTaxNameLeft', 'CVTTaxNameRight', 'JurisdictionName', 'RoadCode', 'SpeedLimit'
         ]);
     }
 });
@@ -205,55 +205,4 @@ test('only the two known dataset date sources can be requested', async () => {
         await assert.rejects(core.loadRevisionDate(source, { fetcher: async () => { requests++; } }), /Unknown data source/);
     }
     assert.equal(requests, 0);
-});
-
-test('group revisions show the newest segment date without treating missing values as the epoch', () => {
-    const [group] = core.groupRoads([
-        feature(1, { RevisionDate: Date.UTC(2025, 0, 1) }),
-        feature(2, { RevisionDate: Date.UTC(2026, 7, 28, 18, 27, 25) }),
-        feature(3, { RevisionDate: null })
-    ]);
-    assert.equal(group.latestRevisionDate, Date.UTC(2026, 7, 28, 18, 27, 25));
-    assert.match(Object.fromEntries(core.groupDetails(group))['Latest segment revision (UTC)'], /Aug 28, 2026.*18:27:25 UTC/);
-    for (const invalid of [null, undefined, '', false, '2025-01-01', Infinity, 1e20]) {
-        const [missing] = core.groupRoads([feature(1, { RevisionDate: invalid })]);
-        assert.equal(missing.latestRevisionDate, null);
-        assert.equal(Object.fromEntries(core.groupDetails(missing))['Latest segment revision (UTC)'], 'Not provided');
-    }
-});
-
-test('CSV exports individual segments newest first, ties by ID, and undated records last without mutating results', () => {
-    const features = [
-        feature(3, { RevisionDate: null }), feature(4, { RevisionDate: Date.UTC(2024, 0, 1) }),
-        feature(8, { RevisionDate: Date.UTC(2026, 0, 1) }), feature(2, { RevisionDate: Date.UTC(2026, 0, 1) }),
-        feature(1, { RevisionDate: 0 }), feature(5, { RevisionDate: NaN })
-    ];
-    const lines = core.resultsCSV(features).trimEnd().split('\r\n');
-    assert.equal(lines.length, 7);
-    assert.match(lines[0], /^"RevisionDateUTC","OBJECTID",/);
-    assert.deepEqual(lines.slice(1).map(line => line.split(',').slice(0, 2).join(',')), [
-        '"2026-01-01T00:00:00.000Z","2"', '"2026-01-01T00:00:00.000Z","8"',
-        '"2024-01-01T00:00:00.000Z","4"', '"1970-01-01T00:00:00.000Z","1"', '"","3"', '"","5"'
-    ]);
-    assert.deepEqual(features.map(f => f.properties.OBJECTID), [3, 4, 8, 2, 1, 5]);
-});
-
-test('CSV preserves commas, quotes, multiline and Unicode text while neutralizing spreadsheet formulas', () => {
-    const csv = core.resultsCSV([feature(1, {
-        CartographicName: 'Rue Émile, "North"\r\nExtension', RoadCode: '001', SpeedLimit: 0,
-        DirectionalPrefix: '=1+1', StreetName: ' +SUM(1,2)', StreetType: '@cmd',
-        DirectionalSuffix: '-1+1', CVTTaxNameLeft: '\t=1+1', JurisdictionName: '\n=1+1'
-    })]);
-    for (const expected of ['"Rue Émile, ""North""\r\nExtension"', '"001"', '"0"',
-        '"\'=1+1"', '"\' +SUM(1,2)"', '"\'@cmd"', '"\'-1+1"', '"\'\t=1+1"', '"\'\n=1+1"']) {
-        assert.ok(csv.includes(expected), expected);
-    }
-});
-
-test('CSV marks capped searches as incomplete in every row', () => {
-    for (const capped of [false, true]) {
-        const lines = core.resultsCSV([feature(1), feature(2)], { capped }).trimEnd().split('\r\n');
-        assert.ok(lines[0].endsWith(',"SearchResultsComplete"'));
-        assert.ok(lines.slice(1).every(line => line.endsWith(',"' + !capped + '"')));
-    }
 });
