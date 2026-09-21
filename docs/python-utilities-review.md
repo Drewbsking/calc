@@ -1,15 +1,15 @@
 # Python utilities: archive review
 
-Reviewed all 25 Python scripts supplied in `python/OLD`, including the later CSV-to-MediaWiki converter and wrapped-data cleaner. The catalog now provides 20 standalone downloads: the two existing tools plus 18 additions. Related variations are combined and their original uses are documented on the page.
+Reviewed all 26 Python scripts supplied in `python/OLD`, including the later CSV-to-MediaWiki converter, wrapped-data cleaner, and PDF-to-MP3 converter. The catalog now provides 21 standalone downloads: the two existing tools plus 19 additions. Related variations are combined and their original uses are documented on the page.
 
 Many scripts originated in Traffic Control Order (TCO) file cleanup. Job-specific values are examples, not current TCO naming standards. Originals were inspected as source only; they were not run against their embedded paths.
 
 ## Decisions
 
 - Combine related variations, keeping named presets or settings for their original uses.
-- Removed superseded source files after verifying their replacements. The mapping below preserves the history of all 25 original scripts. The CSV converter's supplied output is preserved as `tests/fixtures/csv_to_mediawiki_legacy.txt` for regression checks.
+- Removed earlier superseded source files after verifying their replacements. The mapping below preserves the history of all 26 original scripts. The CSV converter's supplied output is preserved as `tests/fixtures/csv_to_mediawiki_legacy.txt` for regression checks. The supplied `PDFtoGTTS.py` and Atomic Habits originals remain in `python/OLD`; the catalog examples are copied into `python/examples/pdf-to-mp3/`.
 - Some old TCO rules could not be confirmed. The replacement utility starts with REPLACEMENT and MATCH_TEXT blank; year conversion starts with YEAR_CUTOFF unset. These scripts reject execution until users supply those settings.
-- Keep downloads standalone and dependency-free. Each has a settings box, a main guard, generic folder placeholders, per-file reporting, and a final summary.
+- Keep downloads standalone. The first 20 use only the standard library; PDF-to-MP3 requires `pypdf`, `gTTS`, and internet access. Each has a settings box, a main guard, generic path placeholders, and result reporting.
 - Preserve the original folder scope in each listing. New utilities skip symbolic links and directory junctions.
 - Find and Replace retains a preview and confirmation. Report tools do not modify files; other tools apply changes when run.
 
@@ -31,6 +31,7 @@ Many scripts originated in Traffic Control Order (TCO) file cleanup. Job-specifi
 | `empty folders.py` | [Find Empty Folders](../python/find_empty_folders.py) | Added; Includes subfolders · Report only |
 | `fiund and replaec.py` | [Find and Replace Filename Text](../python/find_replace_filenames.py) | Combined variation; Includes subfolders by default |
 | `move text in file name.py` | [Move a Filename Section to the End](../python/move_filename_token_to_end.py) | Added; Selected folder only |
+| `PDFtoGTTS.py` | [Convert PDF to MP3](../python/pdf_to_mp3.py) | Added; One PDF input, one new MP3 output; online speech service |
 | `rename thrid part.py` | [Replace the Third TCO Section](../python/replace_tco_third_section.py) | Added; Includes subfolders |
 | `second part three.py` | [Pad the Second TCO Section](../python/pad_tco_sequence_number.py) | Added; Includes subfolders |
 | `strip before 63.py` | [Trim Before a Filename Marker](../python/trim_before_filename_marker.py) | Combined variation; Selected folder only |
@@ -44,6 +45,8 @@ Many scripts originated in Traffic Control Order (TCO) file cleanup. Job-specifi
 | `years.py` | [Expand a Two-Digit TCO Year](../python/expand_tco_year.py) | Added; Includes subfolders |
 
 ## Clarified behavior and corrections
+
+- **PDF-to-MP3:** replaces Tkinter dialogs with catalog-style file settings and PyPDF2 with `pypdf`. Uses gTTS for speech, with English and normal speed as defaults. Joins extracted pages with separators, skips and reports pages without text, and rejects entirely unreadable or encrypted PDFs. OCR is not included. Creates `<PDF name>.mp3` beside the input unless another output path is set. Existing destinations are rejected before conversion, creation is exclusive, and a service failure or Ctrl+C removes incomplete output. Extracted text is sent to Google's speech service; the page states this exception to local processing. The supplied Atomic Habits PDF and MP3 are linked as examples, with an audio player using `preload="none"`; the supplied audio is not represented as newly generated output. Package API references: [pypdf text extraction](https://pypdf.readthedocs.io/en/stable/user/extract-text.html) and [gTTS](https://gtts.readthedocs.io/en/stable/module.html).
 
 - **Wrapped-data cleanup:** preserves the original rule that any comma-containing line starts a record and subsequent comma-free lines are appended with a comma and space. Replaces Tkinter dialogs with marked input/output path settings. Ignores blank lines to avoid the original stray delimiters, and rejects leading continuation text rather than inventing an empty first field. This is a format-specific line joiner, not a general CSV parser: quoted commas also start records. The input is preserved, existing outputs are rejected, and the default output is `<input name>_cleaned.csv` beside the input.
 

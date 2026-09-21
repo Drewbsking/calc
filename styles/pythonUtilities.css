@@ -256,6 +256,13 @@
     font-size: 14px;
 }
 
+.utility-audio {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    margin-top: 12px;
+}
+
 .utilities-page .utility-download {
     display: inline-flex;
     align-items: center;

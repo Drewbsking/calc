@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Python utilities for TCO cleanup, filename changes, text placeholders, folder checks, wrapped data cleanup, and CSV-to-MediaWiki tables. Download scripts with clear Windows instructions.">
+    <meta name="description" content="Python utilities for TCO cleanup, filename changes, folder checks, data cleanup, CSV-to-MediaWiki tables, and PDF-to-MP3 audio. Download scripts with clear Windows instructions.">
     <title>Python Utilities | Andy's Traffic Tools</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/pythonUtilities.css">
@@ -18,7 +18,7 @@
             <p>Pick a script, edit its marked settings, and run it on your computer.</p>
             <p class="utilities-tco-note"><strong>Built from TCO cleanup work.</strong> Many of these scripts were written to clean up Traffic Control Order (TCO) files. Their examples reflect those jobs; match the settings and filename format to your own files. Historical values are not a current TCO naming standard.</p>
             <div class="utilities-tags" aria-label="Catalog and requirements">
-                <span>20 utilities</span><span>Python 3</span><span>No extra packages</span><span>Windows instructions</span>
+                <span>21 utilities</span><span>Python 3</span><span>Package setup noted per tool</span><span>Windows instructions</span>
             </div>
         </header>
 
@@ -56,22 +56,25 @@
                     <li><a href="#csv-to-mediawiki">Convert a Pay-Item CSV to MediaWiki</a></li>
                     <li><a href="#clean-wrapped-data">Join Wrapped Data Lines</a></li>
                 </ul></div>
+                <div><h3><a href="#category-audio">PDF &amp; audio</a></h3><ul>
+                    <li><a href="#pdf-to-mp3">Convert PDF to MP3</a></li>
+                </ul></div>
             </div>
         </nav>
 
         <section class="utilities-panel" id="getting-started" aria-labelledby="getting-started-title">
             <h2 id="getting-started-title">Edit the marked settings</h2>
-            <p>Every download has a clearly marked settings box near the top. Folder utilities use <code>FOLDER_PATH</code>. The MediaWiki converter uses <code>CSV_FILE_PATH</code>, and the wrapped-data cleaner uses <code>INPUT_FILE_PATH</code>, for a single input file. Some scripts also need a marker, suffix, number range, or other job setting.</p>
+            <p>Every download has a clearly marked settings box near the top. Folder utilities use <code>FOLDER_PATH</code>. For a single input file, the MediaWiki converter uses <code>CSV_FILE_PATH</code>, the wrapped-data cleaner uses <code>INPUT_FILE_PATH</code>, and the PDF-to-MP3 converter uses <code>PDF_FILE_PATH</code>. Some scripts also need a marker, suffix, number range, or other job setting.</p>
             <pre class="utilities-path-example" tabindex="0" aria-label="Folder path setting example"><code># FOLDER_PATH: paste the folder you want to process.
 FOLDER_PATH = r"C:\CHANGE_ME\YourFolder"</code></pre>
             <p>For example, use <code>FOLDER_PATH = r"C:\Work\Turning Prohibitions"</code>. Keep the <code>r</code> and quotation marks. Spaces are fine; do not put a backslash at the end of the path.</p>
             <ol class="utilities-setup">
-                <li><strong>Check Python.</strong> Open Windows Terminal and enter <code>py --version</code>. If Python is missing, follow the <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">official Python Windows setup instructions</a>. No additional packages are needed.</li>
+                <li><strong>Check Python.</strong> Open Windows Terminal and enter <code>py --version</code>. If Python is missing, follow the <a href="https://docs.python.org/3/using/windows.html" target="_blank" rel="noopener">official Python Windows setup instructions</a>. Only the <a href="#pdf-to-mp3">PDF-to-MP3 converter</a> needs extra packages; its listing includes the install command.</li>
                 <li><strong>Find your folder path.</strong> In File Explorer, open the folder you want to process, click the address bar, and copy the full path. Paste it between the quotes in the script. Any mapped drive must be connected when the script runs.</li>
                 <li><strong>Review that utility's settings.</strong> Each listing identifies its file types and whether it includes subfolders. The third-section replacement and year conversion require you to supply the historical job settings before they will run.</li>
                 <li><strong>Edit and save the download.</strong> Use Notepad or another text editor. If using Save As, choose <strong>All files</strong> and keep the <code>.py</code> extension, rather than <code>.py.txt</code>.</li>
             </ol>
-            <p class="utilities-run-note"><strong>When you run a script:</strong> file-changing utilities apply their operation immediately, except Find and Replace, which previews changes and asks for confirmation. Report tools only print findings. The MediaWiki converter and wrapped-data cleaner create new output files and leave their inputs unchanged. Subfolder behavior is shown on each listing. Existing files are not overwritten, and symbolic links are not processed. All work happens on your computer; the website does not receive your files.</p>
+            <p class="utilities-run-note"><strong>When you run a script:</strong> file-changing utilities apply their operation immediately, except Find and Replace, which previews changes and asks for confirmation. Report tools only print findings. The MediaWiki converter, wrapped-data cleaner, and PDF-to-MP3 converter create new output files and leave their inputs unchanged. Subfolder behavior is shown on each listing. Existing files are not overwritten, and symbolic links are not processed. The website does not receive your files. The PDF-to-MP3 script sends extracted text to Google's speech service and requires internet access; the other utilities work locally.</p>
         </section>
 
         <!-- Repeat a data-python-utility section for each standalone download.
@@ -916,6 +919,65 @@ INPUT_ENCODING = "utf-8-sig"</code></pre>
                 </div>
                 <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
                 <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="Wrapped data cleaner Python source" hidden><code data-source-code></code></pre>
+                <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
+            </details>
+        </section>
+
+        <div class="utilities-group-heading" id="category-audio">
+            <h2>PDF &amp; audio</h2><p>Listen to the text in a PDF as a spoken MP3.</p>
+        </div>
+        <section class="utilities-panel utility" id="pdf-to-mp3" data-python-utility aria-labelledby="pdf-to-mp3-title">
+            <div class="utility-heading">
+                <span class="utility-number" aria-hidden="true">21</span>
+                <div><p class="utilities-eyebrow">.pdf input &middot; .mp3 output &middot; One file at a time</p>
+                    <h2 id="pdf-to-mp3-title">Convert PDF to MP3</h2></div>
+            </div>
+            <p>Extract text from a PDF and turn it into spoken audio with Google Text-to-Speech (gTTS). English is the default; choose the document's language and optionally use slower speech.</p>
+            <dl class="utility-example">
+                <div><dt>Example PDF input</dt><dd>
+                    <a href="python/examples/pdf-to-mp3/Atomic%20Habits.pdf" target="_blank" rel="noopener">Open Atomic Habits.pdf</a>
+                    <span>Supplied PDF &middot; 22.0 MB</span>
+                    <a href="python/examples/pdf-to-mp3/Atomic%20Habits.pdf" download="Atomic Habits.pdf">Download example PDF</a>
+                </dd></div>
+                <div><dt>Example MP3 output</dt><dd>
+                    <a href="python/examples/pdf-to-mp3/Atomic%20Habits.mp3" download="Atomic Habits.mp3">Download Atomic Habits.mp3</a>
+                    <span>Supplied audio example &middot; 18.7 MB</span>
+                    <audio class="utility-audio" controls preload="none" aria-label="Listen to the Atomic Habits MP3 example">
+                        <source src="python/examples/pdf-to-mp3/Atomic%20Habits.mp3" type="audio/mpeg">
+                        Your browser does not support audio playback. Use the MP3 download link above.
+                    </audio>
+                </dd></div>
+            </dl>
+            <p class="utility-behavior"><strong>Requires internet access:</strong> the script sends extracted PDF text to Google's speech service. It reads selectable text in page order; it does not read images or perform OCR. Pages without readable text are skipped and reported. Reading order, headings, and page numbers depend on the PDF's text layout.</p>
+            <p class="utility-behavior">The default output is <code>&lt;PDF name&gt;.mp3</code> beside the PDF. Existing files are never replaced, and an interrupted or failed conversion removes its incomplete MP3. Large documents can take a while. The files above are the supplied examples; you can play the audio without running Python.</p>
+            <p class="utility-originals">Original: <code>PDFtoGTTS.py</code>. This version uses editable path settings instead of desktop file dialogs, and <code>pypdf</code> for text extraction.</p>
+            <a class="utility-download" href="python/pdf_to_mp3.py" download="pdf_to_mp3.py" data-download aria-label="Download Python file: Convert PDF to MP3">Download Python File <span>.py</span></a>
+            <details class="utility-instructions">
+                <summary>Settings &amp; step-by-step instructions</summary>
+                <p>Set <strong>PDF_FILE_PATH</strong> to the full input filename. Leave <strong>OUTPUT_FILE_PATH</strong> blank to create an MP3 beside it, or enter a new output filename.</p>
+                <pre class="utilities-path-example" data-settings tabindex="0" aria-label="PDF to MP3 settings"><code>PDF_FILE_PATH = r"C:\CHANGE_ME\YourDocument.pdf"
+OUTPUT_FILE_PATH = ""
+LANGUAGE = "en"
+SLOW = False</code></pre>
+                <ol class="utility-steps">
+                    <li>Download <code>pdf_to_mp3.py</code>. In Windows Terminal, install its two packages once:
+                        <pre class="utility-command" tabindex="0"><code>py -m pip install pypdf gTTS</code></pre></li>
+                    <li>Download the example PDF or choose a PDF with selectable text. Open the script in a text editor and set the input path, for example <code>PDF_FILE_PATH = r"C:\Work\Atomic Habits.pdf"</code>.</li>
+                    <li>If you also downloaded the example MP3 into that folder, choose a different output, such as <code>OUTPUT_FILE_PATH = r"C:\Work\Atomic Habits - new.mp3"</code>. Save the script.</li>
+                    <li>Open the folder containing the script in File Explorer, then right-click an empty area and choose <strong>Open in Terminal</strong>. Run:
+                        <pre class="utility-command" tabindex="0"><code>py .\pdf_to_mp3.py</code></pre></li>
+                    <li>Wait for the terminal to show <strong>MP3 saved to</strong>, then open that file in your audio player. Keep the terminal open until conversion finishes; press <kbd>Ctrl+C</kbd> to cancel.</li>
+                </ol>
+                <p>For scanned PDFs, run OCR first. Encrypted PDFs need an unlocked copy. If the speech service is unavailable, check your connection and retry later. <code>LANGUAGE</code> selects pronunciation, not translation; see <a href="https://gtts.readthedocs.io/en/stable/module.html#languages-gtts-lang" target="_blank" rel="noopener">gTTS language support</a>.</p>
+            </details>
+            <details class="utility-source">
+                <summary>View Python code</summary>
+                <div class="utility-source-actions">
+                    <button type="button" data-copy disabled aria-label="Copy Python code: Convert PDF to MP3">Copy Code</button>
+                    <button type="button" data-retry hidden>Retry loading code</button>
+                </div>
+                <p class="utility-source-status" data-source-status role="status" aria-live="polite">Open this section to load the downloadable code.</p>
+                <pre class="utility-source-code" data-source-pre tabindex="0" aria-label="PDF to MP3 Python source" hidden><code data-source-code></code></pre>
                 <noscript><p>Download the Python file above and open it in a text editor to read or copy its code.</p></noscript>
             </details>
         </section>

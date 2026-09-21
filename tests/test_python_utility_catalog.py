@@ -11,12 +11,14 @@ import sys
 import tempfile
 import unittest
 from unittest import mock
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parents[1]
 DOWNLOADS = sorted((ROOT / "python").glob("*.py"))
 FILE_INPUT_SETTINGS = {
     "csv_to_mediawiki": "CSV_FILE_PATH",
     "clean_wrapped_data": "INPUT_FILE_PATH",
+    "pdf_to_mp3": "PDF_FILE_PATH",
 }
 
 
@@ -365,13 +367,13 @@ class CatalogPageTests(unittest.TestCase):
         page = CatalogHTML()
         page.feed((ROOT / "pythonUtilities.html").read_text(encoding="utf-8"))
         self.assertEqual(len(page.ids), len(set(page.ids)))
-        self.assertEqual(len(page.downloads), 20)
+        self.assertEqual(len(page.downloads), 21)
         self.assertEqual({item["download"] for item in page.downloads}, {path.name for path in DOWNLOADS})
         for link in page.links:
             if link.startswith("#"):
                 self.assertIn(link[1:], page.ids)
             elif not link.startswith("https://"):
-                self.assertTrue((ROOT / link).is_file(), link)
+                self.assertTrue((ROOT / unquote(link)).is_file(), link)
         for item in page.downloads:
             with self.subTest(script=item["download"]):
                 self.assertEqual(item["download"], Path(item["href"]).name)
@@ -389,8 +391,8 @@ class CatalogPageTests(unittest.TestCase):
         rows = [line.split("|") for line in review.splitlines() if line.startswith("| " + chr(96))]
         originals = {row[1].strip().strip(chr(96)) for row in rows}
         replacements = {row[2].split("](../python/", 1)[1].split(")", 1)[0] for row in rows}
-        self.assertEqual(len(rows), 25)
-        self.assertEqual(len(originals), 25)
+        self.assertEqual(len(rows), 26)
+        self.assertEqual(len(originals), 26)
         self.assertEqual(replacements, {path.name for path in DOWNLOADS})
 
 
