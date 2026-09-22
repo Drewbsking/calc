@@ -5,6 +5,17 @@ body {
     background-color: #f7f7f7;
 }
 
+body.taper-lengths-page {
+    min-height: 100vh;
+    box-sizing: border-box;
+    background: #242424 url('../img/pexels-hngstrm-1203768.jpg') center / cover no-repeat fixed;
+}
+
+.taper-lengths-page footer {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 8px;
+}
+
 .container {
     max-width: 800px;
     margin: 0 auto 40px;

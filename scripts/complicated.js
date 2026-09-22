@@ -31,6 +31,7 @@ function setSpeed(type, speed) {
     if (type === 'posted') {
         if (speed === 40) {
             showSpeedDialog();
+            return;
         } else {
             document.getElementById('postedSpeed').value = speed;
             updateSpeedButtons('posted', speed);
@@ -83,7 +84,19 @@ function updateWorkSpeedButtons(postedSpeed) {
                 button.style.display = 'block';
             }
         });
+        const currentWorkSpeed = Number(document.getElementById('workSpeed').value);
+        if (!isAvailableWorkSpeed(currentWorkSpeed, postedSpeed)) {
+            document.getElementById('workSpeed').value = 0;
+        }
+        updateSpeedButtons('work', Number(document.getElementById('workSpeed').value));
     }
+}
+
+function isAvailableWorkSpeed(workSpeed, postedSpeed) {
+    return Array.from(document.querySelectorAll('#workSpeedButtons .speed-button')).some(button => {
+        const speed = Number(button.dataset.speed);
+        return speed === workSpeed && speed <= postedSpeed;
+    });
 }
 
 function roundUpToNearestFive(value) {
@@ -93,12 +106,19 @@ function roundUpToNearestFive(value) {
 function calculateTaperLength() {
     const w = parseFloat(document.getElementById('W').value);
     const postedSpeed = parseFloat(document.getElementById('postedSpeed').value);
-    const workSpeed = parseFloat(document.getElementById('workSpeed').value);
+    let workSpeed = parseFloat(document.getElementById('workSpeed').value);
     let formula, l, mergingL, shiftL, shoulderL;
     let workFormula, workL, workMergingL, workShiftL, workShoulderL;
 
-    if (isNaN(w) || isNaN(postedSpeed) || isNaN(workSpeed) || w < 0 || postedSpeed < 0 || workSpeed < 0) {
-        alert('Please enter valid non-negative numbers for W, Posted Speed, and Work Speed');
+    if (!Number.isFinite(w) || !Number.isFinite(postedSpeed) || w < 0 || postedSpeed <= 0) {
+        alert('Please enter a valid non-negative width and select a posted speed.');
+        return;
+    }
+    if (postedSpeed <= 35) {
+        workSpeed = postedSpeed;
+        document.getElementById('workSpeed').value = workSpeed;
+    } else if (!isAvailableWorkSpeed(workSpeed, postedSpeed)) {
+        alert('Please select an available work zone speed that is not greater than the posted speed.');
         return;
     }
 
@@ -178,6 +198,7 @@ function calculateTaperLength() {
 }
 
 document.addEventListener('DOMContentLoaded', function() {
+    updateWorkSpeedButtons(0);
     document.getElementById('W').addEventListener('keypress', function(event) {
         if (event.key === 'Enter') {
             calculateTaperLength();

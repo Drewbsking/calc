@@ -10,6 +10,7 @@
     gap: 20px;
 }
 #losForm {
+    box-sizing: border-box;
     background: #ffffff;
     padding: 30px;
     border-radius: 10px;
@@ -30,8 +31,8 @@
     margin-bottom: 5px;
     color: #495057;
 }
-.los-page input {
-    width: calc(100% - 20px);
+.los-page input, .los-page select {
+    width: 100%;
     padding: 10px;
     margin-bottom: 15px;
     font-size: 16px;
@@ -60,6 +61,8 @@
     margin-bottom: 20px;
 }
 .los-page .result-section {
+    box-sizing: border-box;
+    width: 100%;
     margin-top: 20px;
     background: #ffffff;
     padding: 24px;
@@ -73,8 +76,29 @@
     margin-bottom: 15px;
 }
 .los-page .formula {
+    overflow-wrap: anywhere;
     font-family: 'Courier New', Courier, monospace;
     background-color: #f8f9fa;
     padding: 10px;
     border-radius: 5px;
+}
+.los-page fieldset {
+    min-width: 0;
+    margin: 0 0 24px;
+    padding: 16px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+}
+.los-page fieldset[hidden] { display: none; }
+.los-page legend { font-weight: bold; padding: 0 6px; }
+.los-page .input-help { font-size: 0.9rem; line-height: 1.5; }
+.los-page .source-notes { max-width: 700px; margin: 0 auto; line-height: 1.5; }
+.los-page summary { cursor: pointer; font-weight: bold; }
+#losError { color: #a31919; font-weight: bold; }
+.los-page .calculation-warning { color: #8a4100; font-weight: bold; }
+.los-page .result-section:has(#result:empty) { display: none; }
+@media (max-width: 600px) {
+    #losForm { padding: 16px; }
+    .los-page fieldset { padding: 12px; }
+    .los-page h1 { font-size: 24px; }
 }

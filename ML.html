@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Highway LOS Calculator</title>
+    <title>Multilane Highway LOS Calculator</title>
     <link rel="stylesheet" href="styles/styles.css">
     <link rel="stylesheet" href="styles/MLstyles.css">
 </head>
@@ -12,54 +12,128 @@
     <main class="container los-page">
         <section class="calculator">
             <form id="losForm">
-                <h1>Highway LOS Calculator</h1>
+                <h1>Multilane Highway LOS Calculator</h1>
+                <p>HCM 6th Edition (2016), Chapter 12: automobile LOS on a four-lane highway with two lanes in each direction and uninterrupted flow.</p>
+                <fieldset>
+                    <legend>Traffic</legend>
+                    <p>Compare upgrade and downgrade conditions using the same directional demand. Enter the volume for one direction, across both lanes.</p>
+                    <div class="form-group">
+                        <label for="trafficVolume">Directional hourly volume (veh/h)</label>
+                        <input type="number" id="trafficVolume" value="1900" min="0" step="any" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="heavyVehicles">Total heavy vehicles (%)</label>
+                        <input type="number" id="heavyVehicles" value="15" min="0" max="100" step="any" required>
+                        <p class="input-help">Include all trucks, buses and RVs. In this edition, buses and RVs count as single-unit trucks (SUTs).</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="PHF">Peak hour factor (PHF)</label>
+                        <input type="number" id="PHF" value="0.90" min="0.25" max="1" step="any" required>
+                    </div>
+                </fieldset>
                 <div class="form-group">
-                    <label for="trafficVolume">Traffic Volume (vph):</label>
-                    <input type="number" id="trafficVolume" value="1900">
+                    <label for="terrain">Terrain analysis</label>
+                    <select id="terrain">
+                        <option value="specific">Compare upgrade / downgrade</option>
+                        <option value="level">General level terrain (ET = 2.0)</option>
+                        <option value="rolling">General rolling terrain (ET = 3.0)</option>
+                    </select>
+                    <p class="input-help">General terrain applies where no individual grade controls operations. Level terrain permits heavy vehicles to maintain passenger-car speeds; rolling terrain slows trucks without sustained crawl speeds.</p>
                 </div>
+                <fieldset id="specificFields">
+                    <legend>Uniform grade</legend>
+                    <div class="form-group">
+                        <label for="gradeLength">Uniform grade length (ft)</label>
+                        <input type="number" id="gradeLength" value="3200" min="0.01" step="any" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gradePercent">Grade magnitude (%)</label>
+                        <input type="number" id="gradePercent" value="2" min="0" step="any" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="sutMix">Heavy-vehicle mix table</label>
+                        <select id="sutMix">
+                            <option value="30">30% SUT / 70% TT</option>
+                            <option value="50" selected>50% SUT / 50% TT</option>
+                            <option value="70">70% SUT / 30% TT</option>
+                        </select>
+                        <p class="input-help">SUT = single-unit truck (including buses and RVs); TT = tractor-trailer. These percentages describe the heavy vehicles, not all traffic. The 30% SUT mix is more common on rural roads, 50% on urban roads; use 70% where SUTs predominate.</p>
+                    </div>
+                    <p class="input-help">Automatic table lookup covers signed grades from -2% to +6%, lengths of at least 660 ft (0.125 mi), and at least 2% heavy vehicles. Longer grades use the last tabulated length; 25% and above use the final percentage column. Zero heavy vehicles needs no PCE adjustment.</p>
+                    <details>
+                        <summary>Use a separately verified PCE</summary>
+                        <p>Use these optional overrides for conditions outside the tables or a documented local analysis. Each override replaces the automatic PCE for that direction.</p>
+                        <label for="upgradePCE">Upgrade PCE override</label>
+                        <input type="number" id="upgradePCE" min="1" step="any" placeholder="Automatic table lookup">
+                        <label for="downgradePCE">Downgrade PCE override</label>
+                        <input type="number" id="downgradePCE" min="1" step="any" placeholder="Automatic table lookup">
+                        <label for="pceSource">Override basis / source</label>
+                        <input type="text" id="pceSource" placeholder="Required when using an override">
+                    </details>
+                </fieldset>
                 <div class="form-group">
-                    <label for="percentTrucks">Percent Trucks (%):</label>
-                    <input type="number" id="percentTrucks" value="13">
+                    <label for="ffsMode">Free-flow-speed method</label>
+                    <select id="ffsMode">
+                        <option value="measured">Measured free-flow speed</option>
+                        <option value="estimated">Estimate from roadway geometry</option>
+                    </select>
                 </div>
-                <div class="form-group">
-                    <label for="percentRVs">Percent RVs (%):</label>
-                    <input type="number" id="percentRVs" value="2">
-                </div>
-                <div class="form-group">
-                    <label for="gradeLength">Grade Length (ft):</label>
-                    <input type="number" id="gradeLength" value="3200">
-                </div>
-                <div class="form-group">
-                    <label for="gradePercent">Grade Percent (%):</label>
-                    <input type="number" id="gradePercent" value="2.5">
-                </div>
-                <div class="form-group">
-                    <label for="laneWidth">Lane Width (ft):</label>
-                    <input type="number" id="laneWidth" value="11">
-                </div>
-                <div class="form-group">
-                    <label for="shoulderWidth">Shoulder Width (ft):</label>
-                    <input type="number" id="shoulderWidth" value="4">
-                </div>
-                <div class="form-group">
-                    <label for="accessPoints">Access Points per Mile:</label>
-                    <input type="number" id="accessPoints" value="20">
-                </div>
-                <div class="form-group">
-                    <label for="PHF">Peak Hour Factor (PHF):</label>
-                    <input type="number" id="PHF" value="0.90">
-                </div>
-                <div class="form-group">
-                    <label for="freeFlowSpeed">Free Flow Speed (mph):</label>
-                    <input type="number" id="freeFlowSpeed" value="56">
-                </div>
-                <button type="button" onclick="calculateLOS()">Calculate LOS</button>
+                <fieldset id="measuredFields">
+                    <legend>Measured speed</legend>
+                    <label for="freeFlowSpeed">Measured free-flow speed (mph)</label>
+                    <input type="number" id="freeFlowSpeed" value="56" min="45" max="70" step="any" required>
+                    <p class="input-help">Use a representative passenger-car speed study under low to moderate flow (up to 500 pc/h/ln). Roadway adjustments are already reflected in measured FFS.</p>
+                </fieldset>
+                <fieldset id="estimatedFields" hidden disabled>
+                    <legend>Estimate free-flow speed</legend>
+                    <div class="form-group">
+                        <label for="baseFreeFlowSpeed">Base free-flow speed (mph)</label>
+                        <input type="number" id="baseFreeFlowSpeed" value="60" min="0.01" step="any" required>
+                        <p class="input-help">Speed under base geometric conditions, before the adjustments below; this is not the posted speed limit.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="laneWidth">Average lane width (ft)</label>
+                        <input type="number" id="laneWidth" value="11" min="10" step="any" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="medianType">Median type</label>
+                        <select id="medianType">
+                            <option value="divided">Divided highway</option>
+                            <option value="undivided">Undivided highway</option>
+                            <option value="twltl">Two-way left-turn lane</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="rightClearance">Right lateral clearance to obstructions (ft)</label>
+                        <input type="number" id="rightClearance" value="4" min="0" step="any" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="leftClearance">Left lateral clearance to obstructions (ft)</label>
+                        <input type="number" id="leftClearance" value="6" min="0" step="any" required>
+                        <p class="input-help">Clearance is measured from the edge of the travel lanes. Each side is capped at 6 ft. For undivided highways and two-way left-turn lanes, the method uses 6 ft on the left.</p>
+                    </div>
+                    <div class="form-group">
+                        <label for="accessPoints">Access points per mile in the direction of travel</label>
+                        <input type="number" id="accessPoints" value="20" min="0" step="any" required>
+                        <p class="input-help">Count driveways and unsignalized intersections that influence traffic. The speed adjustment reaches its maximum at 40 access points per mile.</p>
+                    </div>
+                </fieldset>
+                <p>FFS must be from 45 to 70 mph. HCM 6th Edition uses the measured or estimated speed directly, including intermediate values such as 56 mph.</p>
+                <button type="submit">Calculate LOS</button>
+                <p id="losError" role="alert"></p>
             </form>
         </section>
-        <section class="result-section" aria-live="polite">
+        <section class="result-section" aria-live="polite" aria-atomic="true">
             <h2 id="result"></h2>
             <div id="steps"></div>
         </section>
+        <details class="source-notes">
+            <summary>Method, sources and scope</summary>
+            <p>Applies to uninterrupted automobile flow. Use a separate analysis for signal effects, queues from downstream bottlenecks, or composite grades. Run separately when traffic or FFS differs by direction. For steep grades or high truck percentages, HCM recommends its mixed-flow model for more detailed speed and density estimates.</p>
+            <p>Speed is reduced above 1,400 pc/h/ln. Demand above the selected curve's capacity is LOS F; speed and density are not predicted for that condition. Density is expressed in passenger cars per mile per lane (pc/mi/ln).</p>
+            <p>Basis: HCM 6th Edition, Volume 2, Chapter 12, Equations 12-1, 12-3, 12-7 and 12-9 through 12-11; Exhibits 12-6, 12-15, 12-20 and 12-22 through 12-28. Tables were checked against the supplied manual and <a href="https://www.oregon.gov/ODOT/Planning/Documents/APMv2_App11D.pdf">ODOT Appendix 11D</a>. See the <a href="docs/ml-source-reconciliation.md">source reconciliation and verification notes</a>.</p>
+            <p>The earlier HCM 2010 working references are retained for history and are not used by this calculation.</p>
+        </details>
     </main>
     <div id="footer-placeholder"></div>
     <script src="scripts/layoutScript.js"></script>

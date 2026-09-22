@@ -13,8 +13,8 @@ function calculateTaperLength() {
   let formula;
   let l;
 
-  if (Number.isNaN(w) || Number.isNaN(s) || w < 0 || s < 0) {
-    alert('Please enter valid non-negative numbers for W and S');
+  if (!Number.isFinite(w) || !Number.isFinite(s) || w < 0 || s <= 0) {
+    alert('Please enter a valid non-negative width and select a speed.');
     return;
   }
 
@@ -31,7 +31,7 @@ function calculateTaperLength() {
 
   const designL = Math.ceil(l);
   const halfDesignL = designL / 2;
-  const l2ShiftOnly = Math.round(halfDesignL / 5) * 5;
+  const l2ShiftOnly = Math.ceil(halfDesignL / 5) * 5;
 
   document.getElementById('result').innerHTML = `
     ${formula}<br>

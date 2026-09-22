@@ -78,8 +78,8 @@ function calculateSimpleTaper() {
   let formula;
   let l;
 
-  if (Number.isNaN(w) || Number.isNaN(s) || w < 0 || s < 0) {
-    alert('Please enter valid non-negative numbers for W and S');
+  if (!Number.isFinite(w) || !Number.isFinite(s) || w < 0 || s <= 0) {
+    alert('Please enter a valid non-negative width and select a speed.');
     return;
   }
 
@@ -96,7 +96,7 @@ function calculateSimpleTaper() {
 
   const designL = Math.ceil(l);
   const halfDesignL = designL / 2;
-  const l2ShiftOnly = Math.round(halfDesignL / 5) * 5;
+  const l2ShiftOnly = Math.ceil(halfDesignL / 5) * 5;
 
   document.getElementById('simpleResult').innerHTML = `
     ${formula}<br>
@@ -167,9 +167,17 @@ function updateAdvancedWorkSpeedButtons(postedSpeed) {
   });
 
   const currentWorkSpeed = parseFloat(document.getElementById('advancedWorkSpeed').value);
-  if (!currentWorkSpeed || currentWorkSpeed > postedSpeed) {
+  if (!isAvailableWorkSpeed(currentWorkSpeed, postedSpeed)) {
     document.getElementById('advancedWorkSpeed').value = 0;
   }
+  updateAdvancedSpeedButtons('#workSpeedButtons', Number(document.getElementById('advancedWorkSpeed').value));
+}
+
+function isAvailableWorkSpeed(workSpeed, postedSpeed) {
+  return Array.from(document.querySelectorAll('#workSpeedButtons .speed-button')).some((button) => {
+    const speed = Number(button.dataset.speed);
+    return speed === workSpeed && speed <= postedSpeed;
+  });
 }
 
 function roundUpToNearestFive(value) {
@@ -181,19 +189,17 @@ function calculateAdvancedTaper() {
   const postedSpeed = parseFloat(document.getElementById('advancedPostedSpeed').value);
   let workSpeed = parseFloat(document.getElementById('advancedWorkSpeed').value);
 
-  if (Number.isNaN(w) || Number.isNaN(postedSpeed) || w < 0 || postedSpeed < 0) {
-    alert('Please enter valid non-negative numbers for W and Posted Speed');
+  if (!Number.isFinite(w) || !Number.isFinite(postedSpeed) || w < 0 || postedSpeed <= 0) {
+    alert('Please enter a valid non-negative width and select a posted speed.');
     return;
   }
 
-  if (!workSpeed || workSpeed < 0 || workSpeed > postedSpeed) {
-    if (postedSpeed <= 35) {
-      workSpeed = postedSpeed;
-      document.getElementById('advancedWorkSpeed').value = workSpeed;
-    } else {
-      alert('Please select a valid work zone speed that is not greater than the posted speed.');
-      return;
-    }
+  if (postedSpeed <= 35) {
+    workSpeed = postedSpeed;
+    document.getElementById('advancedWorkSpeed').value = workSpeed;
+  } else if (!isAvailableWorkSpeed(workSpeed, postedSpeed)) {
+    alert('Please select an available work zone speed that is not greater than the posted speed.');
+    return;
   }
 
   const postedFormulaData = calculateTaperBySpeed(w, postedSpeed);
