@@ -1,0 +1,4244 @@
+[
+  {
+    "Moisture Content":22.3,
+    "Wet Density":96,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":20.1,
+    "Wet Density":96,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":18.3,
+    "Wet Density":96,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":16.2,
+    "Wet Density":96,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":13.6,
+    "Wet Density":96,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":11.0,
+    "Wet Density":96,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":8.6,
+    "Wet Density":96,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":7.2,
+    "Wet Density":96,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":6.1,
+    "Wet Density":96,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":5.2,
+    "Wet Density":96,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":4.3,
+    "Wet Density":96,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":3.3,
+    "Wet Density":96,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":1.7,
+    "Wet Density":96,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":0.4,
+    "Wet Density":96,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":23.1,
+    "Wet Density":97,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":20.9,
+    "Wet Density":97,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":19.1,
+    "Wet Density":97,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":17.0,
+    "Wet Density":97,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":14.3,
+    "Wet Density":97,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":11.7,
+    "Wet Density":97,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":9.3,
+    "Wet Density":97,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":7.9,
+    "Wet Density":97,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":6.7,
+    "Wet Density":97,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":5.8,
+    "Wet Density":97,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":4.8,
+    "Wet Density":97,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":3.8,
+    "Wet Density":97,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":2.2,
+    "Wet Density":97,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":0.9,
+    "Wet Density":97,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":23.9,
+    "Wet Density":98,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":21.7,
+    "Wet Density":98,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":19.9,
+    "Wet Density":98,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":17.7,
+    "Wet Density":98,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":15.1,
+    "Wet Density":98,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":12.5,
+    "Wet Density":98,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":10.0,
+    "Wet Density":98,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":8.5,
+    "Wet Density":98,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":7.3,
+    "Wet Density":98,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":6.3,
+    "Wet Density":98,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":5.3,
+    "Wet Density":98,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":4.2,
+    "Wet Density":98,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":2.6,
+    "Wet Density":98,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":1.3,
+    "Wet Density":98,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":0.4,
+    "Wet Density":98,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":24.7,
+    "Wet Density":99,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":22.5,
+    "Wet Density":99,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":20.7,
+    "Wet Density":99,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":18.5,
+    "Wet Density":99,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":15.8,
+    "Wet Density":99,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":13.2,
+    "Wet Density":99,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":10.7,
+    "Wet Density":99,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":9.2,
+    "Wet Density":99,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":7.9,
+    "Wet Density":99,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":6.9,
+    "Wet Density":99,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":5.8,
+    "Wet Density":99,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":4.7,
+    "Wet Density":99,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":3.1,
+    "Wet Density":99,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":1.8,
+    "Wet Density":99,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":0.8,
+    "Wet Density":99,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":0.3,
+    "Wet Density":99,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":25.5,
+    "Wet Density":100,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":23.3,
+    "Wet Density":100,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":21.4,
+    "Wet Density":100,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":19.2,
+    "Wet Density":100,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":16.5,
+    "Wet Density":100,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":13.9,
+    "Wet Density":100,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":11.4,
+    "Wet Density":100,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":9.8,
+    "Wet Density":100,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":8.5,
+    "Wet Density":100,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":7.4,
+    "Wet Density":100,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":6.3,
+    "Wet Density":100,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":5.1,
+    "Wet Density":100,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":3.6,
+    "Wet Density":100,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":2.2,
+    "Wet Density":100,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":1.2,
+    "Wet Density":100,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":0.7,
+    "Wet Density":100,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":26.3,
+    "Wet Density":101,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":24.1,
+    "Wet Density":101,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":22.2,
+    "Wet Density":101,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":20.0,
+    "Wet Density":101,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":17.2,
+    "Wet Density":101,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":14.6,
+    "Wet Density":101,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":12.1,
+    "Wet Density":101,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":10.5,
+    "Wet Density":101,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":9.1,
+    "Wet Density":101,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":8.0,
+    "Wet Density":101,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":6.8,
+    "Wet Density":101,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":5.6,
+    "Wet Density":101,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":4.0,
+    "Wet Density":101,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":2.7,
+    "Wet Density":101,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":1.7,
+    "Wet Density":101,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":1.1,
+    "Wet Density":101,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":0.3,
+    "Wet Density":101,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":27.2,
+    "Wet Density":102,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":24.9,
+    "Wet Density":102,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":23.0,
+    "Wet Density":102,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":20.7,
+    "Wet Density":102,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":17.9,
+    "Wet Density":102,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":15.4,
+    "Wet Density":102,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":12.8,
+    "Wet Density":102,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":11.1,
+    "Wet Density":102,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":9.7,
+    "Wet Density":102,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":8.5,
+    "Wet Density":102,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":7.3,
+    "Wet Density":102,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":6.1,
+    "Wet Density":102,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":4.5,
+    "Wet Density":102,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":3.1,
+    "Wet Density":102,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":2.1,
+    "Wet Density":102,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":1.5,
+    "Wet Density":102,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":0.6,
+    "Wet Density":102,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":0.2,
+    "Wet Density":102,
+    "Max Density":102.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":28.0,
+    "Wet Density":103,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":25.7,
+    "Wet Density":103,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":23.8,
+    "Wet Density":103,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":21.5,
+    "Wet Density":103,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":18.7,
+    "Wet Density":103,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":16.1,
+    "Wet Density":103,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":13.5,
+    "Wet Density":103,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":11.8,
+    "Wet Density":103,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":10.3,
+    "Wet Density":103,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":9.1,
+    "Wet Density":103,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":7.8,
+    "Wet Density":103,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":6.5,
+    "Wet Density":103,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":4.9,
+    "Wet Density":103,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":3.6,
+    "Wet Density":103,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":2.5,
+    "Wet Density":103,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":1.9,
+    "Wet Density":103,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":1.0,
+    "Wet Density":103,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":0.5,
+    "Wet Density":103,
+    "Max Density":102.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":0.2,
+    "Wet Density":103,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":28.8,
+    "Wet Density":104,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":26.5,
+    "Wet Density":104,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":24.6,
+    "Wet Density":104,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":22.2,
+    "Wet Density":104,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":19.4,
+    "Wet Density":104,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":16.8,
+    "Wet Density":104,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":14.1,
+    "Wet Density":104,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":12.4,
+    "Wet Density":104,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":10.9,
+    "Wet Density":104,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":9.6,
+    "Wet Density":104,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":8.3,
+    "Wet Density":104,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":7.0,
+    "Wet Density":104,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":5.4,
+    "Wet Density":104,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":4.0,
+    "Wet Density":104,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":2.9,
+    "Wet Density":104,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":2.3,
+    "Wet Density":104,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":1.4,
+    "Wet Density":104,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":0.9,
+    "Wet Density":104,
+    "Max Density":102.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":0.5,
+    "Wet Density":104,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":0.1,
+    "Wet Density":104,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":29.6,
+    "Wet Density":105,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":27.3,
+    "Wet Density":105,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":25.3,
+    "Wet Density":105,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":23.0,
+    "Wet Density":105,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":20.1,
+    "Wet Density":105,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":17.6,
+    "Wet Density":105,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":14.8,
+    "Wet Density":105,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":13.1,
+    "Wet Density":105,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":11.5,
+    "Wet Density":105,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":10.2,
+    "Wet Density":105,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":8.8,
+    "Wet Density":105,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":7.4,
+    "Wet Density":105,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":5.9,
+    "Wet Density":105,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":4.5,
+    "Wet Density":105,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":3.3,
+    "Wet Density":105,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":2.6,
+    "Wet Density":105,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":1.7,
+    "Wet Density":105,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":1.2,
+    "Wet Density":105,
+    "Max Density":102.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":0.8,
+    "Wet Density":105,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":0.4,
+    "Wet Density":105,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":30.4,
+    "Wet Density":106,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":28.1,
+    "Wet Density":106,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":26.1,
+    "Wet Density":106,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":23.8,
+    "Wet Density":106,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":20.8,
+    "Wet Density":106,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":18.3,
+    "Wet Density":106,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":15.5,
+    "Wet Density":106,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":13.7,
+    "Wet Density":106,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":12.1,
+    "Wet Density":106,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":10.7,
+    "Wet Density":106,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":9.2,
+    "Wet Density":106,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":7.9,
+    "Wet Density":106,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":6.3,
+    "Wet Density":106,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":4.9,
+    "Wet Density":106,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":3.8,
+    "Wet Density":106,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":3.0,
+    "Wet Density":106,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":2.1,
+    "Wet Density":106,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":1.5,
+    "Wet Density":106,
+    "Max Density":102.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":1.1,
+    "Wet Density":106,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":0.7,
+    "Wet Density":106,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":0.1,
+    "Wet Density":106,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":31.2,
+    "Wet Density":107,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":28.9,
+    "Wet Density":107,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":26.9,
+    "Wet Density":107,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":24.5,
+    "Wet Density":107,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":21.6,
+    "Wet Density":107,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":19.0,
+    "Wet Density":107,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":16.2,
+    "Wet Density":107,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":14.4,
+    "Wet Density":107,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":12.7,
+    "Wet Density":107,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":11.3,
+    "Wet Density":107,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":9.7,
+    "Wet Density":107,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":8.4,
+    "Wet Density":107,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":6.8,
+    "Wet Density":107,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":5.4,
+    "Wet Density":107,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":4.2,
+    "Wet Density":107,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":3.4,
+    "Wet Density":107,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":2.5,
+    "Wet Density":107,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":1.9,
+    "Wet Density":107,
+    "Max Density":102.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":1.4,
+    "Wet Density":107,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":1.0,
+    "Wet Density":107,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":0.4,
+    "Wet Density":107,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":32.0,
+    "Wet Density":108,
+    "Max Density":81.8,
+    "Optimum Moisture Content":32.1
+  },
+  {
+    "Moisture Content":29.7,
+    "Wet Density":108,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":27.7,
+    "Wet Density":108,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":25.3,
+    "Wet Density":108,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":22.3,
+    "Wet Density":108,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":19.8,
+    "Wet Density":108,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":16.9,
+    "Wet Density":108,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":15.1,
+    "Wet Density":108,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":13.3,
+    "Wet Density":108,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":11.8,
+    "Wet Density":108,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":10.2,
+    "Wet Density":108,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":8.8,
+    "Wet Density":108,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":7.2,
+    "Wet Density":108,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":5.8,
+    "Wet Density":108,
+    "Max Density":112.2,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":4.6,
+    "Wet Density":108,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":3.8,
+    "Wet Density":108,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":2.8,
+    "Wet Density":108,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":2.2,
+    "Wet Density":108,
+    "Max Density":102.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":1.7,
+    "Wet Density":108,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":1.3,
+    "Wet Density":108,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":0.7,
+    "Wet Density":108,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":30.6,
+    "Wet Density":109,
+    "Max Density":83.7,
+    "Optimum Moisture Content":31.2
+  },
+  {
+    "Moisture Content":28.4,
+    "Wet Density":109,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":26.0,
+    "Wet Density":109,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":23.0,
+    "Wet Density":109,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":20.5,
+    "Wet Density":109,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":17.6,
+    "Wet Density":109,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":15.7,
+    "Wet Density":109,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":13.9,
+    "Wet Density":109,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":12.4,
+    "Wet Density":109,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":10.7,
+    "Wet Density":109,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":9.3,
+    "Wet Density":109,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":7.7,
+    "Wet Density":109,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":6.3,
+    "Wet Density":109,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":5.0,
+    "Wet Density":109,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":4.2,
+    "Wet Density":109,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":3.2,
+    "Wet Density":109,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":2.6,
+    "Wet Density":109,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":2.0,
+    "Wet Density":109,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":1.5,
+    "Wet Density":109,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":0.9,
+    "Wet Density":109,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":0.2,
+    "Wet Density":109,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":29.2,
+    "Wet Density":110,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":26.8,
+    "Wet Density":110,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":23.7,
+    "Wet Density":110,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":21.2,
+    "Wet Density":110,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":18.3,
+    "Wet Density":110,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":16.4,
+    "Wet Density":110,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":14.5,
+    "Wet Density":110,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":12.9,
+    "Wet Density":110,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":11.2,
+    "Wet Density":110,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":9.7,
+    "Wet Density":110,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":8.2,
+    "Wet Density":110,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":6.7,
+    "Wet Density":110,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":5.5,
+    "Wet Density":110,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":4.6,
+    "Wet Density":110,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":3.6,
+    "Wet Density":110,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":2.9,
+    "Wet Density":110,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":2.3,
+    "Wet Density":110,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":1.8,
+    "Wet Density":110,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":1.2,
+    "Wet Density":110,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":0.5,
+    "Wet Density":110,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":30.0,
+    "Wet Density":111,
+    "Max Density":85.5,
+    "Optimum Moisture Content":30.3
+  },
+  {
+    "Moisture Content":27.5,
+    "Wet Density":111,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":24.4,
+    "Wet Density":111,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":21.9,
+    "Wet Density":111,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":19.0,
+    "Wet Density":111,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":17.0,
+    "Wet Density":111,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":15.1,
+    "Wet Density":111,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":13.4,
+    "Wet Density":111,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":11.7,
+    "Wet Density":111,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":10.2,
+    "Wet Density":111,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":8.6,
+    "Wet Density":111,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":7.2,
+    "Wet Density":111,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":5.9,
+    "Wet Density":111,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":5.0,
+    "Wet Density":111,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":3.9,
+    "Wet Density":111,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":3.3,
+    "Wet Density":111,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":2.6,
+    "Wet Density":111,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":2.1,
+    "Wet Density":111,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":1.4,
+    "Wet Density":111,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":0.7,
+    "Wet Density":111,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":28.3,
+    "Wet Density":112,
+    "Max Density":87.6,
+    "Optimum Moisture Content":29.0
+  },
+  {
+    "Moisture Content":25.2,
+    "Wet Density":112,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":22.7,
+    "Wet Density":112,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":19.6,
+    "Wet Density":112,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":17.7,
+    "Wet Density":112,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":15.7,
+    "Wet Density":112,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":14.0,
+    "Wet Density":112,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":12.2,
+    "Wet Density":112,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":10.7,
+    "Wet Density":112,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":9.1,
+    "Wet Density":112,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":7.6,
+    "Wet Density":112,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":6.3,
+    "Wet Density":112,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":5.3,
+    "Wet Density":112,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":4.3,
+    "Wet Density":112,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":3.6,
+    "Wet Density":112,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":2.9,
+    "Wet Density":112,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":2.4,
+    "Wet Density":112,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":1.7,
+    "Wet Density":112,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":1.0,
+    "Wet Density":112,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":0.0,
+    "Wet Density":112,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":25.9,
+    "Wet Density":113,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":23.4,
+    "Wet Density":113,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":20.3,
+    "Wet Density":113,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":18.3,
+    "Wet Density":113,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":16.3,
+    "Wet Density":113,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":14.5,
+    "Wet Density":113,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":12.7,
+    "Wet Density":113,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":11.1,
+    "Wet Density":113,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":9.5,
+    "Wet Density":113,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":8.1,
+    "Wet Density":113,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":6.7,
+    "Wet Density":113,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":5.7,
+    "Wet Density":113,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":4.7,
+    "Wet Density":113,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":3.9,
+    "Wet Density":113,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":3.2,
+    "Wet Density":113,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":2.7,
+    "Wet Density":113,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":2.0,
+    "Wet Density":113,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":1.2,
+    "Wet Density":113,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":0.3,
+    "Wet Density":113,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":26.6,
+    "Wet Density":114,
+    "Max Density":90.1,
+    "Optimum Moisture Content":27.1
+  },
+  {
+    "Moisture Content":24.1,
+    "Wet Density":114,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":21.0,
+    "Wet Density":114,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":19.0,
+    "Wet Density":114,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":16.9,
+    "Wet Density":114,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":15.1,
+    "Wet Density":114,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":13.2,
+    "Wet Density":114,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":11.6,
+    "Wet Density":114,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":10.0,
+    "Wet Density":114,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":8.5,
+    "Wet Density":114,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":7.2,
+    "Wet Density":114,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":6.1,
+    "Wet Density":114,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":5.0,
+    "Wet Density":114,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":4.3,
+    "Wet Density":114,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":3.5,
+    "Wet Density":114,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":3.0,
+    "Wet Density":114,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":2.2,
+    "Wet Density":114,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":1.5,
+    "Wet Density":114,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":0.5,
+    "Wet Density":114,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":24.9,
+    "Wet Density":115,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":21.7,
+    "Wet Density":115,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":19.6,
+    "Wet Density":115,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":17.5,
+    "Wet Density":115,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":15.6,
+    "Wet Density":115,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":13.7,
+    "Wet Density":115,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":12.0,
+    "Wet Density":115,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":10.5,
+    "Wet Density":115,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":9.0,
+    "Wet Density":115,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":7.6,
+    "Wet Density":115,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":6.5,
+    "Wet Density":115,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":5.4,
+    "Wet Density":115,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":4.6,
+    "Wet Density":115,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":3.8,
+    "Wet Density":115,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":3.3,
+    "Wet Density":115,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":2.5,
+    "Wet Density":115,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":1.7,
+    "Wet Density":115,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":0.8,
+    "Wet Density":115,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":25.6,
+    "Wet Density":116,
+    "Max Density":92.4,
+    "Optimum Moisture Content":25.7
+  },
+  {
+    "Moisture Content":22.4,
+    "Wet Density":116,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":20.3,
+    "Wet Density":116,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":18.1,
+    "Wet Density":116,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":16.2,
+    "Wet Density":116,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":14.2,
+    "Wet Density":116,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":12.5,
+    "Wet Density":116,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":10.9,
+    "Wet Density":116,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":9.4,
+    "Wet Density":116,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":8.0,
+    "Wet Density":116,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":6.9,
+    "Wet Density":116,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":5.8,
+    "Wet Density":116,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":5.0,
+    "Wet Density":116,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":4.2,
+    "Wet Density":116,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":3.5,
+    "Wet Density":116,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":2.8,
+    "Wet Density":116,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":2.0,
+    "Wet Density":116,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":1.0,
+    "Wet Density":116,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":0.1,
+    "Wet Density":116,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":23.1,
+    "Wet Density":117,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":20.9,
+    "Wet Density":117,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":18.7,
+    "Wet Density":117,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":16.7,
+    "Wet Density":117,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":14.7,
+    "Wet Density":117,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":12.9,
+    "Wet Density":117,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":11.4,
+    "Wet Density":117,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":9.9,
+    "Wet Density":117,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":8.4,
+    "Wet Density":117,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":7.3,
+    "Wet Density":117,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":6.1,
+    "Wet Density":117,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":5.3,
+    "Wet Density":117,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":4.5,
+    "Wet Density":117,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":3.8,
+    "Wet Density":117,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":3.0,
+    "Wet Density":117,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":2.2,
+    "Wet Density":117,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":1.3,
+    "Wet Density":117,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":0.4,
+    "Wet Density":117,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":23.8,
+    "Wet Density":118,
+    "Max Density":95.5,
+    "Optimum Moisture Content":23.8
+  },
+  {
+    "Moisture Content":21.6,
+    "Wet Density":118,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":19.3,
+    "Wet Density":118,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":17.3,
+    "Wet Density":118,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":15.2,
+    "Wet Density":118,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":13.4,
+    "Wet Density":118,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":11.8,
+    "Wet Density":118,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":10.3,
+    "Wet Density":118,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":8.8,
+    "Wet Density":118,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":7.6,
+    "Wet Density":118,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":6.5,
+    "Wet Density":118,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":5.7,
+    "Wet Density":118,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":4.8,
+    "Wet Density":118,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":4.1,
+    "Wet Density":118,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":3.3,
+    "Wet Density":118,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":2.5,
+    "Wet Density":118,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":1.5,
+    "Wet Density":118,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":0.6,
+    "Wet Density":118,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":22.2,
+    "Wet Density":119,
+    "Max Density":97.6,
+    "Optimum Moisture Content":22.6
+  },
+  {
+    "Moisture Content":19.9,
+    "Wet Density":119,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":17.8,
+    "Wet Density":119,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":15.7,
+    "Wet Density":119,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":13.9,
+    "Wet Density":119,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":12.3,
+    "Wet Density":119,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":10.8,
+    "Wet Density":119,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":9.3,
+    "Wet Density":119,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":8.0,
+    "Wet Density":119,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":6.9,
+    "Wet Density":119,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":6.0,
+    "Wet Density":119,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":5.1,
+    "Wet Density":119,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":4.4,
+    "Wet Density":119,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":3.6,
+    "Wet Density":119,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":2.7,
+    "Wet Density":119,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":1.8,
+    "Wet Density":119,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":0.9,
+    "Wet Density":119,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":20.5,
+    "Wet Density":120,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":18.4,
+    "Wet Density":120,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":16.2,
+    "Wet Density":120,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":14.3,
+    "Wet Density":120,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":12.8,
+    "Wet Density":120,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":11.2,
+    "Wet Density":120,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":9.7,
+    "Wet Density":120,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":8.4,
+    "Wet Density":120,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":7.2,
+    "Wet Density":120,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":6.3,
+    "Wet Density":120,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":5.4,
+    "Wet Density":120,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":4.7,
+    "Wet Density":120,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":3.8,
+    "Wet Density":120,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":3.0,
+    "Wet Density":120,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":2.0,
+    "Wet Density":120,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":1.1,
+    "Wet Density":120,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":0.0,
+    "Wet Density":120,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":21.1,
+    "Wet Density":121,
+    "Max Density":100.1,
+    "Optimum Moisture Content":21.3
+  },
+  {
+    "Moisture Content":18.9,
+    "Wet Density":121,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":16.7,
+    "Wet Density":121,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":14.8,
+    "Wet Density":121,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":13.2,
+    "Wet Density":121,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":11.7,
+    "Wet Density":121,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":10.1,
+    "Wet Density":121,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":8.8,
+    "Wet Density":121,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":7.6,
+    "Wet Density":121,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":6.7,
+    "Wet Density":121,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":5.7,
+    "Wet Density":121,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":5.0,
+    "Wet Density":121,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":4.1,
+    "Wet Density":121,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":3.2,
+    "Wet Density":121,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":2.3,
+    "Wet Density":121,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":1.4,
+    "Wet Density":121,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":0.3,
+    "Wet Density":121,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":19.5,
+    "Wet Density":122,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":17.2,
+    "Wet Density":122,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":15.2,
+    "Wet Density":122,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":13.7,
+    "Wet Density":122,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":12.1,
+    "Wet Density":122,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":10.5,
+    "Wet Density":122,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":9.2,
+    "Wet Density":122,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":8.0,
+    "Wet Density":122,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":7.0,
+    "Wet Density":122,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":6.0,
+    "Wet Density":122,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":5.3,
+    "Wet Density":122,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":4.3,
+    "Wet Density":122,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":3.5,
+    "Wet Density":122,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":2.5,
+    "Wet Density":122,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":1.6,
+    "Wet Density":122,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":0.5,
+    "Wet Density":122,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":20.0,
+    "Wet Density":123,
+    "Max Density":102.6,
+    "Optimum Moisture Content":20.0
+  },
+  {
+    "Moisture Content":17.7,
+    "Wet Density":123,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":15.7,
+    "Wet Density":123,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":14.1,
+    "Wet Density":123,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":12.6,
+    "Wet Density":123,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":11.0,
+    "Wet Density":123,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":9.6,
+    "Wet Density":123,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":8.3,
+    "Wet Density":123,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":7.4,
+    "Wet Density":123,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":6.3,
+    "Wet Density":123,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":5.6,
+    "Wet Density":123,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":4.6,
+    "Wet Density":123,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":3.7,
+    "Wet Density":123,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":2.8,
+    "Wet Density":123,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":1.9,
+    "Wet Density":123,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":0.7,
+    "Wet Density":123,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":18.2,
+    "Wet Density":124,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":16.2,
+    "Wet Density":124,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":14.6,
+    "Wet Density":124,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":13.0,
+    "Wet Density":124,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":11.4,
+    "Wet Density":124,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":9.9,
+    "Wet Density":124,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":8.7,
+    "Wet Density":124,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":7.7,
+    "Wet Density":124,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":6.6,
+    "Wet Density":124,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":5.8,
+    "Wet Density":124,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":4.9,
+    "Wet Density":124,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":4.0,
+    "Wet Density":124,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":3.0,
+    "Wet Density":124,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":2.1,
+    "Wet Density":124,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":1.0,
+    "Wet Density":124,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":18.7,
+    "Wet Density":125,
+    "Max Density":105.4,
+    "Optimum Moisture Content":18.7
+  },
+  {
+    "Moisture Content":16.6,
+    "Wet Density":125,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":15.1,
+    "Wet Density":125,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":13.5,
+    "Wet Density":125,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":11.8,
+    "Wet Density":125,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":10.3,
+    "Wet Density":125,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":9.1,
+    "Wet Density":125,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":8.1,
+    "Wet Density":125,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":6.9,
+    "Wet Density":125,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":6.1,
+    "Wet Density":125,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":5.1,
+    "Wet Density":125,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":4.2,
+    "Wet Density":125,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":3.3,
+    "Wet Density":125,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":2.4,
+    "Wet Density":125,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":1.2,
+    "Wet Density":125,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":17.1,
+    "Wet Density":126,
+    "Max Density":108.1,
+    "Optimum Moisture Content":17.5
+  },
+  {
+    "Moisture Content":15.5,
+    "Wet Density":126,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":13.9,
+    "Wet Density":126,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":12.2,
+    "Wet Density":126,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":10.7,
+    "Wet Density":126,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":9.4,
+    "Wet Density":126,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":8.4,
+    "Wet Density":126,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":7.2,
+    "Wet Density":126,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":6.4,
+    "Wet Density":126,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":5.4,
+    "Wet Density":126,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":4.5,
+    "Wet Density":126,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":3.5,
+    "Wet Density":126,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":2.6,
+    "Wet Density":126,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":1.4,
+    "Wet Density":126,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":16.0,
+    "Wet Density":127,
+    "Max Density":110.2,
+    "Optimum Moisture Content":16.6
+  },
+  {
+    "Moisture Content":14.4,
+    "Wet Density":127,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":12.7,
+    "Wet Density":127,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":11.1,
+    "Wet Density":127,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":9.8,
+    "Wet Density":127,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":8.7,
+    "Wet Density":127,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":7.5,
+    "Wet Density":127,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":6.7,
+    "Wet Density":127,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":5.7,
+    "Wet Density":127,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":4.7,
+    "Wet Density":127,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":3.7,
+    "Wet Density":127,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":2.8,
+    "Wet Density":127,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":1.7,
+    "Wet Density":127,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":14.8,
+    "Wet Density":128,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":13.1,
+    "Wet Density":128,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":11.5,
+    "Wet Density":128,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":10.2,
+    "Wet Density":128,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":9.1,
+    "Wet Density":128,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":7.9,
+    "Wet Density":128,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":7.0,
+    "Wet Density":128,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":5.9,
+    "Wet Density":128,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":5.0,
+    "Wet Density":128,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":4.0,
+    "Wet Density":128,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":3.1,
+    "Wet Density":128,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":1.9,
+    "Wet Density":128,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":15.3,
+    "Wet Density":129,
+    "Max Density":112.5,
+    "Optimum Moisture Content":15.7
+  },
+  {
+    "Moisture Content":13.5,
+    "Wet Density":129,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":11.9,
+    "Wet Density":129,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":10.5,
+    "Wet Density":129,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":9.4,
+    "Wet Density":129,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":8.2,
+    "Wet Density":129,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":7.3,
+    "Wet Density":129,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":6.2,
+    "Wet Density":129,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":5.2,
+    "Wet Density":129,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":4.2,
+    "Wet Density":129,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":3.3,
+    "Wet Density":129,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":2.1,
+    "Wet Density":129,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":13.9,
+    "Wet Density":130,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":12.2,
+    "Wet Density":130,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":10.9,
+    "Wet Density":130,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":9.8,
+    "Wet Density":130,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":8.5,
+    "Wet Density":130,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":7.6,
+    "Wet Density":130,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":6.4,
+    "Wet Density":130,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":5.5,
+    "Wet Density":130,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":4.5,
+    "Wet Density":130,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":3.6,
+    "Wet Density":130,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":2.4,
+    "Wet Density":130,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":14.3,
+    "Wet Density":131,
+    "Max Density":115.2,
+    "Optimum Moisture Content":14.7
+  },
+  {
+    "Moisture Content":12.6,
+    "Wet Density":131,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":11.3,
+    "Wet Density":131,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":10.1,
+    "Wet Density":131,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":8.8,
+    "Wet Density":131,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":7.8,
+    "Wet Density":131,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":6.7,
+    "Wet Density":131,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":5.7,
+    "Wet Density":131,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":4.7,
+    "Wet Density":131,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":3.8,
+    "Wet Density":131,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":2.6,
+    "Wet Density":131,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":13.0,
+    "Wet Density":132,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":11.6,
+    "Wet Density":132,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":10.5,
+    "Wet Density":132,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":9.1,
+    "Wet Density":132,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":8.1,
+    "Wet Density":132,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":7.0,
+    "Wet Density":132,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":6.0,
+    "Wet Density":132,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":5.0,
+    "Wet Density":132,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":4.1,
+    "Wet Density":132,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":2.9,
+    "Wet Density":132,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":13.4,
+    "Wet Density":133,
+    "Max Density":118.8,
+    "Optimum Moisture Content":13.6
+  },
+  {
+    "Moisture Content":12.0,
+    "Wet Density":133,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":10.8,
+    "Wet Density":133,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":9.4,
+    "Wet Density":133,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":8.4,
+    "Wet Density":133,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":7.2,
+    "Wet Density":133,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":6.2,
+    "Wet Density":133,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":5.2,
+    "Wet Density":133,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":4.3,
+    "Wet Density":133,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":3.1,
+    "Wet Density":133,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":12.4,
+    "Wet Density":134,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":11.1,
+    "Wet Density":134,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":9.7,
+    "Wet Density":134,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":8.7,
+    "Wet Density":134,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":7.5,
+    "Wet Density":134,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":6.5,
+    "Wet Density":134,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":5.5,
+    "Wet Density":134,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":4.6,
+    "Wet Density":134,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":3.3,
+    "Wet Density":134,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":12.7,
+    "Wet Density":135,
+    "Max Density":120.0,
+    "Optimum Moisture Content":12.8
+  },
+  {
+    "Moisture Content":11.5,
+    "Wet Density":135,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":10.0,
+    "Wet Density":135,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":9.0,
+    "Wet Density":135,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":7.8,
+    "Wet Density":135,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":6.7,
+    "Wet Density":135,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":5.7,
+    "Wet Density":135,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":4.8,
+    "Wet Density":135,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":3.6,
+    "Wet Density":135,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":11.8,
+    "Wet Density":136,
+    "Max Density":122.2,
+    "Optimum Moisture Content":12.1
+  },
+  {
+    "Moisture Content":10.3,
+    "Wet Density":136,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":9.3,
+    "Wet Density":136,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":8.0,
+    "Wet Density":136,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":7.0,
+    "Wet Density":136,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":6.0,
+    "Wet Density":136,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":5.1,
+    "Wet Density":136,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":3.8,
+    "Wet Density":136,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":10.6,
+    "Wet Density":137,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":9.6,
+    "Wet Density":137,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":8.3,
+    "Wet Density":137,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":7.2,
+    "Wet Density":137,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":6.2,
+    "Wet Density":137,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":5.3,
+    "Wet Density":137,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":4.0,
+    "Wet Density":137,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":10.9,
+    "Wet Density":138,
+    "Max Density":125.0,
+    "Optimum Moisture Content":11.2
+  },
+  {
+    "Moisture Content":9.8,
+    "Wet Density":138,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":8.5,
+    "Wet Density":138,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":7.5,
+    "Wet Density":138,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":6.5,
+    "Wet Density":138,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":5.6,
+    "Wet Density":138,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":4.3,
+    "Wet Density":138,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":10.1,
+    "Wet Density":139,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":8.8,
+    "Wet Density":139,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":7.7,
+    "Wet Density":139,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":6.7,
+    "Wet Density":139,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":5.8,
+    "Wet Density":139,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":4.5,
+    "Wet Density":139,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":10.4,
+    "Wet Density":140,
+    "Max Density":127.1,
+    "Optimum Moisture Content":10.5
+  },
+  {
+    "Moisture Content":9.1,
+    "Wet Density":140,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":8.0,
+    "Wet Density":140,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":6.9,
+    "Wet Density":140,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":6.1,
+    "Wet Density":140,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":4.7,
+    "Wet Density":140,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":9.3,
+    "Wet Density":141,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":8.2,
+    "Wet Density":141,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":7.2,
+    "Wet Density":141,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":6.3,
+    "Wet Density":141,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":5.0,
+    "Wet Density":141,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":9.6,
+    "Wet Density":142,
+    "Max Density":129.7,
+    "Optimum Moisture Content":9.7
+  },
+  {
+    "Moisture Content":8.5,
+    "Wet Density":142,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":7.4,
+    "Wet Density":142,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":6.6,
+    "Wet Density":142,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":5.2,
+    "Wet Density":142,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":8.6,
+    "Wet Density":143,
+    "Max Density":132.2,
+    "Optimum Moisture Content":9.0
+  },
+  {
+    "Moisture Content":7.7,
+    "Wet Density":143,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":6.8,
+    "Wet Density":143,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":5.5,
+    "Wet Density":143,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":7.9,
+    "Wet Density":144,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":7.1,
+    "Wet Density":144,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":5.7,
+    "Wet Density":144,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":8.2,
+    "Wet Density":145,
+    "Max Density":134.6,
+    "Optimum Moisture Content":8.3
+  },
+  {
+    "Moisture Content":7.3,
+    "Wet Density":145,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":5.9,
+    "Wet Density":145,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":7.6,
+    "Wet Density":146,
+    "Max Density":136.5,
+    "Optimum Moisture Content":7.8
+  },
+  {
+    "Moisture Content":6.2,
+    "Wet Density":146,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":6.4,
+    "Wet Density":147,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":6.6,
+    "Wet Density":148,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  },
+  {
+    "Moisture Content":6.9,
+    "Wet Density":149,
+    "Max Density":139.5,
+    "Optimum Moisture Content":7.0
+  }
+]

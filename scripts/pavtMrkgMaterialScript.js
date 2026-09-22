@@ -452,7 +452,30 @@ function calculate() {
     binder.textContent = `${number(m.totalBinder)} ${m.unit}`;
     const beads = document.createElement('p');
     beads.textContent = `${number(m.totalBeads)} lb glass beads`;
-    card.append(heading, binder, beads);
+    const thicknessHeading = document.createElement('h4');
+    thicknessHeading.textContent = 'MDOT thickness requirements';
+    const thicknesses = document.createElement('dl');
+    thicknesses.className = 'pm-rates pm-thickness';
+    const spec = pavementMaterials[m.material];
+    for (const [label, value] of [
+      ['Wet binder thickness without beads', spec.wet],
+      ['Minimum dry thickness with beads', spec.dry]
+    ]) {
+      const row = document.createElement('div');
+      const term = document.createElement('dt');
+      term.textContent = label;
+      const amount = document.createElement('dd');
+      amount.textContent = `${value} mils`;
+      row.append(term, amount);
+      thicknesses.append(row);
+    }
+    card.append(heading, binder, beads, thicknessHeading, thicknesses);
+    if (longLines.some(line => line.material === m.material && line.rates.project)
+      || (special.material === m.material && special.rates?.project)) {
+      const note = document.createElement('p');
+      note.textContent = 'MDOT table thicknesses are shown. Entered project rates do not verify thickness compliance.';
+      card.append(note);
+    }
     summary.append(card);
   }
   document.getElementById('combinedBeads').textContent = number(totals.beadsPounds);

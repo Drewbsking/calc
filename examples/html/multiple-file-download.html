@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multiple File Downloader</title>
+</head>
+<body>
+
+  <h1>Multiple File Downloader</h1>
+
+  <form id="fileForm">
+    <!-- Use checkboxes for multiple selection -->
+    <label><input type="checkbox" name="files" value="https://upload.wikimedia.org/wikipedia/commons/1/15/Cat_August_2010-4.jpg"> File 1</label>
+    <label><input type="checkbox" name="files" value="https://upload.wikimedia.org/wikipedia/commons/b/b6/Felis_catus-cat_on_snow.jpg"> File 2</label>
+    <!-- Add more files as needed -->
+  </form>
+
+  <button onclick="downloadSelected()">Download Selected</button>
+
+  <script>
+    function downloadSelected() {
+      var selectedFiles = document.querySelectorAll('input[name="files"]:checked');
+
+      if (selectedFiles.length > 0) {
+        selectedFiles.forEach(function(file) {
+          var url = file.value;
+          var filename = "custom_filename"; // You can set a custom filename here or extract it from the URL
+
+          fetch(url)
+            .then(response => response.blob())
+            .then(blob => {
+              // Create a link with the Blob content and trigger the download
+              var link = document.createElement('a');
+              link.href = URL.createObjectURL(blob);
+              link.download = filename;
+
+              // Append the link to the document and click it programmatically
+              document.body.appendChild(link);
+              link.click();
+
+              // Remove the link from the document
+              document.body.removeChild(link);
+            });
+        });
+      } else {
+        alert("Please select at least one file to download.");
+      }
+    }
+  </script>
+
+</body>
+</html>

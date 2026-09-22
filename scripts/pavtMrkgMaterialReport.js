@@ -159,13 +159,15 @@ function createPavementMarkingReport(calculation, project, jsPDF, createdAt = ne
   }
 
   function rateRecord(title, materialName, r) {
-    ensure(40);
+    // Keep the material context and its thickness requirements on the same page.
+    ensure(105);
     paragraph(title, { bold: true, color: blue, size: 10 });
     paragraph(`Material: ${materialName}\nApplied basis: ${r.basis}`, { size: 9 });
     table(['Rate / property', 'Value', 'Basis'], [
       ['MDOT 4-inch binder', `${fmt(r.baseBinderPerMile)} ${r.binderUnit}/mi`, '[R1], solid line'],
       ['MDOT 4-inch beads', `${fmt(r.baseBeadsPerMile)} lb/mi`, '[R1], solid line'],
-      ['Wet / minimum dry thickness', `${r.wetThickness} / ${r.minThicknessBeads} mils`, 'MDOT reference: without / with beads'],
+      ['Wet binder thickness without beads', `${r.wetThickness} mils`, '[R1], Table 811-1'],
+      ['Minimum dry thickness with beads', `${r.minThicknessBeads} mils`, '[R1], Table 811-1'],
       ['Applied reference width', `${fmt(r.referenceWidth)} in`, r.project ? 'Project entry' : 'MDOT 4-inch baseline'],
       ['Binder at reference width', `${fmt(r.referenceBinder)} ${r.binderUnit}/mi`, r.project ? 'Project entry' : '[R1]'],
       ['Beads at reference width', `${fmt(r.referenceBeads)} lb/mi`, r.project ? 'Project entry' : '[R1]']
@@ -223,7 +225,7 @@ function createPavementMarkingReport(calculation, project, jsPDF, createdAt = ne
     'Each long-line row has its own material, width, painted length, and rate basis. Length excludes gaps and represents individual painted lines; no automatic double-line or skip-pattern multiplier is applied. Conversion constants: 5,280 ft/mi and 12 in/ft.',
     'MDOT mode uses exact solid-line columns at 4, 6, 8, and 12 inches. Other widths use the 4-inch rate x W / 4 and are labeled derived estimates. Broken-line columns are not used because footage already excludes gaps.',
     'Special markings have an independent material and rate selection. Their area rates derive from the 4-inch MDOT baseline / 1,760 sq ft per mile, or from their own project reference rates / reference area. Long-line selections do not resize or change special markings.',
-    'Quantities represent one application. No waste, overrun, extra coats, procurement rounding, or overlap deductions are added. Thicknesses are MDOT references; selecting project rates does not verify thickness compliance.',
+    'Quantities represent one application. No waste, overrun, extra coats, procurement rounding, or overlap deductions are added. Thicknesses are MDOT references (1 mil = 0.001 inch); selecting project rates does not verify thickness compliance.',
     'Blank or zero long-line footage is inactive and retained in the input record. Positive footage requires a material and valid rates. Special quantities are nonnegative whole numbers. Active project rates and custom areas require source references. Filters and collapsed controls do not remove quantities.',
     'Intermediate quantities show six decimals, area rates twelve. Calculations use unrounded JavaScript Number values. Section 8 records raw numeric values; final reporting uses two decimals. Free-text notes do not override numeric controls.'
   ].forEach((note, i) => paragraph(`${i + 1}. ${note}`, { size: 8.5, gap: 2 }));

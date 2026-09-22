@@ -61,6 +61,10 @@
 .pm-material-summary h3 { margin: 0; font-size: 13px; line-height: 1.5; }
 .pm-material-summary p { margin: 6px 0 0; font-size: 12px; }
 .pm-material-summary .pm-material-amount { font-size: 26px; font-weight: 650; overflow-wrap: anywhere; }
+.pm-material-summary h4 { margin: 16px 0 0; font-size: 12px; line-height: 1.5; }
+.pm-material-summary .pm-thickness { margin: 0; }
+.pm-material-summary .pm-thickness > div { gap: 12px; line-height: 1.5; }
+.pm-material-summary .pm-thickness dt { color: inherit; }
 .pm-line-summary { padding: 10px 0; border-bottom: 1px solid #e8edf3; font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
 .pm-line-summary p { margin: 5px 0 0; color: #607490; }
 .pm-line-summary p:empty { display: none; }
