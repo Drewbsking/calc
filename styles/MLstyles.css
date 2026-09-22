@@ -60,7 +60,7 @@
 .los-page .form-group {
     margin-bottom: 20px;
 }
-.los-page .result-section {
+.los-page .result-section, .los-page .formula-reference {
     box-sizing: border-box;
     width: 100%;
     margin-top: 20px;
@@ -77,11 +77,37 @@
 }
 .los-page .formula {
     overflow-wrap: anywhere;
+    line-height: 1.7;
     font-family: 'Courier New', Courier, monospace;
     background-color: #f8f9fa;
     padding: 10px;
     border-radius: 5px;
 }
+.los-page .formula-reference {
+    line-height: 1.5;
+    scroll-margin-top: 20px;
+}
+.los-page .formula-reference h2 { margin-top: 0; }
+.los-page .formula-reference h3 { margin-top: 24px; }
+.los-page .los-limits {
+    width: 100%;
+    border-collapse: collapse;
+    overflow-wrap: anywhere;
+}
+.los-page .los-limits caption {
+    text-align: left;
+    margin-bottom: 8px;
+}
+.los-page .los-limits th, .los-page .los-limits td {
+    padding: 8px 12px;
+    border: 1px solid #ced4da;
+    text-align: left;
+}
+.los-page .los-limits thead { background: #f8f9fa; }
+.los-page .comparison-table { margin: 24px 0; table-layout: fixed; }
+.los-page .comparison-table caption { font-weight: bold; }
+.los-page .edition-label { color: #0056b3; font-weight: bold; }
+.los-page .edition-results { margin-top: 24px; border-top: 1px solid #ced4da; padding-top: 16px; }
 .los-page fieldset {
     min-width: 0;
     margin: 0 0 24px;
@@ -89,7 +115,7 @@
     border: 1px solid #ced4da;
     border-radius: 6px;
 }
-.los-page fieldset[hidden] { display: none; }
+.los-page [hidden] { display: none; }
 .los-page legend { font-weight: bold; padding: 0 6px; }
 .los-page .input-help { font-size: 0.9rem; line-height: 1.5; }
 .los-page .source-notes { max-width: 700px; margin: 0 auto; line-height: 1.5; }
@@ -101,4 +127,5 @@
     #losForm { padding: 16px; }
     .los-page fieldset { padding: 12px; }
     .los-page h1 { font-size: 24px; }
+    .los-page .los-limits th, .los-page .los-limits td { padding: 6px; font-size: 0.8rem; }
 }

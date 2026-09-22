@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Basic Freeway LOS Calculator</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="styles/MLstyles.css">
+</head>
+<body class="los-body">
+    <div id="header-placeholder"></div>
+    <main class="container los-page">
+        <section class="calculator">
+            <form id="losForm">
+                <h1>Basic Freeway LOS Calculator</h1>
+                <p class="edition-label">HCM 6th Edition (2016), Chapter 12</p>
+                <p>Analyze one direction of a basic freeway segment with two or more lanes. For a highway with at-grade access, use the <a href="ML.html">multilane calculator (2010 / 6th Edition)</a>.</p>
+                <p class="input-help">Starting inputs are examples; replace them with site data.</p>
+                <p>Base conditions: speed and capacity adjustment factors are 1.00. This method does not model ramp junctions, weaving, queues, managed lanes, weather, or incidents.</p>
+                <p><a href="#calculation-formulas">View formulas and LOS limits</a></p>
+                <fieldset>
+                    <legend>Traffic</legend>
+                    <label for="trafficVolume">Directional hourly volume (veh/h)</label>
+                    <input id="trafficVolume" type="number" min="0" step="any" value="2400" required>
+                    <label for="lanes">Lanes in one direction</label>
+                    <input id="lanes" type="number" min="2" step="1" value="2" required>
+                    <label for="PHF">Peak hour factor (PHF)</label>
+                    <input id="PHF" type="number" min="0.25" max="1" step="any" value="0.90" required>
+                    <label for="heavyVehicles">Total heavy vehicles (%)</label>
+                    <input id="heavyVehicles" type="number" min="0" max="100" step="any" value="5" required>
+                    <p class="input-help">Include trucks, buses and RVs. Buses and RVs count as single-unit trucks (SUTs).</p>
+                </fieldset>
+                <fieldset>
+                    <legend>Free-flow speed</legend>
+                    <label for="ffsMode">Speed method</label>
+                    <select id="ffsMode">
+                        <option value="estimated">Estimate from geometry</option>
+                        <option value="measured">Use measured FFS</option>
+                    </select>
+                    <fieldset id="measuredFields" hidden disabled>
+                        <legend>Measured speed</legend>
+                        <label for="freeFlowSpeed">Measured free-flow speed (mph)</label>
+                        <input id="freeFlowSpeed" type="number" min="55" max="75" step="any" value="65" required>
+                        <p class="input-help">Use a representative passenger-car speed study during low flow. Supported FFS: 55–75 mph; do not enter the posted speed limit as a measured speed.</p>
+                    </fieldset>
+                    <fieldset id="estimatedFields">
+                        <legend>Geometry</legend>
+                        <label for="baseFreeFlowSpeed">Base free-flow speed (mph)</label>
+                        <input id="baseFreeFlowSpeed" type="number" min="55" max="75.4" step="any" value="75.4" required>
+                        <p class="input-help">The HCM default base speed is 75.4 mph. Use a locally supported base speed when available. The resulting FFS must be 55–75 mph.</p>
+                        <label for="laneWidth">Average lane width (ft)</label>
+                        <input id="laneWidth" type="number" min="10" step="any" value="12" required>
+                        <label for="rightClearance">Right-side lateral clearance (ft)</label>
+                        <input id="rightClearance" type="number" min="0" step="any" value="10" required>
+                        <p class="input-help">Distance from the right travel-lane edge to the nearest obstruction. Clearance of 6 ft or more has no penalty.</p>
+                        <label for="rampDensity">Total ramp density (ramps/mi)</label>
+                        <input id="rampDensity" type="number" min="0" max="6" step="any" value="1" required>
+                        <p class="input-help">Count on- and off-ramps in this direction within 3 mi upstream and 3 mi downstream of the segment midpoint, then divide by 6 mi. Count ramps, not interchanges. Six ramps in this window = 1 ramp/mi.</p>
+                    </fieldset>
+                </fieldset>
+                <fieldset>
+                    <legend>Terrain and heavy vehicles</legend>
+                    <label for="terrain">Terrain analysis</label>
+                    <select id="terrain">
+                        <option value="level">Level terrain</option>
+                        <option value="rolling">Rolling terrain</option>
+                        <option value="specific">Specific grade</option>
+                    </select>
+                    <p class="input-help">Use general terrain only when no individual grade significantly affects operation. Mountainous terrain requires a mixed-flow analysis.</p>
+                    <fieldset id="specificFields" hidden disabled>
+                        <legend>Grade in the analysis direction</legend>
+                        <label for="gradePercent">Signed grade (%)</label>
+                        <input id="gradePercent" type="number" step="any" value="2" required>
+                        <p class="input-help">Positive for upgrade, negative for downgrade. Automatic PCE lookup supports −2% through +6%.</p>
+                        <label for="gradeLength">Grade length (ft)</label>
+                        <input id="gradeLength" type="number" min="0.01" step="any" value="3200" required>
+                        <label for="sutMix">Heavy-vehicle mix (% of heavy vehicles)</label>
+                        <select id="sutMix">
+                            <option value="30">30% SUT / 70% tractor-trailers</option>
+                            <option value="50" selected>50% SUT / 50% tractor-trailers</option>
+                            <option value="70">70% SUT / 30% tractor-trailers</option>
+                        </select>
+                        <p class="input-help">Automatic lookup requires at least 660 ft and 2% heavy vehicles. At 25% or more, use the terminal percentage column; beyond a table's longest grade, use its final length row. Steep grades or substantial truck traffic may require the Chapter 26 mixed-flow method.</p>
+                    </fieldset>
+                    <details>
+                        <summary>Use a separately verified PCE</summary>
+                        <label for="pceOverride">Verified heavy-vehicle equivalent E<sub>T</sub> (optional)</label>
+                        <input id="pceOverride" type="number" min="1" step="any">
+                        <label for="pceSource">Basis / source for the PCE</label>
+                        <input id="pceSource" type="text" placeholder="Study, table, or calculation reference">
+                        <p class="input-help">A supplied PCE replaces the terrain lookup and requires its source. Clear it to resume automatic lookup.</p>
+                    </details>
+                </fieldset>
+                <button type="submit">Calculate LOS</button>
+                <p id="losError" role="alert"></p>
+                <button type="button" id="loadExample">Load archived example</button>
+                <p class="input-help">Loads the supplied four-lane example: 2,400 veh/h, PHF 0.90, 5% heavy vehicles, base speed 60 mph, 12 ft lanes, 10 ft clearance, and 1 ramp/mi.</p>
+            </form>
+            <section class="result-section" aria-live="polite" aria-atomic="true">
+                <h2 id="result"></h2>
+                <div id="steps"></div>
+            </section>
+        </section>
+        <section class="formula-reference" id="calculation-formulas" aria-labelledby="formula-title">
+            <h2 id="formula-title">Calculation formulas</h2>
+            <p>HCM 6th Edition basic freeway method, with SAF = CAF = 1. Keep full precision until displaying results.</p>
+            <h3>1. Free-flow speed (Eq. 12-2)</h3>
+            <p class="formula">FFS = BFFS − f<sub>LW</sub> − f<sub>RLC</sub> − 3.22 × TRD<sup>0.84</sup></p>
+            <p>BFFS is base free-flow speed; TRD is ramps per mile. Use measured FFS directly when available.</p>
+            <p>Lane penalty f<sub>LW</sub> = 0 at widths ≥12 ft, 1.9 mph for 11–&lt;12 ft, and 6.6 mph for 10–&lt;11 ft (Exhibit 12-20).</p>
+            <p class="formula">f<sub>RLC</sub> = [6 − min(clearance, 6)] × k</p>
+            <p>Exhibit 12-21 is linear between clearance rows: k = 0.6, 0.4, 0.2, or 0.1 mph/ft for 2, 3, 4, or ≥5 directional lanes, respectively.</p>
+            <h3>2. Heavy vehicles and flow (Eqs. 12-9, 12-10)</h3>
+            <p class="formula">f<sub>HV</sub> = 1 / [1 + P<sub>T</sub>(E<sub>T</sub> − 1)]<br>v<sub>p</sub> = V / (PHF × N × f<sub>HV</sub>)</p>
+            <p>P<sub>T</sub> is the heavy-vehicle percentage divided by 100; E<sub>T</sub> is its passenger-car equivalent (2 for level terrain, 3 for rolling terrain, or a specific-grade lookup). V is directional demand in veh/h; N is directional lanes; v<sub>p</sub> is passenger-car flow in pc/h/ln.</p>
+            <h3>3. Capacity, speed, density (Eq. 12-6, Eq. 12-1, Exhibit 12-6)</h3>
+            <p class="formula">c = min[2,200 + 10(FFS − 50), 2,400]<br>BP = 1,000 + 40(75 − FFS)</p>
+            <p>Capacity c and speed-curve breakpoint BP are in pc/h/ln. The supported FFS range is 55–75 mph.</p>
+            <p class="formula">S = FFS, when v<sub>p</sub> ≤ BP<br>S = FFS − (FFS − c/45) × [(v<sub>p</sub> − BP)/(c − BP)]<sup>2</sup>, when BP &lt; v<sub>p</sub> ≤ c<br>D = v<sub>p</sub> / S</p>
+            <p>S is average speed in mph; D is density in pc/mi/ln. Demand above capacity is LOS F; the basic segment method does not predict speed or density in that condition.</p>
+            <table class="los-limits">
+                <caption>Exhibit 12-15: density limits when demand does not exceed capacity</caption>
+                <colgroup><col style="width: 3.5em"><col></colgroup>
+                <thead><tr><th scope="col">LOS</th><th scope="col">Density (pc/mi/ln)</th></tr></thead>
+                <tbody>
+                    <tr><th scope="row">A</th><td>0–11</td></tr>
+                    <tr><th scope="row">B</th><td>&gt;11–18</td></tr>
+                    <tr><th scope="row">C</th><td>&gt;18–26</td></tr>
+                    <tr><th scope="row">D</th><td>&gt;26–35</td></tr>
+                    <tr><th scope="row">E</th><td>&gt;35–45</td></tr>
+                    <tr><th scope="row">F</th><td>Demand exceeds capacity, or density &gt;45</td></tr>
+                </tbody>
+            </table>
+        </section>
+        <section class="source-notes">
+            <h2>Sources and edition</h2>
+            <p><a href="Audit/HCM/LOS%20-%20Freeway.pdf">Supplied HCM Chapter 12 extract</a> (Version 6.0, pp. 12-17–12-39) and the previously reviewed 6th Edition Exhibit 12-6 (p. 12-10). Specific-grade PCEs reuse the multilane calculator's verified Chapter 12 tables.</p>
+            <p><a href="docs/hcm-audit.md">Audit and source reconciliation</a> records corrections to the archived Python script and <a href="Audit/HCM/example.jpg">worked example</a>. The example's LOS remains C with corrected arithmetic.</p>
+            <p>The supplied <a href="Audit/HCM/D4-TO-22-137-HCM7RG-FINAL-HCM7-Reference-Guide.pdf">HCM 7th Edition reference guide</a> is available for review. This calculator implements the verified 6th Edition base method; it does not implement the 7th Edition's connected/automated-vehicle adjustments.</p>
+        </section>
+    </main>
+    <div id="footer-placeholder"></div>
+    <script src="MLdata.js"></script>
+    <script src="ML2010data.js"></script>
+    <script src="MLscripts.js"></script>
+    <script src="freewayLOSCore.js"></script>
+    <script src="freewayLOSPage.js"></script>
+    <script src="scripts/layoutScript.js"></script>
+</body>
+</html>

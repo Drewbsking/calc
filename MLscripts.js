@@ -1,6 +1,7 @@
-/* HCM 6th Edition (2016), Chapter 12. See docs/ml-source-reconciliation.md. */
+/* HCM 2010 Chapter 14 and HCM 6th Edition Chapter 12. See docs/ml-2010-sources.md. */
 const ML = (() => {
     const data = typeof module !== 'undefined' && module.exports ? require('./MLdata.js') : MLData;
+    const oldData = typeof module !== 'undefined' && module.exports ? require('./ML2010data.js') : ML2010Data;
     function number(value, label, min, max = Infinity) {
         if (typeof value !== 'number' || !Number.isFinite(value) || value < min || value > max) {
             throw new Error(`${label} must be a finite number ${max === Infinity ? `at least ${min}` : `from ${min} to ${max}`}.`);
@@ -66,6 +67,8 @@ const ML = (() => {
         return { los: getLOS(density), speed, density, capacity, ratio: flow / capacity };
     }
     function calculate(input) {
+        if (input.edition === '2010') return calculate2010(input);
+        if (input.edition !== undefined && input.edition !== '6th') throw new Error('Select HCM 2010 or HCM 6th Edition.');
         number(input.trafficVolume, 'Directional hourly volume (veh/h)', 0);
         number(input.PHF, 'Peak hour factor', 0.25, 1);
         number(input.heavyVehicles, 'Total heavy vehicles (%)', 0, 100);
@@ -112,98 +115,113 @@ const ML = (() => {
         }
         return { freeFlowSpeed, lengthMiles, adjustments, results };
     }
-    return { calculate, estimateFFS, getPCE, getLOS, operatingConditions };
+    function getPCE2010(kind, direction, grade, length, percentage) {
+        if (!['ET', 'ER'].includes(kind) || !['upgrade', 'downgrade'].includes(direction)) throw new Error('Select a valid 2010 PCE type and direction.');
+        number(grade, 'Grade magnitude (%)', 0);
+        number(length, 'Grade length (mi)', Number.MIN_VALUE);
+        number(percentage, `${kind === 'ET' ? 'Trucks/buses' : 'RVs'} (%)`, 0, 100);
+        if (percentage === 0) return 1;
+        if (direction === 'downgrade') {
+            if (kind === 'ER') return 1.2;
+            if (grade < 4 || length <= 4) return 1.5;
+            number(percentage, 'Trucks/buses for the 2010 long-downgrade table (%)', 5, 20);
+            const row = oldData.truckDowngrades.find(group => grade <= group.maxGrade);
+            return roundTenth(interpolate(oldData.downgradePercentages.map((pct, i) => [pct, row.values[i]]), percentage));
+        }
+        if (grade <= 2) return kind === 'ET' ? 1.5 : 1.2;
+        number(percentage, `${kind} for the 2010 upgrade table (%)`, 2, 25);
+        if (kind === 'ET' && grade > 6 && length <= 0.25 && percentage > 20) {
+            throw new Error('The 2010 ET cell for grades above 6%, lengths up to 0.25 mi and 25% trucks conflicts with the archived reference. A verified upgrade ET override is required for percentages above 20% in this row.');
+        }
+        const table = kind === 'ET' ? oldData.truckUpgrades : oldData.rvUpgrades;
+        const group = table.find(row => grade <= row.maxGrade);
+        const [, values] = group.rows.find(([maxLength]) => length <= maxLength);
+        return roundTenth(interpolate(oldData.percentages.map((pct, i) => [pct, values[i]]), percentage));
+    }
+    function selectCurve2010(ffs) {
+        number(ffs, 'HCM 2010 FFS (mph)', 0);
+        // Geometry deductions can leave an exact half-step a few ULPs away.
+        for (const boundary of [42.5, 47.5, 52.5, 57.5, 62.5]) {
+            if (Math.abs(ffs - boundary) <= 8 * Number.EPSILON * boundary) ffs = boundary;
+        }
+        number(ffs, 'HCM 2010 FFS (mph)', 42.5, 62.5);
+        if (ffs >= 62.5) throw new Error('HCM 2010 FFS must be at least 42.5 and less than 62.5 mph.');
+        return Math.round(ffs / 5) * 5;
+    }
+    function operatingConditions2010(flow, curveSpeed) {
+        number(flow, 'Passenger-car flow rate', 0);
+        if (![45, 50, 55, 60].includes(curveSpeed)) throw new Error('Select a 45, 50, 55 or 60 mph HCM 2010 curve.');
+        const { capacity, coefficient, densityLimit } = oldData.curves[curveSpeed];
+        const common = { capacity, coefficient, densityLimit, ratio: flow / capacity };
+        if (flow - capacity > 8 * Number.EPSILON * capacity) return { ...common, los: 'F', speed: null, density: null };
+        const stableFlow = Math.min(flow, capacity);
+        const speed = stableFlow <= 1400 ? curveSpeed : curveSpeed - coefficient * ((stableFlow - 1400) / (capacity - 1400)) ** 1.31;
+        const density = stableFlow / speed;
+        // The published coefficients are rounded. Capacity controls E/F even
+        // when endpoint density is slightly above the rounded exhibit limit.
+        const los = density <= 11 ? 'A' : density <= 18 ? 'B' : density <= 26 ? 'C' : density <= 35 ? 'D' : 'E';
+        return { ...common, los, speed, density };
+    }
+    function calculate2010(input) {
+        number(input.trafficVolume, 'Directional hourly volume (veh/h)', 0);
+        number(input.PHF, 'Peak hour factor', 0.25, 1);
+        number(input.percentTrucks, 'Trucks and buses (%)', 0, 100);
+        number(input.percentRVs, 'Recreational vehicles (%)', 0, 100);
+        if (input.percentTrucks + input.percentRVs > 100) throw new Error('Trucks/buses plus RVs must not exceed 100% of traffic.');
+        const driverFactor = input.driverFactor === undefined ? 1 : number(input.driverFactor, 'Driver population factor', 0.85, 1);
+        if (!['measured', 'estimated'].includes(input.ffsMode)) throw new Error('Select a free-flow-speed method.');
+        if (!['specific', 'level', 'rolling'].includes(input.terrain)) throw new Error('Select a terrain analysis.');
+        if (input.terrain === 'specific') {
+            number(input.gradeLength, 'Grade length (ft)', 0.01);
+            number(input.gradePercent, 'Grade magnitude (%)', 0);
+        }
+        const adjustments = input.ffsMode === 'estimated' ? estimateFFS(input) : null;
+        const freeFlowSpeed = adjustments ? adjustments.speed : input.freeFlowSpeed;
+        const curveSpeed = selectCurve2010(freeFlowSpeed);
+        const lengthMiles = input.terrain === 'specific' ? input.gradeLength / 5280 : null;
+        const results = {};
+        for (const direction of input.terrain === 'specific' ? ['upgrade', 'downgrade'] : ['segment']) {
+            const factors = {}, bases = [];
+            let usedOverride = false;
+            try {
+                for (const [kind, percentage] of [['ET', input.percentTrucks], ['ER', input.percentRVs]]) {
+                    const override = input[`${direction}${kind}2010`];
+                    if (input.terrain === 'specific' && override !== undefined && override !== null) {
+                        factors[kind] = number(override, `HCM 2010 ${direction} ${kind} override`, 1);
+                        if (typeof input.pceSource2010 !== 'string' || !input.pceSource2010.trim()) throw new Error('Enter the basis/source for your HCM 2010 PCE override.');
+                        bases.push(`${kind}: user-supplied PCE`);
+                        usedOverride = true;
+                    } else if (percentage === 0) {
+                        factors[kind] = 1;
+                        bases.push(`${kind}: no ${kind === 'ET' ? 'trucks/buses' : 'RVs'}`);
+                    } else if (input.terrain !== 'specific') {
+                        factors[kind] = oldData.general[input.terrain][kind];
+                        bases.push(`${kind}: Exhibit 14-12 (${input.terrain})`);
+                    } else {
+                        factors[kind] = getPCE2010(kind, direction, input.gradePercent, lengthMiles, percentage);
+                        bases.push(`${kind}: ${direction === 'upgrade' ? `Exhibit 14-${kind === 'ET' ? 13 : 14}` : kind === 'ET' ? 'Exhibit 14-15' : 'downgrade ER = 1.2'}`);
+                    }
+                }
+                const fHV = 1 / (1 + input.percentTrucks / 100 * (factors.ET - 1) + input.percentRVs / 100 * (factors.ER - 1));
+                const flow = input.trafficVolume / (input.PHF * 2 * fHV * driverFactor);
+                results[direction] = { ...factors, basis: bases.join('; '), usedOverride, fHV, flow, ...operatingConditions2010(flow, curveSpeed) };
+            } catch (err) {
+                results[direction] = { error: `${err.message} Supply the relevant verified HCM 2010 PCE and its source, or use a separate analysis.` };
+            }
+        }
+        return { edition: '2010', freeFlowSpeed, curveSpeed, driverFactor, lengthMiles, adjustments, results };
+    }
+    function calculateBoth(input) {
+        number(input.percentTrucks, 'Trucks and buses (%)', 0, 100);
+        number(input.percentRVs, 'Recreational vehicles (%)', 0, 100);
+        const heavyVehicles = input.percentTrucks + input.percentRVs;
+        if (heavyVehicles > 100) throw new Error('Trucks/buses plus RVs must not exceed 100% of traffic.');
+        return Object.fromEntries(['2010', '6th'].map(edition => {
+            try { return [edition, calculate({ ...input, edition, heavyVehicles })]; }
+            catch (err) { return [edition, { error: err.message }]; }
+        }));
+    }
+    return { calculate, calculateBoth, estimateFFS, getPCE, getLOS, operatingConditions,
+        getPCE2010, selectCurve2010, operatingConditions2010 };
 })();
 if (typeof module !== 'undefined' && module.exports) module.exports = ML;
-
-function calculateLOS() {
-    const form = document.getElementById('losForm');
-    const result = document.getElementById('result');
-    const steps = document.getElementById('steps');
-    const error = document.getElementById('losError');
-    result.textContent = '';
-    steps.replaceChildren();
-    error.textContent = '';
-    if (!form.reportValidity()) return;
-    const value = id => document.getElementById(id).valueAsNumber;
-    const input = Object.fromEntries(['trafficVolume', 'heavyVehicles', 'gradeLength', 'gradePercent', 'PHF',
-        'freeFlowSpeed', 'baseFreeFlowSpeed', 'laneWidth', 'rightClearance', 'leftClearance', 'accessPoints'].map(id => [id, value(id)]));
-    for (const id of ['ffsMode', 'medianType', 'terrain', 'sutMix', 'pceSource']) input[id] = document.getElementById(id).value;
-    for (const id of ['upgradePCE', 'downgradePCE']) {
-        input[id] = document.getElementById(id).value === '' ? null : value(id);
-    }
-    try {
-        const output = ML.calculate(input);
-        const fixed = (n, digits = 2) => n.toFixed(digits);
-        const escape = text => String(text).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-        const title = word => word.charAt(0).toUpperCase() + word.slice(1);
-        const summary = Object.entries(output.results).map(([direction, d]) => `${title(direction)}: ${d.error ? 'needs PCE' : `LOS ${d.los}`}`).join('; ');
-        const location = input.terrain === 'specific' ? `${input.gradeLength.toLocaleString()} ft grade` : `${title(input.terrain)} terrain`;
-        result.textContent = `${location} — ${summary}.`;
-        let speedStep = `<p>Measured FFS = ${fixed(output.freeFlowSpeed)} mph.</p>`;
-        if (output.adjustments) {
-            const a = output.adjustments;
-            speedStep = `<p class="formula">FFS = BFFS - f<sub>LW</sub> - f<sub>TLC</sub> - f<sub>M</sub> - f<sub>A</sub><br>
-                = ${input.baseFreeFlowSpeed} - ${fixed(a.lane, 1)} - ${fixed(a.lateral, 1)} - ${fixed(a.median, 1)} - ${fixed(a.access, 1)} = ${fixed(output.freeFlowSpeed)} mph</p>
-                <p>Total lateral clearance used: ${fixed(a.totalClearance)} ft (each side capped at 6 ft).</p>`;
-        }
-        let html = `<div class="step"><h3>1. Free-flow speed</h3>${speedStep}
-            <p>HCM 6th Edition uses this FFS directly, without rounding to 5 mph. SAF = CAF = 1 for the multilane method.</p></div>
-            <div class="step"><h3>2. Traffic and terrain</h3>
-            <p>V = ${input.trafficVolume} veh/h; PHF = ${input.PHF}; N = 2 lanes in one direction.<br>
-            Total heavy vehicles = ${input.heavyVehicles}% (includes buses and RVs).</p>`;
-        if (input.terrain === 'specific') {
-            html += `<p>${input.gradeLength} / 5,280 = ${fixed(output.lengthMiles, 4)} mi; grade magnitude = ${input.gradePercent}%. Both scenarios use the same directional demand and FFS.</p>
-                <p>Table PCEs interpolate grade, length and heavy-vehicle percentage. Lengths beyond a table's last row use that row, per ODOT Appendix 11D. The terminal percentage column is used at 25% and above.</p>`;
-        }
-        html += '</div>';
-        for (const [index, [direction, d]] of Object.entries(output.results).entries()) {
-            html += `<div class="step"><h3>${index + 3}. ${title(direction)}${d.error ? '' : `: LOS ${d.los}`}</h3>`;
-            if (d.error) {
-                html += `<p class="calculation-warning">${escape(d.error)}</p></div>`;
-                continue;
-            }
-            html += `<p>${escape(d.basis)}; E<sub>T</sub> = ${fixed(d.ET, 4)}.</p>`;
-            if (d.basis === 'User-supplied PCE') html += `<p>Override basis: ${escape(input.pceSource)}</p>`;
-            html += `<p class="formula">f<sub>HV</sub> = 1 / [1 + P<sub>T</sub>(E<sub>T</sub> - 1)]<br>
-                = 1 / [1 + ${input.heavyVehicles / 100}(${fixed(d.ET, 4)} - 1)] = ${fixed(d.fHV, 4)}<br>
-                v<sub>p</sub> = V / (PHF &times; N &times; f<sub>HV</sub>)<br>
-                = ${input.trafficVolume} / (${input.PHF} &times; 2 &times; ${fixed(d.fHV, 4)}) = ${fixed(d.flow)} pc/h/ln</p>
-                <p>c = min[1,900 + 20(FFS - 45), 2,300] = ${fixed(d.capacity)} pc/h/ln; demand/capacity = ${fixed(d.ratio, 3)}.</p>`;
-            if (d.los === 'F') {
-                html += '<p>Demand exceeds capacity: LOS F. This method does not predict speed or density for oversaturated flow.</p>';
-            } else {
-                html += `<p class="formula">${d.flow <= 1400 ? 'v<sub>p</sub> &le; 1,400: S = FFS' : 'S = FFS - (FFS - c/45)[(v<sub>p</sub> - 1,400)/(c - 1,400)]<sup>1.31</sup>'}<br>
-                    S = ${fixed(d.speed)} mph<br>D = v<sub>p</sub> / S = ${fixed(d.flow)} / ${fixed(d.speed)} = ${fixed(d.density)} pc/mi/ln</p>`;
-            }
-            html += '</div>';
-        }
-        if (output.freeFlowSpeed > 60) html += '<p class="calculation-warning">HCM notes limited field calibration for the 65 and 70 mph multilane curves.</p>';
-        steps.innerHTML = html;
-    } catch (err) {
-        error.textContent = err.message;
-    }
-}
-
-if (typeof document !== 'undefined') {
-    const form = document.getElementById('losForm');
-    const syncFields = () => {
-        const estimated = document.getElementById('ffsMode').value === 'estimated';
-        for (const [id, enabled] of [['measuredFields', !estimated], ['estimatedFields', estimated],
-            ['specificFields', document.getElementById('terrain').value === 'specific']]) {
-            document.getElementById(id).hidden = !enabled;
-            document.getElementById(id).disabled = !enabled;
-        }
-        document.getElementById('leftClearance').disabled = !estimated || document.getElementById('medianType').value !== 'divided';
-    };
-    form.addEventListener('submit', event => { event.preventDefault(); calculateLOS(); });
-    const clearResults = () => {
-        document.getElementById('result').textContent = '';
-        document.getElementById('steps').replaceChildren();
-        document.getElementById('losError').textContent = '';
-        syncFields();
-    };
-    form.addEventListener('input', clearResults);
-    form.addEventListener('change', clearResults);
-    syncFields();
-}

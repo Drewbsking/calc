@@ -1,5 +1,9 @@
 # Multilane LOS source reconciliation
 
+**September 22, 2026 update:** ML now offers separate HCM 2010 and HCM 6th Edition modes plus an edition comparison. The 6th Edition findings below still apply to that mode. See [HCM 2010 sources and implementation](ml-2010-sources.md) for the independently verified 2010 tables, formulas, limits and tests. The archived working calculator is not executed by either mode.
+
+The later [Audit/HCM integration](hcm-audit.md) rechecked the supplied Version 6.0 extract against this multilane method and added a separate basic freeway calculator. It shares the verified PCE lookup and LOS classifier; freeway geometry and speed-flow equations remain separate.
+
 Reviewed September 21, 2026. The final implementation uses **HCM 6th Edition (2016), Volume 2, Chapter 12, Version 6.0**, following the user's decision after inspection of the supplied manual. It does not combine 2010 heavy-vehicle tables with 6th Edition speed-flow equations.
 
 ## Sources and verification

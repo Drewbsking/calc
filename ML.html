@@ -13,7 +13,18 @@
         <section class="calculator">
             <form id="losForm">
                 <h1>Multilane Highway LOS Calculator</h1>
-                <p>HCM 6th Edition (2016), Chapter 12: automobile LOS on a four-lane highway with two lanes in each direction and uninterrupted flow.</p>
+                <p>Automobile LOS on a four-lane highway with two lanes in each direction and uninterrupted flow. Choose HCM 2010 (Chapter 14), HCM 6th Edition (2016, Chapter 12), or compare both.</p>
+                <p>For a freeway with ramp access, use the <a href="freewayLOS.html">basic freeway LOS calculator</a>.</p>
+                <div class="form-group">
+                    <label for="analysisEdition">HCM edition</label>
+                    <select id="analysisEdition">
+                        <option value="6th">HCM 6th Edition (2016)</option>
+                        <option value="2010">HCM 2010</option>
+                        <option value="both">Compare both editions</option>
+                    </select>
+                    <p id="editionHelp" class="input-help">HCM 6th Edition combines all heavy vehicles and uses FFS directly.</p>
+                </div>
+                <p><a href="#calculation-formulas">View calculation formulas and LOS limits</a>. Calculate LOS to see the formulas with your values substituted.</p>
                 <fieldset>
                     <legend>Traffic</legend>
                     <p>Compare upgrade and downgrade conditions using the same directional demand. Enter the volume for one direction, across both lanes.</p>
@@ -21,11 +32,23 @@
                         <label for="trafficVolume">Directional hourly volume (veh/h)</label>
                         <input type="number" id="trafficVolume" value="1900" min="0" step="any" required>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" id="combinedTrafficFields">
                         <label for="heavyVehicles">Total heavy vehicles (%)</label>
                         <input type="number" id="heavyVehicles" value="15" min="0" max="100" step="any" required>
                         <p class="input-help">Include all trucks, buses and RVs. In this edition, buses and RVs count as single-unit trucks (SUTs).</p>
                     </div>
+                    <fieldset id="splitTrafficFields" hidden disabled>
+                        <legend>Truck / RV split</legend>
+                        <label for="percentTrucks">Trucks and buses (% of all traffic)</label>
+                        <input type="number" id="percentTrucks" value="13" min="0" max="100" step="any" required>
+                        <label for="percentRVs">Recreational vehicles (% of all traffic)</label>
+                        <input type="number" id="percentRVs" value="2" min="0" max="100" step="any" required>
+                        <p class="input-help">Enter separate percentages; their sum must not exceed 100%. HCM 2010 uses separate E<sub>T</sub> and E<sub>R</sub> factors.</p>
+                        <p id="comparisonTrafficHelp" class="input-help" hidden>For the 6th Edition comparison, total heavy vehicles = <output id="comparisonHeavyTotal">15</output>%. The SUT/TT mix below includes buses and RVs as SUTs.</p>
+                        <label for="driverFactor">HCM 2010 driver population factor (f<sub>p</sub>)</label>
+                        <input type="number" id="driverFactor" value="1.00" min="0.85" max="1" step="any" required>
+                        <p class="input-help">Use 1.00 for familiar drivers. This calculator supports 0.85&ndash;1.00; lower values in this range need a supporting local study. This factor applies only to HCM 2010.</p>
+                    </fieldset>
                     <div class="form-group">
                         <label for="PHF">Peak hour factor (PHF)</label>
                         <input type="number" id="PHF" value="0.90" min="0.25" max="1" step="any" required>
@@ -35,8 +58,8 @@
                     <label for="terrain">Terrain analysis</label>
                     <select id="terrain">
                         <option value="specific">Compare upgrade / downgrade</option>
-                        <option value="level">General level terrain (ET = 2.0)</option>
-                        <option value="rolling">General rolling terrain (ET = 3.0)</option>
+                        <option value="level">General level terrain</option>
+                        <option value="rolling">General rolling terrain</option>
                     </select>
                     <p class="input-help">General terrain applies where no individual grade controls operations. Level terrain permits heavy vehicles to maintain passenger-car speeds; rolling terrain slows trucks without sustained crawl speeds.</p>
                 </div>
@@ -50,6 +73,8 @@
                         <label for="gradePercent">Grade magnitude (%)</label>
                         <input type="number" id="gradePercent" value="2" min="0" step="any" required>
                     </div>
+                    <fieldset id="sixthPCEFields">
+                        <legend>HCM 6th Edition PCEs</legend>
                     <div class="form-group">
                         <label for="sutMix">Heavy-vehicle mix table</label>
                         <select id="sutMix">
@@ -70,6 +95,25 @@
                         <label for="pceSource">Override basis / source</label>
                         <input type="text" id="pceSource" placeholder="Required when using an override">
                     </details>
+                    </fieldset>
+                    <fieldset id="legacyPCEFields" hidden disabled>
+                        <legend>HCM 2010 PCEs</legend>
+                        <p class="input-help">E<sub>T</sub> and E<sub>R</sub> use their own grade and length bands. Percentages interpolate to a PCE rounded to 0.1. Upgrades above 2% require 2&ndash;25% of each vehicle class present; long, steep downgrade truck lookups require 5&ndash;20%. Conditions outside these ranges need a verified override. Downgrade E<sub>R</sub> = 1.2.</p>
+                        <details>
+                            <summary>Use separately verified HCM 2010 PCEs</summary>
+                            <p>Overrides apply only to HCM 2010 and the indicated vehicle class and direction.</p>
+                            <label for="upgradeET2010">2010 upgrade truck/bus E<sub>T</sub></label>
+                            <input type="number" id="upgradeET2010" min="1" step="any" placeholder="Automatic table lookup">
+                            <label for="upgradeER2010">2010 upgrade RV E<sub>R</sub></label>
+                            <input type="number" id="upgradeER2010" min="1" step="any" placeholder="Automatic table lookup">
+                            <label for="downgradeET2010">2010 downgrade truck/bus E<sub>T</sub></label>
+                            <input type="number" id="downgradeET2010" min="1" step="any" placeholder="Automatic table lookup">
+                            <label for="downgradeER2010">2010 downgrade RV E<sub>R</sub></label>
+                            <input type="number" id="downgradeER2010" min="1" step="any" placeholder="1.2 for RVs present">
+                            <label for="pceSource2010">HCM 2010 override basis / source</label>
+                            <input type="text" id="pceSource2010" placeholder="Required when using a 2010 override">
+                        </details>
+                    </fieldset>
                 </fieldset>
                 <div class="form-group">
                     <label for="ffsMode">Free-flow-speed method</label>
@@ -82,7 +126,7 @@
                     <legend>Measured speed</legend>
                     <label for="freeFlowSpeed">Measured free-flow speed (mph)</label>
                     <input type="number" id="freeFlowSpeed" value="56" min="45" max="70" step="any" required>
-                    <p class="input-help">Use a representative passenger-car speed study under low to moderate flow (up to 500 pc/h/ln). Roadway adjustments are already reflected in measured FFS.</p>
+                    <p id="measuredSpeedHelp" class="input-help">Use a representative passenger-car speed study under low to moderate flow (up to 500 pc/h/ln for the 6th Edition). Roadway adjustments are already reflected in measured FFS.</p>
                 </fieldset>
                 <fieldset id="estimatedFields" hidden disabled>
                     <legend>Estimate free-flow speed</legend>
@@ -118,7 +162,7 @@
                         <p class="input-help">Count driveways and unsignalized intersections that influence traffic. The speed adjustment reaches its maximum at 40 access points per mile.</p>
                     </div>
                 </fieldset>
-                <p>FFS must be from 45 to 70 mph. HCM 6th Edition uses the measured or estimated speed directly, including intermediate values such as 56 mph.</p>
+                <p id="speedRangeHelp">FFS must be from 45 to 70 mph. HCM 6th Edition uses the measured or estimated speed directly, including intermediate values such as 56 mph.</p>
                 <button type="submit">Calculate LOS</button>
                 <p id="losError" role="alert"></p>
             </form>
@@ -127,17 +171,108 @@
             <h2 id="result"></h2>
             <div id="steps"></div>
         </section>
+        <section id="calculation-formulas" class="formula-reference" aria-labelledby="formulas-heading">
+            <h2 id="formulas-heading">Calculation formulas</h2>
+            <p>Each direction uses N = 2 lanes. The formulas below follow your edition selection. Lateral-clearance and access adjustments are rounded to 0.1 mph. HCM 2010 also rounds interpolated PCEs to 0.1 and selects the nearest 5 mph speed curve.</p>
+
+            <h3>1. Free-flow speed</h3>
+            <p class="formula">Measured: FFS = measured free-flow speed<br>
+                Estimated: FFS = BFFS - f<sub>LW</sub> - f<sub>TLC</sub> - f<sub>M</sub> - f<sub>A</sub></p>
+            <p>BFFS is base free-flow speed. The deductions are for lane width (f<sub>LW</sub>), total lateral clearance (f<sub>TLC</sub>, called f<sub>LC</sub> in HCM 2010), median type (f<sub>M</sub>), and access-point density (f<sub>A</sub>). All speeds and deductions are in mph.</p>
+            <details>
+                <summary>Roadway adjustment formulas</summary>
+                <p class="formula">TLC = min(right clearance, 6) + min(left clearance, 6)<br>
+                    f<sub>A</sub> = 0.25 &times; min(access points per mile, 40)</p>
+                <p>TLC is in feet; use 6 ft on the left for an undivided highway or a two-way left-turn lane. Interpolate f<sub>TLC</sub> from the lateral-clearance table. Round f<sub>TLC</sub> and f<sub>A</sub> to 0.1 mph.</p>
+                <p>For lane widths of at least 12 ft, f<sub>LW</sub> = 0; from 11 to less than 12 ft, f<sub>LW</sub> = 1.9; from 10 to less than 11 ft, f<sub>LW</sub> = 6.6 mph. For an undivided highway, f<sub>M</sub> = 1.6 mph; otherwise, f<sub>M</sub> = 0.</p>
+            </details>
+
+            <div id="sixthFormulas">
+            <h3>HCM 6th Edition: heavy-vehicle adjustment and demand flow</h3>
+            <p>Use the actual FFS from 45 to 70 mph, without rounding to a 5 mph curve.</p>
+            <p class="formula">P<sub>T</sub> = heavy vehicles (%) / 100<br>
+                f<sub>HV</sub> = 1 / [1 + P<sub>T</sub>(E<sub>T</sub> - 1)]<br>
+                v<sub>p</sub> = V / (PHF &times; N &times; f<sub>HV</sub>)</p>
+            <p>P<sub>T</sub> is the heavy-vehicle fraction, E<sub>T</sub> is the passenger-car equivalent (PCE), and f<sub>HV</sub> is the heavy-vehicle adjustment factor. V is directional hourly volume (veh/h), PHF is peak hour factor, and v<sub>p</sub> is passenger-car flow per lane (pc/h/ln).</p>
+            <details>
+                <summary>PCE lookup and interpolation</summary>
+                <p class="formula">Grade length (mi) = grade length (ft) / 5,280<br>
+                    y = y<sub>1</sub> + (y<sub>2</sub> - y<sub>1</sub>) &times; (x - x<sub>1</sub>) / (x<sub>2</sub> - x<sub>1</sub>)</p>
+                <p>The interpolation equation finds y at x between two tabulated points (x<sub>1</sub>, y<sub>1</sub>) and (x<sub>2</sub>, y<sub>2</sub>). For a specific grade, apply it to heavy-vehicle percentage, then grade length, then signed grade in the selected SUT/TT table. Upgrade grade is positive; downgrade grade is negative. Lengths beyond the last row use that row; heavy-vehicle percentages of 25% and above use the final column.</p>
+                <p>General level terrain uses E<sub>T</sub> = 2.0; rolling terrain uses E<sub>T</sub> = 3.0. A documented PCE override replaces the table value. With no heavy vehicles, f<sub>HV</sub> = 1.</p>
+            </details>
+
+            <h3>3. Capacity</h3>
+            <p class="formula">c = min[1,900 + 20 &times; (FFS - 45), 2,300]<br>
+                Demand/capacity = v<sub>p</sub> / c</p>
+            <p>c is capacity in pc/h/ln. If v<sub>p</sub> &gt; c, the result is LOS F; operating speed and density are not predicted.</p>
+
+            <h3>4. Operating speed and density</h3>
+            <p class="formula">For v<sub>p</sub> &le; 1,400: S = FFS<br>
+                For 1,400 &lt; v<sub>p</sub> &le; c:<br>
+                S = FFS - (FFS - c / 45) &times; [(v<sub>p</sub> - 1,400) / (c - 1,400)]<sup>1.31</sup><br>
+                D = v<sub>p</sub> / S</p>
+            <p>S is operating speed (mph), and D is density in passenger cars per mile per lane (pc/mi/ln).</p>
+
+            <h3>5. Level of service</h3>
+            <table class="los-limits">
+                <caption>LOS limits for demand at or below capacity</caption>
+                <thead><tr><th scope="col">LOS</th><th scope="col">Density D (pc/mi/ln)</th></tr></thead>
+                <tbody>
+                    <tr><th scope="row">A</th><td>0 &le; D &le; 11</td></tr>
+                    <tr><th scope="row">B</th><td>11 &lt; D &le; 18</td></tr>
+                    <tr><th scope="row">C</th><td>18 &lt; D &le; 26</td></tr>
+                    <tr><th scope="row">D</th><td>26 &lt; D &le; 35</td></tr>
+                    <tr><th scope="row">E</th><td>35 &lt; D &le; 45</td></tr>
+                </tbody>
+            </table>
+            <p>Demand above capacity is LOS F. LOS is assigned using unrounded values.</p>
+            </div>
+            <div id="legacyFormulas" hidden>
+                <h3>HCM 2010: heavy-vehicle adjustment and demand flow</h3>
+                <p class="formula">P<sub>T</sub> = trucks and buses (%) / 100<br>
+                    P<sub>R</sub> = RVs (%) / 100<br>
+                    f<sub>HV</sub> = 1 / [1 + P<sub>T</sub>(E<sub>T</sub> - 1) + P<sub>R</sub>(E<sub>R</sub> - 1)]<br>
+                    v<sub>p</sub> = V / (PHF &times; N &times; f<sub>HV</sub> &times; f<sub>p</sub>)</p>
+                <p>E<sub>T</sub> and E<sub>R</sub> are passenger-car equivalents for trucks/buses and RVs. V is directional volume (veh/h), PHF is peak hour factor, f<sub>p</sub> is driver population factor, and v<sub>p</sub> is flow in pc/h/ln.</p>
+                <p>Level terrain: E<sub>T</sub> = 1.5, E<sub>R</sub> = 1.2. Rolling terrain: E<sub>T</sub> = 2.5, E<sub>R</sub> = 2.0. Specific upgrades use Exhibits 14-13 and 14-14; downgrades use Exhibit 14-15 for trucks/buses and E<sub>R</sub> = 1.2 for RVs.</p>
+                <p class="formula">Grade length (mi) = grade length (ft) / 5,280<br>
+                    E = E<sub>1</sub> + (E<sub>2</sub> - E<sub>1</sub>) &times; (P - P<sub>1</sub>) / (P<sub>2</sub> - P<sub>1</sub>)</p>
+                <p>P is the vehicle-class percentage; P<sub>1</sub> and P<sub>2</sub> bracket it in the selected row, with equivalents E<sub>1</sub> and E<sub>2</sub>. Round the interpolated E to 0.1. Grade and length select bands without interpolation; exact upper boundaries stay in the lower band (for example, 3% uses the &gt;2&ndash;3% row).</p>
+                <h3>HCM 2010: speed curve, capacity and density</h3>
+                <p>FFS from 42.5 to less than 62.5 mph selects the nearest 5 mph curve, with ties rounding up. For example, 56 mph uses the 55 mph curve, while 57.5 mph uses the 60 mph curve. Use the selected speed F throughout the following calculation.</p>
+                <p class="formula">For v<sub>p</sub> &le; 1,400: S = F<br>
+                    For 1,400 &lt; v<sub>p</sub> &le; c:<br>
+                    S = F - a &times; [(v<sub>p</sub> - 1,400) / (c - 1,400)]<sup>1.31</sup><br>
+                    D = v<sub>p</sub> / S<br>
+                    Demand/capacity = v<sub>p</sub> / c</p>
+                <p>S is operating speed (mph), D is density (pc/mi/ln), c is capacity (pc/h/ln), and a is the speed-reduction coefficient from Exhibit 14-3.</p>
+                <table class="los-limits">
+                    <caption>HCM 2010 speed-curve parameters: F and a in mph; c in pc/h/ln; density in pc/mi/ln.</caption>
+                    <thead><tr><th scope="col">F</th><th scope="col">c</th><th scope="col">a</th><th scope="col">LOS E density limit</th></tr></thead>
+                    <tbody>
+                        <tr><th scope="row">45</th><td>1,900</td><td>2.78</td><td>45</td></tr>
+                        <tr><th scope="row">50</th><td>2,000</td><td>3.49</td><td>43</td></tr>
+                        <tr><th scope="row">55</th><td>2,100</td><td>3.78</td><td>41</td></tr>
+                        <tr><th scope="row">60</th><td>2,200</td><td>5.00</td><td>40</td></tr>
+                    </tbody>
+                </table>
+                <p>Density limits for LOS A, B, C and D are 11, 18, 26 and 35 pc/mi/ln. Above 35, flow at or below capacity is LOS E. Above capacity, the result is LOS F and speed/density are unavailable. The published rounded coefficients can put calculated density just above the tabulated E limit near capacity; the capacity test controls LOS F.</p>
+            </div>
+        </section>
         <details class="source-notes">
             <summary>Method, sources and scope</summary>
             <p>Applies to uninterrupted automobile flow. Use a separate analysis for signal effects, queues from downstream bottlenecks, or composite grades. Run separately when traffic or FFS differs by direction. For steep grades or high truck percentages, HCM recommends its mixed-flow model for more detailed speed and density estimates.</p>
             <p>Speed is reduced above 1,400 pc/h/ln. Demand above the selected curve's capacity is LOS F; speed and density are not predicted for that condition. Density is expressed in passenger cars per mile per lane (pc/mi/ln).</p>
             <p>Basis: HCM 6th Edition, Volume 2, Chapter 12, Equations 12-1, 12-3, 12-7 and 12-9 through 12-11; Exhibits 12-6, 12-15, 12-20 and 12-22 through 12-28. Tables were checked against the supplied manual and <a href="https://www.oregon.gov/ODOT/Planning/Documents/APMv2_App11D.pdf">ODOT Appendix 11D</a>. See the <a href="docs/ml-source-reconciliation.md">source reconciliation and verification notes</a>.</p>
-            <p>The earlier HCM 2010 working references are retained for history and are not used by this calculation.</p>
+            <p>HCM 2010 basis: Chapter 14, Equations 14-1 through 14-5 and Exhibits 14-3, 14-4 and 14-8 through 14-15 (December 2010 printing). The 2010 implementation uses a separately verified transcription; the archived working pages are retained for history. See <a href="docs/ml-2010-sources.md">2010 source verification, table limits and comparison notes</a>. One disputed truck-table cell requires an override; later errata have not been verified.</p>
         </details>
     </main>
     <div id="footer-placeholder"></div>
     <script src="scripts/layoutScript.js"></script>
     <script src="MLdata.js"></script>
+    <script src="ML2010data.js"></script>
     <script src="MLscripts.js"></script>
+    <script src="MLpage.js"></script>
 </body>
 </html>
