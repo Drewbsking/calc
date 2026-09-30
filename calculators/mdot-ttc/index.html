@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Choose MDOT maintaining traffic typicals, copy a table into Word, and download the selected detail sheets as one PDF.">
+    <meta name="description" content="Choose MDOT maintaining traffic typicals and download a combined PDF, individual PDFs in a ZIP, or an editable Word table for your project.">
     <title>MDOT TTC Typical Selector | Andy's Traffic Tools</title>
     <link rel="stylesheet" href="../../shared/styles.css">
     <link rel="stylesheet" href="styles.css">
     <script src="../../shared/layout.js" defer></script>
     <script src="vendor/docx.umd.js" defer></script>
     <script src="vendor/pdf-lib.min.js" defer></script>
+    <script src="vendor/fflate.umd.js" defer></script>
     <script src="core.js" defer></script>
     <script src="exports.js" defer></script>
+    <script src="preview.js" defer></script>
     <script src="page.js" defer></script>
 </head>
 <body class="ttc-page">
@@ -20,62 +22,222 @@
         <section class="calculator ttc-heading">
             <p class="ttc-eyebrow">Plan your traffic control details</p>
             <h1>MDOT TTC Typical Selector</h1>
-            <p>Browse MDOT construction, maintenance, and survey traffic typicals. Copy your project list into Word, or download the selected detail sheets as one PDF.</p>
-            <div class="ttc-source-line"><span id="catalog-status" role="status">Loading verified typicals…</span><a href="https://mdotjboss.state.mi.us/TSSD/tssdHome.htm" target="_blank" rel="noopener">MDOT source library ↗</a></div>
+            <p>Browse MDOT construction, maintenance, and survey traffic typicals. Download a combined PDF for GI and the preliminary spec book, a ZIP for final submittal, or a Word table for Maintenance of Traffic (MOT).</p>
+            <div class="ttc-source-line">
+                <span id="catalog-status" role="status">Loading verified typicals…</span>
+                <div class="ttc-source-links">
+                    <a href="https://mdotjboss.state.mi.us/TSSD/tssdHome.htm" target="_blank" rel="noopener">MDOT source library ↗</a>
+                    <a href="../../MDOT%20TTC%20Typ%20Cheat%20Sheet.xlsx" download="MDOT TTC Typ Cheat Sheet.xlsx">Original Excel workbook (.xlsx)</a>
+                </div>
+            </div>
         </section>
         <noscript><p class="ttc-error">Enable JavaScript to filter typicals and prepare your downloads.</p></noscript>
         <p id="load-error" class="ttc-error" role="alert" hidden></p>
         <button id="reload-catalog" class="ttc-button secondary" type="button" hidden>Retry loading typicals</button>
         <div id="selector" class="ttc-workspace" hidden>
-            <section class="ttc-browse" aria-labelledby="browse-heading">
-                <div class="ttc-toolbar"><h2 id="browse-heading">Find typicals</h2><button id="show-all" class="ttc-button secondary" type="button">Show all typicals</button></div>
-                <p class="ttc-help">All construction, maintenance, and survey typicals are shown to start. Use the filters to narrow your results.</p>
+            <section class="ttc-filter-panel" aria-labelledby="filter-heading">
+                <div class="ttc-toolbar"><h2 id="filter-heading">Find typicals</h2><button id="reset-filters" class="ttc-button secondary" type="button">Clear filters</button></div>
                 <label class="ttc-search-label" for="search">Search typical number, title, or notes</label>
                 <input id="search" type="search" placeholder="Try 123, lane closure, or traffic regulator" autocomplete="off">
-                <div class="ttc-filter-heading"><span>Filter by project conditions</span><button id="reset-filters" class="ttc-text-button" type="button">Clear filters</button></div>
-                <p class="ttc-help">Counts reflect your search and the other filter groups. Choose multiple options in a group to include any of them.</p>
-                <p class="ttc-help">Roadway type describes the road. Traffic arrangement describes closures, shifts, and crossovers. Control method describes how traffic is directed.</p>
-                <p class="ttc-help">Existing lanes are counted before the work; each option states which direction or ramp is counted. Lanes closed counts the closure, including center turn lanes. Staged closures can match multiple counts. Shoulder work is under Work area; unclear counts are Unspecified.</p>
-                <div id="filters" class="ttc-filters"></div>
-                <div class="ttc-results-heading"><p id="match-count" role="status" aria-live="polite"></p><button id="add-matches" class="ttc-button secondary" type="button">Add matching typicals</button></div>
-                <p id="empty-results" class="ttc-empty" hidden>No typicals match these filters. Try fewer filters or select “Show all typicals.”</p>
-                <div id="results" class="ttc-results"></div>
+                <div class="ttc-filter-heading"><span>Filter by project conditions</span></div>
+                <p class="ttc-help">Choose any combination of filters. Counts include your selected details and reflect the other filters. Required sheets 100–104 are always included separately and do not appear in these results or counts.</p>
+                <p id="rcoc-construction-note" class="ttc-help"><strong>RCOC construction projects:</strong> Use Construction typicals for their speed-reduction provisions.</p>
+                <div id="filters">
+                    <div id="primary-filters" class="ttc-filters"></div>
+                </div>
             </section>
-            <aside class="ttc-project" aria-labelledby="project-heading">
-                <div class="ttc-toolbar"><h2 id="project-heading">Your selected details <span id="selected-count" class="ttc-count">0</span></h2><button id="new-project" class="ttc-button secondary" type="button">Reset project</button></div>
-                <p class="ttc-help">New projects start with no details selected. Add the sheets you need; your choices are saved in this browser.</p>
-                <p class="ttc-help">Every report automatically includes all sheets tagged <strong>RCOC: Always</strong> once you select a typical.</p>
+            <details id="typical-code-legend" class="ttc-code-legend">
+                <summary>MDOT typical filename legend <span>Read the full code, including lane counts and suffixes</span></summary>
+                <div class="ttc-legend-content">
+                    <p class="ttc-help">Start with the typical number, then read the codes separated by hyphens. Codes describe the roadway, work, location, or traffic control. Their order and combination vary by detail. The <strong>MDOT code</strong> filter uses only the first code after the number; this legend covers the entire filename.</p>
+                    <div class="ttc-legend-example">
+                        <h3>Read a complete filename</h3>
+                        <p><code>152-CLT(7)-3(1R+2L)LC-2(L)SHIFT.pdf</code></p>
+                        <dl>
+                            <div><dt>152</dt><dd>Typical number.</dd></div>
+                            <div><dt>CLT(7)</dt><dd>Center left-turn lane; seven lanes total.</dd></div>
+                            <div><dt>3(1R+2L)LC</dt><dd>Three lanes closed: one right lane and two left lanes.</dd></div>
+                            <div><dt>2(L)SHIFT</dt><dd>Two lanes shifted to the left.</dd></div>
+                            <div><dt>.pdf</dt><dd>PDF document format.</dd></div>
+                        </dl>
+                        <p class="ttc-help"><code>160-INT-LD-CLT-MID</code> reads as typical 160: intersection, long duration, center left-turn lane, middle of the intersection or road.</p>
+                    </div>
+                    <div class="ttc-legend-grid">
+                        <table>
+                            <caption>Typical family and roadway</caption>
+                            <thead><tr><th scope="col">Code</th><th scope="col">Meaning</th></tr></thead>
+                            <tbody>
+                                <tr><th scope="row">GEN</th><td>General information</td></tr>
+                                <tr><th scope="row">M</th><td>Maintenance</td></tr>
+                                <tr><th scope="row">S</th><td>Survey</td></tr>
+                                <tr><th scope="row">SP</th><td>Special</td></tr>
+                                <tr><th scope="row">FW</th><td>Freeway</td></tr>
+                                <tr><th scope="row">NFW</th><td>Non-freeway</td></tr>
+                                <tr><th scope="row">CLT</th><td>Center left-turn lane</td></tr>
+                                <tr><th scope="row">CLT(7)</th><td>Center left-turn lane; seven lanes total</td></tr>
+                                <tr><th scope="row">INT</th><td>Intersection</td></tr>
+                                <tr><th scope="row">EnR / ExR</th><td>Entrance ramp / exit ramp</td></tr>
+                                <tr><th scope="row">GORE</th><td>Freeway gore area</td></tr>
+                                <tr><th scope="row">GORE(4)</th><td>Gore treatment on a four-lane freeway</td></tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <caption>Lanes, closures, and positions</caption>
+                            <thead><tr><th scope="col">Code</th><th scope="col">Meaning</th></tr></thead>
+                            <tbody>
+                                <tr><th scope="row">L / LANE</th><td>Lane; <code>2L</code> means a two-lane roadway</td></tr>
+                                <tr><th scope="row">(L) / (R)</th><td>Left / right, in the direction of traffic; also used inside expressions such as <code>1R+2L</code></td></tr>
+                                <tr><th scope="row">IN / (IN)</th><td>Inside</td></tr>
+                                <tr><th scope="row">OUT</th><td>Outside of shoulder</td></tr>
+                                <tr><th scope="row">MID</th><td>Middle of intersection or road</td></tr>
+                                <tr><th scope="row">O</th><td>Outside lane closure</td></tr>
+                                <tr><th scope="row">C</th><td>Closure</td></tr>
+                                <tr><th scope="row">LC</th><td>Lane closure; <code>1LC</code> closes one lane, <code>2LC</code> closes two, and <code>0LC</code> indicates no lane closure</td></tr>
+                                <tr><th scope="row">LO</th><td>Lane open</td></tr>
+                                <tr><th scope="row">SHL</th><td>Shoulder closure; also used on maintenance and survey shoulder-work details</td></tr>
+                                <tr><th scope="row">SHIFT</th><td>Lane shift</td></tr>
+                                <tr><th scope="row">PARK</th><td>Parking lane</td></tr>
+                                <tr><th scope="row">CROSS</th><td>Crossover</td></tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <caption>Traffic control and duration</caption>
+                            <thead><tr><th scope="col">Code</th><th scope="col">Meaning</th></tr></thead>
+                            <tbody>
+                                <tr><th scope="row">TR</th><td>Traffic regulator</td></tr>
+                                <tr><th scope="row">TS</th><td>Temporary signal</td></tr>
+                                <tr><th scope="row">AFAD</th><td>Automated flagger assistance device</td></tr>
+                                <tr><th scope="row">AB</th><td>Arrow board</td></tr>
+                                <tr><th scope="row">AW</th><td>Advance warning</td></tr>
+                                <tr><th scope="row">SIGN</th><td>Sign or signing; <code>DUAL-SIGN</code> means dual signing and <code>SINGLE-SIGN</code> means single signing</td></tr>
+                                <tr><th scope="row">SPEED</th><td>Speed</td></tr>
+                                <tr><th scope="row">PCMS</th><td>Portable changeable message sign</td></tr>
+                                <tr><th scope="row">RUM</th><td>Rumble strip</td></tr>
+                                <tr><th scope="row">FREE / YIELD</th><td>Free-flow / yield condition at an entrance ramp</td></tr>
+                                <tr><th scope="row">LD / SD</th><td>Long duration / short duration; intersection details 160–163 cover work longer than one hour, and 164 covers less than one hour</td></tr>
+                                <tr><th scope="row">MOB</th><td>Mobile operation</td></tr>
+                            </tbody>
+                        </table>
+                        <table>
+                            <caption>Special work and reference sheets</caption>
+                            <thead><tr><th scope="col">Code</th><th scope="col">Meaning</th></tr></thead>
+                            <tbody>
+                                <tr><th scope="row">EM</th><td>Early merge</td></tr>
+                                <tr><th scope="row">ZIP</th><td>Zipper merge</td></tr>
+                                <tr><th scope="row">STA</th><td>Stopped traffic advisory</td></tr>
+                                <tr><th scope="row">ROLL</th><td>Rolling roadblock</td></tr>
+                                <tr><th scope="row">HAUL</th><td>Haul road crossing</td></tr>
+                                <tr><th scope="row">PATCH</th><td>Concrete patching</td></tr>
+                                <tr><th scope="row">CruSha</th><td>Crush and shape</td></tr>
+                                <tr><th scope="row">PULLOFF</th><td>Emergency pull-off signing</td></tr>
+                                <tr><th scope="row">2MILE</th><td>Two-mile advance-warning sequence</td></tr>
+                                <tr><th scope="row">KEY</th><td>Typical numbering key</td></tr>
+                                <tr><th scope="row">NOTES</th><td>Typical note sheet</td></tr>
+                                <tr><th scope="row">SPACING-CHARTS</th><td>Spacing tables and charts</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="ttc-legend-notation">
+                        <h3>Numbers, parentheses, and letter suffixes</h3>
+                        <ul>
+                            <li><strong>Typical number:</strong> The current construction series uses 100–380, maintenance uses 4000-series numbers, and survey uses 5000-series numbers.</li>
+                            <li><strong>Lane counts and sides:</strong> <code>2(R+L)LC</code> means two lane closures, one right and one left. <code>(1-2)LC</code> means one- to two-lane closure. <code>1(CLT)</code> identifies a center left-turn lane closure.</li>
+                            <li><strong>Shift counts:</strong> <code>2(R)SHIFT</code> and <code>SHIFT-2(R)</code> describe two lanes shifted right; <code>1(L)SHIFT</code> describes one lane shifted left.</li>
+                            <li><strong>Crossover counts:</strong> The final <code>(1)</code> in 311 and <code>(2)</code> in 312 identify single and dual crossover closures.</li>
+                            <li><strong>A / B after the number:</strong> Different versions of that typical. The distinction depends on the sheet: 4110A/B differ in speed reduction, while 5182A/B differ in traffic-control and traffic-volume conditions. Read the title and drawing for the specific version.</li>
+                        </ul>
+                    </div>
+                    <div id="typical-legend-source" class="ttc-legend-source"></div>
+                </div>
+            </details>
+            <div class="ttc-transfer-help"><p>Mark cards and use the center arrows, or move one card with its arrow.</p><p id="transfer-status" role="status" aria-live="polite"></p></div>
+            <div class="ttc-transfer-workspace">
+                <section class="ttc-pane ttc-available-pane" aria-labelledby="browse-heading">
+                    <div class="ttc-pane-heading">
+                        <div class="ttc-toolbar"><h2 id="browse-heading">Available details <span id="available-count" class="ttc-count">0</span></h2><label class="ttc-select-all" title="Mark all matching available details, then use the arrow to add them"><input id="select-all-matches" type="checkbox" aria-label="Select all available details" aria-controls="results" disabled><span>Select all</span></label></div>
+                        <p id="match-count" role="status" aria-live="polite"></p>
+                    </div>
+                    <div id="available-pane" class="ttc-pane-scroll" tabindex="0" role="region" aria-label="Available detail cards">
+                        <p id="empty-results" class="ttc-empty" hidden>No typicals match these filters. Try fewer filters or select “Clear filters.”</p>
+                        <details id="possible-matches" class="ttc-possible" hidden>
+                            <summary>Possible matches — review detail <span id="possible-count" class="ttc-count">0</span></summary>
+                            <p class="ttc-help">Some selected conditions are unspecified. Review each PDF before marking or adding it. “Select all” marks only the main results.</p>
+                            <div id="possible-results" class="ttc-results"></div>
+                        </details>
+                        <div id="results" class="ttc-results"></div>
+                    </div>
+                </section>
+                <div class="ttc-transfer-controls" role="group" aria-label="Move marked details between panes">
+                    <button id="move-right" class="ttc-button primary" type="button" disabled aria-label="Add marked details"><span class="ttc-arrow" aria-hidden="true">→</span><span>Add marked</span><span id="available-mark-count" class="ttc-transfer-count">0</span></button>
+                    <button id="move-left" class="ttc-button secondary" type="button" disabled aria-label="Remove marked details"><span class="ttc-arrow" aria-hidden="true">←</span><span>Remove marked</span><span id="selected-mark-count" class="ttc-transfer-count">0</span></button>
+                </div>
+                <section class="ttc-pane ttc-selected-pane" aria-labelledby="project-heading">
+                    <div class="ttc-pane-heading">
+                        <div class="ttc-toolbar"><h2 id="project-heading">Selected details <span id="selected-count" class="ttc-count">0</span></h2><label class="ttc-select-all" title="Mark all selected details, then use the arrow to remove them"><input id="select-all-selected" type="checkbox" aria-label="Select all selected details" aria-controls="selected-list" disabled><span>Select all</span></label></div>
+                        <p>Includes required sheets 100–104 · Your choices are saved in this browser</p>
+                    </div>
+                    <div id="selected-pane" class="ttc-pane-scroll" tabindex="0" role="region" aria-label="Selected detail cards">
+                        <p id="empty-selection" class="ttc-empty" hidden>Add project-specific details using the arrows. Required sheets 100–104 are already included below.</p>
+                        <ol id="selected-list" class="ttc-selected-list"></ol>
+                        <details id="automatic-details" class="ttc-automatic" hidden>
+                            <summary id="automatic-heading">Always included <span id="automatic-count" class="ttc-count">0</span></summary>
+                            <p class="ttc-help">Required sheets 100–104 are included in every project and cannot be removed. Each appears once in the Word table, combined PDF, and ZIP.</p>
+                            <ol id="automatic-list" class="ttc-selected-list"></ol>
+                        </details>
+                    </div>
+                </section>
+            </div>
+            <section class="ttc-export-panel" aria-labelledby="downloads-heading">
+                <div class="ttc-toolbar"><h2 id="downloads-heading">Project downloads</h2><button id="new-project" class="ttc-button secondary" type="button">Reset project</button></div>
                 <p id="storage-status" class="ttc-help" role="status"></p>
+                <div class="ttc-export-layout"><div class="ttc-project-fields">
                 <label class="ttc-search-label" for="project-name">Project name</label>
                 <input id="project-name" type="text" maxlength="160" required placeholder="e.g., Maple Road resurfacing" aria-describedby="project-name-help" autocomplete="off">
                 <p id="project-name-help" class="ttc-help">Required for the PDF title page. Your packet includes an index and page numbers.</p>
                 <p id="paint-warning" class="ttc-note ttc-paint-warning" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+                <p id="packet-summary" class="ttc-help"></p>
+                </div>
                 <div class="ttc-downloads">
-                    <button id="download-pdf" class="ttc-button primary" type="button" disabled>Download combined PDF</button>
-                    <div class="ttc-export-pair"><button id="copy-table" class="ttc-button secondary" type="button" disabled>Copy table for Word</button><button id="download-word" class="ttc-button secondary" type="button" disabled>Download Word table</button></div>
-                    <p id="packet-summary" class="ttc-help"></p>
+                    <div class="ttc-download-option">
+                        <button id="download-pdf" class="ttc-button ttc-download-button primary" type="button" aria-describedby="pdf-help" disabled>Download combined PDF</button>
+                        <p id="pdf-help" class="ttc-help"><strong>For GI and the preliminary spec book.</strong> Combines your details into one PDF with a project title page, index, and page numbers.</p>
+                    </div>
+                    <div class="ttc-download-option">
+                        <button id="download-zip" class="ttc-button ttc-download-button secondary" type="button" aria-describedby="zip-help" disabled>Download ZIP package</button>
+                        <p id="zip-help" class="ttc-help"><strong>For final submittal to MDOT Specs and Estimates.</strong> Packages individual original PDFs, named by typical number, for upload through ProjectWise.</p>
+                    </div>
+                    <div class="ttc-download-option">
+                        <button id="download-word" class="ttc-button ttc-download-button secondary" type="button" aria-describedby="word-help" disabled>Download Word table</button>
+                        <p id="word-help" class="ttc-help"><strong>For Maintenance of Traffic (MOT).</strong> Creates an editable Word table listing each typical number and title for your MOT section.</p>
+                    </div>
                     <progress id="export-progress" max="100" value="0" hidden aria-label="Preparing download"></progress>
                     <p id="export-status" role="status" aria-live="polite"></p>
                     <button id="retry-export" class="ttc-button secondary" type="button" hidden>Retry PDF download</button>
-                </div>
-                <div class="ttc-selection-heading"><span>In typical-number order</span><button id="clear-selection" class="ttc-text-button" type="button">Clear selection</button></div>
-                <p id="empty-selection" class="ttc-empty" hidden>No details selected. Add typicals from the results to prepare your downloads.</p>
-                <ol id="selected-list" class="ttc-selected-list"></ol>
-                <section id="automatic-details" class="ttc-automatic" aria-labelledby="automatic-heading" hidden>
-                    <h3 id="automatic-heading">Included automatically <span id="automatic-count" class="ttc-count">0</span></h3>
-                    <p class="ttc-help">These RCOC Always sheets are included once in the Word table and PDF, even when they are outside your filters.</p>
-                    <ol id="automatic-list" class="ttc-selected-list"></ol>
-                </section>
-                <details id="table-preview" class="ttc-table-preview"><summary>Preview or manually copy the Word table</summary>
-                    <p id="copy-help" class="ttc-help">This table contains the typical number and title for your selections and the RCOC Always sheets. It matches your PDF report.</p>
-                    <button id="select-table" class="ttc-button secondary" type="button">Select table text</button>
-                    <div id="word-table" class="ttc-table-scroll" tabindex="0" role="region" aria-label="Selected typicals table"></div>
-                </details>
-                <a class="ttc-mobile-back" href="#browse-heading">Back to filters ↑</a>
-            </aside>
+                </div></div>
+                <a class="ttc-mobile-back" href="#filter-heading">Back to filters ↑</a>
+            </section>
         </div>
     </main>
-    <a class="ttc-mobile-jump" href="#project-heading">Selected details <span id="mobile-count">0</span> · Downloads ↓</a>
+    <section id="drawing-preview" class="ttc-drawing-preview" role="dialog" aria-labelledby="drawing-preview-title" aria-describedby="drawing-preview-help" hidden>
+        <div class="ttc-preview-heading">
+            <div><h2 id="drawing-preview-title"></h2><p id="drawing-preview-subtitle"></p></div>
+            <button id="drawing-preview-close" class="ttc-button secondary" type="button" aria-label="Close drawing preview">Close</button>
+        </div>
+        <div class="ttc-preview-controls" role="group" aria-label="Drawing preview controls">
+            <button id="drawing-preview-previous" class="ttc-button secondary" type="button" aria-label="Previous drawing page">Previous</button>
+            <span id="drawing-preview-page" role="status"></span>
+            <button id="drawing-preview-next" class="ttc-button secondary" type="button" aria-label="Next drawing page">Next</button>
+            <label for="drawing-preview-zoom">Zoom</label>
+            <select id="drawing-preview-zoom"><option value="1">Fit page</option><option value="1.5">150%</option><option value="2">200%</option><option value="3">300%</option></select>
+        </div>
+        <div id="drawing-preview-stage" class="ttc-preview-stage" tabindex="0" role="region" aria-label="Detail drawing; scroll to inspect when zoomed"></div>
+        <div class="ttc-preview-footer">
+            <p id="drawing-preview-status" role="status" aria-live="polite"></p>
+            <button id="drawing-preview-retry" class="ttc-button secondary" type="button" hidden>Retry preview</button>
+            <p id="drawing-preview-help">Scroll to inspect a zoomed drawing. Press Esc or Close to return.</p>
+        </div>
+    </section>
+    <a class="ttc-mobile-jump" href="#downloads-heading">Selected details <span id="mobile-count">0</span> · Downloads ↓</a>
     <div id="footer-placeholder"></div>
 </body>
 </html>

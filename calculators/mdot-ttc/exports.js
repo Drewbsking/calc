@@ -27,6 +27,43 @@
     const hash = await globalThis.crypto.subtle.digest('SHA-256', bytes);
     return [...new Uint8Array(hash)].map(b => b.toString(16).padStart(2, '0')).join('');
   }
+  async function verifiedPDF(record, lib, fetchFile, digest) {
+    const bytes = await fetchFile(record.pdf.path);
+    if (await digest(bytes) !== record.pdf.sha256) throw new Error('The stored file did not pass its integrity check.');
+    const document = await lib.PDFDocument.load(bytes, { updateMetadata: false });
+    if (document.getPageCount() !== record.pdf.pages) throw new Error('The stored file has an unexpected page count.');
+    return { bytes, document };
+  }
+  function zipFilename(value) {
+    const name = String(value ?? '').normalize('NFC').replace(/[<>:"/\\|?*\u0000-\u001f]/g, '-')
+      .replace(/\s+/g, ' ').replace(/^[. ]+|[. ]+$/g, '').slice(0, 160).trim();
+    return name ? `${name}-mdot-ttc-details.zip` : 'mdot-ttc-details.zip';
+  }
+  async function zip(records, lib, pdfLib, fetchFile, { progress = () => {}, digest = sha256 } = {}) {
+    if (!records.length) throw new Error('Select at least one typical first.');
+    if (!lib?.zipSync) throw new Error('The ZIP export library could not load. Reload the page and try again.');
+    if (!pdfLib?.PDFDocument) throw new Error('The PDF verification library could not load. Reload the page and try again.');
+    const files = Object.create(null);
+    for (let index = 0; index < records.length; index++) {
+      const record = records[index];
+      try {
+        progress(index, records.length, record.id);
+        // Keep official identifiers, including parentheses and plus signs, as flat filenames.
+        if (!/^[A-Za-z0-9][A-Za-z0-9()+_-]*$/.test(record.id)) throw new Error('The typical has an invalid filename.');
+        const filename = `${record.id}.pdf`;
+        if (files[filename]) throw new Error('The typical is duplicated in this export.');
+        const { bytes } = await verifiedPDF(record, pdfLib, fetchFile, digest);
+        files[filename] = new Uint8Array(bytes);
+      } catch (cause) {
+        const error = new Error(`Could not include ${record.id}: ${cause.message} No ZIP was downloaded. Retry after restoring this PDF or updating your selection.`);
+        error.typicalId = record.id;
+        throw error;
+      }
+    }
+    progress(records.length, records.length, 'Saving ZIP');
+    // PDFs are already compressed. Store their exact bytes without recompressing or rewriting them.
+    return lib.zipSync(files, { level: 0 });
+  }
   function projectName(value) {
     const name = String(value ?? '').normalize('NFC').replace(/\s+/g, ' ').trim();
     if (!name) throw new Error('Enter a project name before downloading the PDF.');
@@ -136,10 +173,7 @@
       const record = records[index];
       try {
         progress(index, records.length, record.id);
-        const bytes = await fetchFile(record.pdf.path);
-        if (await digest(bytes) !== record.pdf.sha256) throw new Error('The stored file did not pass its integrity check.');
-        const source = await lib.PDFDocument.load(bytes, { updateMetadata: false });
-        if (source.getPageCount() !== record.pdf.pages) throw new Error('The stored file has an unexpected page count.');
+        const { document: source } = await verifiedPDF(record, lib, fetchFile, digest);
         const pages = await packet.copyPages(source, source.getPageIndices());
         pages.forEach(page => packet.addPage(page));
       } catch (cause) {
@@ -156,5 +190,5 @@
     progress(records.length, records.length, 'Saving combined PDF');
     return packet.save({ addDefaultPage: false });
   }
-  return { word, pdf, sha256, projectName };
+  return { word, pdf, zip, zipFilename, sha256, projectName };
 });

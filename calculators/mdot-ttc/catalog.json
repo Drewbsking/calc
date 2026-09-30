@@ -47,7 +47,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "All roadway types"
         ],
         "trafficArrangement": [
           "Unspecified"
@@ -63,8 +63,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "101-GEN-SPACING-CHARTS",
@@ -98,7 +102,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "All roadway types"
         ],
         "trafficArrangement": [
           "Unspecified"
@@ -114,8 +118,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "102-GEN-NOTES",
@@ -149,7 +157,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "All roadway types"
         ],
         "trafficArrangement": [
           "Unspecified"
@@ -165,8 +173,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "103-GEN-SIGN",
@@ -200,7 +212,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "All roadway types"
         ],
         "trafficArrangement": [
           "Unspecified"
@@ -216,8 +228,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "104-GEN-AB",
@@ -251,7 +267,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "All roadway types"
         ],
         "trafficArrangement": [
           "Unspecified"
@@ -267,8 +283,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "105-GEN-SPEED-FW",
@@ -318,8 +338,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "106-GEN-SPEED-NFW",
@@ -369,8 +393,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "107-GEN-SPEED",
@@ -420,8 +448,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "110-TR-NFW-2L",
@@ -473,8 +505,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "111-TR-NFW-2L-RUM",
@@ -524,8 +560,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "112-TR-CLT",
@@ -575,8 +615,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Center lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "113-TR-HAUL",
@@ -626,8 +670,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "114-TR-HAUL-AW",
@@ -677,8 +725,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "115-AFAD-NFW-2L",
@@ -727,8 +779,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "116-AFAD-NFW-2L-RUM",
@@ -777,8 +833,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "120-TS-DUAL-SIGN",
@@ -828,8 +888,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "121-TS-SINGLE-SIGN",
@@ -881,8 +945,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "122-NFW-SHL-(R)",
@@ -934,8 +1002,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "123-NFW-1LC-(R)",
@@ -987,8 +1059,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "124-NFW-2(R+L)LC-SHIFT",
@@ -1039,8 +1115,13 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "125-NFW-2LC-(IN)",
@@ -1092,8 +1173,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "126-NFW-2LC-(L)",
@@ -1143,8 +1228,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "127-NFW-SHIFT-0LC",
@@ -1195,8 +1284,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "130-CLT-1(CLT)",
@@ -1246,8 +1339,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Center lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "131-CLT-1(L)LC-SHIFT",
@@ -1298,8 +1395,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "132-CLT-1(R)LC-SHIFT",
@@ -1350,8 +1451,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "133-CLT-1LC-(L)",
@@ -1403,8 +1508,13 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Center lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "134-CLT-2(L)LC-(IN)",
@@ -1456,8 +1566,13 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Center lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "135-CLT-2(R+L)LC-SHIFT",
@@ -1508,8 +1623,14 @@
         ],
         "lanesClosed": [
           "3 lanes"
+        ],
+        "lanePosition": [
+          "Center lane",
+          "Left / inside",
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "136-CLT-SHIFT-(R+L)",
@@ -1559,8 +1680,13 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Right / outside",
+          "Center lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "137-CLT-SHIFT-0LC",
@@ -1610,8 +1736,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "138-CLT-SHIFT-2(R)",
@@ -1661,8 +1791,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "140-CLT-PARK-LANE",
@@ -1713,8 +1847,12 @@
         ],
         "lanesClosed": [
           "Parking lane only"
+        ],
+        "lanePosition": [
+          "Parking lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "141-CLT-PARK-SHIFT",
@@ -1765,8 +1903,12 @@
         ],
         "lanesClosed": [
           "Parking lane only"
+        ],
+        "lanePosition": [
+          "Parking lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "142-CLT-PARK-SHL",
@@ -1817,8 +1959,12 @@
         ],
         "lanesClosed": [
           "Parking lane only"
+        ],
+        "lanePosition": [
+          "Parking lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "150-CLT(7)-2(R+L)LC-2(R)SHIFT",
@@ -1869,8 +2015,13 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "151-CLT(7)-2LC-(L)",
@@ -1920,8 +2071,13 @@
         ],
         "lanesClosed": [
           "3 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Center lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "152-CLT(7)-3(1R+2L)LC-2(L)SHIFT",
@@ -1972,8 +2128,13 @@
         ],
         "lanesClosed": [
           "3 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "153-CLT(7)-3(2R+1L)LC-1(L)SHIFT",
@@ -2024,8 +2185,13 @@
         ],
         "lanesClosed": [
           "3 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "154-CLT(7)-3(L)LC-(IN)",
@@ -2075,8 +2241,12 @@
         ],
         "lanesClosed": [
           "3 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "155-CLT(7)-4(L)LC-(IN)",
@@ -2126,8 +2296,12 @@
         ],
         "lanesClosed": [
           "4 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "160-INT-LD-CLT-MID",
@@ -2177,8 +2351,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Longer than 1 Hour"
+      ]
     },
     {
       "id": "161-INT-LD-LANE",
@@ -2228,8 +2408,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Longer than 1 Hour"
+      ]
     },
     {
       "id": "162-INT-LD-MID",
@@ -2279,8 +2465,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Longer than 1 Hour"
+      ]
     },
     {
       "id": "163-INT-LD-OUT",
@@ -2330,8 +2522,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Longer than 1 Hour"
+      ]
     },
     {
       "id": "164-INT-SD-MID",
@@ -2381,8 +2579,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Less than 1 Hour"
+      ]
     },
     {
       "id": "200-FW-SHL-(R)",
@@ -2436,8 +2640,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "201-FW-SHL-(L)",
@@ -2489,8 +2697,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "202-FW-(1-2)LC-(L)",
@@ -2542,8 +2754,12 @@
         "lanesClosed": [
           "1 lane",
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "203-FW-1LC-(R)",
@@ -2596,8 +2812,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "204-FW-1LC-(L)",
@@ -2648,8 +2868,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "205-FW-1LC-(R)-SHIFT",
@@ -2702,8 +2926,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "206-FW-2LC-(L)",
@@ -2754,8 +2982,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "207-FW-2LC-(R)",
@@ -2806,8 +3038,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "208-FW-3LC-(L)",
@@ -2858,8 +3094,12 @@
         ],
         "lanesClosed": [
           "3 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "209-FW-3LC-(R)",
@@ -2910,8 +3150,12 @@
         ],
         "lanesClosed": [
           "3 lanes"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "210-FW-SHIFT-1LC",
@@ -2963,8 +3207,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "220-FW-EnR-C",
@@ -3014,8 +3262,12 @@
         ],
         "lanesClosed": [
           "Ramp only"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "221-FW-EnR-O-LC-FREE",
@@ -3066,8 +3318,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": [
+        "Freeflow Condition"
+      ]
     },
     {
       "id": "222-FW-EnR-O-LC-YIELD",
@@ -3118,8 +3376,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": [
+        "Yield Condition"
+      ]
     },
     {
       "id": "223-FW-EnR-LO",
@@ -3169,8 +3433,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "224-FW-EnR-SHL",
@@ -3220,8 +3488,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "225-FW-EnR-SHL-SHIFT",
@@ -3271,8 +3543,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Reduced Lane Width"
+      ]
     },
     {
       "id": "230-FW-ExR-C",
@@ -3322,8 +3600,12 @@
         ],
         "lanesClosed": [
           "Ramp only"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "231-FW-ExR-O-LC",
@@ -3374,8 +3656,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "232-FW-ExR-SHIFT",
@@ -3425,8 +3711,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Reduced Lane Width"
+      ]
     },
     {
       "id": "233-FW-ExR-SHL",
@@ -3476,8 +3768,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "300-SP-AW-2MILE",
@@ -3527,8 +3823,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "301-SP-AW-STA",
@@ -3579,8 +3879,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "302-SP-PATCH-1LC",
@@ -3629,8 +3933,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "303-SP-PATCH-2LC",
@@ -3679,8 +3987,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "304-SP-PATCH-1LC-ExR-C",
@@ -3730,8 +4042,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "310-SP-CROSS-C-NFW",
@@ -3781,8 +4097,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "311-SP-CROSS-C-FW-(1)",
@@ -3832,8 +4152,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "312-SP-CROSS-C-FW-(2)",
@@ -3883,8 +4207,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "320-SP-CruSha",
@@ -3934,8 +4262,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "340-SP-EM-1LC-(L)",
@@ -3986,8 +4318,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "341-SP-ZIP-1LC-(L)",
@@ -4038,8 +4374,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "342-SP-ZIP-1LC-(L)-SHIFT",
@@ -4091,8 +4431,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "343-SP-ZIP-1LC-(R)",
@@ -4143,8 +4487,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "344-SP-ZIP-1LC-PCMS",
@@ -4195,8 +4543,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "345-SP-ZIP-1LC-SHIFT-PCMS",
@@ -4248,8 +4600,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "350-SP-GORE-1LC-(L)",
@@ -4300,8 +4656,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "351-SP-GORE-2LC-(L)",
@@ -4352,8 +4712,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "352-SP-GORE(4)-2LC-(L)",
@@ -4404,8 +4768,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "360-SP-ROLL",
@@ -4455,8 +4823,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "361-SP-ROLL-LC",
@@ -4507,8 +4879,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "380-PULLOFF-FW",
@@ -4557,8 +4933,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4000-M-SHL-OUT",
@@ -4607,8 +4987,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4110A-M-TR-NFW-2L",
@@ -4642,7 +5026,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Lane closure"
@@ -4658,8 +5042,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "No Speed Reduction"
+      ]
     },
     {
       "id": "4110B-M-TR-NFW-2L",
@@ -4693,7 +5083,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Lane closure"
@@ -4709,8 +5099,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Maximum 10 MPH Speed Reduction"
+      ]
     },
     {
       "id": "4111A-M-TR-NFW-2L-RUM",
@@ -4743,7 +5139,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Lane closure"
@@ -4759,8 +5155,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "No Speed Reduction"
+      ]
     },
     {
       "id": "4111B-M-TR-NFW-2L-RUM",
@@ -4793,7 +5195,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Lane closure"
@@ -4809,8 +5211,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Maximum 10 MPH Speed Reduction"
+      ]
     },
     {
       "id": "4121-M-TS",
@@ -4844,7 +5252,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Unspecified"
@@ -4860,8 +5268,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "No Speed Reduction"
+      ]
     },
     {
       "id": "4122-M-NFW-SHL",
@@ -4895,7 +5309,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Shoulder closure"
@@ -4911,8 +5325,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4123A-M-NFW-1LC-(R)",
@@ -4962,8 +5380,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": [
+        "No Speed Reduction"
+      ]
     },
     {
       "id": "4123B-M-NFW-1LC-(R)",
@@ -5013,8 +5437,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": [
+        "Maximum 10 MPH Speed Reduction"
+      ]
     },
     {
       "id": "4125A-M-NFW-2LC-(IN)",
@@ -5064,8 +5494,14 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": [
+        "No Speed Reduction"
+      ]
     },
     {
       "id": "4125B-M-NFW-2LC-(IN)",
@@ -5115,8 +5551,14 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": [
+        "Maximum 10 MPH Speed Reduction"
+      ]
     },
     {
       "id": "4133A-M-CLT-1LC-(L)",
@@ -5166,8 +5608,15 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Center lane"
         ]
-      }
+      },
+      "conditions": [
+        "No Speed Reduction"
+      ]
     },
     {
       "id": "4133B-M-CLT-1LC-(L)",
@@ -5217,8 +5666,15 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Center lane"
         ]
-      }
+      },
+      "conditions": [
+        "Maximum 10 MPH Speed Reduction"
+      ]
     },
     {
       "id": "4134A-M-CLT-2(L)LC-(IN)",
@@ -5268,8 +5724,15 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Center lane"
         ]
-      }
+      },
+      "conditions": [
+        "No Speed Reduction"
+      ]
     },
     {
       "id": "4134B-M-CLT-2(L)LC-(IN)",
@@ -5319,8 +5782,15 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Center lane"
         ]
-      }
+      },
+      "conditions": [
+        "Maximum 10 MPH Speed Reduction"
+      ]
     },
     {
       "id": "4180-M-TR-NFW-2L",
@@ -5354,7 +5824,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Lane closure"
@@ -5370,8 +5840,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4200-M-FW-SHL",
@@ -5422,8 +5896,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4203A-M-FW-1LC-(R)",
@@ -5473,8 +5951,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": [
+        "10 MPH Step Down in Speed Limit"
+      ]
     },
     {
       "id": "4203B-M-FW-1LC-(R)",
@@ -5523,8 +6007,15 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "10 MPH Step down in Speed limit",
+        "2-Mile Advanced Warning"
+      ]
     },
     {
       "id": "4204-M-FW-2LC-(R)",
@@ -5573,8 +6064,14 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": [
+        "10 MPH Step Down in Speed Limit"
+      ]
     },
     {
       "id": "4221-FW-EnR-O-LC-FREE",
@@ -5623,8 +6120,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": [
+        "Freeflow Condition"
+      ]
     },
     {
       "id": "4222-FW-EnR-O-LC-YIELD",
@@ -5673,8 +6176,14 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": [
+        "Yield Condition"
+      ]
     },
     {
       "id": "4224-M-FW-ExR-TR",
@@ -5710,7 +6219,7 @@
           "Unspecified"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Ramp work"
         ],
         "controlMethod": [
           "Traffic regulator"
@@ -5723,8 +6232,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4231-M-FW-ExR-O-LC",
@@ -5774,8 +6287,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Right / outside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4400-M-NFW-SHL-MOB",
@@ -5824,8 +6341,15 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Traffic Volumes Less than 10,000 ADT",
+        "Adequate Sight Distances"
+      ]
     },
     {
       "id": "4401-M-NFW-SHL-2L",
@@ -5858,7 +6382,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Unspecified"
@@ -5874,8 +6398,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4402-M-NFW-1LC",
@@ -5924,8 +6452,15 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Speed Limits 45 MPH or Less",
+        "With Curbs"
+      ]
     },
     {
       "id": "4403-M-NFW-2L",
@@ -5961,7 +6496,7 @@
           "Unspecified"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Mobile operation"
         ],
         "controlMethod": [
           "Unspecified"
@@ -5974,8 +6509,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4405-M-NFW-SHL",
@@ -6008,10 +6547,10 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Lane encroachment"
         ],
         "controlMethod": [
           "Unspecified"
@@ -6024,8 +6563,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4420-M-FW-SHL",
@@ -6075,8 +6618,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4421-M-FW-1LC",
@@ -6112,7 +6659,7 @@
           "Unspecified"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Mobile operation"
         ],
         "controlMethod": [
           "Unspecified"
@@ -6125,8 +6672,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "4422-M-FW-2LC",
@@ -6162,7 +6713,7 @@
           "Unspecified"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Mobile operation"
         ],
         "controlMethod": [
           "Unspecified"
@@ -6175,8 +6726,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5000-S-SHL-OUT",
@@ -6225,8 +6780,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5110-S-TR-NFW-2L",
@@ -6259,7 +6818,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Lane closure"
@@ -6275,8 +6834,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5122-S-NFW-SHL",
@@ -6309,7 +6872,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Shoulder closure"
@@ -6325,8 +6888,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5123-S-NFW-1LC-(R)",
@@ -6375,8 +6942,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5125-S-NFW-2LC-(IN)",
@@ -6425,8 +6996,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5133-S-CLT-1LC-(L)",
@@ -6475,8 +7050,13 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Left / inside",
+          "Center lane"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5181-S-NFW-1LC",
@@ -6509,7 +7089,7 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
           "Lane closure"
@@ -6525,8 +7105,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5182A-S-NFW-MID",
@@ -6559,10 +7143,10 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Road center work"
         ],
         "controlMethod": [
           "Traffic regulator"
@@ -6575,8 +7159,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Posted Speeds of 55 MPH or Less"
+      ]
     },
     {
       "id": "5182B-S-NFW-MID",
@@ -6609,10 +7199,10 @@
       },
       "classifications": {
         "roadwayType": [
-          "Unspecified"
+          "Undivided"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Road center work"
         ],
         "controlMethod": [
           "Unspecified"
@@ -6625,8 +7215,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Low Traffic Volumes"
+      ]
     },
     {
       "id": "5200-S-FW-SHL",
@@ -6676,8 +7272,12 @@
         ],
         "lanesClosed": [
           "No lane closure"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5203-S-FW-1LC",
@@ -6726,8 +7326,12 @@
         ],
         "lanesClosed": [
           "1 lane"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5205-S-FW-2LC-(L)",
@@ -6776,8 +7380,12 @@
         ],
         "lanesClosed": [
           "2 lanes"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5401-S-SHL",
@@ -6811,6 +7419,7 @@
       "classifications": {
         "roadwayType": [
           "Divided",
+          "Undivided",
           "Freeway"
         ],
         "trafficArrangement": [
@@ -6827,8 +7436,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Within 150 Feet of Vehicle"
+      ]
     },
     {
       "id": "5403-S-NFW-2L",
@@ -6864,7 +7479,7 @@
           "Unspecified"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Mobile operation"
         ],
         "controlMethod": [
           "Unspecified"
@@ -6877,8 +7492,14 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": [
+        "Within 150 Feet of Work Vehicle"
+      ]
     },
     {
       "id": "5421-S-FW-1LC",
@@ -6914,7 +7535,7 @@
           "Unspecified"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Mobile operation"
         ],
         "controlMethod": [
           "Unspecified"
@@ -6927,8 +7548,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     },
     {
       "id": "5422-S-FW-2LC",
@@ -6964,7 +7589,7 @@
           "Unspecified"
         ],
         "trafficArrangement": [
-          "Unspecified"
+          "Mobile operation"
         ],
         "controlMethod": [
           "Unspecified"
@@ -6977,8 +7602,12 @@
         ],
         "lanesClosed": [
           "Unspecified"
+        ],
+        "lanePosition": [
+          "Unspecified"
         ]
-      }
+      },
+      "conditions": []
     }
   ]
 }

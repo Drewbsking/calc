@@ -183,6 +183,33 @@ class ImporterTests(unittest.TestCase):
 
 
 class StoredCatalogTests(unittest.TestCase):
+    def test_roadway_categories_use_descriptive_evidence_without_decoding_ids(self):
+        records = json.loads((FOLDER / 'catalog.json').read_text(encoding='utf-8'))['records']
+        by_number = {r['number']: r for r in records}
+        for number in ['4110A', '4110B', '4111A', '4111B', '4121', '4122', '4180', '4401', '4405', '5110', '5122', '5181', '5182A', '5182B']:
+            self.assertEqual(updater.roadway_classifications(by_number[number]), ['Undivided'], number)
+        self.assertEqual(updater.roadway_classifications(by_number['5401']), ['Divided', 'Undivided', 'Freeway'])
+        for number in ['105', '106', '311', '4224', '4403', '4421', '5000', '5403', '5421']:
+            self.assertEqual(updater.roadway_classifications(by_number[number]), ['Unspecified'], number)
+        base = {**by_number['5110'], 'id': '999-FW-NFW-2L', 'title': 'Workbook fallback', 'filters': {**by_number['5110']['filters'], 'roadwayType': 'Unspecified'}}
+        cases = [
+            ('Work on a Two-Lane, Two-Way Roadway', ['Undivided']),
+            ('Work on a 3-Lane, 2-Way Roadway', ['Undivided']),
+            ('Work on an Undivided Roadway', ['Undivided']),
+            ('Work on a Freeway or Divided Roadway', ['Divided', 'Freeway']),
+            ('Work on a non-freeway roadway', ['Unspecified']),
+            ('Work on a 2-Way Roadway', ['Unspecified']),
+            ('Work on a Multi-Lane Roadway', ['Unspecified']),
+            ('999-FW-NFW-2L', ['Unspecified']),
+        ]
+        for title, expected in cases:
+            with self.subTest(title=title):
+                self.assertEqual(updater.roadway_classifications({**base, 'sourceTitle': title}), expected)
+        conflict = {**base, 'sourceTitle': 'Work on a Freeway', 'title': 'Work on an Undivided Roadway', 'filters': {**base['filters'], 'roadwayType': 'Undivided'}}
+        self.assertEqual(updater.roadway_classifications(conflict), ['Freeway'])
+        self.assertEqual(updater.roadway_classifications({**conflict, 'sourceTitle': '999-FW-NFW-2L'}), ['Undivided'])
+        self.assertEqual(updater.roadway_classifications({**base, 'sourceTitle': 'Non-freeway work', 'filters': {**base['filters'], 'roadwayType': 'Freeway'}}), ['Unspecified'])
+
     def test_lane_categories_use_the_counting_basis_and_separate_closures(self):
         catalog = json.loads((FOLDER / 'catalog.json').read_text(encoding='utf-8'))
         records = {r['number']: r for r in catalog['records']}
@@ -213,6 +240,33 @@ class StoredCatalogTests(unittest.TestCase):
         for number in ['120', '131', '137', '5403']:
             self.assertEqual(records[number]['classifications']['lanesClosed'], ['Unspecified'])
 
+    def test_lane_positions_and_conditions_use_descriptions_without_decoding_ids(self):
+        records = json.loads((FOLDER / 'catalog.json').read_text(encoding='utf-8'))['records']
+        by_number = {r['number']: r for r in records}
+        for record in records:
+            self.assertEqual(record['conditions'], updater.applicability_conditions(record), record['id'])
+        for number in ['133', '151', '4133A', '4133B', '5133']:
+            self.assertEqual(set(updater.lane_positions(by_number[number])), {'Left / inside', 'Center lane'})
+        base = {**by_number['4403'], 'id': '999-FW-CLT-R', 'title': 'Workbook speed limits 25 MPH or less'}
+        for title in ['Single lane closure with a lane shift left', 'Lane shift right', 'Right shoulder closure', '999-FW-CLT-R']:
+            self.assertEqual(updater.lane_positions({**base, 'sourceTitle': title}), ['Unspecified'], title)
+        for number in ['152', '153']:
+            self.assertEqual(set(updater.lane_positions(by_number[number])), {'Left / inside', 'Right / outside'})
+        conflicting = {**by_number['124'], 'filters': {**by_number['124']['filters'], 'workArea': '1 CLTL'}}
+        self.assertEqual(set(updater.lane_positions(conflicting)), {'Left / inside', 'Right / outside'})
+        self.assertEqual(updater.applicability_conditions({**base, 'sourceTitle': base['id']}), [])
+        self.assertEqual(updater.applicability_conditions({**base, 'sourceTitle': 'Work for less than 1 hour at posted speeds of 55 MPH or less'}), ['Less than 1 hour', 'Posted speeds of 55 MPH or less'])
+        self.assertEqual(updater.applicability_conditions({**base, 'sourceTitle': 'Work for 1 hour'}), [])
+        self.assertEqual(by_number['4110A']['conditions'], ['No Speed Reduction'])
+        self.assertEqual(by_number['4110B']['conditions'], ['Maximum 10 MPH Speed Reduction'])
+        self.assertEqual(by_number['4400']['conditions'], ['Traffic Volumes Less than 10,000 ADT', 'Adequate Sight Distances'])
+        self.assertEqual(by_number['5401']['conditions'], ['Within 150 Feet of Vehicle'])
+        for number in ['4403', '4421', '4422', '5403', '5421', '5422']:
+            self.assertEqual(by_number[number]['classifications']['trafficArrangement'], ['Mobile operation'])
+        for number in ['5182A', '5182B']:
+            self.assertEqual(by_number[number]['classifications']['trafficArrangement'], ['Road center work'])
+            self.assertEqual(by_number[number]['classifications']['lanePosition'], ['Unspecified'])
+
     def test_classification_rules_separate_concepts_and_preserve_original_data(self):
         records = json.loads((FOLDER / 'catalog.json').read_text(encoding='utf-8'))['records']
         by_number = {r['number']: r for r in records}
@@ -237,6 +291,19 @@ class StoredCatalogTests(unittest.TestCase):
         self.assertEqual(set(by_number['205']['classifications']['trafficArrangement']), {'Lane shift', 'Lane closure'})
         self.assertEqual(set(by_number['205']['classifications']['roadwayType']), {'Freeway', 'Divided'})
         self.assertEqual(by_number['5000']['classifications']['roadwayType'], ['Unspecified'])
+
+    def test_general_sheet_applicability_survives_refresh_without_changing_workbook_values(self):
+        records = json.loads((FOLDER / 'catalog.json').read_text(encoding='utf-8'))['records']
+        general = [record for record in records if record['number'] in {'100', '101', '102', '103', '104'}]
+        self.assertEqual(len(general), 5)
+        for record in general:
+            with self.subTest(typical=record['id']):
+                self.assertEqual(updater.classify(record)['roadwayType'], ['All roadway types'])
+                self.assertEqual(record['filters']['roadwayType'], 'Unspecified')
+                different_family = {**record, 'family': 'maintenance'}
+                self.assertEqual(updater.classify(different_family)['roadwayType'], ['Unspecified'])
+        other = next(record for record in records if record['number'] == '5000')
+        self.assertEqual(updater.classify({**other, 'filters': {**other['filters'], 'rcoc': 'Always'}})['roadwayType'], ['Unspecified'])
 
     def test_all_stored_pdfs_match_metadata_and_source_workbook_is_unchanged(self):
         catalog = json.loads((FOLDER / 'catalog.json').read_text(encoding='utf-8'))

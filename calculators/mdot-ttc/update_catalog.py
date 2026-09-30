@@ -113,16 +113,107 @@ def lane_classifications(record):
     return {'existingLanes': existing or ['Unspecified'], 'lanesClosed': closed or ['Unspecified']}
 
 
+def roadway_classifications(record):
+    """Use descriptive MDOT titles first, then workbook evidence; never decode IDs."""
+    # General sheets 100-104 apply to every roadway, regardless of blank workbook cells.
+    if record.get('family') == 'construction' and record.get('number') in {'100', '101', '102', '103', '104'}:
+        return ['All roadway types']
+    non_freeway = False
+    for title in [record.get('sourceTitle', ''), record['title']]:
+        if not title or title == record['id']:
+            continue
+        text = clean(re.sub(r'[-,\u2013\u2014]', ' ', title)).casefold()
+        for word, number in [('two', '2'), ('three', '3')]:
+            text = re.sub(r'\b' + word + r'\b', number, text)
+        # A non-freeway title must not be mistaken for an affirmative freeway label.
+        non_freeway = non_freeway or bool(re.search(r'\bnon\s*freeway\b', text))
+        text = re.sub(r'\bnon\s+freeway\b', 'nonfreeway', text)
+        roadway = []
+        if re.search(r'\bdivided\b', text):
+            roadway.append('Divided')
+        if re.search(r'\bundivided\b|\b[23] lanes? 2 way (?:roadway|highway|road)\b', text):
+            roadway.append('Undivided')
+        if not non_freeway and re.search(r'\bfreeway\b', text):
+            roadway.append('Freeway')
+        if roadway:
+            return roadway
+    original = clean(record['filters']['roadwayType']).casefold()
+    if original == 'freeway' and non_freeway:
+        return ['Unspecified']
+    return [next((value for value in ['Divided', 'Undivided', 'Freeway'] if value.casefold() == original), 'Unspecified')]
+
+
+def lane_positions(record):
+    """Identify affected lanes from descriptive titles, then workbook work areas."""
+    source = record.get('sourceTitle', '')
+    title = source if source and source != record['id'] else record['title']
+    text = clean(re.sub(r'[-,]', ' ', title)).casefold()
+    # A shift direction is not evidence of which lane is occupied or closed.
+    text = re.sub(r'\b(?:\d+ |single |double )?lanes? shift(?:ed|s)? (?:left|right)\b', '', text)
+    text = re.sub(r'\bshift(?:ed|s)? (?:left|right)\b', '', text)
+    positions = []
+    for label, pattern in {
+        'Left / inside': r'\b(?:left|inside) (?:\d+ )?(?:lanes?|and center lane)\b|\bright and left\b|\bleft and right\b|\bclosure (?:inside|left)\b|\blane closures? (?:inside|left)\b',
+        'Right / outside': r'\b(?:right|outside) (?:\d+ )?lanes?\b|\bleft and right\b|\bclosure (?:outside|right)\b|\blane closures? (?:outside|right)\b',
+        'Center lane': r'\bcenter (?:(?:left )?turn |and (?:left|right) )?lane\b',
+        'Parking lane': r'\bparking lane\b',
+    }.items():
+        if re.search(pattern, text):
+            positions.append(label)
+    # Some titles list lane positions after the closure (e.g. "1 right, 2 left").
+    if 'closure' in text:
+        for word, label in [('left', 'Left / inside'), ('right', 'Right / outside')]:
+            if re.search(r'\b\d+ ' + word + r'\b', text) and label not in positions:
+                positions.append(label)
+    if positions:
+        return positions
+    area = clean(record['filters']['workArea']).casefold()
+    for label, pattern in {
+        'Left / inside': r'\b(?:left|inside)\b',
+        'Right / outside': r'\b(?:right|outside)\b',
+        'Center lane': r'\bcltl\b|\bcenter (?:turn )?lane\b',
+        'Parking lane': r'\bparking lane\b',
+    }.items():
+        if re.search(pattern, area) and re.search(r'\blanes?\b|\bcltl\b', area):
+            positions.append(label)
+    return positions or ['Unspecified']
+
+
+def applicability_conditions(record):
+    """Surface explicit MDOT title conditions without inventing thresholds."""
+    source = record.get('sourceTitle', '')
+    title = source if source and source != record['id'] else record['title'] if record.get('titleSource') == 'mdot-pdf' else ''
+    patterns = [
+        r'\b(?:longer|less) than \d+ hours?\b',
+        r'\b(?:posted speeds?|speed limits?) (?:of )?\d+ MPH or less\b',
+        r'\bno speed reduction\b',
+        r'\bmaximum \d+ MPH speed reduction\b',
+        r'\b\d+ MPH step down in speed limit\b',
+        r'\btraffic volumes less than [\d,]+ ADT\b',
+        r'\blow traffic volumes\b',
+        r'\badequate sight distances?\b',
+        r'\bwithin \d+ feet of (?:work )?vehicle\b',
+        r'\bwith curbs\b',
+        r'\breduced lane width\b',
+        r'\b\d+-mile advanced warning\b',
+        r'\b(?:freeflow|yield) condition\b',
+    ]
+    conditions = []
+    for pattern in patterns:
+        for match in re.finditer(pattern, title, re.I):
+            phrase = clean(match[0])
+            phrase = phrase[0].upper() + phrase[1:]
+            if phrase.casefold() not in {value.casefold() for value in conditions}:
+                conditions.append(phrase)
+    return conditions
+
+
 def classify(record):
-    """Build browsing categories from explicit labels/titles; retain raw filters."""
+    """Build browsing categories and general-sheet applicability; retain raw filters."""
     original = record['filters']
     # Titles are descriptive evidence; filename abbreviations and sister sheets
     # are not used to guess missing classifications.
     title = clean(' '.join([record['title'], record.get('sourceTitle', '')]).replace('-', ' ')).casefold()
-    roadway = []
-    for value in ['Divided', 'Undivided', 'Freeway']:
-        if clean(original['roadwayType']).casefold() == value.casefold() or re.search(r'\b' + value.casefold() + r'\b', title):
-            roadway.append(value)
     arrangement = []
     arrangement_text = title + ' ' + clean(original['workArea']).replace('-', ' ').casefold()
     rules = {
@@ -138,6 +229,17 @@ def classify(record):
     }
     for value, pattern in rules.items():
         if re.search(pattern, arrangement_text) or value == 'Crossover' and clean(original['controlType']).casefold() == 'crossover':
+            arrangement.append(value)
+    # Use the MDOT description for these additional situations, not filename codes.
+    source = record.get('sourceTitle', '')
+    official = clean(source if source and source != record['id'] else record['title']).replace('-', ' ').casefold()
+    for value, pattern in {
+        'Mobile operation': r'\bmobile operations?\b',
+        'Road center work': r'\bclosure of the center of a\b',
+        'Lane encroachment': r'\blane encroachments?\b',
+        'Ramp work': r'\bwork operations on (?:exit|entrance) ramps?\b',
+    }.items():
+        if re.search(pattern, official):
             arrangement.append(value)
     method = []
     method_text = title + ' ' + clean(original['controlType']).casefold()
@@ -157,9 +259,9 @@ def classify(record):
         areas.append('Outside shoulder')
     elif 'shoulder' in shoulder_text and 'Shoulder' not in areas:
         areas.append('Shoulder')
-    return {'roadwayType': roadway or ['Unspecified'], 'trafficArrangement': arrangement or ['Unspecified'],
+    return {'roadwayType': roadway_classifications(record), 'trafficArrangement': arrangement or ['Unspecified'],
             'controlMethod': method or ['Unspecified'], 'workArea': list(dict.fromkeys(areas)) or ['Unspecified'],
-            **lane_classifications(record)}
+            **lane_classifications(record), 'lanePosition': lane_positions(record)}
 
 
 def fetch_bytes(url):
@@ -350,6 +452,7 @@ def build_records(rows, listings):
         for key, value in record['filters'].items():
             record['filters'][key] = labels[key].setdefault(clean(value).casefold(), clean(value))
         record['classifications'] = classify(record)
+        record['conditions'] = applicability_conditions(record)
     return sorted(records.values(), key=lambda r: (int(re.match(r'\d+', r['number'])[0]), r['number'], r['id']))
 
 
