@@ -1,7 +1,7 @@
 const {test} = require('node:test');
 const assert = require('node:assert/strict');
-const F = require('../freewayLOSCore.js');
-const ML = require('../MLscripts.js');
+const F = require('../calculators/freeway-los/freewayLOSCore.js');
+const ML = require('../shared/los/MLscripts.js');
 const near = (actual, expected, tolerance = 1e-9) => assert.ok(Math.abs(actual - expected) < tolerance, `${actual} != ${expected}`);
 const example = { trafficVolume: 2400, lanes: 2, PHF: .9, heavyVehicles: 5,
     ffsMode: 'estimated', baseFreeFlowSpeed: 60, laneWidth: 12, rightClearance: 10,

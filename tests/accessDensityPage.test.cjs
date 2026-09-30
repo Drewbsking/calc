@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
 const harness = require('./helpers/alignmentPageHarness.cjs');
-const G = require('../scripts/accessDensityCore.js');
+const G = require('../calculators/access-density/accessDensityCore.js');
 
 function near(actual, expected, tolerance = .02) {
   assert.ok(Math.abs(actual - expected) <= tolerance, `Expected ${actual} near ${expected}`);

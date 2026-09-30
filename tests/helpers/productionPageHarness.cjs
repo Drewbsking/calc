@@ -69,12 +69,12 @@ module.exports = function pageHarness(saved = null, failStorage = false) {
   }
   const root = new Element('root');
   const repo = path.join(__dirname, '../..');
-  parse(fs.readFileSync(path.join(repo, 'constructionProduction.html'), 'utf8'), root);
+  parse(fs.readFileSync(path.join(repo, 'calculators/construction-production/index.html'), 'utf8'), root);
   document = { getElementById(id) { const node = root.querySelector(`#${id}`); assert.ok(node, `Page element #${id} exists`); return node; }, querySelectorAll: q => root.querySelectorAll(q), querySelector: q => root.querySelector(q), addEventListener: (_, fn) => document.ready = fn };
   let storage = saved;
   const localStorage = { getItem() { if (failStorage) throw new Error('Storage blocked'); return storage; }, setItem(_, value) { if (failStorage) throw new Error('Storage blocked'); storage = value; } };
   const context = vm.createContext({ document, localStorage, window: { print() { prints++; } } });
-  for (const script of root.querySelectorAll('script')) vm.runInContext(fs.readFileSync(path.join(repo, script.attributes.src), 'utf8'), context, { filename: script.attributes.src });
+  for (const script of root.querySelectorAll('script')) vm.runInContext(fs.readFileSync(path.join(repo, 'calculators/construction-production', script.attributes.src), 'utf8'), context, { filename: script.attributes.src });
   document.ready();
   function emit(node, event) { if (typeof node === 'string') node = document.getElementById(node); const target = node; while (node) { for (const handler of node.handlers[event] || []) handler({ target, preventDefault() {} }); node = node.parent; } }
   function change(node, value, event = 'input') { if (typeof node === 'string') node = document.getElementById(node); if (node.type === 'checkbox') node.checked = value; else node.value = value; emit(node, event); }

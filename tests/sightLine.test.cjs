@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const { spawnSync } = require('node:child_process');
-const core = require('../scripts/sightLineCore.js');
+const core = require('../shared/sight-line/core.js');
 const params = core.parameters(1003.5, 1002, 300);
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) < 1e-9, `${actual} != ${expected}`);
 
@@ -100,13 +100,13 @@ test('matches both original Python interpolation functions for representative in
 test('both pages and their static assets are reachable from the home page', () => {
     const root = path.join(__dirname, '..');
     const home = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-    for (const filename of ['sightLineElevation.html', 'sightLineProfile.html']) {
-        assert.ok(home.includes(`href="${filename}"`));
+    for (const filename of ['calculators/sight-line-elevation/index.html', 'calculators/sight-line-profile/index.html']) {
+        assert.ok(home.includes(`href="${filename.replace(/index\.html$/, '')}"`));
         const html = fs.readFileSync(path.join(root, filename), 'utf8');
         const ids = Array.from(html.matchAll(/\bid="([^"]+)"/g), match => match[1]);
         assert.equal(ids.length, new Set(ids).size);
         for (const match of html.matchAll(/(?:href|src)="([^"#?]+)(?:[#?][^"]*)?"/g)) {
-            assert.ok(fs.existsSync(path.join(root, match[1])), match[1]);
+            assert.ok(fs.existsSync(path.join(root, path.dirname(filename), match[1])), match[1]);
         }
     }
 });

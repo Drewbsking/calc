@@ -2,14 +2,14 @@
 
 Two browser tools port the supplied Python scripts without requiring Python, matplotlib, a server API, or a chart library:
 
-- `Sight Line Elevation Checker.py` becomes [Sight Line Elevation Checker](../sightLineElevation.html).
-- `against actual ground elevations.py` becomes [Sight Line vs. Ground Profile](../sightLineProfile.html).
+- `Sight Line Elevation Checker.py` becomes [Sight Line Elevation Checker](../calculators/sight-line-elevation/index.html).
+- `against actual ground elevations.py` becomes [Sight Line vs. Ground Profile](../calculators/sight-line-profile/index.html).
 
 Both are listed under Sight Distance on the home page and link to each other. Their related-tool links carry the current eye elevation, target elevation, and total distance. The original Python files are retained as references.
 
 ## Calculations and input conventions
 
-Shared calculations are in `scripts/sightLineCore.js`. The formula is unchanged:
+Shared calculations are in `shared/sight-line/core.js`. The formula is unchanged:
 
 ```text
 Z(x) = Zeye + (Ztarget - Zeye) * (x / L)

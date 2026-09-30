@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taper Lengths</title>
+    <link rel="stylesheet" href="../../shared/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <main class="container">
+        <section class="calculator">
+            <h2>Calculate Taper Length</h2>
+            <label for="W">Enter W (width):</label>
+            <input type="number" id="W" min="0" placeholder="Enter W">
+            <label>Select S (speed):</label><br>
+            <div class="speed-buttons">
+                <button class="speed-button" onclick="setSpeed(25, this)">25</button>
+            </div>
+            <div class="speed-buttons">
+                <button class="speed-button" onclick="setSpeed(30, this)">30</button>
+                <button class="speed-button" onclick="setSpeed(35, this)">35</button>
+                <button class="speed-button" onclick="setSpeed(40, this)">40</button>
+                <button class="speed-button" onclick="setSpeed(45, this)">45</button>
+                <button class="speed-button" onclick="setSpeed(50, this)">50</button>
+                <button class="speed-button" onclick="setSpeed(55, this)">55</button>
+            </div>
+            <div class="speed-buttons">
+                <button class="speed-button" onclick="setSpeed(60, this)">60</button>
+            </div>
+            <input type="hidden" id="S" value="0">
+            <button class="calculate-button" onclick="calculateTaperLength()">Calculate</button>
+            <div class="result" id="result"></div>
+            <div class="note hidden" id="note">
+                <p>* L/2 Shift only is rounded up to the nearest multiple of 5.</p>
+            </div>
+        </section>
+
+        <section class="references">
+            <h2>References</h2>
+            <p>For more information on taper lengths, please visit the <a href="https://rcoc.miraheze.org/wiki/Taper_Length" target="_blank" rel="noopener">Taper Length Wiki</a>.</p>
+        </section>
+    </main>
+
+    <div id="footer-placeholder"></div>
+    <script src="../../shared/layout.js"></script>
+    <script src="simple.js"></script>
+</body>
+</html>

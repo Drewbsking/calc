@@ -1,6 +1,6 @@
 # Roadway alignment, access points, and reports
 
-Open `accessDensity.html` through the repository's normal static web server. The page implements alignment creation, station inquiry, access-point entry, and station-based reports using Leaflet and the existing Esri basemap. It needs no backend or build step.
+Open `calculators/access-density/index.html` through the repository's normal static web server. The page implements alignment creation, station inquiry, access-point entry, and station-based reports using Leaflet and the existing Esri basemap. It needs no backend or build step.
 
 ## Interaction
 
@@ -23,9 +23,9 @@ PC, MID, and PT remain visible and draggable. A shared PT/PC handle is labeled `
 
 ## Geometry and stationing
 
-`scripts/accessDensityCore.js` is independent of Leaflet and the DOM. It exports the same API to the browser and Node tests. All X/Y coordinates, radii, offsets, and internal distances are in meters; station arguments and formatted values are in feet (1 ft = 0.3048 m).
+`calculators/access-density/accessDensityCore.js` is independent of Leaflet and the DOM. It exports the same API to the browser and Node tests. All X/Y coordinates, radii, offsets, and internal distances are in meters; station arguments and formatted values are in feet (1 ft = 0.3048 m).
 
-`scripts/accessDensity.js` stores a first geographic point and an ordered list of line/curve definitions. Geographic endpoints are shared objects. The map adapter converts those definitions to local X/Y coordinates before rebuilding derived geometry.
+`calculators/access-density/accessDensity.js` stores a first geographic point and an ordered list of line/curve definitions. Geographic endpoints are shared objects. The map adapter converts those definitions to local X/Y coordinates before rebuilding derived geometry.
 
 The local spherical coordinate conversion follows the existing curve tool. One fixed frame is established at the first point and lasts until Reset. This is a map-tracing measurement model. Moving the first point does not change the frame, but the first point remains Station 0+00.
 
@@ -45,7 +45,7 @@ In access mode, **R**, **C**, and **N** select the type. Shortcuts do not interc
 
 The table lists only **Station, Type, and Name**, sorted by numeric station with insertion order breaking ties. Clicking a row pans to, highlights, and opens that point; rows also support Enter and Space. A selected point has a yellow outline. Name values are rendered as text rather than HTML.
 
-`scripts/accessDensityPoints.js` owns the small in-memory point list, markers, popup, and table. Each record contains `id`, `coordinate: {lat, lng}`, `type`, `name`, and numeric `stationFeet`. It calls the existing geometry module's `nearestStation` against the current local-frame alignment, including exact radial projection and arc length on curves. Neither the marker nor its stored coordinate is snapped to the roadway. Offset is used only internally by the nearest-location search; it is not stored in access records, shown in the access table, or used to filter points. Points beyond the alignment ends receive the nearest endpoint's station.
+`calculators/access-density/accessDensityPoints.js` owns the small in-memory point list, markers, popup, and table. Each record contains `id`, `coordinate: {lat, lng}`, `type`, `name`, and numeric `stationFeet`. It calls the existing geometry module's `nearestStation` against the current local-frame alignment, including exact radial projection and arc length on curves. Neither the marker nor its stored coordinate is snapped to the roadway. Offset is used only internally by the nearest-location search; it is not stored in access records, shown in the access table, or used to filter points. Points beyond the alignment ends receive the nearest endpoint's station.
 
 Dragging an access marker recalculates its station and table order during the drag. Every alignment redraw recalculates all access stations without moving their map locations, including curve edits, changes to the start point, and drawing additional sections. If the alignment becomes invalid, access stations display as unavailable until it is repaired. Changing modes preserves access points.
 
@@ -55,7 +55,7 @@ Dragging an access marker recalculates its station and table order during the dr
 
 ### Study map
 
-`scripts/accessDensityReportMap.js` builds an overview using the same Esri imagery and reference layers as the interactive Leaflet map. The view fits the entire sampled alignment and the access points at their actual geographic locations, with 500-ft station labels, the end station, distinct access symbols, a north arrow, a scale, and Esri attribution. It does not move the user's interactive map. Curves are sampled only for drawing; true arc lengths still determine stationing and report counts.
+`calculators/access-density/accessDensityReportMap.js` builds an overview using the same Esri imagery and reference layers as the interactive Leaflet map. The view fits the entire sampled alignment and the access points at their actual geographic locations, with 500-ft station labels, the end station, distinct access symbols, a north arrow, a scale, and Esri attribution. It does not move the user's interactive map. Curves are sampled only for drawing; true arc lengths still determine stationing and report counts.
 
 The browser draws CORS-enabled map tiles and overlays into a 2,700-pixel-wide image embedded in the report SVG and PDF. No new dependency, service, or backend is needed. Export waits for the map image; reopening reports captures current geometry and accesses. Missing imagery tiles are clearly noted on the map page. A capture failure disables export and explains how to retry. Closing reports discards a pending capture's result. The study name is included on every page, including the map; the PDF filename and metadata also use it.
 
@@ -68,7 +68,7 @@ Intervals start at Station 0+00 and default to **1,000 feet**; the Interval fiel
 
 Matching nonblank road names within **100 feet** share one display label, ignoring case and repeated whitespace. Each group spans at most 100 feet; a chain of nearby entries cannot combine distant occurrences. The shared label is centered over the grouped stations, with a line at every recorded named-access station. Grouping affects only labels: every record still counts in the bars and gaps. No geographic side or offset is used to group, count, or calculate gaps. Distinct names and unnamed accesses stay separate.
 
-`scripts/accessDensityReportCore.js` is a pure calculation module usable in Node and the browser. It accepts the study name, alignment length, stationed access records, interval, label tolerance, and short-highway flag. It returns the normalized name, interval counts, driveway stations, grouped road labels, sorted gaps, and speed results, without depending on Leaflet, the DOM, or chart rendering. Study names are escaped as text and wrap in report headings; they do not affect any analysis.
+`calculators/access-density/accessDensityReportCore.js` is a pure calculation module usable in Node and the browser. It accepts the study name, alignment length, stationed access records, interval, label tolerance, and short-highway flag. It returns the normalized name, interval counts, driveway stations, grouped road labels, sorted gaps, and speed results, without depending on Leaflet, the DOM, or chart rendering. Study names are escaped as text and wrap in report headings; they do not affect any analysis.
 
 ### MCL speed recommendation
 
@@ -99,9 +99,9 @@ For a full 100-ft section, zero or one access is below the thresholds, two acces
 
 The graph states that it is hypothetical, that the MCL supplies comparison thresholds only, and that the statute does not authorize this 100-ft proration method. It does not change the existing MCL recommendation or apply the tenth-mile short-highway provision. The **Hypothetical Speed - Every 100 ft** selection opens the graph first; all printed/PDF selections include it with the statutory basis.
 
-`scripts/accessDensityReportCharts.js` renders the calculated result as standalone SVG pages. Access-count charts use at most ten intervals per page and a common count scale across pages of the same report. Gap tables paginate without splitting rows. Road labels wrap and use separate rows to avoid overlaps. Names are escaped as text in the generated SVG.
+`calculators/access-density/accessDensityReportCharts.js` renders the calculated result as standalone SVG pages. Access-count charts use at most ten intervals per page and a common count scale across pages of the same report. Gap tables paginate without splitting rows. Road labels wrap and use separate rows to avoid overlaps. Names are escaped as text in the generated SVG.
 
-`scripts/accessDensityReports.js` owns the report selector, interval input, page controls, and exports:
+`calculators/access-density/accessDensityReports.js` owns the report selector, interval input, page controls, and exports:
 
 - **Print:** prints all pages of the selected report on landscape US Letter pages, with report controls and the map excluded. SVG graphics remain vector in browser printing.
 - **Save PDF Report:** downloads all pages of the selected report in landscape US Letter format, including the MCL speed recommendation, window stations, counts, method, and clickable links to the official statutes. Graphics are rendered at 3,000 pixels wide (300 dpi at a 10-inch printable width). The page uses the pinned browser build of [jsPDF 4.2.1](https://github.com/parallax/jsPDF/releases/tag/v4.2.1) from cdnjs. If that library fails to load, Print can still save a PDF through the browser. PNG download has been removed.

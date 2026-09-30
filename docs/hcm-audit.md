@@ -2,7 +2,7 @@
 
 Reviewed September 22, 2026. The folder contains a **basic freeway** calculator, a Version 6.0 manual extract, a worked example in two formats, and an HCM 7th Edition review guide. The live site previously offered **multilane highway** LOS, which uses different geometry, capacity and speed-flow equations. No live basic freeway LOS tool existed.
 
-The missing method is now available in [Basic Freeway LOS](../freewayLOS.html), linked from the toolbox and [Multilane LOS](../ML.html). The implementation uses **HCM 6th Edition (2016), Chapter 12, Version 6.0, base conditions**. The original five supplied files remain unchanged as audit evidence. The flawed archived Python script is not executed by the site.
+The missing method is now available in [Basic Freeway LOS](../calculators/freeway-los/index.html), linked from the toolbox and [Multilane LOS](../calculators/multilane-los/index.html). The implementation uses **HCM 6th Edition (2016), Chapter 12, Version 6.0, base conditions**. The original five supplied files remain unchanged as audit evidence. The flawed archived Python script is not executed by the site.
 
 ## File disposition
 
@@ -65,9 +65,9 @@ The script and handwritten solution both show capacity **2,067.8**. The handwrit
 
 The manual equations, table headings, boundaries and relevant footnotes were read as text and checked on rendered pages. The example and duplicate scan were visually inspected.
 
-A coordinate-based extraction from the new PDF's pages 20–22 independently compared **all 1,215 PCE values and 135 length entries** with `MLdata.js`. All matched. The existing ODOT-sourced fixture remains the permanent independent regression check for those same tables.
+A coordinate-based extraction from the new PDF's pages 20–22 independently compared **all 1,215 PCE values and 135 length entries** with `shared/los/MLdata.js`. All matched. The existing ODOT-sourced fixture remains the permanent independent regression check for those same tables.
 
-The existing multilane calculator already covers the supplied extract's **multilane** branch. Its four-lane lateral-clearance table, lane bands, median/access deductions, capacity formula, demand adjustment, PCE tables and LOS boundaries agree with the Version 6.0 extract. Freeway geometry and speed-flow parameters are kept in `freewayLOSCore.js`; they do not replace the multilane method. HCM 2010 remains a separate edition in `ML.html`.
+The existing multilane calculator already covers the supplied extract's **multilane** branch. Its four-lane lateral-clearance table, lane bands, median/access deductions, capacity formula, demand adjustment, PCE tables and LOS boundaries agree with the Version 6.0 extract. Freeway geometry and speed-flow parameters are kept in `calculators/freeway-los/freewayLOSCore.js`; they do not replace the multilane method. HCM 2010 remains a separate edition in `calculators/multilane-los/index.html`.
 
 The new freeway core shares `ML.getPCE` and `ML.getLOS`. All other freeway formulas are independent. This avoids maintaining duplicate copies of the 1,215-cell Chapter 12 PCE tables. The shared multilane module also loads its existing 2010 data, but the freeway calculation never calls the 2010 method.
 

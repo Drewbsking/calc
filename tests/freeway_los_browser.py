@@ -25,7 +25,7 @@ async def check(origin):
         page = await browser.new_page(viewport={"width": 1365, "height": 1000})
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        await page.goto(origin + "/freewayLOS.html")
+        await page.goto(origin + "/calculators/freeway-los/")
         button = page.get_by_role("button", name="Calculate LOS", exact=True)
         await button.click()
         await expect(page.locator("#steps")).to_contain_text("72.18 mph")
@@ -119,9 +119,9 @@ async def check(origin):
             response = await page.request.get(target)
             assert response.ok, target
         await page.goto(origin + "/index.html")
-        await expect(page.locator('.calculator-card a[href="freewayLOS.html"]')).to_be_visible()
-        await page.goto(origin + "/ML.html")
-        await expect(page.locator('a[href="freewayLOS.html"]')).to_be_visible()
+        await expect(page.locator('.calculator-card a[href="calculators/freeway-los/"]')).to_be_visible()
+        await page.goto(origin + "/calculators/multilane-los/")
+        await expect(page.locator('a[href="../freeway-los/"]')).to_be_visible()
         assert not errors, errors
         print("PASS: 320px layout, source links, toolbox navigation, no JavaScript errors")
         await browser.close()

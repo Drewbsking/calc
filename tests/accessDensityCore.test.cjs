@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const G = require('../scripts/accessDensityCore.js');
+const G = require('../calculators/access-density/accessDensityCore.js');
 
 const point = (x, y) => ({ x, y });
 const polar = (degrees, radius = 100, center = point(0, 0)) => ({

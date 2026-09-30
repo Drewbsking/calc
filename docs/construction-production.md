@@ -1,6 +1,6 @@
 # Construction Production Calculator
 
-Open `constructionProduction.html` from the repository's normal static host, or follow **Construction Production Calculator** on `index.html`. This is a standalone HTML/CSS/JavaScript tool, matching the existing repository. No dependencies, framework, build step, accounts, backend, or database were added.
+Open `calculators/construction-production/index.html` from the repository's normal static host, or follow **Construction Production Calculator** on `index.html`. This is a standalone HTML/CSS/JavaScript tool, matching the existing repository. No dependencies, framework, build step, accounts, backend, or database were added.
 
 ## Using the calculator
 
@@ -19,14 +19,14 @@ Local storage uses `construction-production-v1`. It contains the current scenari
 
 | File | Responsibility |
 | --- | --- |
-| `scripts/production/units.js` | Compatible unit conversion and numeric validation |
-| `scripts/production/quantities.js` | Area, thickness, volume, density, weight, fixed quantities, and quantity factors |
-| `scripts/production/production.js` | Compatible production-rate conversion and productive hours/days |
-| `scripts/production/calendar.js` | Working shifts, weekends, holidays, date windows, and civil date/time arithmetic |
-| `scripts/production/engine.js` | Forward scheduling and inverse complete-sequence solver |
-| `scripts/production/mdotRates2023.js` | All 136 source work items, printed Low/Average/High rate cells, comments, and page references |
-| `scripts/production/presets.js` | Source-rate normalization, editable libraries, saved-state migration, and operation templates |
-| `scripts/constructionProductionPage.js` | DOM controls, local persistence, comparison snapshots, and results |
+| `calculators/construction-production/production/units.js` | Compatible unit conversion and numeric validation |
+| `calculators/construction-production/production/quantities.js` | Area, thickness, volume, density, weight, fixed quantities, and quantity factors |
+| `calculators/construction-production/production/production.js` | Compatible production-rate conversion and productive hours/days |
+| `calculators/construction-production/production/calendar.js` | Working shifts, weekends, holidays, date windows, and civil date/time arithmetic |
+| `calculators/construction-production/production/engine.js` | Forward scheduling and inverse complete-sequence solver |
+| `calculators/construction-production/production/mdotRates2023.js` | All 136 source work items, printed Low/Average/High rate cells, comments, and page references |
+| `calculators/construction-production/production/presets.js` | Source-rate normalization, editable libraries, saved-state migration, and operation templates |
+| `calculators/construction-production/constructionProductionPage.js` | DOM controls, local persistence, comparison snapshots, and results |
 
 The calculation/data modules expose CommonJS exports for Node tests and browser globals for static pages. They have no DOM dependencies. Quick calculators call the same conversion, quantity, and production functions. The older HMA Weight Factor calculator retains its separate Gmb-based workflow.
 
@@ -73,7 +73,7 @@ Utilization is operation hours divided by the total available hours in its occup
 
 ## MDOT source and rate interpretations
 
-The **MDOT — November 2023** library uses all 136 rows from the supplied [MDOT Roadway & Bridge Production Rates PDF](<../MDOT_Production_Rates_November_2023 (1).pdf>): 40 on page 1, 48 on page 2, and 48 on page 3. Work item names, all three rate columns, source comments, and page references are retained. The original printed cells remain visible in the library even when a user edits a rate. These are planning assumptions, not guarantees or a substitute for contract requirements. Key pavement rates are:
+The **MDOT — November 2023** library uses all 136 rows from the supplied [MDOT Roadway & Bridge Production Rates PDF](<../calculators/construction-production/references/MDOT_Production_Rates_November_2023 (1).pdf>): 40 on page 1, 48 on page 2, and 48 on page 3. Work item names, all three rate columns, source comments, and page references are retained. The original printed cells remain visible in the library even when a user edits a rate. These are planning assumptions, not guarantees or a substitute for contract requirements. Key pavement rates are:
 
 | Activity | Unit / workday | Low | Average | High |
 | --- | --- | ---: | ---: | ---: |

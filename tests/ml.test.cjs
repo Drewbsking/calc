@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const ML = require('../MLscripts.js');
+const ML = require('../shared/los/MLscripts.js');
 const reference = require('./fixtures/ml_hcm6_pce.json');
 const near = (actual, expected, tolerance = 1e-10) => assert.ok(Math.abs(actual - expected) <= tolerance, `${actual} != ${expected}`);
 const base = { trafficVolume: 1900, PHF: 0.9, heavyVehicles: 15, terrain: 'specific',

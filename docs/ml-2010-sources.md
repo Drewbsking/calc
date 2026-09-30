@@ -1,6 +1,6 @@
 # HCM 2010 and 6th Edition multilane LOS
 
-Reviewed September 22, 2026. `ML.html` offers HCM 2010, HCM 6th Edition (2016), and Compare both. The 6th Edition remains the default and keeps its existing calculation and data. The two editions share only the four-lane geometry adjustments, whose numeric values were checked in both editions.
+Reviewed September 22, 2026. `calculators/multilane-los/index.html` offers HCM 2010, HCM 6th Edition (2016), and Compare both. The 6th Edition remains the default and keeps its existing calculation and data. The two editions share only the four-lane geometry adjustments, whose numeric values were checked in both editions.
 
 ## HCM 2010 source
 
@@ -57,9 +57,9 @@ Results show LOS, analysis speed, ET/ER, fHV, adjusted flow, capacity, demand/ca
 
 ## Files and validation
 
-- `ML2010data.js`: independently transcribed 2010 tables and speed-curve coefficients; archived files stay intact.
-- `MLscripts.js`: pure calculation functions for both editions and comparison.
-- `MLpage.js`: edition controls, comparison tables and worked substitutions.
+- `shared/los/ML2010data.js`: independently transcribed 2010 tables and speed-curve coefficients; archived files stay intact.
+- `shared/los/MLscripts.js`: pure calculation functions for both editions and comparison.
+- `calculators/multilane-los/MLpage.js`: edition controls, comparison tables and worked substitutions.
 - `tests/fixtures/ml_hcm2010_pce.json`: 406 PCE values extracted by cell position from the source PDF, independent of the hand-transcribed runtime data, with printed band limits.
 - `node --test tests/ml.test.cjs tests/ml2010.test.cjs`: existing 6th Edition regressions, all 2010 PCE cells, correct band boundaries, interpolation, source discrepancy handling, published example 1, speed selection, capacity endpoints, demand inputs, overrides and comparison isolation.
 - `py -3.13 tests/ml_browser.py`: existing page regressions plus all edition modes, comparison, inputs, formulas, unavailable cases, source escaping and mobile layouts.

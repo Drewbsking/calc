@@ -1,7 +1,7 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const ML = require('../MLscripts.js');
-const data = require('../ML2010data.js');
+const ML = require('../shared/los/MLscripts.js');
+const data = require('../shared/los/ML2010data.js');
 const reference = require('./fixtures/ml_hcm2010_pce.json');
 const near = (actual, expected, tolerance = 1e-10) => assert.ok(Math.abs(actual - expected) <= tolerance, `${actual} != ${expected}`);
 const base = { edition: '2010', trafficVolume: 1900, PHF: .9, percentTrucks: 13, percentRVs: 2, driverFactor: 1,

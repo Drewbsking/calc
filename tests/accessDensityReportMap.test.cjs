@@ -1,8 +1,8 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const MapReport = require('../scripts/accessDensityReportMap.js');
-const Core = require('../scripts/accessDensityReportCore.js');
-const Charts = require('../scripts/accessDensityReportCharts.js');
+const MapReport = require('../calculators/access-density/accessDensityReportMap.js');
+const Core = require('../calculators/access-density/accessDensityReportCore.js');
+const Charts = require('../calculators/access-density/accessDensityReportCharts.js');
 const harness = require('./helpers/alignmentPageHarness.cjs');
 
 test('map projection uses Web Mercator tile coordinates with north up', () => {

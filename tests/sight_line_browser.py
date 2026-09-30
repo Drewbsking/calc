@@ -28,7 +28,7 @@ async def check_pages(origin):
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
 
-        await page.goto(origin + "/sightLineElevation.html")
+        await page.goto(origin + "/calculators/sight-line-elevation/")
         await expect(page.locator("#checked-elevation")).to_have_text("1,002.75 ft")
         await expect(page.locator("#sight-line-results")).to_be_visible()
         await page.screenshot(path=str(OUTPUT / "elevation-desktop.png"), full_page=True)
@@ -66,7 +66,7 @@ async def check_pages(origin):
         await expect(page.locator("#checked-elevation")).to_have_text("124.00 ft")
         print("PASS: related tools carry endpoint inputs without carrying fictitious ground data")
 
-        await page.goto(origin + "/sightLineProfile.html")
+        await page.goto(origin + "/calculators/sight-line-profile/")
         await expect(page.locator("#minimum-clearance")).to_have_text("-0.65 ft")
         await expect(page.locator("#profile-summary")).to_have_text("2 ground point(s) above the sight line")
         await expect(page.locator("#ground-results tr")).to_have_count(7)
@@ -99,7 +99,7 @@ async def check_pages(origin):
         print("PASS: profile validation, contact, single point, pasted columns, sorting, and limited coverage")
 
         await page.set_viewport_size({"width": 390, "height": 844})
-        for route, screenshot in [("sightLineElevation.html", "elevation-mobile.png"), ("sightLineProfile.html", "profile-mobile.png")]:
+        for route, screenshot in [("calculators/sight-line-elevation/", "elevation-mobile.png"), ("calculators/sight-line-profile/", "profile-mobile.png")]:
             await page.goto(origin + "/" + route)
             await expect(page.locator("#sight-line-results")).to_be_visible()
             assert await page.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), route
@@ -109,7 +109,7 @@ async def check_pages(origin):
 
         await page.goto(origin + "/index.html")
         await page.locator(".filter-chip").filter(has_text="Sight Distance").click()
-        for route in ("sightLineElevation.html", "sightLineProfile.html"):
+        for route in ("calculators/sight-line-elevation/", "calculators/sight-line-profile/"):
             await expect(page.locator(f'.calculator-card a[href="{route}"]')).to_be_visible()
         assert errors == [], errors
         print("PASS: toolbox category links; no browser JavaScript errors")

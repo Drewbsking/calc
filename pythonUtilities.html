@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Python utilities for TCO cleanup, filename changes, folder checks, data cleanup, CSV-to-MediaWiki tables, audio, UD-10 reports, SVG-to-DXF conversion, and seasonal factor heatmaps. Download scripts with clear Windows instructions.">
     <title>Python Utilities | Andy's Traffic Tools</title>
-    <link rel="stylesheet" href="styles/styles.css">
+    <link rel="stylesheet" href="shared/styles.css">
     <link rel="stylesheet" href="styles/pythonUtilities.css">
 </head>
 <body>
@@ -1062,7 +1062,7 @@ LANGUAGE = ""</code></pre>
             </dl>
             <p class="utility-behavior">The CSV needs a header row, such as <code>Crash_ID</code>, with digit-only IDs in its first column. Extra columns are ignored. Blank IDs are skipped, duplicates are requested once, and leading zeros are preserved. Invalid IDs are reported before any downloads begin.</p>
             <p class="utility-behavior">Existing report files are skipped. Each download is checked for a PDF header and end marker; incomplete files are removed. The terminal reports downloads, skipped files, and errors. The script pauses between requests and stops if SEMCOG denies access or limits requests. Report availability depends on SEMCOG.</p>
-            <p class="utility-originals">Original: <code>ud10.py</code>. Uses the report endpoint from the <a href="ud10.html">single-report UD-10 tool</a>, replacing the old page's submit button and Chrome automation. No pandas, Selenium, or browser setup is needed.</p>
+            <p class="utility-originals">Original: <code>ud10.py</code>. Uses the report endpoint from the <a href="calculators/ud-10/">single-report UD-10 tool</a>, replacing the old page's submit button and Chrome automation. No pandas, Selenium, or browser setup is needed.</p>
             <a class="utility-download" href="python/download_ud10_reports.py" download="download_ud10_reports.py" data-download aria-label="Download Python file: Download UD-10 Reports from a CSV">Download Python File <span>.py</span></a>
             <details class="utility-instructions">
                 <summary>Settings &amp; step-by-step instructions</summary>
@@ -1079,7 +1079,7 @@ TIMEOUT_SECONDS = 30</code></pre>
                         <pre class="utility-command" tabindex="0"><code>py .\download_ud10_reports.py</code></pre></li>
                     <li>Review the terminal's summary and open the output folder to view the PDFs. If a download times out, increase <code>TIMEOUT_SECONDS</code> and rerun. Previously saved reports are skipped.</li>
                 </ol>
-                <p>Keep the terminal open while downloads run. Press <kbd>Ctrl+C</kbd> to cancel; completed PDFs are kept. If SEMCOG is unavailable, retry later. You can check one ID with the <a href="ud10.html">single-report tool</a>.</p>
+                <p>Keep the terminal open while downloads run. Press <kbd>Ctrl+C</kbd> to cancel; completed PDFs are kept. If SEMCOG is unavailable, retry later. You can check one ID with the <a href="calculators/ud-10/">single-report tool</a>.</p>
             </details>
             <details class="utility-source">
                 <summary>View Python code</summary>
@@ -1226,7 +1226,7 @@ DPI = 300</code></pre>
         </section>
     </main>
     <div id="footer-placeholder"></div>
-    <script src="scripts/layoutScript.js"></script>
+    <script src="shared/layout.js"></script>
     <script src="scripts/pythonUtilities.js"></script>
 </body>
 </html>

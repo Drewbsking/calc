@@ -1,11 +1,11 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const U = require('../scripts/production/units.js');
-const Q = require('../scripts/production/quantities.js');
-const P = require('../scripts/production/production.js');
-const C = require('../scripts/production/calendar.js');
-const D = require('../scripts/production/presets.js');
-const E = require('../scripts/production/engine.js');
+const U = require('../calculators/construction-production/production/units.js');
+const Q = require('../calculators/construction-production/production/quantities.js');
+const P = require('../calculators/construction-production/production/production.js');
+const C = require('../calculators/construction-production/production/calendar.js');
+const D = require('../calculators/construction-production/production/presets.js');
+const E = require('../calculators/construction-production/production/engine.js');
 const close = (actual, expected, tolerance = 0.00001) => assert.ok(Math.abs(actual - expected) <= tolerance, `${actual} should be within ${tolerance} of ${expected}`);
 function basic(operations, patch = {}) {
   return { ...D.scenario(), quantity: 120, unit: 'EA', operations, ...patch };

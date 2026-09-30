@@ -1,9 +1,9 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const sourceRows = require('../scripts/production/mdotRates2023.js');
-const D = require('../scripts/production/presets.js');
-const E = require('../scripts/production/engine.js');
-const P = require('../scripts/production/production.js');
+const sourceRows = require('../calculators/construction-production/production/mdotRates2023.js');
+const D = require('../calculators/construction-production/production/presets.js');
+const E = require('../calculators/construction-production/production/engine.js');
+const P = require('../calculators/construction-production/production/production.js');
 const page = require('./helpers/productionPageHarness.cjs');
 const item = name => D.rates.find(r => r.activity === name);
 const near = (actual, expected) => assert.ok(Math.abs(actual - expected) < 0.001, `${actual} ≈ ${expected}`);

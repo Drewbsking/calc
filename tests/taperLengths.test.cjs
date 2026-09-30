@@ -7,7 +7,7 @@ const { createHarness, plainText, simpleResult, advancedResult } = require('./he
 const fixtures = require('./fixtures/taper_legacy.json');
 
 const root = path.join(__dirname, '..');
-const source = fs.readFileSync(path.join(root, 'scripts/taperLengths.js'), 'utf8');
+const source = fs.readFileSync(path.join(root, 'calculators/taper-lengths/taperLengths.js'), 'utf8');
 const setup = () => {
   const page = createHarness(source);
   page.start();
@@ -62,7 +62,7 @@ test('keeps the 40/45 MPH formula boundary and now rounds shifts up in both mode
 });
 
 test('the standalone Simple page uses the same upward rounding and preserved lengths', () => {
-  const oldRoute = createHarness(fs.readFileSync(path.join(root, 'scripts/simple.js'), 'utf8'));
+  const oldRoute = createHarness(fs.readFileSync(path.join(root, 'calculators/simple-taper/simple.js'), 'utf8'));
   oldRoute.start();
   for (const [width, speed, ...expected] of fixtures.simple) {
     oldRoute.ids.W.value = String(width);
@@ -188,7 +188,7 @@ test('raising a low posted speed clears unavailable work speeds and highlights r
 });
 
 test('standalone Advanced preserves legacy results and uses the same selection fixes', () => {
-  const page = createHarness(fs.readFileSync(path.join(root, 'scripts/complicated.js'), 'utf8'));
+  const page = createHarness(fs.readFileSync(path.join(root, 'calculators/advanced-taper/complicated.js'), 'utf8'));
   page.start();
   assert.equal(page.ids.workSpeedButtons.style.display, 'none');
   for (const [width, posted, work, ...expected] of fixtures.advanced) {
@@ -237,7 +237,7 @@ test('calculating without choosing a speed cannot produce zero-length results', 
 });
 
 test('current HTML exposes all archived speed choices, prompts, and references', () => {
-  const html = fs.readFileSync(path.join(root, 'taper_lengths.html'), 'utf8');
+  const html = fs.readFileSync(path.join(root, 'calculators/taper-lengths/index.html'), 'utf8');
   const simple = [...html.matchAll(/setSimpleSpeed\((\d+), this\)/g)].map(match => Number(match[1]));
   const posted = [...html.matchAll(/setAdvancedSpeed\('posted', (\d+), this\)/g)].map(match => Number(match[1]));
   const work = [...html.matchAll(/setAdvancedSpeed\('work', (\d+), this\)/g)].map(match => Number(match[1]));

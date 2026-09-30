@@ -6,7 +6,7 @@ const vm = require('node:vm');
 
 const sandbox = { document: { addEventListener() {} } };
 vm.createContext(sandbox);
-vm.runInContext(fs.readFileSync(path.join(__dirname, '../scripts/pavtMrkgMaterialScript.js'), 'utf8'), sandbox);
+vm.runInContext(fs.readFileSync(path.join(__dirname, '../calculators/pavement-marking-material/pavtMrkgMaterialScript.js'), 'utf8'), sandbox);
 const rates = sandbox.getApplicationRates;
 const close = (actual, expected) => assert.ok(Math.abs(actual - expected) <= 1e-12 * Math.max(1, Math.abs(expected)), `${actual} != ${expected}`);
 

@@ -3,7 +3,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
-const rpm = require('../scripts/rpm.js');
+const rpm = require('../calculators/rpm/calculations.js');
 const base = {
   application: 'guide-curve', markerColor: 'white',
   spacingChoice: 'rule', customSpacing: '25', engineeringBasis: '', groupSize: '3',
@@ -262,7 +262,7 @@ function pageHarness() {
     addEventListener(name, fn) { this.ready = fn; }
   };
   const root = new Element('root'), stack = [root];
-  const html = fs.readFileSync(path.join(__dirname, '../rpm.html'), 'utf8');
+  const html = fs.readFileSync(path.join(__dirname, '../calculators/rpm/index.html'), 'utf8');
   for (const token of html.match(/<!--[\s\S]*?-->|<[^>]+>|[^<]+/g)) {
     if (token.startsWith('<!')) continue;
     if (token.startsWith('</')) { stack.pop(); continue; }
@@ -284,8 +284,8 @@ function pageHarness() {
   }
   const context = { document, window: { print() {} } };
   vm.createContext(context);
-  for (const file of ['rpm.js', 'rpmDiagram.js', 'rpmPage.js']) {
-    vm.runInContext(fs.readFileSync(path.join(__dirname, '../scripts/' + file), 'utf8'), context);
+  for (const file of ['calculations.js', 'diagram.js', 'page.js']) {
+    vm.runInContext(fs.readFileSync(path.join(__dirname, '../calculators/rpm/' + file), 'utf8'), context);
   }
   document.ready();
   const get = (id) => document.getElementById(id);
@@ -310,7 +310,7 @@ test('page starts blank with a $66 price and requires a listed speed difference'
   assert.equal(get('curveRows').children.length, 1);
   assert.deepEqual(curve().speedDifference.querySelectorAll('option').map((option) => option.value),
     ['', '0', '5', '10', '15', '20', '25', '30']);
-  assert.doesNotMatch(fs.readFileSync(path.join(__dirname, '../rpm.html'), 'utf8'),
+  assert.doesNotMatch(fs.readFileSync(path.join(__dirname, '../calculators/rpm/index.html'), 'utf8'),
     /id="(?:dashLength|gapLength|projectMiles|scope|runs|application|loadOriginal|approachSpacing|geometryHelp)"/);
   setCurve(0, { length: 500 });
   assert.equal(get('rpmResults').hidden, true);

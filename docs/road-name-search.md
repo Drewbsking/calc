@@ -1,6 +1,6 @@
 # Road Centerline Name Search
 
-`road-name-search.html` searches Oakland County's public road centerlines by `StreetName` and displays grouped road/location results alongside a Leaflet map. It uses the site's existing static HTML architecture, shared stylesheet, `layoutScript.js` header/footer loader, and pinned Leaflet 1.9.4 CDN. There are no server components, build steps, package manifests, credentials, databases, or new application frameworks.
+`road-name-search.html` searches Oakland County's public road centerlines by `StreetName` and displays grouped road/location results alongside a Leaflet map. It uses the site's existing static HTML architecture, shared stylesheet, `shared/layout.js` header/footer loader, and pinned Leaflet 1.9.4 CDN. There are no server components, build steps, package manifests, credentials, databases, or new application frameworks.
 
 No `AGENTS.md` or `README.md` was present in this checkout. Existing uncommitted changes were preserved. The only change to an existing application file is a calculator card in `index.html`; existing calculators and shared styles/scripts were not changed.
 

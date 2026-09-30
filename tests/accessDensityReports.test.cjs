@@ -1,7 +1,7 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const R = require('../scripts/accessDensityReportCore.js');
-const Charts = require('../scripts/accessDensityReportCharts.js');
+const R = require('../calculators/access-density/accessDensityReportCore.js');
+const Charts = require('../calculators/access-density/accessDensityReportCharts.js');
 const harness = require('./helpers/alignmentPageHarness.cjs');
 const p = (stationFeet, type = 'residential', name = '', id = stationFeet) => ({ id, stationFeet, type, name });
 const calculate = (points, lengthFeet = 2500, extra = {}) => R.calculate({ points, lengthFeet, ...extra });

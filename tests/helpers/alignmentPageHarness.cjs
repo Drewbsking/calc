@@ -4,11 +4,11 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const assert = require('node:assert/strict');
-const geometry = require('../../scripts/accessDensityCore.js');
+const geometry = require('../../calculators/access-density/accessDensityCore.js');
 
 module.exports = function alignmentPageHarness({ mapAvailable = true, studyName = 'Test Road', captureMap = null } = {}) {
   const repo = path.join(__dirname, '../..');
-  const html = fs.readFileSync(path.join(repo, 'accessDensity.html'), 'utf8');
+  const html = fs.readFileSync(path.join(repo, 'calculators/access-density/index.html'), 'utf8');
   let clock = 1000;
   class Events {
     constructor() { this.events = new Map(); }
@@ -126,7 +126,7 @@ module.exports = function alignmentPageHarness({ mapAvailable = true, studyName 
   sandbox.window = sandbox;
   const context = vm.createContext(sandbox);
   for (const name of ['accessDensityCore.js', 'accessDensityPoints.js', 'accessDensityReportCore.js', 'accessDensityReportCharts.js', 'accessDensityReports.js', 'accessDensity.js']) {
-    vm.runInContext(fs.readFileSync(path.join(repo, 'scripts', name), 'utf8'), context, { filename: name });
+    vm.runInContext(fs.readFileSync(path.join(repo, 'calculators/access-density', name), 'utf8'), context, { filename: name });
   }
   const ll = (x, y) => frame.toLatLng({ x, y });
   function allLayers() {

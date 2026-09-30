@@ -389,7 +389,7 @@ async def main():
         assert await link.is_visible()
         await link.click()
         assert await page.locator("#road-search-form").is_visible()
-        await page.goto(BASE + "/curve.html")
+        await page.goto(BASE + "/calculators/curve/index.html")
         assert await page.locator("#map.leaflet-container").is_visible()
         await page.locator("#resetBtn").click()
         assert await page.locator("#header-placeholder .site-header").is_visible()

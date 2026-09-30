@@ -2,7 +2,7 @@
 
 **Follow-up:** The calculator has since been reconciled to the user's HCM 6th Edition manual, as requested. See [source reconciliation, fixes and validation](ml-source-reconciliation.md). The comparisons below describe the original code before those fixes. The archive remains intact.
 
-Reviewed September 21, 2026. Compared all nine files in `Audit/LOS 4-Lane/` with [ML.html](../ML.html), [MLscripts.js](../MLscripts.js), [MLdata.js](../MLdata.js), and [MLstyles.css](../styles/MLstyles.css).
+Reviewed September 21, 2026. Compared all nine files in `Audit/LOS 4-Lane/` with [calculators/multilane-los/index.html](../calculators/multilane-los/index.html), [shared/los/MLscripts.js](../shared/los/MLscripts.js), [shared/los/MLdata.js](../shared/los/MLdata.js), and [MLstyles.css](../shared/los/styles.css).
 
 **The executable calculator is already present in ML. Keep the five separate HTML reference pages until their contents are verified.** The reference pages contain conflicting values and interval labels, so they are not interchangeable with the JavaScript data. They have been identified as working references, not verified source tables. All nine archive files remain in place; no ML calculation or data was changed during this audit.
 
@@ -10,10 +10,10 @@ Reviewed September 21, 2026. Compared all nine files in `Audit/LOS 4-Lane/` with
 
 | Archive file | Current counterpart | Comparison |
 | --- | --- | --- |
-| `data.js` | `MLdata.js` | Byte-for-byte identical. All truck/RV upgrade values, the downgrade table, and LOS thresholds are already present. |
-| `scripts.js` | `MLscripts.js` | Exactly identical after replacing the identifier `obsFreeFlowSpeed` with `freeFlowSpeed`. No additional calculation is present in this copy. |
-| `index.html` | `ML.html` | Same ten inputs, defaults, Calculate action, result, and worked steps. The current page adds the site layout and an accessible live result region. Two pieces of wording changed, recorded below. |
-| `styles.css` | `styles/MLstyles.css` plus the shared stylesheet | Layout and selector scoping changes. Form/result styling remains; the current page arranges the form and results vertically and adds the shared header/footer. No calculation or control is defined only in the old CSS. |
+| `data.js` | `shared/los/MLdata.js` | Byte-for-byte identical. All truck/RV upgrade values, the downgrade table, and LOS thresholds are already present. |
+| `scripts.js` | `shared/los/MLscripts.js` | Exactly identical after replacing the identifier `obsFreeFlowSpeed` with `freeFlowSpeed`. No additional calculation is present in this copy. |
+| `index.html` | `calculators/multilane-los/index.html` | Same ten inputs, defaults, Calculate action, result, and worked steps. The current page adds the site layout and an accessible live result region. Two pieces of wording changed, recorded below. |
+| `styles.css` | `shared/los/styles.css` plus the shared stylesheet | Layout and selector scoping changes. Form/result styling remains; the current page arranges the form and results vertically and adds the shared header/footer. No calculation or control is defined only in the old CSS. |
 
 The old heading says **“Highway LOS Calculator based on HCM 2010 Chapter 14 for Multilane Highways.”** The current heading omits the HCM edition/chapter. The old speed label says **“Observed Free Flow Speed (mph)”**; the current label says **“Free Flow Speed (mph).”** Preserve this provenance and input meaning when revising ML. The heading is an attribution in the working copy, not independent verification that the implementation follows that source correctly.
 
@@ -47,7 +47,7 @@ These findings occur in both copies. Matching the working copy does not resolve 
 
 | Finding | Verified reproduction / implementation |
 | --- | --- |
-| Traffic volume input is ignored | `MLscripts.js` line 2 fixes V at 1,900. Changing the visible input to 3,800 leaves the complete calculation and worked steps unchanged. |
+| Traffic volume input is ignored | `shared/los/MLscripts.js` line 2 fixes V at 1,900. Changing the visible input to 3,800 leaves the complete calculation and worked steps unchanged. |
 | Lane width, shoulder width, and access density do not affect results | All three are read but never used. Changing 11→12 ft, 4→8 ft, or 20→0 access points leaves the complete output unchanged. Their intended role depends on whether the supplied FFS is observed or should be estimated. |
 | Downgrade ET table is not reached correctly | `getETValue` applies upgrade grade/length/percentage keys to the differently structured downgrade table. At grade 6.5%, length 5 mi, and trucks 15%, it returns fallback 1.5 although the stored downgrade row is 5.5. The current key mapping cannot reach the downgrade rows. |
 | Some upgrade rows are unreachable | At grade 2.5%, length 1.2 mi, and trucks 10%, ET returns fallback 1.5 although the stored `2-3` / `>1.00` row is 2.0. The function asks for `1.00-1.50` instead. The ER 2–3% short-grade `0.00-0.50` row likewise does not match the function's split length keys; its fallback happens to equal that row's 1.2 values. |

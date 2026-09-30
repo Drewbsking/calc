@@ -1,6 +1,6 @@
 # Taper calculator archive audit
 
-Reviewed September 21, 2026. `Audit/` contained five files, all under `Audit/Taper/`. The current [Taper Lengths tool](../taper_lengths.html) retains every calculation and user-facing capability found in those files. The five redundant archive files were removed after comparison; their output fixtures and SHA-256 source hashes remain in [taper_legacy.json](../tests/fixtures/taper_legacy.json).
+Reviewed September 21, 2026. `Audit/` contained five files, all under `Audit/Taper/`. The current [Taper Lengths tool](../calculators/taper-lengths/index.html) retains every calculation and user-facing capability found in those files. The five redundant archive files were removed after comparison; their output fixtures and SHA-256 source hashes remain in [taper_legacy.json](../tests/fixtures/taper_legacy.json).
 
 The empty `Audit/Taper` and `Audit` directories remain: automatic approval review rejected their removal with “blocked by policy.” No old source files remain in them.
 
@@ -8,11 +8,11 @@ The empty `Audit/Taper` and `Audit` directories remain: automatic approval revie
 
 | Archived file | Current replacement | Finding |
 | --- | --- | --- |
-| `Audit/Taper/index.html` | `taper_lengths.html` mode buttons; home-page Taper card | The old page only selected Simple or Complicated. Both workflows are available together. Its background photograph is retained at `img/pexels-hngstrm-1203768.jpg` and used on the current page. |
-| `Audit/Taper/simple_calculator.html` | Simple panel and `scripts/taperLengths.js` | Width, all eight speed choices, formula selection, calculated L, Design L, shift length, rounding note, Enter submission, and the wiki reference are retained. Shift rounding was deliberately changed as requested; see below. |
-| `Audit/Taper/complicated_calculator.html` | Advanced panel in `taper_lengths.html` | Posted/work-speed inputs, the 40/45 MPH choice, formula details, both result columns, and the reference are retained. The former B/D/L title adds no calculation missing from the current result table. |
-| `Audit/Taper/script.js` | `scripts/taperLengths.js` | Both complete distance lookup tables, short/long formulas, merging/shift/shoulder results, buffer/sign distances, and explanatory notes are retained. |
-| `Audit/Taper/styles.css` | `styles/styles.css` | Calculator/reference panels, highlighted speed buttons, peach work-speed results, formula panels, mobile layouts, and confirmation dialog are retained. The unused `#results` selector has no corresponding feature to migrate. |
+| `Audit/Taper/index.html` | `calculators/taper-lengths/index.html` mode buttons; home-page Taper card | The old page only selected Simple or Complicated. Both workflows are available together. Its background photograph is retained at `img/pexels-hngstrm-1203768.jpg` and used on the current page. |
+| `Audit/Taper/simple_calculator.html` | Simple panel and `calculators/taper-lengths/taperLengths.js` | Width, all eight speed choices, formula selection, calculated L, Design L, shift length, rounding note, Enter submission, and the wiki reference are retained. Shift rounding was deliberately changed as requested; see below. |
+| `Audit/Taper/complicated_calculator.html` | Advanced panel in `calculators/taper-lengths/index.html` | Posted/work-speed inputs, the 40/45 MPH choice, formula details, both result columns, and the reference are retained. The former B/D/L title adds no calculation missing from the current result table. |
+| `Audit/Taper/script.js` | `calculators/taper-lengths/taperLengths.js` | Both complete distance lookup tables, short/long formulas, merging/shift/shoulder results, buffer/sign distances, and explanatory notes are retained. |
+| `Audit/Taper/styles.css` | `shared/styles.css` | Calculator/reference panels, highlighted speed buttons, peach work-speed results, formula panels, mobile layouts, and confirmation dialog are retained. The unused `#results` selector has no corresponding feature to migrate. |
 
 No unique logic, example data, document, or image needs to be recovered from the removed files.
 
@@ -35,10 +35,10 @@ Before changes, executed the archived JavaScript and current JavaScript with ide
 
 ## Files to keep
 
-- `taper_lengths.html`, `scripts/taperLengths.js`, and the shared stylesheet: the current toolbox implementation.
+- `calculators/taper-lengths/index.html`, `calculators/taper-lengths/taperLengths.js`, and the shared stylesheet: the current toolbox implementation.
 - `img/pexels-hngstrm-1203768.jpg`: the background image, already moved out of the old layout.
 - [Regression tests](../tests/taperLengths.test.cjs), [DOM harness](../tests/helpers/taperPageHarness.cjs), and [legacy output fixtures](../tests/fixtures/taper_legacy.json): checks that do not depend on the deleted archive. Fixtures contain the original results unchanged, including the old Simple rounding, so the intentional difference is documented and tested.
-- `simple_calculator.html` / `scripts/simple.js` and `complicated_calculator.html` / `scripts/complicated.js` remain working standalone URLs. They are outside `Audit/` and are not linked from the home-page toolbox. They add no unique calculation; a later consolidation could redirect these URLs to the combined tool instead of maintaining duplicate code.
+- `calculators/simple-taper/index.html` / `calculators/simple-taper/simple.js` and `calculators/advanced-taper/index.html` / `calculators/advanced-taper/complicated.js` remain working standalone URLs. They are outside `Audit/` and are not linked from the home-page toolbox. They add no unique calculation; a later consolidation could redirect these URLs to the combined tool instead of maintaining duplicate code.
 
 ## Verification
 

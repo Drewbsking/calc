@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Fetcher</title>
+    <link rel="stylesheet" href="../../shared/styles.css">
+</head>
+<body>
+    <div id="header-placeholder"></div>
+
+    <div class="container">
+        <h1>Fetch Crash Report PDF</h1>
+        <form id="pdfForm" onsubmit="fetchPDF(event)">
+            <label for="crashId">Crash ID:</label>
+            <input type="text" id="crashId" name="crashId" required>
+            <button type="submit">Get PDF</button>
+        </form>
+        <p>Have a list of crash IDs? <a href="../../pythonUtilities.html#download-ud10">Download UD-10 reports from a CSV</a> with the Python utility and example input.</p>
+    </div>
+
+    <div id="footer-placeholder"></div>
+    <script src="../../shared/layout.js"></script>
+    <script src="ud10.js"></script>
+</body>
+</html>

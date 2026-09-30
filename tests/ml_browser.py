@@ -24,7 +24,7 @@ async def check(origin):
         page = await browser.new_page(viewport={"width": 1365, "height": 1000})
         errors = []
         page.on("pageerror", lambda error: errors.append(str(error)))
-        await page.goto(origin + "/ML.html")
+        await page.goto(origin + "/calculators/multilane-los/")
         button = page.get_by_role("button", name="Calculate LOS")
         await expect(page.locator("#estimatedFields")).to_be_hidden()
         await button.click()
@@ -104,7 +104,7 @@ async def check(origin):
             assert not await page.locator("#steps").evaluate("el => /NaN|Infinity/.test(el.textContent)")
             await page.screenshot(path=str(OUTPUT / f"{mode}-mobile.png"), full_page=True)
         await page.set_viewport_size({"width": 1365, "height": 1000})
-        await page.goto(origin + "/ML.html")
+        await page.goto(origin + "/calculators/multilane-los/")
         await expect(page.locator("#sixthFormulas")).to_be_visible()
         await expect(page.locator("#legacyFormulas")).to_be_hidden()
         await page.locator("#analysisEdition").select_option("2010")
@@ -144,7 +144,7 @@ async def check(origin):
         assert not await page.evaluate("Boolean(window.injected)")
         print("PASS: 2010 fields, formulas, published example, invalid sum, speed decline, disputed cell and escaped override")
 
-        await page.goto(origin + "/ML.html")
+        await page.goto(origin + "/calculators/multilane-los/")
         await page.locator("#analysisEdition").select_option("both")
         await expect(page.locator("#sixthFormulas")).to_be_visible()
         await expect(page.locator("#legacyFormulas")).to_be_visible()
@@ -197,11 +197,11 @@ async def check(origin):
         await expect(page.locator("#steps")).not_to_contain_text("Selected 2010 curve")
         print("PASS: shared comparison demand, independent range/PCE failures, estimated speeds, oversaturation, all editions at 320px")
 
-        for link in ["docs/ml-source-reconciliation.md", "docs/ml-2010-sources.md", "MLdata.js", "ML2010data.js", "MLscripts.js", "MLpage.js"]:
+        for link in ["docs/ml-source-reconciliation.md", "docs/ml-2010-sources.md", "shared/los/MLdata.js", "shared/los/ML2010data.js", "shared/los/MLscripts.js", "calculators/multilane-los/MLpage.js"]:
             response = await page.request.get(origin + "/" + link)
             assert response.ok, link
         await page.goto(origin + "/index.html")
-        card = page.locator(".calculator-card").filter(has=page.locator('a[href="ML.html"]'))
+        card = page.locator(".calculator-card").filter(has=page.locator('a[href="calculators/multilane-los/"]'))
         await expect(card).to_contain_text("HCM 6th Edition")
         await expect(card).to_contain_text("HCM 2010")
         assert not errors, errors

@@ -1,6 +1,6 @@
 const { test } = require('node:test');
 const assert = require('node:assert/strict');
-const G = require('../scripts/accessDensityCore.js');
+const G = require('../calculators/access-density/accessDensityCore.js');
 const p = (x, y) => ({ x, y });
 const near = (a, b, tolerance = 1e-7) => assert.ok(Math.abs(a - b) < tolerance, `${a} should equal ${b}`);
 const quarter = (sign = 1) => [

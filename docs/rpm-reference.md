@@ -21,7 +21,7 @@ Page 571 retains its December 2023 footer within Revision 1. Page 572 is revised
 
 ### RCOC workbook method
 
-The active estimator uses **RPM Spacing.xlsx, Sheet1!Q26:R33, “Existing RCOC unwritten”**, as requested by the user. Each curve requires a PC-to-PT length and a listed speed difference. The workbook's tangent / curve values are applied directly:
+The active estimator uses **calculators/rpm/references/RPM Spacing.xlsx, Sheet1!Q26:R33, “Existing RCOC unwritten”**, as requested by the user. Each curve requires a PC-to-PT length and a listed speed difference. The workbook's tangent / curve values are applied directly:
 
 | Speed difference | Curve spacing | Approach / departure spacing | Physical units per station |
 | --- | ---: | ---: | ---: |
@@ -95,13 +95,13 @@ Independent example check: two 500 ft curves with 0 and 10 mph speed differences
 
 ## Image provenance
 
-- img/rpm/archived-curve-guidance.png: unchanged embedded image xl/media/image1.png from the user-provided RPM Spacing.xlsx, matching the archived FHWA curvature excerpt. Its dimensions assume N = 40 ft; it is retained as information only and does not drive the estimator.
+- calculators/rpm/images/archived-curve-guidance.png: unchanged embedded image xl/media/image1.png from the user-provided calculators/rpm/references/RPM Spacing.xlsx, matching the archived FHWA curvature excerpt. Its dimensions assume N = 40 ft; it is retained as information only and does not drive the estimator.
 
-- img/rpm/pave-905-e-sheet-1.png: unchanged rendering of MDOT PAVE-905-E, sheet 1, showing Michigan broken-line dimensions and other longitudinal patterns.
-- img/rpm/mutcd-spacing-provisions.png: unchanged rendering of official PDF page 612 (printed 571).
-- img/rpm/mutcd-substitution-provisions.png: unchanged rendering of official PDF page 613 (printed 572).
-- img/rpm/reflective-marker.png: lossless format conversion of [FHWA Figure 16](https://safety.fhwa.dot.gov/roadway_dept/horicurves/fhwasa15084/images/fig16.gif).
-- img/rpm/snowplowable-marker.png: lossless format conversion of [FHWA Figure 17](https://safety.fhwa.dot.gov/roadway_dept/horicurves/fhwasa15084/images/fig17.gif).
+- calculators/rpm/images/pave-905-e-sheet-1.png: unchanged rendering of MDOT PAVE-905-E, sheet 1, showing Michigan broken-line dimensions and other longitudinal patterns.
+- calculators/rpm/images/mutcd-spacing-provisions.png: unchanged rendering of official PDF page 612 (printed 571).
+- calculators/rpm/images/mutcd-substitution-provisions.png: unchanged rendering of official PDF page 613 (printed 572).
+- calculators/rpm/images/reflective-marker.png: lossless format conversion of [FHWA Figure 16](https://safety.fhwa.dot.gov/roadway_dept/horicurves/fhwasa15084/images/fig16.gif).
+- calculators/rpm/images/snowplowable-marker.png: lossless format conversion of [FHWA Figure 17](https://safety.fhwa.dot.gov/roadway_dept/horicurves/fhwasa15084/images/fig17.gif).
 - Photo context: [Low-Cost Treatments for Horizontal Curve Safety, 2016, Chapter 3](https://highways.dot.gov/safety/rwd/keep-vehicles-road/horizontal-curve/low-cost-treatments-horizontal-curve-safety-2016-3). Its older section numbering is not used for calculation rules.
 - The live SVGs are original functional schematics, not official figures or final field layouts. The curve preview labels PC/PT, three exterior markers at each end, and up to 13 representative curve stations. The active RCOC diagram shows one physical marker per station. The reference preview retains up to 12 markers per group. Drawing coordinates are schematic rather than surveyed geometry.
 
