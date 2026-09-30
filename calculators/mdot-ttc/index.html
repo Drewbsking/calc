@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Choose MDOT maintaining traffic typicals, copy a table into Word, and download the selected detail sheets as one PDF.">
+    <title>MDOT TTC Typical Selector | Andy's Traffic Tools</title>
+    <link rel="stylesheet" href="../../shared/styles.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="../../shared/layout.js" defer></script>
+    <script src="vendor/docx.umd.js" defer></script>
+    <script src="vendor/pdf-lib.min.js" defer></script>
+    <script src="core.js" defer></script>
+    <script src="exports.js" defer></script>
+    <script src="page.js" defer></script>
+</head>
+<body class="ttc-page">
+    <div id="header-placeholder"></div>
+    <main class="ttc-container">
+        <section class="calculator ttc-heading">
+            <p class="ttc-eyebrow">Plan your traffic control details</p>
+            <h1>MDOT TTC Typical Selector</h1>
+            <p>Browse MDOT construction, maintenance, and survey traffic typicals. Copy your project list into Word, or download the selected detail sheets as one PDF.</p>
+            <div class="ttc-source-line"><span id="catalog-status" role="status">Loading verified typicals…</span><a href="https://mdotjboss.state.mi.us/TSSD/tssdHome.htm" target="_blank" rel="noopener">MDOT source library ↗</a></div>
+        </section>
+        <noscript><p class="ttc-error">Enable JavaScript to filter typicals and prepare your downloads.</p></noscript>
+        <p id="load-error" class="ttc-error" role="alert" hidden></p>
+        <button id="reload-catalog" class="ttc-button secondary" type="button" hidden>Retry loading typicals</button>
+        <div id="selector" class="ttc-workspace" hidden>
+            <section class="ttc-browse" aria-labelledby="browse-heading">
+                <div class="ttc-toolbar"><h2 id="browse-heading">Find typicals</h2><button id="show-all" class="ttc-button secondary" type="button">Show all typicals</button></div>
+                <p class="ttc-help">All construction, maintenance, and survey typicals are shown to start. Use the filters to narrow your results.</p>
+                <label class="ttc-search-label" for="search">Search typical number, title, or notes</label>
+                <input id="search" type="search" placeholder="Try 123, lane closure, or traffic regulator" autocomplete="off">
+                <div class="ttc-filter-heading"><span>Filter by project conditions</span><button id="reset-filters" class="ttc-text-button" type="button">Clear filters</button></div>
+                <p class="ttc-help">Counts reflect your search and the other filter groups. Choose multiple options in a group to include any of them.</p>
+                <p class="ttc-help">Roadway type describes the road. Traffic arrangement describes closures, shifts, and crossovers. Control method describes how traffic is directed.</p>
+                <p class="ttc-help">Existing lanes are counted before the work; each option states which direction or ramp is counted. Lanes closed counts the closure, including center turn lanes. Staged closures can match multiple counts. Shoulder work is under Work area; unclear counts are Unspecified.</p>
+                <div id="filters" class="ttc-filters"></div>
+                <div class="ttc-results-heading"><p id="match-count" role="status" aria-live="polite"></p><button id="add-matches" class="ttc-button secondary" type="button">Add matching typicals</button></div>
+                <p id="empty-results" class="ttc-empty" hidden>No typicals match these filters. Try fewer filters or select “Show all typicals.”</p>
+                <div id="results" class="ttc-results"></div>
+            </section>
+            <aside class="ttc-project" aria-labelledby="project-heading">
+                <div class="ttc-toolbar"><h2 id="project-heading">Your selected details <span id="selected-count" class="ttc-count">0</span></h2><button id="new-project" class="ttc-button secondary" type="button">Reset project</button></div>
+                <p class="ttc-help">New projects start with no details selected. Add the sheets you need; your choices are saved in this browser.</p>
+                <p class="ttc-help">Every report automatically includes all sheets tagged <strong>RCOC: Always</strong> once you select a typical.</p>
+                <p id="storage-status" class="ttc-help" role="status"></p>
+                <label class="ttc-search-label" for="project-name">Project name</label>
+                <input id="project-name" type="text" maxlength="160" required placeholder="e.g., Maple Road resurfacing" aria-describedby="project-name-help" autocomplete="off">
+                <p id="project-name-help" class="ttc-help">Required for the PDF title page. Your packet includes an index and page numbers.</p>
+                <p id="paint-warning" class="ttc-note ttc-paint-warning" role="status" aria-live="polite" aria-atomic="true" hidden></p>
+                <div class="ttc-downloads">
+                    <button id="download-pdf" class="ttc-button primary" type="button" disabled>Download combined PDF</button>
+                    <div class="ttc-export-pair"><button id="copy-table" class="ttc-button secondary" type="button" disabled>Copy table for Word</button><button id="download-word" class="ttc-button secondary" type="button" disabled>Download Word table</button></div>
+                    <p id="packet-summary" class="ttc-help"></p>
+                    <progress id="export-progress" max="100" value="0" hidden aria-label="Preparing download"></progress>
+                    <p id="export-status" role="status" aria-live="polite"></p>
+                    <button id="retry-export" class="ttc-button secondary" type="button" hidden>Retry PDF download</button>
+                </div>
+                <div class="ttc-selection-heading"><span>In typical-number order</span><button id="clear-selection" class="ttc-text-button" type="button">Clear selection</button></div>
+                <p id="empty-selection" class="ttc-empty" hidden>No details selected. Add typicals from the results to prepare your downloads.</p>
+                <ol id="selected-list" class="ttc-selected-list"></ol>
+                <section id="automatic-details" class="ttc-automatic" aria-labelledby="automatic-heading" hidden>
+                    <h3 id="automatic-heading">Included automatically <span id="automatic-count" class="ttc-count">0</span></h3>
+                    <p class="ttc-help">These RCOC Always sheets are included once in the Word table and PDF, even when they are outside your filters.</p>
+                    <ol id="automatic-list" class="ttc-selected-list"></ol>
+                </section>
+                <details id="table-preview" class="ttc-table-preview"><summary>Preview or manually copy the Word table</summary>
+                    <p id="copy-help" class="ttc-help">This table contains the typical number and title for your selections and the RCOC Always sheets. It matches your PDF report.</p>
+                    <button id="select-table" class="ttc-button secondary" type="button">Select table text</button>
+                    <div id="word-table" class="ttc-table-scroll" tabindex="0" role="region" aria-label="Selected typicals table"></div>
+                </details>
+                <a class="ttc-mobile-back" href="#browse-heading">Back to filters ↑</a>
+            </aside>
+        </div>
+    </main>
+    <a class="ttc-mobile-jump" href="#project-heading">Selected details <span id="mobile-count">0</span> · Downloads ↓</a>
+    <div id="footer-placeholder"></div>
+</body>
+</html>

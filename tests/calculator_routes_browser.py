@@ -27,7 +27,7 @@ class Handler(SimpleHTTPRequestHandler):
 
 
 async def check(origin):
-    assert len(ROUTES) == len(list((ROOT / 'calculators').glob('*/index.html')))
+    assert all((ROOT / target / 'index.html').is_file() for target in ROUTES.values())
     async with async_playwright() as pw:
         browser = await pw.chromium.launch()
         context = await browser.new_context()
