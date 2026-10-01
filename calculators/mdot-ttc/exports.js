@@ -115,7 +115,7 @@
     page.drawText(`${records.length} selected ${records.length === 1 ? 'detail' : 'details'}`, { x: 48, y, size: 13, font: regular, color: colors.ink });
     page.drawText(`${detailPages} detail ${detailPages === 1 ? 'page' : 'pages'}`, { x: 300, y, size: 13, font: regular, color: colors.ink });
     page.drawText('Index follows. Page references include this title page and the index.', { x: 48, y: 126, size: 10, font: regular, color: colors.muted });
-    page.drawText('Original MDOT detail sheets with packet page numbers.', { x: 48, y: 110, size: 10, font: regular, color: colors.muted });
+    page.drawText('Original MDOT typicals with packet page numbers.', { x: 48, y: 110, size: 10, font: regular, color: colors.muted });
   }
   function drawIndex(packet, pages, layout, fonts, colors, firstDetail) {
     let next = firstDetail + 1;
@@ -149,7 +149,7 @@
     const angle = ((page.getRotation().angle % 360) + 360) % 360;
     const width = angle === 90 || angle === 270 ? box.height : box.width;
     const x = (width - font.widthOfTextAtSize(label, 8)) / 2;
-    // The patching sheets extend farther down the page than most MDOT details.
+    // The patching typicals extend farther down the page than most MDOT details.
     // Keep detail labels in the blank strip below their original title blocks.
     const y = frontMatter ? 24 : 12;
     const positions = { 0: [x, y], 90: [box.width - y, x], 180: [box.width - x, box.height - y], 270: [y, box.height - x] };

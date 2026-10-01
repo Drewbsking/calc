@@ -36,10 +36,33 @@ PROJECT_TYPES = {'construction': 'Construction Projects', 'maintenance': 'Mainte
 # These catalog entries supply only filenames. Titles were read from the MDOT
 # drawing title blocks; a descriptive catalog title takes precedence if added.
 DOCUMENT_TITLES = {
+    '100-GEN-KEY': 'Typical Numbering Key',
     '302-SP-PATCH-1LC': 'Concrete Patch - 1 Lane Closure',
     '303-SP-PATCH-2LC': 'Concrete Patch - 2 Lane Closure',
     '304-SP-PATCH-1LC-ExR-C': 'Concrete Patch - 1 Lane and Exit Ramp Closure',
+    '4180-M-TR-NFW-2L': 'Leap Frog Lane Closure on a Two-Lane, Two-Way Roadway',
     '4204-M-FW-2LC-(R)': 'Double Right Lane Closure on a Freeway Using a 10 MPH Step Down in Speed Limit',
+}
+# Closure directions checked against the drawings, not inferred from their codes
+# or workbook work areas. Bind each review to the exact PDF: changed documents
+# fall back to their descriptive titles until reviewed again.
+DRAWING_LANE_POSITIONS = {
+    '131-CLT-1(L)LC-SHIFT': {
+        'sha256': '221602300dac127d1e178737842fadc9a824a66b83bda2eaf04f197ddc7e40e5',
+        'positions': ['Left / inside', 'Center lane'],  # W9-3a: center & left lane closed.
+    },
+    '132-CLT-1(R)LC-SHIFT': {
+        'sha256': 'a290f50708b64f3a2a8c96c8d090d11e5ad7cc8d0fe379e768eba665de5ea27a',
+        'positions': ['Right / outside', 'Center lane'],  # W20-5R and W20-5C.
+    },
+    '202-FW-(1-2)LC-(L)': {
+        'sha256': '889f52d85183f17d3859300533cabf0fc93acf0c806d27ab52d785e08e44fac3',
+        'positions': ['Left / inside'],  # Both pages: left one-/two-lane closures.
+    },
+    '206-FW-2LC-(L)': {
+        'sha256': '31cb0abfa6a01feb8a83aa7214cbf95d84ac3bb6bff7414f4788ac357359dca2',
+        'positions': ['Left / inside'],  # W20-5aL2: left two lanes closed.
+    },
 }
 NS = {'s': 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'}
 REL = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}id'
@@ -115,7 +138,7 @@ def lane_classifications(record):
 
 def roadway_classifications(record):
     """Use descriptive MDOT titles first, then workbook evidence; never decode IDs."""
-    # General sheets 100-104 apply to every roadway, regardless of blank workbook cells.
+    # General typicals 100-104 apply to every roadway, regardless of blank workbook cells.
     if record.get('family') == 'construction' and record.get('number') in {'100', '101', '102', '103', '104'}:
         return ['All roadway types']
     non_freeway = False
@@ -144,7 +167,7 @@ def roadway_classifications(record):
 
 
 def lane_positions(record):
-    """Identify affected lanes from descriptive titles, then workbook work areas."""
+    """Use MDOT descriptions or reviewed drawings; work areas do not prove a closure side."""
     source = record.get('sourceTitle', '')
     title = source if source and source != record['id'] else record['title']
     text = clean(re.sub(r'[-,]', ' ', title)).casefold()
@@ -167,16 +190,10 @@ def lane_positions(record):
                 positions.append(label)
     if positions:
         return positions
-    area = clean(record['filters']['workArea']).casefold()
-    for label, pattern in {
-        'Left / inside': r'\b(?:left|inside)\b',
-        'Right / outside': r'\b(?:right|outside)\b',
-        'Center lane': r'\bcltl\b|\bcenter (?:turn )?lane\b',
-        'Parking lane': r'\bparking lane\b',
-    }.items():
-        if re.search(pattern, area) and re.search(r'\blanes?\b|\bcltl\b', area):
-            positions.append(label)
-    return positions or ['Unspecified']
+    reviewed = DRAWING_LANE_POSITIONS.get(record['id'])
+    if reviewed and record.get('pdf', {}).get('sha256') == reviewed['sha256']:
+        return list(reviewed['positions'])
+    return ['Unspecified']
 
 
 def applicability_conditions(record):
@@ -209,9 +226,9 @@ def applicability_conditions(record):
 
 
 def classify(record):
-    """Build browsing categories and general-sheet applicability; retain raw filters."""
+    """Build browsing categories and general-typical applicability; retain raw filters."""
     original = record['filters']
-    # Titles are descriptive evidence; filename abbreviations and sister sheets
+    # Titles are descriptive evidence; filename abbreviations and sister typicals
     # are not used to guess missing classifications.
     title = clean(' '.join([record['title'], record.get('sourceTitle', '')]).replace('-', ' ')).casefold()
     arrangement = []
@@ -385,6 +402,16 @@ def parse_catalog(data, source):
     return documents
 
 
+def mdot_title(source):
+    """Use the MDOT listing, or a verified drawing title when only the ID is listed."""
+    if source['sourceTitle'] != source['id']:
+        return source['sourceTitle'], 'mdot-catalog'
+    title = DOCUMENT_TITLES.get(source['id'])
+    if title:
+        return title, 'mdot-pdf'
+    raise ValueError(f'{source["id"]}: MDOT lists only a filename; verify its PDF title and add it to DOCUMENT_TITLES')
+
+
 def build_records(rows, listings):
     if any(not listings.get(family) for family in SOURCES):
         raise ValueError('Every MDOT construction, maintenance, and survey catalog is required')
@@ -410,8 +437,10 @@ def build_records(rows, listings):
             if sister[1].upper() not in listings['maintenance']:
                 raise ValueError(f'MDOT maintenance number {sister[1]} is missing')
             related = [listings['maintenance'][sister[1].upper()]['id']]
+        title, title_source = mdot_title(source)
         records[source['id']] = {
-            **source, 'family': 'construction', 'title': row.get('E') or source['sourceTitle'],
+            **source, 'family': 'construction', 'title': title, 'titleSource': title_source,
+            'workbookTitle': row.get('E', ''),
             'notes': row.get('F', ''), 'workbookRows': [row['row']], 'workbookCode': row.get('C', ''),
             'filters': {'projectType': row.get('P') or 'Construction Projects', **{key: row.get(col) or 'Unspecified' for key, col in FILTER_COLUMNS.items()}},
             'relatedIds': related,
@@ -421,8 +450,10 @@ def build_records(rows, listings):
             raise ValueError(f'MDOT maintenance number {number} is missing')
         source = listings['maintenance'][number]
         row = info['explicit'] or {}
+        title, title_source = mdot_title(source)
         records[source['id']] = {
-            **source, 'family': 'maintenance', 'title': row.get('E') or info['title'] or source['sourceTitle'],
+            **source, 'family': 'maintenance', 'title': title, 'titleSource': title_source,
+            'workbookTitle': row.get('E') or info['title'] or '',
             'notes': row.get('F', ''), 'workbookRows': info['rows'], 'workbookCode': number,
             'filters': {'projectType': 'Maintenance Work', **{key: row.get(col) or 'Unspecified' for key, col in FILTER_COLUMNS.items()}},
             'relatedIds': [],
@@ -435,11 +466,9 @@ def build_records(rows, listings):
                 if records[source['id']]['family'] != family:
                     raise ValueError(f'Ambiguous MDOT family for {source["id"]}')
                 continue
-            fallback = source['sourceTitle'] == source['id']
-            title = DOCUMENT_TITLES.get(source['id'], source['sourceTitle']) if fallback else source['sourceTitle']
+            title, title_source = mdot_title(source)
             records[source['id']] = {
-                **source, 'family': family, 'title': title,
-                'titleSource': 'mdot-pdf' if fallback and source['id'] in DOCUMENT_TITLES else 'mdot-catalog',
+                **source, 'family': family, 'title': title, 'titleSource': title_source, 'workbookTitle': '',
                 'notes': '', 'workbookRows': [], 'workbookCode': '',
                 'filters': {'projectType': PROJECT_TYPES[family], **{key: 'Unspecified' for key in FILTER_COLUMNS}},
                 'relatedIds': [],
@@ -449,6 +478,14 @@ def build_records(rows, listings):
     # Normalize cosmetic case/spacing only; preserve the first workbook label.
     labels = {key: {} for key in ['projectType', *FILTER_COLUMNS]}
     for record in records.values():
+        # Requested cleanup for the supplemental speed typicals. Keep the archived
+        # workbook intact, but do not reintroduce these annotations on refresh.
+        if record['family'] == 'construction' and record['number'] in {'105', '106', '107'}:
+            record['filters']['roadwayType'] = 'Unspecified'
+            record['notes'] = ''
+        # Typical 311 is a crossover closure; its workbook control label is incorrect.
+        if record['family'] == 'construction' and record['number'] == '311':
+            record['filters']['controlType'] = 'Crossover'
         for key, value in record['filters'].items():
             record['filters'][key] = labels[key].setdefault(clean(value).casefold(), clean(value))
         record['classifications'] = classify(record)
@@ -495,7 +532,10 @@ def refresh(workbook, output, fetch=fetch_bytes, workers=3, allow_removals=False
                 meta = inspect_pdf(data)
                 name = meta['sha256'] + '.pdf'
                 (stage / name).write_bytes(data)
-                return {**record, 'verifiedAt': verified_at, 'pdf': {**meta, 'path': 'pdfs/' + name}}
+                completed = {**record, 'verifiedAt': verified_at, 'pdf': {**meta, 'path': 'pdfs/' + name}}
+                # Apply drawing reviews only after checking the downloaded bytes.
+                completed['classifications'] = classify(completed)
+                return completed
             except Exception as error:
                 raise ValueError(f'{record["id"]}: {error}') from error
 

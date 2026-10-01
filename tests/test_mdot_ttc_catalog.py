@@ -88,7 +88,9 @@ class ImporterTests(unittest.TestCase):
     def test_record_mapping_preserves_workbook_text_without_inheriting_classifications(self):
         catalogs = {k: updater.parse_catalog(self.fetch(url), url) for k, url in updater.SOURCES.items()}
         records = {r['number']: r for r in updater.build_records(ROWS, catalogs)}
-        self.assertEqual(records['110']['title'], 'Workbook construction title')
+        self.assertEqual(records['110']['title'], 'MDOT construction title')
+        self.assertEqual(records['110']['titleSource'], 'mdot-catalog')
+        self.assertEqual(records['110']['workbookTitle'], 'Workbook construction title')
         self.assertEqual(records['110']['notes'], 'DO NOT USE in this example')
         self.assertEqual(records['4110B']['filters']['rcoc'], 'Unspecified')
         self.assertEqual(records['4110B']['filters']['lanes'], 'Unspecified')
@@ -96,6 +98,7 @@ class ImporterTests(unittest.TestCase):
         self.assertEqual(records['115']['title'], 'MDOT AFAD title')
         self.assertEqual(records['302']['title'], 'Concrete Patch - 1 Lane Closure')
         self.assertEqual(records['302']['titleSource'], 'mdot-pdf')
+        self.assertEqual(records['302']['workbookTitle'], '')
         for number, project_type in [('115', 'Construction Projects'), ('4000', 'Maintenance Work'), ('5000', 'Survey Work')]:
             self.assertEqual(records[number]['workbookRows'], [])
             self.assertEqual(records[number]['filters']['projectType'], project_type)
@@ -121,6 +124,24 @@ class ImporterTests(unittest.TestCase):
         self.assertEqual(new['title'], 'New survey detail')
         self.assertEqual(new['filters']['rcoc'], 'Unspecified')
         self.assertEqual(result['sourceCounts']['survey'], 2)
+
+    def test_filename_only_addition_requires_a_verified_drawing_title(self):
+        def fetch(url):
+            return listing([('5000-S-SHL-OUT', 'Survey shoulder'), ('5999-S-NEW', '5999-S-NEW')]) if url == updater.SOURCES['survey'] else self.fetch(url)
+        with self.assertRaisesRegex(ValueError, '5999-S-NEW.*verify its PDF title'):
+            self.run_refresh(fetch)
+        self.assertEqual(self.active.read_bytes(), self.before)
+
+    def test_refresh_uses_drawing_directions_only_for_matching_downloads(self):
+        reviewed = {'110-TR-NFW-2L': {'sha256': hashlib.sha256(pdf_bytes()).hexdigest(), 'positions': ['Left / inside']}}
+        with patch.object(updater, 'DRAWING_LANE_POSITIONS', reviewed):
+            result = self.run_refresh()
+            record = next(r for r in result['records'] if r['number'] == '110')
+            self.assertEqual(record['classifications']['lanePosition'], ['Left / inside'])
+            reviewed['110-TR-NFW-2L']['sha256'] = '0' * 64
+            result = self.run_refresh()
+            record = next(r for r in result['records'] if r['number'] == '110')
+            self.assertEqual(record['classifications']['lanePosition'], ['Unspecified'])
 
     def test_failed_new_typical_download_and_missing_survey_catalog_keep_previous_version(self):
         for broken in ['fileName=115-', updater.SOURCES['survey']]:
@@ -277,7 +298,7 @@ class StoredCatalogTests(unittest.TestCase):
         for number in ['310', '311', '312']:
             self.assertEqual(by_number[number]['classifications']['trafficArrangement'], ['Crossover'])
             self.assertEqual(by_number[number]['classifications']['controlMethod'], ['Unspecified'])
-        self.assertEqual(by_number['311']['filters']['controlType'], 'Crush and Shape')
+        self.assertEqual(by_number['311']['filters']['controlType'], 'Crossover')
         self.assertEqual(by_number['320']['classifications']['controlMethod'], ['Unspecified'])
         self.assertEqual(by_number['320']['classifications']['workArea'], ['Unspecified'])
         self.assertEqual(by_number['160']['classifications']['roadwayType'], ['Undivided'])
@@ -291,6 +312,36 @@ class StoredCatalogTests(unittest.TestCase):
         self.assertEqual(set(by_number['205']['classifications']['trafficArrangement']), {'Lane shift', 'Lane closure'})
         self.assertEqual(set(by_number['205']['classifications']['roadwayType']), {'Freeway', 'Divided'})
         self.assertEqual(by_number['5000']['classifications']['roadwayType'], ['Unspecified'])
+
+    def test_workbook_work_areas_do_not_establish_closure_directions(self):
+        records = json.loads((FOLDER / 'catalog.json').read_text(encoding='utf-8'))['records']
+        by_number = {r['number']: r for r in records}
+        for number in ['110', '120', '121', '127', '136', '137', '138']:
+            self.assertEqual(updater.lane_positions(by_number[number]), ['Unspecified'], number)
+        expected = {'131': ['Left / inside', 'Center lane'], '132': ['Right / outside', 'Center lane'],
+                    '202': ['Left / inside'], '206': ['Left / inside']}
+        for number, positions in expected.items():
+            record = by_number[number]
+            self.assertEqual(updater.lane_positions(record), positions, number)
+            self.assertEqual(updater.lane_positions({**record, 'pdf': {}}), ['Unspecified'], number)
+            self.assertEqual(updater.lane_positions({**record, 'pdf': {'sha256': '0' * 64}}), ['Unspecified'], number)
+            # Retain source text for notes; its work area must not override the drawing.
+            self.assertEqual(updater.lane_positions({**record, 'filters': {**record['filters'], 'workArea': 'Right 1 Lane'}}), positions)
+
+    def test_requested_workbook_corrections_survive_reimport(self):
+        catalog = json.loads((FOLDER / 'catalog.json').read_text(encoding='utf-8'))
+        rows = updater.read_workbook(ROOT / catalog['workbookFile'])
+        self.assertEqual(next(row for row in rows if row.get('A') == '311')['H'], 'Crush and Shape')
+        listings = {family: {} for family in updater.SOURCES}
+        for record in catalog['records']:
+            listings[record['family']][record['number']] = {key: record[key] for key in ['id', 'number', 'sourceTitle', 'sourceUrl', 'mdotUpdatedAt']}
+        rebuilt = {record['id']: record for record in updater.build_records(rows, listings)}
+        for record in catalog['records']:
+            # Refresh finalizes classifications after the PDF has been validated.
+            rebuilt[record['id']]['pdf'] = record['pdf']
+            rebuilt[record['id']]['classifications'] = updater.classify(rebuilt[record['id']])
+            for key in ['filters', 'classifications', 'conditions', 'notes', 'title', 'titleSource', 'workbookTitle']:
+                self.assertEqual(rebuilt[record['id']][key], record[key], (record['id'], key))
 
     def test_general_sheet_applicability_survives_refresh_without_changing_workbook_values(self):
         records = json.loads((FOLDER / 'catalog.json').read_text(encoding='utf-8'))['records']

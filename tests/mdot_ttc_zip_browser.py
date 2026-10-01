@@ -35,7 +35,7 @@ async def check(origin):
         page.on('download', lambda download: downloads.append(download.suggested_filename))
         page.on('request', lambda request: requests.append(request.url))
         await page.goto(origin + '/calc/calculators/mdot-ttc/')
-        await expect(page.locator('#match-count')).to_have_text('83 of 131 typicals match')
+        await expect(page.locator('#match-count')).to_have_text('80 of 131 typicals match')
         await expect(page.locator('#download-zip')).to_be_enabled()
         await page.locator('#search').fill('110')
         await page.get_by_role('button', name='Add 110-TR-NFW-2L', exact=True).click()
@@ -48,7 +48,7 @@ async def check(origin):
         assert downloads[-1] == 'mdot-ttc-details.zip'
         await expect(page.locator('#export-status')).to_contain_text('6 individual MDOT PDFs')
         inspect_word(await save_download(page, '#download-word', 'zip-selection.docx'), ids)
-        print('PASS: ZIP and Word match, Always sheets included once, exact original bytes, optional project name', flush=True)
+        print('PASS: ZIP and Word match, Always typicals included once, exact original bytes, optional project name', flush=True)
 
         # Capture the archive name and full report before asynchronous fetching begins.
         await page.locator('#project-name').fill('Maple / Road: Phase 1')
@@ -134,7 +134,7 @@ async def check(origin):
         context = await browser.new_context(accept_downloads=True)
         page = await context.new_page()
         await page.goto(origin + '/calculators/mdot-ttc/')
-        await expect(page.locator('#match-count')).to_have_text('83 of 131 typicals match')
+        await expect(page.locator('#match-count')).to_have_text('80 of 131 typicals match')
         await page.get_by_role('button', name='Add 110-TR-NFW-2L', exact=True).click()
         inspect_zip(await save_download(page, '#download-zip', 'root-project.zip'), ids)
         assert not errors, errors

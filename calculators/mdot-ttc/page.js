@@ -2,13 +2,9 @@
   'use strict';
   const $ = id => document.getElementById(id);
   const storageKey = 'mdot-ttc-project-v1';
-  const filterOptionLabel = (key, value) => key === 'mdotCode' && TTC.MDOT_CODE_LABELS[value]
-    ? `${value} — ${TTC.MDOT_CODE_LABELS[value]}` : value;
-  const roadwayDescriptions = {
-    Undivided: 'Opposing traffic shares a roadway without a median or barrier. A center turn lane is still undivided.',
-    Divided: 'Opposing traffic is separated by a median or barrier.',
-    Freeway: 'Access is controlled through entrance and exit ramps.',
-    Unspecified: 'Review the detail to establish which roadway types it applies to.',
+  const filterOptionLabel = (key, value) => {
+    const labels = key === 'typicalSeries' ? TTC.TYPICAL_SERIES_LABELS : key === 'mdotCode' ? TTC.MDOT_CODE_LABELS : null;
+    return labels?.[value] ? `${value} — ${labels[value]}` : value;
   };
   let catalog, browseRecords = [], selectedIds = new Set(), filters = TTC.initialFilters(), query = '', busy = false, retryKind = 'pdf';
   const availableMarks = new Set(), selectedMarks = new Set();
@@ -31,8 +27,37 @@
     const element = node('a', '', text); element.href = url;
     element.target = '_blank'; element.rel = 'noopener'; return element;
   }
+  function additionalWorkArea(record) {
+    const area = String(record.filters.workArea || '').trim(), normalized = TTC.normalize(area);
+    if (!normalized || normalized === 'unspecified' || TTC.normalize(record.notes).includes(normalized)) return '';
+    const fields = ['projectType', 'workTask', 'roadwayType', 'controlMethod', 'existingLanes', 'lanesClosed'];
+    const shown = new Set(fields.flatMap(key => TTC.values(record, key)).map(TTC.normalize));
+    // The remaining workbook tags may already express this same value.
+    for (const key of ['roadwayType', 'controlType', 'lanes']) shown.add(TTC.normalize(record.filters[key]));
+    if (shown.has(normalized) || normalized === 'intersection' && shown.has('intersection work') ||
+        normalized === 'shoulder' && shown.has('shoulder / roadside work') ||
+        normalized === 'crossover' && shown.has('crossing / crossover work')) return '';
+
+    const closed = TTC.values(record, 'lanesClosed'), tasks = TTC.values(record, 'workTask');
+    const countMatches = counts => closed.length === counts.length && counts.every(count => closed.includes(`${count} ${count === '1' ? 'lane' : 'lanes'}`));
+    const sideTasks = tasks.filter(task => ['Close the left lane', 'Close the right lane', 'Close the center turn lane'].includes(task));
+    // Only suppress source wording when a visible activity tag covers its side.
+    const sideMatches = side => !side || sideTasks.length === 1 && sideTasks[0] ===
+      ({ left: 'Close the left lane', inside: 'Close the left lane', right: 'Close the right lane', outside: 'Close the right lane', cltl: 'Close the center turn lane' })[side];
+    const simple = /^(?:(left|right|inside|outside) )?(\d+) (?:(left|right|inside|outside) )?lanes?(?: closures?)?$/.exec(normalized.replace(/^one\b/, '1'));
+    if (simple && countMatches([simple[2]]) && sideMatches(simple[1] || simple[3])) return '';
+    const range = /^(left|right) (\d+) or (\d+) lane closure$/.exec(normalized);
+    if (range && countMatches([range[2], range[3]]) && sideMatches(range[1])) return '';
+    const center = /^(\d+) cltl$/.exec(normalized);
+    if (center && countMatches([center[1]]) && sideMatches('cltl') && shown.has('close the center turn lane')) return '';
+    // Preserve fractions, mixed areas, shoulder sides and unverified lane counts verbatim.
+    return area;
+  }
   function note(record) {
-    return record.notes ? node('p', /DO NOT USE/i.test(record.notes) ? 'ttc-note warning' : 'ttc-note', 'Workbook note: ' + record.notes) : null;
+    let text = String(record.notes || '').trim();
+    const area = additionalWorkArea(record);
+    if (area) text += `${text ? /[.!?]$/.test(text) ? ' ' : '. ' : ''}Work area: ${area}`;
+    return text ? node('p', /DO NOT USE/i.test(text) ? 'ttc-note warning' : 'ttc-note', "Andy's note: " + text) : null;
   }
   function paintFlag(record) {
     const status = TTC.paintStatus(record);
@@ -133,16 +158,15 @@
       updateCount(); summary.append(count); details.append(summary);
       const options = node('div', 'ttc-filter-options');
       options.setAttribute('role', 'group'); options.setAttribute('aria-label', label);
-      if (key === 'roadwayType') {
-        options.classList.add('ttc-roadway-options');
-        options.append(node('p', 'ttc-help', 'Some sheets apply to both Divided and Freeway. General sheets 100–104 are always included separately.'));
+      if (key === 'typicalSeries') {
+        options.append(node('p', 'ttc-help', 'Groups by typical number: 160 covers 160–169; 4000 and 5000 cover all maintenance and survey typicals. Required typicals 100–104 are included separately.'));
       }
       if (key === 'workTask') {
         options.classList.add('ttc-task-options');
-        options.append(node('p', 'ttc-help', 'Choose the closest task, then review the details. Right/left follows traffic direction. Other work includes shifts, intersections, moving work, and general sheets.'));
+        options.append(node('p', 'ttc-help', 'Choose the closest activity, then review the drawing. Right/left follows traffic direction.'));
       }
       if (key === 'mdotCode') {
-        options.append(node('p', 'ttc-help', 'Use the code immediately after the typical number, such as INT in 160-INT-LD-CLT-MID.'));
+        options.append(node('p', 'ttc-help', 'Matches codes anywhere after the typical number. Numbered variants share a code: 1LC and 2LC use LC; 2(R)SHIFT uses SHIFT and (R).'));
       }
       const choices = TTC.options(browseRecords, key);
       for (const value of choices) {
@@ -156,12 +180,6 @@
         const resultCount = node('span', 'ttc-filter-count');
         resultCount.setAttribute('aria-hidden', 'true');
         const valueLabel = node('span', 'ttc-filter-value', filterOptionLabel(key, value));
-        if (key === 'roadwayType' && roadwayDescriptions[value]) {
-          const description = node('span', 'ttc-filter-description', roadwayDescriptions[value]);
-          description.id = 'roadway-help-' + value.toLowerCase();
-          input.setAttribute('aria-describedby', description.id);
-          valueLabel.append(description);
-        }
         option.append(input, valueLabel, resultCount);
         options.append(option);
       }
@@ -190,23 +208,62 @@
     article.append(top, node('h3', '', record.title), TTCPreview.createButton(record));
     if (missingFields.length) article.append(node('p', 'ttc-possible-reason', 'Review detail — not classified for: ' + missingFields.map(key => TTC.FILTERS[key]).join(', ') + '.'));
     const tags = node('div', 'ttc-tags');
-    for (const key of ['projectType', 'roadwayType', 'trafficArrangement', 'controlMethod', 'existingLanes', 'lanesClosed', 'lanePosition', 'rcoc']) {
+    const represented = new Set();
+    for (const [key, label] of Object.entries({ ...TTC.FILTERS, roadwayType: 'Roadway type' })) {
+      if (key === 'mdotCode') continue; // The full identifier already displays these codes.
       for (const value of TTC.values(record, key)) {
-        const prefix = { trafficArrangement: 'Arrangement: ', controlMethod: 'Control: ', existingLanes: 'Existing: ', lanesClosed: 'Closed: ', lanePosition: 'Lane: ', rcoc: 'RCOC: ' }[key] || '';
-        if (value !== 'Unspecified') tags.append(node('span', 'ttc-tag', prefix + value));
+        const tag = node('span', 'ttc-tag ttc-filter-tag', `${label}: ${filterOptionLabel(key, value)}`);
+        tag.dataset.filterField = key;
+        tag.dataset.filterValue = value;
+        tags.append(tag);
+        represented.add(TTC.normalize(value));
       }
     }
+    for (const key of ['controlMethod', 'existingLanes', 'rcoc']) {
+      for (const value of TTC.values(record, key)) {
+        const prefix = { controlMethod: 'Control: ', existingLanes: 'Existing: ', rcoc: 'RCOC: ' }[key] || '';
+        if (value !== 'Unspecified') {
+          const tag = node('span', 'ttc-tag', prefix + value);
+          if (key === 'rcoc' && ['yes', 'no'].includes(TTC.normalize(value))) tag.classList.add('ttc-rcoc-' + TTC.normalize(value));
+          tags.append(tag);
+          if (key !== 'rcoc') represented.add(TTC.normalize(value));
+        }
+      }
+    }
+    const closed = TTC.values(record, 'lanesClosed'), activities = TTC.values(record, 'workTask');
+    const namedLaneClosure = ['Close the right lane', 'Close the left lane', 'Close the center turn lane']
+      .some(task => activities.includes(task));
+    for (const value of closed) {
+      if (value === 'Unspecified' || value === '1 lane' && closed.length === 1 && namedLaneClosure &&
+          !activities.includes('Close multiple lanes')) continue;
+      const label = {
+        'No lane closure': 'No lane closure',
+        'Parking lane only': 'Parking lane closure only',
+        'Ramp only': 'Ramp closure only',
+      }[value] || 'Closed: ' + value;
+      tags.append(node('span', 'ttc-tag', label));
+      represented.add(TTC.normalize(value));
+    }
+    // Avoid repeating workbook values already expressed by a more descriptive tag.
+    for (const value of TTC.values(record, 'existingLanes')) {
+      const total = /^(\d+) total \(both directions\)$/.exec(value);
+      if (total) { represented.add(total[1]); represented.add(total[1] + ' lanes'); }
+    }
+    if (represented.has('intersection work')) represented.add('intersection');
+    if (represented.has('crossing / crossover work')) represented.add('crossover');
+    const workbookLabels = { roadwayType: 'Workbook road type', controlType: 'Workbook control', lanes: 'Workbook lanes' };
+    for (const [key, label] of Object.entries(workbookLabels)) {
+      const value = record.filters[key], normalized = TTC.normalize(value);
+      if (!normalized || normalized === 'unspecified' || represented.has(normalized)) continue;
+      const tag = node('span', 'ttc-tag ttc-workbook-tag', `${label}: ${value}`);
+      tag.dataset.workbookField = key;
+      tag.dataset.workbookValue = value;
+      tags.append(tag); represented.add(normalized);
+    }
+    if (!record.workbookRows.length) tags.append(node('span', 'ttc-tag ttc-workbook-tag', 'Workbook classifications: Unspecified'));
     const paint = paintFlag(record); if (paint) tags.append(paint);
     article.append(tags);
     const applicability = conditions(record); if (applicability) article.append(applicability);
-    if (!record.workbookRows.length) article.append(node('p', 'ttc-help', 'Workbook classifications: Unspecified.'));
-    const originals = ['roadwayType', 'workArea', 'controlType', 'lanes'].filter(key => record.filters[key] !== 'Unspecified');
-    if (originals.length) {
-      const source = node('details', 'ttc-workbook-source'); source.append(node('summary', '', 'Original workbook classifications'));
-      const labels = { roadwayType: 'Roadway type', workArea: 'Work area', controlType: 'Control type', lanes: 'Number of lanes' };
-      for (const key of originals) source.append(node('p', 'ttc-help', `${labels[key]}: ${record.filters[key]}`));
-      article.append(source);
-    }
     const workbookNote = note(record); if (workbookNote) article.append(workbookNote);
     const links = node('div', 'ttc-result-links');
     links.append(link(`View PDF · ${record.pdf.pages} ${record.pdf.pages === 1 ? 'page' : 'pages'}`, record.pdf.path), link('MDOT original ↗', record.sourceUrl), node('span', '', 'MDOT updated ' + record.mdotUpdatedAt));
@@ -298,7 +355,7 @@
     busy = true; updateButtons(); $('retry-export').hidden = true;
     $('export-progress').hidden = !['pdf', 'zip'].includes(kind);
     $('export-progress').value = 0;
-    setStatus(`Preparing the ${records.length} report details, including required sheets 100–104…`);
+    setStatus(`Preparing the ${records.length} report details, including required typicals 100–104…`);
     try {
       if (kind === 'word') {
         const blob = await TTCExports.word(records, window.docx);
@@ -351,8 +408,9 @@
       const restored = TTC.restore(catalog.records, saved); selectedIds = new Set(restored.ids);
       $('project-name').value = restored.projectName;
       if (restored.message) $('storage-status').textContent = restored.message;
-      const familyCounts = ['construction', 'maintenance', 'survey'].map(family => `${catalog.records.filter(r => r.family === family).length} ${family}`).join(' · ');
-      $('catalog-status').textContent = `${catalog.records.length} verified typicals (${familyCounts}) · PDFs checked ${catalog.verifiedAt.slice(0, 10)}`;
+      const categoryCounts = TTC.options(catalog.records, 'projectType').map(category =>
+        `${catalog.records.filter(record => TTC.values(record, 'projectType').includes(category)).length} ${category.toLowerCase()}`).join(' · ');
+      $('catalog-status').textContent = `${catalog.records.length} verified typicals (${categoryCounts}) · PDFs checked ${catalog.verifiedAt.slice(0, 10)}`;
       $('selector').hidden = false; renderFilters(); render();
     } catch (error) {
       $('catalog-status').textContent = 'Catalog unavailable';
@@ -380,7 +438,7 @@
     $('automatic-details').open = false;
     selectedIds = new Set(TTC.defaults(catalog.records)); persist(); resetFilters(TTC.initialFilters());
     selectedMarks.clear(); updateTransferButtons(); $('transfer-status').textContent = '';
-    $('retry-export').hidden = true; if (!busy) setStatus('Project reset. Required sheets 100–104 remain included. The Construction category is on by default.');
+    $('retry-export').hidden = true; if (!busy) setStatus('Project reset. Required typicals 100–104 remain included. The Construction category is on by default.');
   });
   $('download-word').addEventListener('click', () => exportSelection('word'));
   $('download-pdf').addEventListener('click', () => exportSelection('pdf'));

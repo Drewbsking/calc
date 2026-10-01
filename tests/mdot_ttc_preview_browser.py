@@ -38,7 +38,7 @@ async def check(origin):
 
         for prefix in ['/calc', '']:
             await page.goto(origin + prefix + '/calculators/mdot-ttc/')
-            await expect(page.locator('#available-count')).to_have_text('83')
+            await expect(page.locator('#available-count')).to_have_text('80')
             assert not any('/pdfjs/' in url or '/pdfs/' in url for url in requests)
             trigger = await search('123-NFW-1LC-(R)')
             await trigger.hover()

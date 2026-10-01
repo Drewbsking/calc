@@ -23,6 +23,8 @@
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
       "title": "Typical Numbering Key",
+      "titleSource": "mdot-pdf",
+      "workbookTitle": "Typical Numbering Key",
       "notes": "",
       "workbookRows": [
         2
@@ -38,13 +40,6 @@
         "rcoc": "Always"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 103310,
-        "sha256": "4a71e01e953d3ecb1263cfca23e9f98e48eac548cb4687e4cbcf2a5cf499abeb",
-        "path": "pdfs/4a71e01e953d3ecb1263cfca23e9f98e48eac548cb4687e4cbcf2a5cf499abeb.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "All roadway types"
@@ -68,7 +63,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 103310,
+        "sha256": "4a71e01e953d3ecb1263cfca23e9f98e48eac548cb4687e4cbcf2a5cf499abeb",
+        "path": "pdfs/4a71e01e953d3ecb1263cfca23e9f98e48eac548cb4687e4cbcf2a5cf499abeb.pdf"
+      }
     },
     {
       "id": "101-GEN-SPACING-CHARTS",
@@ -77,7 +79,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=6dfdabdf-c842-4cf5-8187-5f7d8565fd86&fileName=101-GEN-SPACING-CHARTS.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "\"B,\" \"D,\" and \"L\" Tables Channelizing Device Spacing Sign Border Key, and Roll-Ahead Spacing",
+      "title": "\"B\", \"D\", and \"L\" Tables, Channelizing Device Spacing, Sign Border Key, and Roll-Ahead Spacing",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "\"B,\" \"D,\" and \"L\" Tables Channelizing Device Spacing Sign Border Key, and Roll-Ahead Spacing",
       "notes": "",
       "workbookRows": [
         3
@@ -93,13 +97,6 @@
         "rcoc": "Always"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 3,
-        "bytes": 220076,
-        "sha256": "56e63357ef6a5a81ca16fe1b1f45c475116cbfd7c4b302880513c57ae7c207b6",
-        "path": "pdfs/56e63357ef6a5a81ca16fe1b1f45c475116cbfd7c4b302880513c57ae7c207b6.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "All roadway types"
@@ -123,7 +120,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 3,
+        "bytes": 220076,
+        "sha256": "56e63357ef6a5a81ca16fe1b1f45c475116cbfd7c4b302880513c57ae7c207b6",
+        "path": "pdfs/56e63357ef6a5a81ca16fe1b1f45c475116cbfd7c4b302880513c57ae7c207b6.pdf"
+      }
     },
     {
       "id": "102-GEN-NOTES",
@@ -132,7 +136,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=10487024-3ab5-4ed6-a61c-90479a9b3abb&fileName=102-GEN-NOTES.pdf",
       "mdotUpdatedAt": "2022-09-01",
       "family": "construction",
-      "title": "Traffic Typical Note Sheet",
+      "title": "Traffic Control Typicals Notes Sheet",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Traffic Typical Note Sheet",
       "notes": "",
       "workbookRows": [
         4
@@ -148,13 +154,6 @@
         "rcoc": "Always"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 2,
-        "bytes": 422782,
-        "sha256": "48c4024ffba4016b6ea186cfb632884d1f04196fa15428553874224fd28a088a",
-        "path": "pdfs/48c4024ffba4016b6ea186cfb632884d1f04196fa15428553874224fd28a088a.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "All roadway types"
@@ -178,7 +177,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 2,
+        "bytes": 422782,
+        "sha256": "48c4024ffba4016b6ea186cfb632884d1f04196fa15428553874224fd28a088a",
+        "path": "pdfs/48c4024ffba4016b6ea186cfb632884d1f04196fa15428553874224fd28a088a.pdf"
+      }
     },
     {
       "id": "103-GEN-SIGN",
@@ -187,7 +193,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=65bd8527-32ef-4479-91bd-f5489d67b8d9&fileName=103-GEN-SIGN.pdf",
       "mdotUpdatedAt": "2024-11-12",
       "family": "construction",
-      "title": "Traffic Typical Sign Sheet",
+      "title": "Maintaining Traffic Typicals Sign Sheet",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Traffic Typical Sign Sheet",
       "notes": "",
       "workbookRows": [
         5
@@ -203,13 +211,6 @@
         "rcoc": "Always"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 5,
-        "bytes": 1964749,
-        "sha256": "c4c9ae3f8d6d0f9811f563a2cbcff454406e438eedcc1cd2eaa06685d058ec4a",
-        "path": "pdfs/c4c9ae3f8d6d0f9811f563a2cbcff454406e438eedcc1cd2eaa06685d058ec4a.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "All roadway types"
@@ -233,7 +234,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 5,
+        "bytes": 1964749,
+        "sha256": "c4c9ae3f8d6d0f9811f563a2cbcff454406e438eedcc1cd2eaa06685d058ec4a",
+        "path": "pdfs/c4c9ae3f8d6d0f9811f563a2cbcff454406e438eedcc1cd2eaa06685d058ec4a.pdf"
+      }
     },
     {
       "id": "104-GEN-AB",
@@ -242,7 +250,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=db492f06-7ee8-450f-9850-a28522ea2ebd&fileName=104-GEN-AB.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "Use of Arrow Board on Hill or Curve and Work Zone Layout",
+      "title": "Use of Arrow Board on Hill or Curve",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Use of Arrow Board on Hill or Curve and Work Zone Layout",
       "notes": "",
       "workbookRows": [
         6
@@ -258,13 +268,6 @@
         "rcoc": "Always"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 55569,
-        "sha256": "ddc50d5e574019ae186c2e3be3b285a32d52c001f6a9832352af97737f72b4c2",
-        "path": "pdfs/ddc50d5e574019ae186c2e3be3b285a32d52c001f6a9832352af97737f72b4c2.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "All roadway types"
@@ -288,7 +291,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 55569,
+        "sha256": "ddc50d5e574019ae186c2e3be3b285a32d52c001f6a9832352af97737f72b4c2",
+        "path": "pdfs/ddc50d5e574019ae186c2e3be3b285a32d52c001f6a9832352af97737f72b4c2.pdf"
+      }
     },
     {
       "id": "105-GEN-SPEED-FW",
@@ -298,7 +308,9 @@
       "mdotUpdatedAt": "2025-11-05",
       "family": "construction",
       "title": "Supplemental Speed Limit Treatment on Limited Access Roadways",
-      "notes": "Freeway (DO NOT USE)",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Supplemental Speed Limit Treatment on Limited Access Roadways",
+      "notes": "",
       "workbookRows": [
         7
       ],
@@ -308,18 +320,11 @@
         "controlType": "Unspecified",
         "workArea": "Unspecified",
         "lanes": "Unspecified",
-        "roadwayType": "Notes - Special",
+        "roadwayType": "Unspecified",
         "paint": "Unspecified",
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 100121,
-        "sha256": "c92f497b0aa211dcf3b7bd0f62d00066679d674d9b2da3e56559dc687190e9c5",
-        "path": "pdfs/c92f497b0aa211dcf3b7bd0f62d00066679d674d9b2da3e56559dc687190e9c5.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -343,7 +348,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 100121,
+        "sha256": "c92f497b0aa211dcf3b7bd0f62d00066679d674d9b2da3e56559dc687190e9c5",
+        "path": "pdfs/c92f497b0aa211dcf3b7bd0f62d00066679d674d9b2da3e56559dc687190e9c5.pdf"
+      }
     },
     {
       "id": "106-GEN-SPEED-NFW",
@@ -352,8 +364,10 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=99760e51-2690-44f3-ac9c-0107c028ef40&fileName=106-GEN-SPEED-NFW.pdf",
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
-      "title": "Supplemental Speed Limit Treatment on a 2-way roadway were workers present",
-      "notes": "Where Workers Present (DO NOT USE)",
+      "title": "Supplemental Speed Limit Treatment on a 2-Way Roadway, WWP",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Supplemental Speed Limit Treatment on a 2-way roadway were workers present",
+      "notes": "",
       "workbookRows": [
         8
       ],
@@ -363,18 +377,11 @@
         "controlType": "Unspecified",
         "workArea": "Unspecified",
         "lanes": "Unspecified",
-        "roadwayType": "Notes - Special",
+        "roadwayType": "Unspecified",
         "paint": "Unspecified",
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 63460,
-        "sha256": "c22a26e721cab22c91b73f7ab102dd7ce6ec9077bcaefbbc3d24a9076f8a448f",
-        "path": "pdfs/c22a26e721cab22c91b73f7ab102dd7ce6ec9077bcaefbbc3d24a9076f8a448f.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -398,7 +405,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 63460,
+        "sha256": "c22a26e721cab22c91b73f7ab102dd7ce6ec9077bcaefbbc3d24a9076f8a448f",
+        "path": "pdfs/c22a26e721cab22c91b73f7ab102dd7ce6ec9077bcaefbbc3d24a9076f8a448f.pdf"
+      }
     },
     {
       "id": "107-GEN-SPEED",
@@ -408,7 +422,9 @@
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
       "title": "Speed Limit Layout",
-      "notes": "(DO NOT USE)",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Speed Limit Layout",
+      "notes": "",
       "workbookRows": [
         9
       ],
@@ -418,18 +434,11 @@
         "controlType": "Unspecified",
         "workArea": "Unspecified",
         "lanes": "Unspecified",
-        "roadwayType": "Notes - Special",
+        "roadwayType": "Unspecified",
         "paint": "Unspecified",
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 2,
-        "bytes": 161702,
-        "sha256": "bb5fc991150326ebdde7250665091cfd409e9a2d703561ad121358ff253f4024",
-        "path": "pdfs/bb5fc991150326ebdde7250665091cfd409e9a2d703561ad121358ff253f4024.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -453,7 +462,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 2,
+        "bytes": 161702,
+        "sha256": "bb5fc991150326ebdde7250665091cfd409e9a2d703561ad121358ff253f4024",
+        "path": "pdfs/bb5fc991150326ebdde7250665091cfd409e9a2d703561ad121358ff253f4024.pdf"
+      }
     },
     {
       "id": "110-TR-NFW-2L",
@@ -462,7 +478,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=5a12ba74-ea80-4f60-ac3b-4881792081a1&fileName=110-TR-NFW-2L.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "Lane Closure Utilizing Traffic Regulators on a 2-lane undivided roadway",
+      "title": "Lane Closure Utilizing Traffic Regulators on a 2-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Lane Closure Utilizing Traffic Regulators on a 2-lane undivided roadway",
       "notes": "With speed reduction and on reinforcing R2-1's in work zone no end speed limits",
       "workbookRows": [
         10
@@ -480,13 +498,6 @@
       "relatedIds": [
         "4110B-M-TR-NFW-2L"
       ],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 99145,
-        "sha256": "e90be2ccad2e459547707f4652f680f5246eb2dafe5c7ad634e321c03b24d409",
-        "path": "pdfs/e90be2ccad2e459547707f4652f680f5246eb2dafe5c7ad634e321c03b24d409.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -507,10 +518,17 @@
           "1 lane"
         ],
         "lanePosition": [
-          "Right / outside"
+          "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 99145,
+        "sha256": "e90be2ccad2e459547707f4652f680f5246eb2dafe5c7ad634e321c03b24d409",
+        "path": "pdfs/e90be2ccad2e459547707f4652f680f5246eb2dafe5c7ad634e321c03b24d409.pdf"
+      }
     },
     {
       "id": "111-TR-NFW-2L-RUM",
@@ -520,6 +538,8 @@
       "mdotUpdatedAt": "2026-05-19",
       "family": "construction",
       "title": "Lane Closure Utilizing Traffic Regulators on a 2-Lane Undivided Roadway with Rumble Strips",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "Same as 110 but uses Rumble strips",
       "workbookRows": [
         11
@@ -535,13 +555,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 185229,
-        "sha256": "4fb29c2f942f86dacd7d0598908f77363490603143449358966728fed121e9f8",
-        "path": "pdfs/4fb29c2f942f86dacd7d0598908f77363490603143449358966728fed121e9f8.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -565,7 +578,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 185229,
+        "sha256": "4fb29c2f942f86dacd7d0598908f77363490603143449358966728fed121e9f8",
+        "path": "pdfs/4fb29c2f942f86dacd7d0598908f77363490603143449358966728fed121e9f8.pdf"
+      }
     },
     {
       "id": "112-TR-CLT",
@@ -575,6 +595,8 @@
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
       "title": "1-Lane and Center Lane Closure Utilizing Traffic Regulators",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "1-Lane and Center Lane Closure Utilizing Traffic Regulators",
       "notes": "Same as 110 but increases the taper from 50 to 100 max to 100 to 200 max",
       "workbookRows": [
         13
@@ -590,13 +612,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 114918,
-        "sha256": "21315d455ae4bac5435a45858827de6bd32d30e5eab76005bbf3d19b40ed35b9",
-        "path": "pdfs/21315d455ae4bac5435a45858827de6bd32d30e5eab76005bbf3d19b40ed35b9.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -620,7 +635,14 @@
           "Center lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 114918,
+        "sha256": "21315d455ae4bac5435a45858827de6bd32d30e5eab76005bbf3d19b40ed35b9",
+        "path": "pdfs/21315d455ae4bac5435a45858827de6bd32d30e5eab76005bbf3d19b40ed35b9.pdf"
+      }
     },
     {
       "id": "113-TR-HAUL",
@@ -629,7 +651,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=67a849bf-168c-4a60-87d6-0efb5d85b546&fileName=113-TR-HAUL.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "Haul Road Crossing…",
+      "title": "Haul Road Crossing Utilizing Traffic Regulators on a 2-Lane Undivided Roadway within an Exisiting Work Zone",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Haul Road Crossing…",
       "notes": "",
       "workbookRows": [
         14
@@ -645,13 +669,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 58971,
-        "sha256": "f9ed49af0e5e902dbb9def55edd3fc25581d72314c9af725f86eb8b2f9b40ab2",
-        "path": "pdfs/f9ed49af0e5e902dbb9def55edd3fc25581d72314c9af725f86eb8b2f9b40ab2.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -675,7 +692,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 58971,
+        "sha256": "f9ed49af0e5e902dbb9def55edd3fc25581d72314c9af725f86eb8b2f9b40ab2",
+        "path": "pdfs/f9ed49af0e5e902dbb9def55edd3fc25581d72314c9af725f86eb8b2f9b40ab2.pdf"
+      }
     },
     {
       "id": "114-TR-HAUL-AW",
@@ -684,7 +708,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=d643ecbd-8bbd-4a24-ba31-99b4f3c34f08&fileName=114-TR-HAUL-AW.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "Haul Road Crossing…",
+      "title": "Haul Road Crossing Utilizing Traffic Regulators on a 2-Lane, Undivided Roadway with Advanced Warning",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Haul Road Crossing…",
       "notes": "",
       "workbookRows": [
         15
@@ -700,13 +726,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 82547,
-        "sha256": "3582aeea1021783a79246eb8a26b1babc9955f1c69a0310802ff0159fd07a64c",
-        "path": "pdfs/3582aeea1021783a79246eb8a26b1babc9955f1c69a0310802ff0159fd07a64c.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -730,7 +749,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 82547,
+        "sha256": "3582aeea1021783a79246eb8a26b1babc9955f1c69a0310802ff0159fd07a64c",
+        "path": "pdfs/3582aeea1021783a79246eb8a26b1babc9955f1c69a0310802ff0159fd07a64c.pdf"
+      }
     },
     {
       "id": "115-AFAD-NFW-2L",
@@ -741,6 +767,7 @@
       "family": "construction",
       "title": "Lane Closure Utilizing an AFAD in a 2-Lane Undivided Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -754,13 +781,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 107762,
-        "sha256": "1553db46d9b706c18929e746baa3405f7643a734fdc5639a30af538093f66695",
-        "path": "pdfs/1553db46d9b706c18929e746baa3405f7643a734fdc5639a30af538093f66695.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -784,7 +804,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 107762,
+        "sha256": "1553db46d9b706c18929e746baa3405f7643a734fdc5639a30af538093f66695",
+        "path": "pdfs/1553db46d9b706c18929e746baa3405f7643a734fdc5639a30af538093f66695.pdf"
+      }
     },
     {
       "id": "116-AFAD-NFW-2L-RUM",
@@ -795,6 +822,7 @@
       "family": "construction",
       "title": "Lane Closure Utilizing an AFAD and Temporary Rumble Strips in a 2-Lane Undivided Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -808,13 +836,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 191121,
-        "sha256": "68d2e4f0e03561c3d9cfbae385dafd6f53b56637d650928a80409a1b9ebdad36",
-        "path": "pdfs/68d2e4f0e03561c3d9cfbae385dafd6f53b56637d650928a80409a1b9ebdad36.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -838,7 +859,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 191121,
+        "sha256": "68d2e4f0e03561c3d9cfbae385dafd6f53b56637d650928a80409a1b9ebdad36",
+        "path": "pdfs/68d2e4f0e03561c3d9cfbae385dafd6f53b56637d650928a80409a1b9ebdad36.pdf"
+      }
     },
     {
       "id": "120-TS-DUAL-SIGN",
@@ -848,6 +876,8 @@
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
       "title": "Temporary Traffic Signal with Dual Signing on a 2-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Temporary Traffic Signal with Dual Signing on a 2-Lane Undivided Roadway",
       "notes": "",
       "workbookRows": [
         16
@@ -863,13 +893,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 122074,
-        "sha256": "b5fced89e4751e3dd4093fe9c6562a79c9d1949bcde8115b7dafe9cae3be08cb",
-        "path": "pdfs/b5fced89e4751e3dd4093fe9c6562a79c9d1949bcde8115b7dafe9cae3be08cb.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -890,10 +913,17 @@
           "Unspecified"
         ],
         "lanePosition": [
-          "Right / outside"
+          "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 122074,
+        "sha256": "b5fced89e4751e3dd4093fe9c6562a79c9d1949bcde8115b7dafe9cae3be08cb",
+        "path": "pdfs/b5fced89e4751e3dd4093fe9c6562a79c9d1949bcde8115b7dafe9cae3be08cb.pdf"
+      }
     },
     {
       "id": "121-TS-SINGLE-SIGN",
@@ -902,7 +932,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=60dcbfe5-e752-4435-934c-32afea296fcd&fileName=121-TS-SINGLE-SIGN.pdf",
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
-      "title": "Temporary Traffic Signal with Single Signing on a 2 lane Undivided Roadway",
+      "title": "Temporary Traffic Signal with Single Signing on a 2-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Temporary Traffic Signal with Single Signing on a 2 lane Undivided Roadway",
       "notes": "Same as 120 but with only one set of signs in each direction instead of two.",
       "workbookRows": [
         17
@@ -920,13 +952,6 @@
       "relatedIds": [
         "4121-M-TS"
       ],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 106602,
-        "sha256": "ca9bb84417768ae5f68bbd8c98b31e7486be42dbf7eb45e76f073c310cf14c81",
-        "path": "pdfs/ca9bb84417768ae5f68bbd8c98b31e7486be42dbf7eb45e76f073c310cf14c81.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -947,10 +972,17 @@
           "Unspecified"
         ],
         "lanePosition": [
-          "Right / outside"
+          "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 106602,
+        "sha256": "ca9bb84417768ae5f68bbd8c98b31e7486be42dbf7eb45e76f073c310cf14c81",
+        "path": "pdfs/ca9bb84417768ae5f68bbd8c98b31e7486be42dbf7eb45e76f073c310cf14c81.pdf"
+      }
     },
     {
       "id": "122-NFW-SHL-(R)",
@@ -959,7 +991,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=6793048a-7000-4582-b12c-87ff16d75732&fileName=122-NFW-SHL-%28R%29.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "Shoulder Closure on a 2 Lane, Undivided Roadway",
+      "title": "Shoulder Closure on a 2-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Shoulder Closure on a 2 Lane, Undivided Roadway",
       "notes": "",
       "workbookRows": [
         18
@@ -977,13 +1011,6 @@
       "relatedIds": [
         "4122-M-NFW-SHL"
       ],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 73867,
-        "sha256": "8bb926d99dfaa860b3ffb716a7e13ee22eed29020b5bfcf5346d0ff5693e9c3b",
-        "path": "pdfs/8bb926d99dfaa860b3ffb716a7e13ee22eed29020b5bfcf5346d0ff5693e9c3b.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1007,7 +1034,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 73867,
+        "sha256": "8bb926d99dfaa860b3ffb716a7e13ee22eed29020b5bfcf5346d0ff5693e9c3b",
+        "path": "pdfs/8bb926d99dfaa860b3ffb716a7e13ee22eed29020b5bfcf5346d0ff5693e9c3b.pdf"
+      }
     },
     {
       "id": "123-NFW-1LC-(R)",
@@ -1016,7 +1050,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=b194347d-c57e-4b1d-9b50-f05563e65054&fileName=123-NFW-1LC-%28R%29.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "1 right lane closure on a 4 lane (or 5-lane) undivided roadway",
+      "title": "1 Right Lane Closure on a 4-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "1 right lane closure on a 4 lane (or 5-lane) undivided roadway",
       "notes": "INSIDE/OUTSIDE",
       "workbookRows": [
         19
@@ -1034,13 +1070,6 @@
       "relatedIds": [
         "4123B-M-NFW-1LC-(R)"
       ],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 77967,
-        "sha256": "f18b7ddb34831df7899455463f30297a4b235bb409018cb4eda928ceaca315f3",
-        "path": "pdfs/f18b7ddb34831df7899455463f30297a4b235bb409018cb4eda928ceaca315f3.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1064,7 +1093,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 77967,
+        "sha256": "f18b7ddb34831df7899455463f30297a4b235bb409018cb4eda928ceaca315f3",
+        "path": "pdfs/f18b7ddb34831df7899455463f30297a4b235bb409018cb4eda928ceaca315f3.pdf"
+      }
     },
     {
       "id": "124-NFW-2(R+L)LC-SHIFT",
@@ -1074,6 +1110,8 @@
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
       "title": "2-Lane Closures, Left and Right, with a 1-Lane Shift on a 4-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "2-Lane Closures, Left and Right, with a 1-Lane Shift on a 4-Lane Undivided Roadway",
       "notes": "Paint required.",
       "workbookRows": [
         21
@@ -1089,13 +1127,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 97195,
-        "sha256": "4981e79a0efe26c4dd6502cea3709921d467aa9dd7f8bee7010e0e49c3667051",
-        "path": "pdfs/4981e79a0efe26c4dd6502cea3709921d467aa9dd7f8bee7010e0e49c3667051.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1121,7 +1152,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 97195,
+        "sha256": "4981e79a0efe26c4dd6502cea3709921d467aa9dd7f8bee7010e0e49c3667051",
+        "path": "pdfs/4981e79a0efe26c4dd6502cea3709921d467aa9dd7f8bee7010e0e49c3667051.pdf"
+      }
     },
     {
       "id": "125-NFW-2LC-(IN)",
@@ -1130,7 +1168,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=fd9cbac4-43aa-4c25-81eb-3d4690358b56&fileName=125-NFW-2LC-%28IN%29.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "2-Lane Closure (Inside Lanes) on a 4 Lane undivided highway",
+      "title": "2-Lane Closure, Inside Lanes, on a 4-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "2-Lane Closure (Inside Lanes) on a 4 Lane undivided highway",
       "notes": "",
       "workbookRows": [
         22
@@ -1148,13 +1188,6 @@
       "relatedIds": [
         "4125B-M-NFW-2LC-(IN)"
       ],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 82280,
-        "sha256": "7acf06bee25fecc7f4665a64d9a79a4d68c4c5e9979ede8fb678b98b72ec4b5d",
-        "path": "pdfs/7acf06bee25fecc7f4665a64d9a79a4d68c4c5e9979ede8fb678b98b72ec4b5d.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1178,7 +1211,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 82280,
+        "sha256": "7acf06bee25fecc7f4665a64d9a79a4d68c4c5e9979ede8fb678b98b72ec4b5d",
+        "path": "pdfs/7acf06bee25fecc7f4665a64d9a79a4d68c4c5e9979ede8fb678b98b72ec4b5d.pdf"
+      }
     },
     {
       "id": "126-NFW-2LC-(L)",
@@ -1188,6 +1228,8 @@
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
       "title": "Left 2-Lane Closure in One Direction on a 6-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         23
@@ -1203,13 +1245,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 74818,
-        "sha256": "17e16b089e4065be536b1c8e8e67ca4ec8f134e074b3021cb88df842ee708e32",
-        "path": "pdfs/17e16b089e4065be536b1c8e8e67ca4ec8f134e074b3021cb88df842ee708e32.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1233,7 +1268,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 74818,
+        "sha256": "17e16b089e4065be536b1c8e8e67ca4ec8f134e074b3021cb88df842ee708e32",
+        "path": "pdfs/17e16b089e4065be536b1c8e8e67ca4ec8f134e074b3021cb88df842ee708e32.pdf"
+      }
     },
     {
       "id": "127-NFW-SHIFT-0LC",
@@ -1243,6 +1285,8 @@
       "mdotUpdatedAt": "2021-06-03",
       "family": "construction",
       "title": "Shift with Both Bounds Shifted on a 2-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Shift with Both Bounds Shifted on a 2-Lane Undivided Roadway",
       "notes": "Shoulder area used to maintain traffic.",
       "workbookRows": [
         25
@@ -1258,13 +1302,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 86975,
-        "sha256": "be33e7e738137c73cb4dcf6ed3afc8ad8125c2e22bdf85c7cdd326fec7ec7941",
-        "path": "pdfs/be33e7e738137c73cb4dcf6ed3afc8ad8125c2e22bdf85c7cdd326fec7ec7941.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1286,10 +1323,17 @@
           "Unspecified"
         ],
         "lanePosition": [
-          "Right / outside"
+          "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 86975,
+        "sha256": "be33e7e738137c73cb4dcf6ed3afc8ad8125c2e22bdf85c7cdd326fec7ec7941",
+        "path": "pdfs/be33e7e738137c73cb4dcf6ed3afc8ad8125c2e22bdf85c7cdd326fec7ec7941.pdf"
+      }
     },
     {
       "id": "130-CLT-1(CLT)",
@@ -1298,7 +1342,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=bbf5a220-0873-41cc-b0dc-f0ba609ccc3f&fileName=130-CLT-1%28CLT%29.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "Center Lane Closure on a Multi-lane (or 5 Lane) Undivided Roadway",
+      "title": "Center Lane Closure on a Multi-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Center Lane Closure on a Multi-lane (or 5 Lane) Undivided Roadway",
       "notes": "",
       "workbookRows": [
         26
@@ -1314,13 +1360,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 92718,
-        "sha256": "941cf02ce3cf2348e96f84b6b4fb1f08b3e45158504be120705502f5deda6856",
-        "path": "pdfs/941cf02ce3cf2348e96f84b6b4fb1f08b3e45158504be120705502f5deda6856.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1344,7 +1383,14 @@
           "Center lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 92718,
+        "sha256": "941cf02ce3cf2348e96f84b6b4fb1f08b3e45158504be120705502f5deda6856",
+        "path": "pdfs/941cf02ce3cf2348e96f84b6b4fb1f08b3e45158504be120705502f5deda6856.pdf"
+      }
     },
     {
       "id": "131-CLT-1(L)LC-SHIFT",
@@ -1353,7 +1399,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=cc3ddc5c-6d3d-4e28-82e0-885e10f9db9d&fileName=131-CLT-1%28L%29LC-SHIFT.pdf",
       "mdotUpdatedAt": "2021-06-03",
       "family": "construction",
-      "title": "1-Bound Closure with a double lane shift on a 5-lane undivided roadway",
+      "title": "1-Bound Closure with a Double Lane Shift on a 5-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "1-Bound Closure with a double lane shift on a 5-lane undivided roadway",
       "notes": "Paint required.",
       "workbookRows": [
         27
@@ -1369,13 +1417,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 109942,
-        "sha256": "221602300dac127d1e178737842fadc9a824a66b83bda2eaf04f197ddc7e40e5",
-        "path": "pdfs/221602300dac127d1e178737842fadc9a824a66b83bda2eaf04f197ddc7e40e5.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1397,10 +1438,18 @@
           "Unspecified"
         ],
         "lanePosition": [
-          "Right / outside"
+          "Left / inside",
+          "Center lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 109942,
+        "sha256": "221602300dac127d1e178737842fadc9a824a66b83bda2eaf04f197ddc7e40e5",
+        "path": "pdfs/221602300dac127d1e178737842fadc9a824a66b83bda2eaf04f197ddc7e40e5.pdf"
+      }
     },
     {
       "id": "132-CLT-1(R)LC-SHIFT",
@@ -1409,7 +1458,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=365e6df1-074f-4075-ba34-da45f2064fc6&fileName=132-CLT-1%28R%29LC-SHIFT.pdf",
       "mdotUpdatedAt": "2021-06-03",
       "family": "construction",
-      "title": "1 bound closure with a signal lane shift on a 5 lane undivided roadway",
+      "title": "1 Bound Closure with a 1-Lane Shift on a 5-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "1 bound closure with a signal lane shift on a 5 lane undivided roadway",
       "notes": "Paint required if left overnight.",
       "workbookRows": [
         28
@@ -1425,13 +1476,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 104786,
-        "sha256": "a290f50708b64f3a2a8c96c8d090d11e5ad7cc8d0fe379e768eba665de5ea27a",
-        "path": "pdfs/a290f50708b64f3a2a8c96c8d090d11e5ad7cc8d0fe379e768eba665de5ea27a.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1453,10 +1497,18 @@
           "Unspecified"
         ],
         "lanePosition": [
-          "Right / outside"
+          "Right / outside",
+          "Center lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 104786,
+        "sha256": "a290f50708b64f3a2a8c96c8d090d11e5ad7cc8d0fe379e768eba665de5ea27a",
+        "path": "pdfs/a290f50708b64f3a2a8c96c8d090d11e5ad7cc8d0fe379e768eba665de5ea27a.pdf"
+      }
     },
     {
       "id": "133-CLT-1LC-(L)",
@@ -1465,7 +1517,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=c55811da-b59a-4712-9ce9-c878af998bb5&fileName=133-CLT-1LC-%28L%29.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "Left and Center Lane Closure on a multi Lane undivided roadway",
+      "title": "Left and Center Lane Closure on a Multi-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Left and Center Lane Closure on a multi Lane undivided roadway",
       "notes": "",
       "workbookRows": [
         29
@@ -1483,13 +1537,6 @@
       "relatedIds": [
         "4133B-M-CLT-1LC-(L)"
       ],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 79183,
-        "sha256": "1edd19bc0d638a6a1fd49f5931d132d20986e88564587a06fa79ae0588528641",
-        "path": "pdfs/1edd19bc0d638a6a1fd49f5931d132d20986e88564587a06fa79ae0588528641.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1514,7 +1561,14 @@
           "Center lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 79183,
+        "sha256": "1edd19bc0d638a6a1fd49f5931d132d20986e88564587a06fa79ae0588528641",
+        "path": "pdfs/1edd19bc0d638a6a1fd49f5931d132d20986e88564587a06fa79ae0588528641.pdf"
+      }
     },
     {
       "id": "134-CLT-2(L)LC-(IN)",
@@ -1523,7 +1577,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=f23046f6-fe41-48c6-ad06-901eda893961&fileName=134-CLT-2%28L%29LC-%28IN%29.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "Left Lanes and Center lane closure on a 5-lane undivided roadway",
+      "title": "Left Lanes and Center Lane Closure on a 5-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Left Lanes and Center lane closure on a 5-lane undivided roadway",
       "notes": "INSIDE/OUTSIDE",
       "workbookRows": [
         31
@@ -1541,13 +1597,6 @@
       "relatedIds": [
         "4134B-M-CLT-2(L)LC-(IN)"
       ],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 85601,
-        "sha256": "91581fe6b47f7231da73c21fef775a54354d72ad60a77c41b1bd4f5fb03b2376",
-        "path": "pdfs/91581fe6b47f7231da73c21fef775a54354d72ad60a77c41b1bd4f5fb03b2376.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1572,7 +1621,14 @@
           "Center lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 85601,
+        "sha256": "91581fe6b47f7231da73c21fef775a54354d72ad60a77c41b1bd4f5fb03b2376",
+        "path": "pdfs/91581fe6b47f7231da73c21fef775a54354d72ad60a77c41b1bd4f5fb03b2376.pdf"
+      }
     },
     {
       "id": "135-CLT-2(R+L)LC-SHIFT",
@@ -1581,7 +1637,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=491a4ad2-179e-469a-8964-64d9404664a8&fileName=135-CLT-2%28R%2BL%29LC-SHIFT.pdf",
       "mdotUpdatedAt": "2021-05-10",
       "family": "construction",
-      "title": "1 Left, 1 Right and CLT Lane Closure with a single Lane shift on a 5-lane Undivided roadway",
+      "title": "1 Left, 1 Right, and Center Left Turn Lane Closure with a 1-Lane Shift on a 5-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "1 Left, 1 Right and CLT Lane Closure with a single Lane shift on a 5-lane Undivided roadway",
       "notes": "Paint required if left overnight",
       "workbookRows": [
         33
@@ -1597,13 +1655,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 93467,
-        "sha256": "3e5a2c98adbe96c945f59d06293b83900f7d9593d475bf7eabefcecd287fb192",
-        "path": "pdfs/3e5a2c98adbe96c945f59d06293b83900f7d9593d475bf7eabefcecd287fb192.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1630,7 +1681,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 93467,
+        "sha256": "3e5a2c98adbe96c945f59d06293b83900f7d9593d475bf7eabefcecd287fb192",
+        "path": "pdfs/3e5a2c98adbe96c945f59d06293b83900f7d9593d475bf7eabefcecd287fb192.pdf"
+      }
     },
     {
       "id": "136-CLT-SHIFT-(R+L)",
@@ -1639,7 +1697,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=5cc9d950-7f8f-4806-81a4-79714ad5dedf&fileName=136-CLT-SHIFT-%28R%2BL%29.pdf",
       "mdotUpdatedAt": "2021-06-03",
       "family": "construction",
-      "title": "Both Bounds Shifted on a 3 Lane undivided Roadway",
+      "title": "Both Bounds Shifted on a 3-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Both Bounds Shifted on a 3 Lane undivided Roadway",
       "notes": "Paint required. Shoulder area used to maintain traffic.",
       "workbookRows": [
         35
@@ -1655,13 +1715,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 91455,
-        "sha256": "a6d6a8b0b1e6c25bfe8d3901e26cc55c3edccd0dd9c1755ff3dc6adbb977a291",
-        "path": "pdfs/a6d6a8b0b1e6c25bfe8d3901e26cc55c3edccd0dd9c1755ff3dc6adbb977a291.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1682,11 +1735,17 @@
           "Unspecified"
         ],
         "lanePosition": [
-          "Right / outside",
-          "Center lane"
+          "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 91455,
+        "sha256": "a6d6a8b0b1e6c25bfe8d3901e26cc55c3edccd0dd9c1755ff3dc6adbb977a291",
+        "path": "pdfs/a6d6a8b0b1e6c25bfe8d3901e26cc55c3edccd0dd9c1755ff3dc6adbb977a291.pdf"
+      }
     },
     {
       "id": "137-CLT-SHIFT-0LC",
@@ -1695,7 +1754,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=4ea149ab-b129-4729-84f1-8cc341c8db46&fileName=137-CLT-SHIFT-0LC.pdf",
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
-      "title": "Lane Shift on a 3-Lane undivided Roadway",
+      "title": "Lane Shift on a 3-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Lane Shift on a 3-Lane undivided Roadway",
       "notes": "Paint required if left overnight.",
       "workbookRows": [
         36
@@ -1711,13 +1772,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 92886,
-        "sha256": "21bc50906b7fd5fe654f03c6718331038e5c126fef7ab5cc80e3cc7ec4309ea7",
-        "path": "pdfs/21bc50906b7fd5fe654f03c6718331038e5c126fef7ab5cc80e3cc7ec4309ea7.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1738,10 +1792,17 @@
           "Unspecified"
         ],
         "lanePosition": [
-          "Right / outside"
+          "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 92886,
+        "sha256": "21bc50906b7fd5fe654f03c6718331038e5c126fef7ab5cc80e3cc7ec4309ea7",
+        "path": "pdfs/21bc50906b7fd5fe654f03c6718331038e5c126fef7ab5cc80e3cc7ec4309ea7.pdf"
+      }
     },
     {
       "id": "138-CLT-SHIFT-2(R)",
@@ -1751,6 +1812,8 @@
       "mdotUpdatedAt": "2021-06-03",
       "family": "construction",
       "title": "Double Lane Shift on a 5-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Double Lane Shift on a 5-Lane Undivided Roadway",
       "notes": "Paint required if left overnight. Consider just reducing one direction down to one lane and keep CLTL open. Use only where there are no turns and high through volumes. Use 123 if you don’t need to keep three Lanes",
       "workbookRows": [
         37
@@ -1766,13 +1829,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 98829,
-        "sha256": "800d7246bc46d2e9693820528c0253d4a3dc4fabe84d629291a25fda9e27119d",
-        "path": "pdfs/800d7246bc46d2e9693820528c0253d4a3dc4fabe84d629291a25fda9e27119d.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1793,10 +1849,17 @@
           "Unspecified"
         ],
         "lanePosition": [
-          "Right / outside"
+          "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 98829,
+        "sha256": "800d7246bc46d2e9693820528c0253d4a3dc4fabe84d629291a25fda9e27119d",
+        "path": "pdfs/800d7246bc46d2e9693820528c0253d4a3dc4fabe84d629291a25fda9e27119d.pdf"
+      }
     },
     {
       "id": "140-CLT-PARK-LANE",
@@ -1806,6 +1869,8 @@
       "mdotUpdatedAt": "2021-06-03",
       "family": "construction",
       "title": "Single Lane Shift and Parking Lane Closure with Both Bounds Shifted on an Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "On street Parking",
       "workbookRows": [
         38
@@ -1821,13 +1886,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 93037,
-        "sha256": "d702fc280b24a494501b0c64d158569ce8f9279488f83b6f3025af3777c0cc27",
-        "path": "pdfs/d702fc280b24a494501b0c64d158569ce8f9279488f83b6f3025af3777c0cc27.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1852,7 +1910,14 @@
           "Parking lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 93037,
+        "sha256": "d702fc280b24a494501b0c64d158569ce8f9279488f83b6f3025af3777c0cc27",
+        "path": "pdfs/d702fc280b24a494501b0c64d158569ce8f9279488f83b6f3025af3777c0cc27.pdf"
+      }
     },
     {
       "id": "141-CLT-PARK-SHIFT",
@@ -1862,6 +1927,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Parking Lane CLosure with One Bound Shifted on an Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "On street Parking",
       "workbookRows": [
         39
@@ -1877,13 +1944,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 83775,
-        "sha256": "cb331b01a9c903a02299ea0c98cb053246a85eea58a238fe3012c66835c7de06",
-        "path": "pdfs/cb331b01a9c903a02299ea0c98cb053246a85eea58a238fe3012c66835c7de06.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1908,7 +1968,14 @@
           "Parking lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 83775,
+        "sha256": "cb331b01a9c903a02299ea0c98cb053246a85eea58a238fe3012c66835c7de06",
+        "path": "pdfs/cb331b01a9c903a02299ea0c98cb053246a85eea58a238fe3012c66835c7de06.pdf"
+      }
     },
     {
       "id": "142-CLT-PARK-SHL",
@@ -1918,6 +1985,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Parking Lane Closure with One Bound Shifted on an Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "On street Parking",
       "workbookRows": [
         40
@@ -1933,13 +2002,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 84143,
-        "sha256": "bb70652e3a53e86732e0e18b757259404cf7b573f583675e70f39286b639890d",
-        "path": "pdfs/bb70652e3a53e86732e0e18b757259404cf7b573f583675e70f39286b639890d.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -1964,7 +2026,14 @@
           "Parking lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 84143,
+        "sha256": "bb70652e3a53e86732e0e18b757259404cf7b573f583675e70f39286b639890d",
+        "path": "pdfs/bb70652e3a53e86732e0e18b757259404cf7b573f583675e70f39286b639890d.pdf"
+      }
     },
     {
       "id": "150-CLT(7)-2(R+L)LC-2(R)SHIFT",
@@ -1974,6 +2043,8 @@
       "mdotUpdatedAt": "2021-06-03",
       "family": "construction",
       "title": "2 Lane Closures, Left and Right, with a Double Lane Shift on a 7-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         41
@@ -1989,13 +2060,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 105840,
-        "sha256": "65bf60732271085b83a6fc8367b1ea37c51e9e42ad47f20604966784fe684bb1",
-        "path": "pdfs/65bf60732271085b83a6fc8367b1ea37c51e9e42ad47f20604966784fe684bb1.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2021,7 +2085,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 105840,
+        "sha256": "65bf60732271085b83a6fc8367b1ea37c51e9e42ad47f20604966784fe684bb1",
+        "path": "pdfs/65bf60732271085b83a6fc8367b1ea37c51e9e42ad47f20604966784fe684bb1.pdf"
+      }
     },
     {
       "id": "151-CLT(7)-2LC-(L)",
@@ -2031,6 +2102,8 @@
       "mdotUpdatedAt": "2021-06-03",
       "family": "construction",
       "title": "Center Lane and 2-Left Lane Closures, 1 Bound on a 7-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         42
@@ -2046,13 +2119,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 84680,
-        "sha256": "edf2c305659adbfb059248b88615b3a4c43daf33788ad7db301106260b5b93ac",
-        "path": "pdfs/edf2c305659adbfb059248b88615b3a4c43daf33788ad7db301106260b5b93ac.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2077,7 +2143,14 @@
           "Center lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 84680,
+        "sha256": "edf2c305659adbfb059248b88615b3a4c43daf33788ad7db301106260b5b93ac",
+        "path": "pdfs/edf2c305659adbfb059248b88615b3a4c43daf33788ad7db301106260b5b93ac.pdf"
+      }
     },
     {
       "id": "152-CLT(7)-3(1R+2L)LC-2(L)SHIFT",
@@ -2087,6 +2160,8 @@
       "mdotUpdatedAt": "2021-06-03",
       "family": "construction",
       "title": "7-Lane Undivided Roadway, 3-Lane Closure, 1 Right, 2 Left, 2 Lanes Shifted Left",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         43
@@ -2102,13 +2177,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 106219,
-        "sha256": "d6665b3ca6b7fb898b986c2eb0231c58db394ebd5dce1b20a7cbc58429bcecd0",
-        "path": "pdfs/d6665b3ca6b7fb898b986c2eb0231c58db394ebd5dce1b20a7cbc58429bcecd0.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2134,7 +2202,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 106219,
+        "sha256": "d6665b3ca6b7fb898b986c2eb0231c58db394ebd5dce1b20a7cbc58429bcecd0",
+        "path": "pdfs/d6665b3ca6b7fb898b986c2eb0231c58db394ebd5dce1b20a7cbc58429bcecd0.pdf"
+      }
     },
     {
       "id": "153-CLT(7)-3(2R+1L)LC-1(L)SHIFT",
@@ -2144,6 +2219,8 @@
       "mdotUpdatedAt": "2021-06-04",
       "family": "construction",
       "title": "7 Lane Undivided Roadway, 3 Lane Closure, 2 Right, 1 Left, 1 Lane Shifted Left",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         44
@@ -2159,13 +2236,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 97654,
-        "sha256": "000dd24c5ea2550b99d0a416e6b30b7a255f7a36e65cc7c4613b7ff635efb2d9",
-        "path": "pdfs/000dd24c5ea2550b99d0a416e6b30b7a255f7a36e65cc7c4613b7ff635efb2d9.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2191,7 +2261,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 97654,
+        "sha256": "000dd24c5ea2550b99d0a416e6b30b7a255f7a36e65cc7c4613b7ff635efb2d9",
+        "path": "pdfs/000dd24c5ea2550b99d0a416e6b30b7a255f7a36e65cc7c4613b7ff635efb2d9.pdf"
+      }
     },
     {
       "id": "154-CLT(7)-3(L)LC-(IN)",
@@ -2201,6 +2278,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "7-Lane Undivided Roadway, 3 Left Lane Closures, Inside",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         45
@@ -2216,13 +2295,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 82726,
-        "sha256": "552321306f3a8e56677d74f96dcc53a00556110ddc78d3d78646aa905b5549e3",
-        "path": "pdfs/552321306f3a8e56677d74f96dcc53a00556110ddc78d3d78646aa905b5549e3.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2246,7 +2318,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 82726,
+        "sha256": "552321306f3a8e56677d74f96dcc53a00556110ddc78d3d78646aa905b5549e3",
+        "path": "pdfs/552321306f3a8e56677d74f96dcc53a00556110ddc78d3d78646aa905b5549e3.pdf"
+      }
     },
     {
       "id": "155-CLT(7)-4(L)LC-(IN)",
@@ -2256,6 +2335,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "7 Lane Undivided Roadway, 4 Left Lane Closures, Inside",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         46
@@ -2271,13 +2352,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 2,
-        "bytes": 102085,
-        "sha256": "bc1bb85bfa39fe39b6e3515a0c9260b5435f8d9c4d30a03a3ff256405dcf183a",
-        "path": "pdfs/bc1bb85bfa39fe39b6e3515a0c9260b5435f8d9c4d30a03a3ff256405dcf183a.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2301,7 +2375,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 2,
+        "bytes": 102085,
+        "sha256": "bc1bb85bfa39fe39b6e3515a0c9260b5435f8d9c4d30a03a3ff256405dcf183a",
+        "path": "pdfs/bc1bb85bfa39fe39b6e3515a0c9260b5435f8d9c4d30a03a3ff256405dcf183a.pdf"
+      }
     },
     {
       "id": "160-INT-LD-CLT-MID",
@@ -2311,6 +2392,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Signal Work at Intersection Longer than 1 Hour on a 5-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Signal Work at Intersection Longer than 1 Hour on a 5-Lane Undivided Roadway",
       "notes": "Consult with CE III in TOC",
       "workbookRows": [
         47
@@ -2326,13 +2409,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 85082,
-        "sha256": "ac7d1a3f00287abe50171551ad6c4d0c338f9cc921f2a09ad3e1f0eb836e9b47",
-        "path": "pdfs/ac7d1a3f00287abe50171551ad6c4d0c338f9cc921f2a09ad3e1f0eb836e9b47.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2358,7 +2434,14 @@
       },
       "conditions": [
         "Longer than 1 Hour"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 85082,
+        "sha256": "ac7d1a3f00287abe50171551ad6c4d0c338f9cc921f2a09ad3e1f0eb836e9b47",
+        "path": "pdfs/ac7d1a3f00287abe50171551ad6c4d0c338f9cc921f2a09ad3e1f0eb836e9b47.pdf"
+      }
     },
     {
       "id": "161-INT-LD-LANE",
@@ -2368,6 +2451,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Signal Work at Intersection Longer than 1 Hour on a 4-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Signal Work at Intersection Longer than 1 Hour on a 4-Lane Undivided Roadway",
       "notes": "Consult with CE III in TOC",
       "workbookRows": [
         48
@@ -2383,13 +2468,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 63715,
-        "sha256": "9c3541ece12666a984a63a8288134fe29a5d2de9085ddf908f930dcfd97cd2ae",
-        "path": "pdfs/9c3541ece12666a984a63a8288134fe29a5d2de9085ddf908f930dcfd97cd2ae.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2415,7 +2493,14 @@
       },
       "conditions": [
         "Longer than 1 Hour"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 63715,
+        "sha256": "9c3541ece12666a984a63a8288134fe29a5d2de9085ddf908f930dcfd97cd2ae",
+        "path": "pdfs/9c3541ece12666a984a63a8288134fe29a5d2de9085ddf908f930dcfd97cd2ae.pdf"
+      }
     },
     {
       "id": "162-INT-LD-MID",
@@ -2425,6 +2510,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Signal work at Intersection Longer than 1 Hour on a 2-Lane Undivided Roadway, Middle of Intersection",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Signal work at Intersection Longer than 1 Hour on a 2-Lane Undivided Roadway, Middle of Intersection",
       "notes": "Consult with CE III in TOC",
       "workbookRows": [
         49
@@ -2440,13 +2527,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 75470,
-        "sha256": "4870bbdfcb060731927227d4d43172f2e227564bebe648699e1ec94f4d107a78",
-        "path": "pdfs/4870bbdfcb060731927227d4d43172f2e227564bebe648699e1ec94f4d107a78.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2472,7 +2552,14 @@
       },
       "conditions": [
         "Longer than 1 Hour"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 75470,
+        "sha256": "4870bbdfcb060731927227d4d43172f2e227564bebe648699e1ec94f4d107a78",
+        "path": "pdfs/4870bbdfcb060731927227d4d43172f2e227564bebe648699e1ec94f4d107a78.pdf"
+      }
     },
     {
       "id": "163-INT-LD-OUT",
@@ -2482,6 +2569,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Signal Work at Intersection Outside Roadway Longer than 1 Hour on a 4-Lane Undivided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Signal Work at Intersection Outside Roadway Longer than 1 Hour on a 4-Lane Undivided Roadway",
       "notes": "Consult with CE III in TOC",
       "workbookRows": [
         50
@@ -2497,13 +2586,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 39937,
-        "sha256": "459f9c67fd60d700df2eec7c9dc4f18130189e8d855223883ada9b4598026329",
-        "path": "pdfs/459f9c67fd60d700df2eec7c9dc4f18130189e8d855223883ada9b4598026329.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2529,7 +2611,14 @@
       },
       "conditions": [
         "Longer than 1 Hour"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 39937,
+        "sha256": "459f9c67fd60d700df2eec7c9dc4f18130189e8d855223883ada9b4598026329",
+        "path": "pdfs/459f9c67fd60d700df2eec7c9dc4f18130189e8d855223883ada9b4598026329.pdf"
+      }
     },
     {
       "id": "164-INT-SD-MID",
@@ -2539,6 +2628,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Signal Work at Intersection less than 1 Hour on a 2-Lane Undivided Roadway, Middle of Intersection",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Signal Work at Intersection less than 1 Hour on a 2-Lane Undivided Roadway, Middle of Intersection",
       "notes": "Consult with CE III in TOC",
       "workbookRows": [
         51
@@ -2554,13 +2645,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 32094,
-        "sha256": "9b8e8857ce1eced51c9615fb5b7e3dbc43f7e446a45f280e829248414d8bdc42",
-        "path": "pdfs/9b8e8857ce1eced51c9615fb5b7e3dbc43f7e446a45f280e829248414d8bdc42.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -2586,7 +2670,14 @@
       },
       "conditions": [
         "Less than 1 Hour"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 32094,
+        "sha256": "9b8e8857ce1eced51c9615fb5b7e3dbc43f7e446a45f280e829248414d8bdc42",
+        "path": "pdfs/9b8e8857ce1eced51c9615fb5b7e3dbc43f7e446a45f280e829248414d8bdc42.pdf"
+      }
     },
     {
       "id": "200-FW-SHL-(R)",
@@ -2596,6 +2687,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Shoulder Closure on a Freeway or Divided Roadway, Right Shoulder",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Shoulder Closure on a Freeway or Divided Roadway, Right Shoulder",
       "notes": "",
       "workbookRows": [
         52
@@ -2613,13 +2706,6 @@
       "relatedIds": [
         "4200-M-FW-SHL"
       ],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 81320,
-        "sha256": "16b858399fcd9ac83a34118380183234718681b7792e2c8ba7332924f11563c4",
-        "path": "pdfs/16b858399fcd9ac83a34118380183234718681b7792e2c8ba7332924f11563c4.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -2645,7 +2731,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 81320,
+        "sha256": "16b858399fcd9ac83a34118380183234718681b7792e2c8ba7332924f11563c4",
+        "path": "pdfs/16b858399fcd9ac83a34118380183234718681b7792e2c8ba7332924f11563c4.pdf"
+      }
     },
     {
       "id": "201-FW-SHL-(L)",
@@ -2655,6 +2748,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Shoulder Closure on a Freeway or Divided Roadway, Left Shoulder",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Shoulder Closure on a Freeway or Divided Roadway, Left Shoulder",
       "notes": "",
       "workbookRows": [
         53
@@ -2670,13 +2765,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 79951,
-        "sha256": "6bfa332e6d2fff87140cf088f7829b10e403dfe56286d39dadb7c0c4cc73f9c4",
-        "path": "pdfs/6bfa332e6d2fff87140cf088f7829b10e403dfe56286d39dadb7c0c4cc73f9c4.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -2702,7 +2790,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 79951,
+        "sha256": "6bfa332e6d2fff87140cf088f7829b10e403dfe56286d39dadb7c0c4cc73f9c4",
+        "path": "pdfs/6bfa332e6d2fff87140cf088f7829b10e403dfe56286d39dadb7c0c4cc73f9c4.pdf"
+      }
     },
     {
       "id": "202-FW-(1-2)LC-(L)",
@@ -2712,6 +2807,8 @@
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
       "title": "1-Lane to 2-Lane Closure on a 3-Lane Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "1-Lane to 2-Lane Closure on a 3-Lane Freeway or Divided Roadway",
       "notes": "See 204? See 206?",
       "workbookRows": [
         54
@@ -2727,13 +2824,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 2,
-        "bytes": 157278,
-        "sha256": "889f52d85183f17d3859300533cabf0fc93acf0c806d27ab52d785e08e44fac3",
-        "path": "pdfs/889f52d85183f17d3859300533cabf0fc93acf0c806d27ab52d785e08e44fac3.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -2759,7 +2849,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 2,
+        "bytes": 157278,
+        "sha256": "889f52d85183f17d3859300533cabf0fc93acf0c806d27ab52d785e08e44fac3",
+        "path": "pdfs/889f52d85183f17d3859300533cabf0fc93acf0c806d27ab52d785e08e44fac3.pdf"
+      }
     },
     {
       "id": "203-FW-1LC-(R)",
@@ -2769,6 +2866,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Single Right Lane Closure on a Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Single Right Lane Closure on a Freeway or Divided Roadway",
       "notes": "",
       "workbookRows": [
         55
@@ -2786,13 +2885,6 @@
       "relatedIds": [
         "4203A-M-FW-1LC-(R)"
       ],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 86032,
-        "sha256": "428462baf13b44e17861ecdb0d4eb02530ab489593d80bcbed71ba7a0e38997e",
-        "path": "pdfs/428462baf13b44e17861ecdb0d4eb02530ab489593d80bcbed71ba7a0e38997e.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -2817,7 +2909,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 86032,
+        "sha256": "428462baf13b44e17861ecdb0d4eb02530ab489593d80bcbed71ba7a0e38997e",
+        "path": "pdfs/428462baf13b44e17861ecdb0d4eb02530ab489593d80bcbed71ba7a0e38997e.pdf"
+      }
     },
     {
       "id": "204-FW-1LC-(L)",
@@ -2827,6 +2926,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Single Left Lane Closure on a Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Single Left Lane Closure on a Freeway or Divided Roadway",
       "notes": "See 202?",
       "workbookRows": [
         56
@@ -2842,13 +2943,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 81778,
-        "sha256": "8a294434bbb46ce9ab5cb19f7f42756b6b1ecd3adb96a57c2b80aaed44f1b26f",
-        "path": "pdfs/8a294434bbb46ce9ab5cb19f7f42756b6b1ecd3adb96a57c2b80aaed44f1b26f.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -2873,7 +2967,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 81778,
+        "sha256": "8a294434bbb46ce9ab5cb19f7f42756b6b1ecd3adb96a57c2b80aaed44f1b26f",
+        "path": "pdfs/8a294434bbb46ce9ab5cb19f7f42756b6b1ecd3adb96a57c2b80aaed44f1b26f.pdf"
+      }
     },
     {
       "id": "205-FW-1LC-(R)-SHIFT",
@@ -2883,6 +2984,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Single Lane Closure with Shift on a Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Single Lane Closure with Shift on a Freeway or Divided Roadway",
       "notes": "",
       "workbookRows": [
         57
@@ -2898,13 +3001,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 108427,
-        "sha256": "40bda3b973306689b8443b869c34f3ade8f9ba718a1959d0547e92a5715dbe0f",
-        "path": "pdfs/40bda3b973306689b8443b869c34f3ade8f9ba718a1959d0547e92a5715dbe0f.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -2931,7 +3027,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 108427,
+        "sha256": "40bda3b973306689b8443b869c34f3ade8f9ba718a1959d0547e92a5715dbe0f",
+        "path": "pdfs/40bda3b973306689b8443b869c34f3ade8f9ba718a1959d0547e92a5715dbe0f.pdf"
+      }
     },
     {
       "id": "206-FW-2LC-(L)",
@@ -2941,6 +3044,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "2-Lane Closure on a 3-Lane Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "2-Lane Closure on a 3-Lane Freeway or Divided Roadway",
       "notes": "See 204?",
       "workbookRows": [
         58
@@ -2956,13 +3061,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 84380,
-        "sha256": "31cb0abfa6a01feb8a83aa7214cbf95d84ac3bb6bff7414f4788ac357359dca2",
-        "path": "pdfs/31cb0abfa6a01feb8a83aa7214cbf95d84ac3bb6bff7414f4788ac357359dca2.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -2987,7 +3085,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 84380,
+        "sha256": "31cb0abfa6a01feb8a83aa7214cbf95d84ac3bb6bff7414f4788ac357359dca2",
+        "path": "pdfs/31cb0abfa6a01feb8a83aa7214cbf95d84ac3bb6bff7414f4788ac357359dca2.pdf"
+      }
     },
     {
       "id": "207-FW-2LC-(R)",
@@ -2997,6 +3102,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Right 2-Lane Closure on a 3-Lane Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Right 2-Lane Closure on a 3-Lane Freeway or Divided Roadway",
       "notes": "",
       "workbookRows": [
         59
@@ -3012,13 +3119,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 85765,
-        "sha256": "6a74defd9cc80ad1da6c833ca951051b6e8b5db78082b46b29b01c3aedf3a779",
-        "path": "pdfs/6a74defd9cc80ad1da6c833ca951051b6e8b5db78082b46b29b01c3aedf3a779.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -3043,7 +3143,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 85765,
+        "sha256": "6a74defd9cc80ad1da6c833ca951051b6e8b5db78082b46b29b01c3aedf3a779",
+        "path": "pdfs/6a74defd9cc80ad1da6c833ca951051b6e8b5db78082b46b29b01c3aedf3a779.pdf"
+      }
     },
     {
       "id": "208-FW-3LC-(L)",
@@ -3053,6 +3160,8 @@
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
       "title": "Left 3-Lane Closure on a 4-Lane Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Left 3-Lane Closure on a 4-Lane Freeway or Divided Roadway",
       "notes": "",
       "workbookRows": [
         60
@@ -3068,13 +3177,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 91033,
-        "sha256": "0278020b5f9ff417eaa7390b6f6c4287d0ff4117f03057ecdd16a2d943123342",
-        "path": "pdfs/0278020b5f9ff417eaa7390b6f6c4287d0ff4117f03057ecdd16a2d943123342.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -3099,7 +3201,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 91033,
+        "sha256": "0278020b5f9ff417eaa7390b6f6c4287d0ff4117f03057ecdd16a2d943123342",
+        "path": "pdfs/0278020b5f9ff417eaa7390b6f6c4287d0ff4117f03057ecdd16a2d943123342.pdf"
+      }
     },
     {
       "id": "209-FW-3LC-(R)",
@@ -3109,6 +3218,8 @@
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
       "title": "Right 3-Lane Closure on a 4-Lane Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Right 3-Lane Closure on a 4-Lane Freeway or Divided Roadway",
       "notes": "",
       "workbookRows": [
         61
@@ -3124,13 +3235,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 92126,
-        "sha256": "78669efa1a618339348763c89e24b0f8af4db372c4305147dfe4aa3a09bebd7a",
-        "path": "pdfs/78669efa1a618339348763c89e24b0f8af4db372c4305147dfe4aa3a09bebd7a.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -3155,7 +3259,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 92126,
+        "sha256": "78669efa1a618339348763c89e24b0f8af4db372c4305147dfe4aa3a09bebd7a",
+        "path": "pdfs/78669efa1a618339348763c89e24b0f8af4db372c4305147dfe4aa3a09bebd7a.pdf"
+      }
     },
     {
       "id": "210-FW-SHIFT-1LC",
@@ -3165,6 +3276,8 @@
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
       "title": "1-Lane Shift Within a Lane Closure on a 2-Lane Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "1-Lane Shift Within a Lane Closure on a 2-Lane Freeway or Divided Roadway",
       "notes": "",
       "workbookRows": [
         62
@@ -3180,13 +3293,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 71046,
-        "sha256": "e6a458484ff8f01a92fcf988a6033368913f8a99dfbba10b3af667f8ebe3739d",
-        "path": "pdfs/e6a458484ff8f01a92fcf988a6033368913f8a99dfbba10b3af667f8ebe3739d.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -3212,7 +3318,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 71046,
+        "sha256": "e6a458484ff8f01a92fcf988a6033368913f8a99dfbba10b3af667f8ebe3739d",
+        "path": "pdfs/e6a458484ff8f01a92fcf988a6033368913f8a99dfbba10b3af667f8ebe3739d.pdf"
+      }
     },
     {
       "id": "220-FW-EnR-C",
@@ -3222,6 +3335,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Freeway Entrance Ramp Closure",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         63
@@ -3237,13 +3352,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 39531,
-        "sha256": "852a12df943c08b4b01d1eff7edf5a8383320b4f285c6e0400d5d95400743f18",
-        "path": "pdfs/852a12df943c08b4b01d1eff7edf5a8383320b4f285c6e0400d5d95400743f18.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3267,7 +3375,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 39531,
+        "sha256": "852a12df943c08b4b01d1eff7edf5a8383320b4f285c6e0400d5d95400743f18",
+        "path": "pdfs/852a12df943c08b4b01d1eff7edf5a8383320b4f285c6e0400d5d95400743f18.pdf"
+      }
     },
     {
       "id": "221-FW-EnR-O-LC-FREE",
@@ -3277,6 +3392,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Freeflow Condition Freeway Entrance Ramp Treatment on a Freeway with Outside Lane Closure",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         64
@@ -3292,13 +3409,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 57790,
-        "sha256": "b6659fb6e1c63a4dbb55050562e611466587b8172beded75916ada8d853a7500",
-        "path": "pdfs/b6659fb6e1c63a4dbb55050562e611466587b8172beded75916ada8d853a7500.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3325,7 +3435,14 @@
       },
       "conditions": [
         "Freeflow Condition"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 57790,
+        "sha256": "b6659fb6e1c63a4dbb55050562e611466587b8172beded75916ada8d853a7500",
+        "path": "pdfs/b6659fb6e1c63a4dbb55050562e611466587b8172beded75916ada8d853a7500.pdf"
+      }
     },
     {
       "id": "222-FW-EnR-O-LC-YIELD",
@@ -3335,6 +3452,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Yield Condition, Freeway Entrance Ramp Treatment on a Freeway with Outside Lane Closure",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         65
@@ -3350,13 +3469,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 50239,
-        "sha256": "b8b4444ec74c6b2939450f36b1c9e47e09e8cb30bc96a478b3218f4429d49f2f",
-        "path": "pdfs/b8b4444ec74c6b2939450f36b1c9e47e09e8cb30bc96a478b3218f4429d49f2f.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3383,7 +3495,14 @@
       },
       "conditions": [
         "Yield Condition"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 50239,
+        "sha256": "b8b4444ec74c6b2939450f36b1c9e47e09e8cb30bc96a478b3218f4429d49f2f",
+        "path": "pdfs/b8b4444ec74c6b2939450f36b1c9e47e09e8cb30bc96a478b3218f4429d49f2f.pdf"
+      }
     },
     {
       "id": "223-FW-EnR-LO",
@@ -3393,6 +3512,8 @@
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
       "title": "Freeway Entrance Ramp Treatment for Freeway Work in Vicinity of Ramp Taper",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         66
@@ -3408,13 +3529,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 97594,
-        "sha256": "22ce5a995e62df2ecc9e5d7a67cff64aa8fa78755fe7d0d23bd981039b045d21",
-        "path": "pdfs/22ce5a995e62df2ecc9e5d7a67cff64aa8fa78755fe7d0d23bd981039b045d21.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3438,7 +3552,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 97594,
+        "sha256": "22ce5a995e62df2ecc9e5d7a67cff64aa8fa78755fe7d0d23bd981039b045d21",
+        "path": "pdfs/22ce5a995e62df2ecc9e5d7a67cff64aa8fa78755fe7d0d23bd981039b045d21.pdf"
+      }
     },
     {
       "id": "224-FW-EnR-SHL",
@@ -3448,6 +3569,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Shoulder Closure on a Freeway Entrance Ramp",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         67
@@ -3463,13 +3586,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 41895,
-        "sha256": "35c65c8436297bfe7b9dd098727e1451f233791a64abaddead5ed54b926c907c",
-        "path": "pdfs/35c65c8436297bfe7b9dd098727e1451f233791a64abaddead5ed54b926c907c.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3493,7 +3609,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 41895,
+        "sha256": "35c65c8436297bfe7b9dd098727e1451f233791a64abaddead5ed54b926c907c",
+        "path": "pdfs/35c65c8436297bfe7b9dd098727e1451f233791a64abaddead5ed54b926c907c.pdf"
+      }
     },
     {
       "id": "225-FW-EnR-SHL-SHIFT",
@@ -3503,6 +3626,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "1-Lane Shift with Reduced Lane Width on a 1-Lane Freeway Entrance Ramp",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         68
@@ -3518,13 +3643,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 48426,
-        "sha256": "c3474afb3c1af504c2512e33236f74253bbf6976a78e059f0940224ae9f4f424",
-        "path": "pdfs/c3474afb3c1af504c2512e33236f74253bbf6976a78e059f0940224ae9f4f424.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3550,7 +3668,14 @@
       },
       "conditions": [
         "Reduced Lane Width"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 48426,
+        "sha256": "c3474afb3c1af504c2512e33236f74253bbf6976a78e059f0940224ae9f4f424",
+        "path": "pdfs/c3474afb3c1af504c2512e33236f74253bbf6976a78e059f0940224ae9f4f424.pdf"
+      }
     },
     {
       "id": "230-FW-ExR-C",
@@ -3560,6 +3685,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Freeway Exit Ramp Closure",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         69
@@ -3575,13 +3702,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 39055,
-        "sha256": "c256946810c22ca7598e6c974b4295897c3d49223b1e0815a37326d68c048cae",
-        "path": "pdfs/c256946810c22ca7598e6c974b4295897c3d49223b1e0815a37326d68c048cae.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3605,7 +3725,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 39055,
+        "sha256": "c256946810c22ca7598e6c974b4295897c3d49223b1e0815a37326d68c048cae",
+        "path": "pdfs/c256946810c22ca7598e6c974b4295897c3d49223b1e0815a37326d68c048cae.pdf"
+      }
     },
     {
       "id": "231-FW-ExR-O-LC",
@@ -3615,6 +3742,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Freeway Exit Ramp Treatment on a Freeway with Outside Lane Closure",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         70
@@ -3630,13 +3759,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 41748,
-        "sha256": "5a4d65031db0ba1a16b207314bedc1f46225d31efdc68727e4400b1e984ecce3",
-        "path": "pdfs/5a4d65031db0ba1a16b207314bedc1f46225d31efdc68727e4400b1e984ecce3.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3661,7 +3783,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 41748,
+        "sha256": "5a4d65031db0ba1a16b207314bedc1f46225d31efdc68727e4400b1e984ecce3",
+        "path": "pdfs/5a4d65031db0ba1a16b207314bedc1f46225d31efdc68727e4400b1e984ecce3.pdf"
+      }
     },
     {
       "id": "232-FW-ExR-SHIFT",
@@ -3671,6 +3800,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "1-Lane Shift with Reduced Lane Width on a 1-Lane Freeway Exit Ramp",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         71
@@ -3686,13 +3817,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 52717,
-        "sha256": "70aee43db84c612521f06670693701299b21e1fd36b62f1f64ae800a4ebb8f63",
-        "path": "pdfs/70aee43db84c612521f06670693701299b21e1fd36b62f1f64ae800a4ebb8f63.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3718,7 +3842,14 @@
       },
       "conditions": [
         "Reduced Lane Width"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 52717,
+        "sha256": "70aee43db84c612521f06670693701299b21e1fd36b62f1f64ae800a4ebb8f63",
+        "path": "pdfs/70aee43db84c612521f06670693701299b21e1fd36b62f1f64ae800a4ebb8f63.pdf"
+      }
     },
     {
       "id": "233-FW-ExR-SHL",
@@ -3728,6 +3859,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Shoulder CLosure on a Freeway Exit Ramp",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         72
@@ -3743,13 +3876,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 43704,
-        "sha256": "2b15beb78d3ea2d8747383e8de60e8b93f9d8cf48ecfd0755ab8d9f454a7cdc8",
-        "path": "pdfs/2b15beb78d3ea2d8747383e8de60e8b93f9d8cf48ecfd0755ab8d9f454a7cdc8.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3773,7 +3899,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 43704,
+        "sha256": "2b15beb78d3ea2d8747383e8de60e8b93f9d8cf48ecfd0755ab8d9f454a7cdc8",
+        "path": "pdfs/2b15beb78d3ea2d8747383e8de60e8b93f9d8cf48ecfd0755ab8d9f454a7cdc8.pdf"
+      }
     },
     {
       "id": "300-SP-AW-2MILE",
@@ -3783,6 +3916,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
       "title": "Freeway Extended Lead in Sequence",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Freeway Extended Lead in Sequence",
       "notes": "",
       "workbookRows": [
         73
@@ -3798,13 +3933,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 58871,
-        "sha256": "22355e6e39f3a92350381f32a3c7ab0b2205dbbb0ea50c405263bc46070fb61c",
-        "path": "pdfs/22355e6e39f3a92350381f32a3c7ab0b2205dbbb0ea50c405263bc46070fb61c.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -3828,7 +3956,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 58871,
+        "sha256": "22355e6e39f3a92350381f32a3c7ab0b2205dbbb0ea50c405263bc46070fb61c",
+        "path": "pdfs/22355e6e39f3a92350381f32a3c7ab0b2205dbbb0ea50c405263bc46070fb61c.pdf"
+      }
     },
     {
       "id": "301-SP-AW-STA",
@@ -3837,7 +3972,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=57af176a-17e4-438d-8625-79354b573cd1&fileName=301-SP-AW-STA.pdf",
       "mdotUpdatedAt": "2025-05-29",
       "family": "construction",
-      "title": "Stopped Traffic Advisory Standard Setup on a Freeway or divided roadway",
+      "title": "Stopped Traffic Advisory, Standard Setup, on a Freeway or Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Stopped Traffic Advisory Standard Setup on a Freeway or divided roadway",
       "notes": "",
       "workbookRows": [
         74
@@ -3853,13 +3990,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 62054,
-        "sha256": "575cd298e06ff54b97ee963be0f1ce72a2e3eafbf915129333b6a3ad8b37df8f",
-        "path": "pdfs/575cd298e06ff54b97ee963be0f1ce72a2e3eafbf915129333b6a3ad8b37df8f.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -3884,7 +4014,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 62054,
+        "sha256": "575cd298e06ff54b97ee963be0f1ce72a2e3eafbf915129333b6a3ad8b37df8f",
+        "path": "pdfs/575cd298e06ff54b97ee963be0f1ce72a2e3eafbf915129333b6a3ad8b37df8f.pdf"
+      }
     },
     {
       "id": "302-SP-PATCH-1LC",
@@ -3895,6 +4032,7 @@
       "family": "construction",
       "title": "Concrete Patch - 1 Lane Closure",
       "titleSource": "mdot-pdf",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -3908,13 +4046,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 72663,
-        "sha256": "5be3550e14cc878e20246bfc67b48821ba56e0d85c780c96a2c82191af8d3917",
-        "path": "pdfs/5be3550e14cc878e20246bfc67b48821ba56e0d85c780c96a2c82191af8d3917.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -3938,7 +4069,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 72663,
+        "sha256": "5be3550e14cc878e20246bfc67b48821ba56e0d85c780c96a2c82191af8d3917",
+        "path": "pdfs/5be3550e14cc878e20246bfc67b48821ba56e0d85c780c96a2c82191af8d3917.pdf"
+      }
     },
     {
       "id": "303-SP-PATCH-2LC",
@@ -3949,6 +4087,7 @@
       "family": "construction",
       "title": "Concrete Patch - 2 Lane Closure",
       "titleSource": "mdot-pdf",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -3962,13 +4101,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 73639,
-        "sha256": "0af85aca55d694d6ea9ca19bee5010d57b29a5c162d80b673e796650251647e7",
-        "path": "pdfs/0af85aca55d694d6ea9ca19bee5010d57b29a5c162d80b673e796650251647e7.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -3992,7 +4124,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 73639,
+        "sha256": "0af85aca55d694d6ea9ca19bee5010d57b29a5c162d80b673e796650251647e7",
+        "path": "pdfs/0af85aca55d694d6ea9ca19bee5010d57b29a5c162d80b673e796650251647e7.pdf"
+      }
     },
     {
       "id": "304-SP-PATCH-1LC-ExR-C",
@@ -4003,6 +4142,7 @@
       "family": "construction",
       "title": "Concrete Patch - 1 Lane and Exit Ramp Closure",
       "titleSource": "mdot-pdf",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -4016,13 +4156,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 64075,
-        "sha256": "9e29d6cb57179b6aa0598f64d3a1973291d63119df475dcd858f724d127f61e7",
-        "path": "pdfs/9e29d6cb57179b6aa0598f64d3a1973291d63119df475dcd858f724d127f61e7.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -4047,7 +4180,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 64075,
+        "sha256": "9e29d6cb57179b6aa0598f64d3a1973291d63119df475dcd858f724d127f61e7",
+        "path": "pdfs/9e29d6cb57179b6aa0598f64d3a1973291d63119df475dcd858f724d127f61e7.pdf"
+      }
     },
     {
       "id": "310-SP-CROSS-C-NFW",
@@ -4056,7 +4196,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=a3dee38d-934f-4c9a-9e45-42d8faa2377d&fileName=310-SP-CROSS-C-NFW.pdf",
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
-      "title": "Crossover Closure on a divided Roadway",
+      "title": "Crossover Closure on a Divided Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Crossover Closure on a divided Roadway",
       "notes": "RCOC may use on crossovers",
       "workbookRows": [
         75
@@ -4072,13 +4214,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 38230,
-        "sha256": "3212d6016c03ba910fb75381854e510185d5be296449a5176726810dabf10792",
-        "path": "pdfs/3212d6016c03ba910fb75381854e510185d5be296449a5176726810dabf10792.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided"
@@ -4102,7 +4237,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 38230,
+        "sha256": "3212d6016c03ba910fb75381854e510185d5be296449a5176726810dabf10792",
+        "path": "pdfs/3212d6016c03ba910fb75381854e510185d5be296449a5176726810dabf10792.pdf"
+      }
     },
     {
       "id": "311-SP-CROSS-C-FW-(1)",
@@ -4112,6 +4254,8 @@
       "mdotUpdatedAt": "2021-05-13",
       "family": "construction",
       "title": "Temporary Single Crossover Closure",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         76
@@ -4119,7 +4263,7 @@
       "workbookCode": "311-",
       "filters": {
         "projectType": "Construction Projects",
-        "controlType": "Crush and Shape",
+        "controlType": "Crossover",
         "workArea": "Unspecified",
         "lanes": "Unspecified",
         "roadwayType": "Special",
@@ -4127,13 +4271,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 50864,
-        "sha256": "c01be6ab58991d115f8803f8381b314933c048aca55e25c3ed995c2e376b0dad",
-        "path": "pdfs/c01be6ab58991d115f8803f8381b314933c048aca55e25c3ed995c2e376b0dad.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -4157,7 +4294,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 50864,
+        "sha256": "c01be6ab58991d115f8803f8381b314933c048aca55e25c3ed995c2e376b0dad",
+        "path": "pdfs/c01be6ab58991d115f8803f8381b314933c048aca55e25c3ed995c2e376b0dad.pdf"
+      }
     },
     {
       "id": "312-SP-CROSS-C-FW-(2)",
@@ -4167,6 +4311,8 @@
       "mdotUpdatedAt": "2021-05-13",
       "family": "construction",
       "title": "Temporary Dual Crossover Closure",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [
         77
@@ -4182,13 +4328,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 69892,
-        "sha256": "7c3ad4289c5fb8635af489f9d3ac99baad18e4aa81ba24ab98c95a0f38f28469",
-        "path": "pdfs/7c3ad4289c5fb8635af489f9d3ac99baad18e4aa81ba24ab98c95a0f38f28469.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -4212,7 +4351,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 69892,
+        "sha256": "7c3ad4289c5fb8635af489f9d3ac99baad18e4aa81ba24ab98c95a0f38f28469",
+        "path": "pdfs/7c3ad4289c5fb8635af489f9d3ac99baad18e4aa81ba24ab98c95a0f38f28469.pdf"
+      }
     },
     {
       "id": "320-SP-CruSha",
@@ -4221,7 +4367,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=2ac8a3e6-c091-4218-9b14-fc1b08a770da&fileName=320-SP-CruSha.pdf",
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
-      "title": "Temporary Traffic Control on a two lane two way roadway for crushed and shaped surfaces with speed reduction",
+      "title": "2-Lane, 2-Way Roadway, Crushed and Shaped Surfaces, Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Temporary Traffic Control on a two lane two way roadway for crushed and shaped surfaces with speed reduction",
       "notes": "RCOC may use on crush and shape projects.",
       "workbookRows": [
         78
@@ -4237,13 +4385,6 @@
         "rcoc": "Yes"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 88986,
-        "sha256": "5fcbeededbe575077b589daf42280030c30a442d1f3355030241f2b11f98afa3",
-        "path": "pdfs/5fcbeededbe575077b589daf42280030c30a442d1f3355030241f2b11f98afa3.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -4267,7 +4408,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 88986,
+        "sha256": "5fcbeededbe575077b589daf42280030c30a442d1f3355030241f2b11f98afa3",
+        "path": "pdfs/5fcbeededbe575077b589daf42280030c30a442d1f3355030241f2b11f98afa3.pdf"
+      }
     },
     {
       "id": "340-SP-EM-1LC-(L)",
@@ -4276,7 +4424,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=d0d5bbc1-446e-40e4-81b2-edf9c703a75f&fileName=340-SP-EM-1LC-%28L%29.pdf",
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
-      "title": "Merge - Freeway",
+      "title": "Early Merge, Single Lane Closure on a 2-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Merge - Freeway",
       "notes": "Early Merge - Freeway",
       "workbookRows": [
         79
@@ -4292,13 +4442,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 2,
-        "bytes": 137463,
-        "sha256": "af457a1420b7cfc6917b786edff7949b26795aab871c75a2df4db19c82970ef5",
-        "path": "pdfs/af457a1420b7cfc6917b786edff7949b26795aab871c75a2df4db19c82970ef5.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4323,7 +4466,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 2,
+        "bytes": 137463,
+        "sha256": "af457a1420b7cfc6917b786edff7949b26795aab871c75a2df4db19c82970ef5",
+        "path": "pdfs/af457a1420b7cfc6917b786edff7949b26795aab871c75a2df4db19c82970ef5.pdf"
+      }
     },
     {
       "id": "341-SP-ZIP-1LC-(L)",
@@ -4332,7 +4482,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=ac76662c-9129-4c48-9305-1f0c089fda1a&fileName=341-SP-ZIP-1LC-%28L%29.pdf",
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
-      "title": "Merge - Freeway",
+      "title": "Zipper Merge, Single Left Lane Closure on a 2-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Merge - Freeway",
       "notes": "Zipper Merge - Freeway",
       "workbookRows": [
         80
@@ -4348,13 +4500,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 91723,
-        "sha256": "5c71b25595aeb70cecdfd9d819020a4a1d48697deea9f51d5efce7eafdcb71e8",
-        "path": "pdfs/5c71b25595aeb70cecdfd9d819020a4a1d48697deea9f51d5efce7eafdcb71e8.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4379,7 +4524,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 91723,
+        "sha256": "5c71b25595aeb70cecdfd9d819020a4a1d48697deea9f51d5efce7eafdcb71e8",
+        "path": "pdfs/5c71b25595aeb70cecdfd9d819020a4a1d48697deea9f51d5efce7eafdcb71e8.pdf"
+      }
     },
     {
       "id": "342-SP-ZIP-1LC-(L)-SHIFT",
@@ -4388,7 +4540,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=a08ecbd6-4148-4ea5-b9be-e80324417bff&fileName=342-SP-ZIP-1LC-%28L%29-SHIFT.pdf",
       "mdotUpdatedAt": "2021-06-04",
       "family": "construction",
-      "title": "Merge - Freeway",
+      "title": "Zipper Merge, Single Left Lane Closure with Shift on a 2-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Merge - Freeway",
       "notes": "Zipper Merge - Freeway",
       "workbookRows": [
         81
@@ -4404,13 +4558,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 110257,
-        "sha256": "3dbc9f5d1d2bb58f6f566733ac9779a8352d881f7f84a47d73f4492d15a1ff24",
-        "path": "pdfs/3dbc9f5d1d2bb58f6f566733ac9779a8352d881f7f84a47d73f4492d15a1ff24.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4436,7 +4583,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 110257,
+        "sha256": "3dbc9f5d1d2bb58f6f566733ac9779a8352d881f7f84a47d73f4492d15a1ff24",
+        "path": "pdfs/3dbc9f5d1d2bb58f6f566733ac9779a8352d881f7f84a47d73f4492d15a1ff24.pdf"
+      }
     },
     {
       "id": "343-SP-ZIP-1LC-(R)",
@@ -4445,7 +4599,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=f8e86a51-90bd-4be1-ac8e-519cdf784bde&fileName=343-SP-ZIP-1LC-%28R%29.pdf",
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
-      "title": "Merge - Freeway",
+      "title": "Zipper Merge, Single Right Lane Closure on a 2-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Merge - Freeway",
       "notes": "Zipper Merge - Freeway",
       "workbookRows": [
         82
@@ -4461,13 +4617,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 90377,
-        "sha256": "b62379bf57fead6998713262a21cbd1cbb8f570f2a37d486f70bdae3879254f6",
-        "path": "pdfs/b62379bf57fead6998713262a21cbd1cbb8f570f2a37d486f70bdae3879254f6.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4492,7 +4641,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 90377,
+        "sha256": "b62379bf57fead6998713262a21cbd1cbb8f570f2a37d486f70bdae3879254f6",
+        "path": "pdfs/b62379bf57fead6998713262a21cbd1cbb8f570f2a37d486f70bdae3879254f6.pdf"
+      }
     },
     {
       "id": "344-SP-ZIP-1LC-PCMS",
@@ -4501,7 +4657,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=90827f3d-d1b5-4629-91c5-962a912312ec&fileName=344-SP-ZIP-1LC-PCMS.pdf",
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
-      "title": "Merge - Freeway",
+      "title": "Zipper Merge, Single Left Lane Closure with PCMS on a 2-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Merge - Freeway",
       "notes": "Zipper Merge - Freeway",
       "workbookRows": [
         83
@@ -4517,13 +4675,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 94478,
-        "sha256": "6e6c3245c6bd560c9e55e3a2b1d658808a60ee57d406645eea437afb756e96d0",
-        "path": "pdfs/6e6c3245c6bd560c9e55e3a2b1d658808a60ee57d406645eea437afb756e96d0.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4548,7 +4699,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 94478,
+        "sha256": "6e6c3245c6bd560c9e55e3a2b1d658808a60ee57d406645eea437afb756e96d0",
+        "path": "pdfs/6e6c3245c6bd560c9e55e3a2b1d658808a60ee57d406645eea437afb756e96d0.pdf"
+      }
     },
     {
       "id": "345-SP-ZIP-1LC-SHIFT-PCMS",
@@ -4557,7 +4715,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=567f4ed1-94d2-449a-bb33-0e38c2b373f0&fileName=345-SP-ZIP-1LC-SHIFT-PCMS.pdf",
       "mdotUpdatedAt": "2021-06-04",
       "family": "construction",
-      "title": "Merge - Freeway",
+      "title": "Zipper Merge, Single Left Lane Closure with Shift and PCMS on a 2-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Merge - Freeway",
       "notes": "Zipper Merge - Freeway",
       "workbookRows": [
         84
@@ -4573,13 +4733,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 114304,
-        "sha256": "14b7941ad7394cf33e558eb74ffae8f911ca33cab0403eb551d73111d3d4e599",
-        "path": "pdfs/14b7941ad7394cf33e558eb74ffae8f911ca33cab0403eb551d73111d3d4e599.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4605,7 +4758,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 114304,
+        "sha256": "14b7941ad7394cf33e558eb74ffae8f911ca33cab0403eb551d73111d3d4e599",
+        "path": "pdfs/14b7941ad7394cf33e558eb74ffae8f911ca33cab0403eb551d73111d3d4e599.pdf"
+      }
     },
     {
       "id": "350-SP-GORE-1LC-(L)",
@@ -4614,7 +4774,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=ea274747-5d05-4cf9-b430-58cbd8992ee2&fileName=350-SP-GORE-1LC-%28L%29.pdf",
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
-      "title": "Gore - Freeway",
+      "title": "Single Lane Closure in Advance of Gore with Shift on a 3-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Gore - Freeway",
       "notes": "Lane Closure Near Gore - Freeway",
       "workbookRows": [
         85
@@ -4630,13 +4792,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 102381,
-        "sha256": "66352c6d7ed58b38b8085cd6c48280215497e5a271f5f156c48cb628e97009f1",
-        "path": "pdfs/66352c6d7ed58b38b8085cd6c48280215497e5a271f5f156c48cb628e97009f1.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4661,7 +4816,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 102381,
+        "sha256": "66352c6d7ed58b38b8085cd6c48280215497e5a271f5f156c48cb628e97009f1",
+        "path": "pdfs/66352c6d7ed58b38b8085cd6c48280215497e5a271f5f156c48cb628e97009f1.pdf"
+      }
     },
     {
       "id": "351-SP-GORE-2LC-(L)",
@@ -4670,7 +4832,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=038ea4ba-4ead-4c55-b2f2-c0319e9b291d&fileName=351-SP-GORE-2LC-%28L%29.pdf",
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
-      "title": "Gore - Freeway",
+      "title": "2-Lane Closure in Advance of Gore with Shift on a 3-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Gore - Freeway",
       "notes": "Lane Closure Near Gore - Freeway",
       "workbookRows": [
         86
@@ -4686,13 +4850,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 2,
-        "bytes": 132942,
-        "sha256": "cbc129da6eb3915f09175cad5a4301a8fa0977091a32b5a8ce531c20a8703e83",
-        "path": "pdfs/cbc129da6eb3915f09175cad5a4301a8fa0977091a32b5a8ce531c20a8703e83.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4717,7 +4874,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 2,
+        "bytes": 132942,
+        "sha256": "cbc129da6eb3915f09175cad5a4301a8fa0977091a32b5a8ce531c20a8703e83",
+        "path": "pdfs/cbc129da6eb3915f09175cad5a4301a8fa0977091a32b5a8ce531c20a8703e83.pdf"
+      }
     },
     {
       "id": "352-SP-GORE(4)-2LC-(L)",
@@ -4726,7 +4890,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=12bd5df0-f1d7-40be-a4be-f05238436f16&fileName=352-SP-GORE%284%29-2LC-%28L%29.pdf",
       "mdotUpdatedAt": "2021-12-28",
       "family": "construction",
-      "title": "Gore - Freeway",
+      "title": "2-Lane Closure in Advance of Gore with Shift on a 4-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Gore - Freeway",
       "notes": "Lane Closure Near Gore - Freeway",
       "workbookRows": [
         87
@@ -4742,13 +4908,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 2,
-        "bytes": 130174,
-        "sha256": "283b2aa8e28a84af06f25c2072fd23f12bd1d8f08e52d049c4b67d7c632c05ad",
-        "path": "pdfs/283b2aa8e28a84af06f25c2072fd23f12bd1d8f08e52d049c4b67d7c632c05ad.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4773,7 +4932,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 2,
+        "bytes": 130174,
+        "sha256": "283b2aa8e28a84af06f25c2072fd23f12bd1d8f08e52d049c4b67d7c632c05ad",
+        "path": "pdfs/283b2aa8e28a84af06f25c2072fd23f12bd1d8f08e52d049c4b67d7c632c05ad.pdf"
+      }
     },
     {
       "id": "360-SP-ROLL",
@@ -4782,7 +4948,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=3f350538-de1c-49a4-a1cd-6b137aad76a6&fileName=360-SP-ROLL.pdf",
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
-      "title": "Roadblock - Freeway",
+      "title": "Rolling Roadblock on a 2-Lane Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Roadblock - Freeway",
       "notes": "Rolling Roadblock - Freeway",
       "workbookRows": [
         88
@@ -4798,13 +4966,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 90562,
-        "sha256": "98aa3b44b93dd79a0168f9a5e2c1185fbd7d11ac33d6fe49a8c7f0529d7057b2",
-        "path": "pdfs/98aa3b44b93dd79a0168f9a5e2c1185fbd7d11ac33d6fe49a8c7f0529d7057b2.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4828,7 +4989,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 90562,
+        "sha256": "98aa3b44b93dd79a0168f9a5e2c1185fbd7d11ac33d6fe49a8c7f0529d7057b2",
+        "path": "pdfs/98aa3b44b93dd79a0168f9a5e2c1185fbd7d11ac33d6fe49a8c7f0529d7057b2.pdf"
+      }
     },
     {
       "id": "361-SP-ROLL-LC",
@@ -4837,7 +5005,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=dec80c46-3618-4e03-aa0d-6444f7415cb4&fileName=361-SP-ROLL-LC.pdf",
       "mdotUpdatedAt": "2021-05-11",
       "family": "construction",
-      "title": "Roadblock - Freeway",
+      "title": "Rolling Roadblock on a 2-Lane Freeway with Left Lane Closure",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Roadblock - Freeway",
       "notes": "Rolling Roadblock - Freeway",
       "workbookRows": [
         89
@@ -4853,13 +5023,6 @@
         "rcoc": "No"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 84988,
-        "sha256": "28eb86df7940a587a4aa0b8bac8895553a582e3250a0848ea04e3454b0852a2a",
-        "path": "pdfs/28eb86df7940a587a4aa0b8bac8895553a582e3250a0848ea04e3454b0852a2a.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4884,7 +5047,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 84988,
+        "sha256": "28eb86df7940a587a4aa0b8bac8895553a582e3250a0848ea04e3454b0852a2a",
+        "path": "pdfs/28eb86df7940a587a4aa0b8bac8895553a582e3250a0848ea04e3454b0852a2a.pdf"
+      }
     },
     {
       "id": "380-PULLOFF-FW",
@@ -4895,6 +5065,7 @@
       "family": "construction",
       "title": "Emergency Pull Off Signing on a Freeway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -4908,13 +5079,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 75322,
-        "sha256": "dfb551e8dcd695268474a6f3b9222fdec0fe63b46442a540b6dfd505a542f581",
-        "path": "pdfs/dfb551e8dcd695268474a6f3b9222fdec0fe63b46442a540b6dfd505a542f581.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -4938,7 +5102,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 75322,
+        "sha256": "dfb551e8dcd695268474a6f3b9222fdec0fe63b46442a540b6dfd505a542f581",
+        "path": "pdfs/dfb551e8dcd695268474a6f3b9222fdec0fe63b46442a540b6dfd505a542f581.pdf"
+      }
     },
     {
       "id": "4000-M-SHL-OUT",
@@ -4949,6 +5120,7 @@
       "family": "maintenance",
       "title": "Maintenance - Work Outside Shoulder",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -4962,13 +5134,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 90709,
-        "sha256": "9c107edea6dadada2df0785e81e0c673293dcbfc7d09c4e2e7f481d6f0af8719",
-        "path": "pdfs/9c107edea6dadada2df0785e81e0c673293dcbfc7d09c4e2e7f481d6f0af8719.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -4992,7 +5157,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 90709,
+        "sha256": "9c107edea6dadada2df0785e81e0c673293dcbfc7d09c4e2e7f481d6f0af8719",
+        "path": "pdfs/9c107edea6dadada2df0785e81e0c673293dcbfc7d09c4e2e7f481d6f0af8719.pdf"
+      }
     },
     {
       "id": "4110A-M-TR-NFW-2L",
@@ -5002,6 +5174,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "maintenance",
       "title": "Maintenance - Lane Closure for a 2-Lane, 2-Way Roadway Utilitizing Traffic Regulators, No Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Lane Closure for a 2-Lane, 2-Way Roadway Utilitizing Traffic Regulators, No Speed Reduction",
       "notes": "No Speed Reduction",
       "workbookRows": [
         12
@@ -5017,13 +5191,6 @@
         "rcoc": "Maybe????"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 83059,
-        "sha256": "dbddb214f80cf36cf7e70cc230b8d9f62ac5d9dd8fdc4edb62672539d180ea03",
-        "path": "pdfs/dbddb214f80cf36cf7e70cc230b8d9f62ac5d9dd8fdc4edb62672539d180ea03.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5049,7 +5216,14 @@
       },
       "conditions": [
         "No Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 83059,
+        "sha256": "dbddb214f80cf36cf7e70cc230b8d9f62ac5d9dd8fdc4edb62672539d180ea03",
+        "path": "pdfs/dbddb214f80cf36cf7e70cc230b8d9f62ac5d9dd8fdc4edb62672539d180ea03.pdf"
+      }
     },
     {
       "id": "4110B-M-TR-NFW-2L",
@@ -5059,6 +5233,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "maintenance",
       "title": "Maintenance - Lane Closure for a 2-Lane, 2-Way Roadway Utilizing Traffic Regulators with a Maximum 10 MPH Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Lane Closure for a 2-Lane, 2-Way Roadway Utilizing Traffic Regulators with a Maximum 10 MPH Speed Reduction",
       "notes": "",
       "workbookRows": [
         10
@@ -5074,13 +5250,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 102217,
-        "sha256": "921e67b7f01c738033b8afeabb35cf2c3bb21966f8b7cb880ac0cb909b06daed",
-        "path": "pdfs/921e67b7f01c738033b8afeabb35cf2c3bb21966f8b7cb880ac0cb909b06daed.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5106,7 +5275,14 @@
       },
       "conditions": [
         "Maximum 10 MPH Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 102217,
+        "sha256": "921e67b7f01c738033b8afeabb35cf2c3bb21966f8b7cb880ac0cb909b06daed",
+        "path": "pdfs/921e67b7f01c738033b8afeabb35cf2c3bb21966f8b7cb880ac0cb909b06daed.pdf"
+      }
     },
     {
       "id": "4111A-M-TR-NFW-2L-RUM",
@@ -5117,6 +5293,7 @@
       "family": "maintenance",
       "title": "Lane Closure for a 2-Lane, 2-Way Roadway Utilizing Traffic Regulators, Rumble Strips, and No Speed Reduction",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -5130,13 +5307,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 91143,
-        "sha256": "76c89d6857e9c2197093925890ee3641753d89d463a2cd75b88e10c34b3aebcb",
-        "path": "pdfs/76c89d6857e9c2197093925890ee3641753d89d463a2cd75b88e10c34b3aebcb.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5162,7 +5332,14 @@
       },
       "conditions": [
         "No Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 91143,
+        "sha256": "76c89d6857e9c2197093925890ee3641753d89d463a2cd75b88e10c34b3aebcb",
+        "path": "pdfs/76c89d6857e9c2197093925890ee3641753d89d463a2cd75b88e10c34b3aebcb.pdf"
+      }
     },
     {
       "id": "4111B-M-TR-NFW-2L-RUM",
@@ -5173,6 +5350,7 @@
       "family": "maintenance",
       "title": "Lane Closure for a 2 Lane 2 Way Roadway Utilizing Traffic Regulators and Rumble Strips with a Maximum 10 MPH Speed Reduction",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -5186,13 +5364,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 113078,
-        "sha256": "141252ebfec649e45fc505464b460e9d5d712c2a3bc0de6cb848ff5a8cd694be",
-        "path": "pdfs/141252ebfec649e45fc505464b460e9d5d712c2a3bc0de6cb848ff5a8cd694be.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5218,7 +5389,14 @@
       },
       "conditions": [
         "Maximum 10 MPH Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 113078,
+        "sha256": "141252ebfec649e45fc505464b460e9d5d712c2a3bc0de6cb848ff5a8cd694be",
+        "path": "pdfs/141252ebfec649e45fc505464b460e9d5d712c2a3bc0de6cb848ff5a8cd694be.pdf"
+      }
     },
     {
       "id": "4121-M-TS",
@@ -5228,6 +5406,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "maintenance",
       "title": "Maintenance - Temporary Traffic Signal on a 2-Lane, 2-Way Roadway, No Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Temporary Traffic Signal on a 2-Lane, 2-Way Roadway, No Speed Reduction",
       "notes": "",
       "workbookRows": [
         17
@@ -5243,13 +5423,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 94622,
-        "sha256": "a0e46520c3193b9588f2f1117fd4c49ba675a612e2faa233368025b8582bd1cb",
-        "path": "pdfs/a0e46520c3193b9588f2f1117fd4c49ba675a612e2faa233368025b8582bd1cb.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5275,7 +5448,14 @@
       },
       "conditions": [
         "No Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 94622,
+        "sha256": "a0e46520c3193b9588f2f1117fd4c49ba675a612e2faa233368025b8582bd1cb",
+        "path": "pdfs/a0e46520c3193b9588f2f1117fd4c49ba675a612e2faa233368025b8582bd1cb.pdf"
+      }
     },
     {
       "id": "4122-M-NFW-SHL",
@@ -5285,6 +5465,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "maintenance",
       "title": "Maintenance - Shoulder Closure on a 2-Lane, 2 Way Roadway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Shoulder Closure on a 2-Lane, 2 Way Roadway",
       "notes": "",
       "workbookRows": [
         18
@@ -5300,13 +5482,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 60098,
-        "sha256": "5b01f794ec537007ac579a39306ad5b1e9bb228479f12b8c3c9dcc1a22ebfdcd",
-        "path": "pdfs/5b01f794ec537007ac579a39306ad5b1e9bb228479f12b8c3c9dcc1a22ebfdcd.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5330,7 +5505,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 60098,
+        "sha256": "5b01f794ec537007ac579a39306ad5b1e9bb228479f12b8c3c9dcc1a22ebfdcd",
+        "path": "pdfs/5b01f794ec537007ac579a39306ad5b1e9bb228479f12b8c3c9dcc1a22ebfdcd.pdf"
+      }
     },
     {
       "id": "4123A-M-NFW-1LC-(R)",
@@ -5340,6 +5522,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "maintenance",
       "title": "Maintenance - Right Lane Closure on an Undivided Multi-Lane Roadway, No Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Right Lane Closure on an Undivided Multi-Lane Roadway, No Speed Reduction",
       "notes": "",
       "workbookRows": [
         20
@@ -5355,13 +5539,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 70768,
-        "sha256": "425727fc57e88183f38672c3efa1a63110e3e42db8926d9e0f65747eaf4aa1f0",
-        "path": "pdfs/425727fc57e88183f38672c3efa1a63110e3e42db8926d9e0f65747eaf4aa1f0.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5387,7 +5564,14 @@
       },
       "conditions": [
         "No Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 70768,
+        "sha256": "425727fc57e88183f38672c3efa1a63110e3e42db8926d9e0f65747eaf4aa1f0",
+        "path": "pdfs/425727fc57e88183f38672c3efa1a63110e3e42db8926d9e0f65747eaf4aa1f0.pdf"
+      }
     },
     {
       "id": "4123B-M-NFW-1LC-(R)",
@@ -5397,6 +5581,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "maintenance",
       "title": "Maintenance - Right Lane Closure on an Undivided Multi-Lane Roadway with a Maximum 10 MPH Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Right Lane Closure on an Undivided Multi-Lane Roadway with a Maximum 10 MPH Speed Reduction",
       "notes": "",
       "workbookRows": [
         19
@@ -5412,13 +5598,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 81409,
-        "sha256": "30fd691d77dcfbc922c5d99c1ac885c7bb023461f69b1f94fba53627601ccbff",
-        "path": "pdfs/30fd691d77dcfbc922c5d99c1ac885c7bb023461f69b1f94fba53627601ccbff.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5444,7 +5623,14 @@
       },
       "conditions": [
         "Maximum 10 MPH Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 81409,
+        "sha256": "30fd691d77dcfbc922c5d99c1ac885c7bb023461f69b1f94fba53627601ccbff",
+        "path": "pdfs/30fd691d77dcfbc922c5d99c1ac885c7bb023461f69b1f94fba53627601ccbff.pdf"
+      }
     },
     {
       "id": "4125A-M-NFW-2LC-(IN)",
@@ -5454,6 +5640,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "maintenance",
       "title": "Maintenance - 2-Lane Closure, Inside, Multi-Lane Undivided Roadway, No Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - 2-Lane Closure, Inside, Multi-Lane Undivided Roadway, No Speed Reduction",
       "notes": "",
       "workbookRows": [
         24
@@ -5469,13 +5657,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 72178,
-        "sha256": "bfecec5cd532c473be7c2ae52a1016ee23755792aa48b796a956eebf331669b7",
-        "path": "pdfs/bfecec5cd532c473be7c2ae52a1016ee23755792aa48b796a956eebf331669b7.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5501,7 +5682,14 @@
       },
       "conditions": [
         "No Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 72178,
+        "sha256": "bfecec5cd532c473be7c2ae52a1016ee23755792aa48b796a956eebf331669b7",
+        "path": "pdfs/bfecec5cd532c473be7c2ae52a1016ee23755792aa48b796a956eebf331669b7.pdf"
+      }
     },
     {
       "id": "4125B-M-NFW-2LC-(IN)",
@@ -5511,6 +5699,8 @@
       "mdotUpdatedAt": "2021-05-11",
       "family": "maintenance",
       "title": "Maintenance - 2-Lane Closure, Inside, Multi-Lane Undivided Roadway with a Maximum 10 MPH Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - 2-Lane Closure, Inside, Multi-Lane Undivided Roadway with a Maximum 10 MPH Speed Reduction",
       "notes": "",
       "workbookRows": [
         22
@@ -5526,13 +5716,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 83947,
-        "sha256": "5ffc061acadb5fbbe84162c121b6127fd16ae70c066285475ed00d2c93fe0911",
-        "path": "pdfs/5ffc061acadb5fbbe84162c121b6127fd16ae70c066285475ed00d2c93fe0911.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5558,7 +5741,14 @@
       },
       "conditions": [
         "Maximum 10 MPH Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 83947,
+        "sha256": "5ffc061acadb5fbbe84162c121b6127fd16ae70c066285475ed00d2c93fe0911",
+        "path": "pdfs/5ffc061acadb5fbbe84162c121b6127fd16ae70c066285475ed00d2c93fe0911.pdf"
+      }
     },
     {
       "id": "4133A-M-CLT-1LC-(L)",
@@ -5568,6 +5758,8 @@
       "mdotUpdatedAt": "2021-05-12",
       "family": "maintenance",
       "title": "Maintenance - Center and Left Lane Closure of a Multi-Lane Undivided Roadway, No Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Center and Left Lane Closure of a Multi-Lane Undivided Roadway, No Speed Reduction",
       "notes": "",
       "workbookRows": [
         30
@@ -5583,13 +5775,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 72430,
-        "sha256": "600a5063bb930bc480fe1839ddb051029ec5e2ee58b22d5260fc0f832cfd8651",
-        "path": "pdfs/600a5063bb930bc480fe1839ddb051029ec5e2ee58b22d5260fc0f832cfd8651.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5616,7 +5801,14 @@
       },
       "conditions": [
         "No Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 72430,
+        "sha256": "600a5063bb930bc480fe1839ddb051029ec5e2ee58b22d5260fc0f832cfd8651",
+        "path": "pdfs/600a5063bb930bc480fe1839ddb051029ec5e2ee58b22d5260fc0f832cfd8651.pdf"
+      }
     },
     {
       "id": "4133B-M-CLT-1LC-(L)",
@@ -5626,6 +5818,8 @@
       "mdotUpdatedAt": "2021-05-12",
       "family": "maintenance",
       "title": "Maintenance - Center and Left Lane Closure of a Multi-Lane Undivided Roadway, with a Maximum 10 MPH Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Center and Left Lane Closure of a Multi-Lane Undivided Roadway, with a Maximum 10 MPH Speed Reduction",
       "notes": "",
       "workbookRows": [
         29
@@ -5641,13 +5835,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 87493,
-        "sha256": "642349dce269924fe4e0262d03a2d9fe341d2496a316652f049b5c83e1d4b7f7",
-        "path": "pdfs/642349dce269924fe4e0262d03a2d9fe341d2496a316652f049b5c83e1d4b7f7.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5674,7 +5861,14 @@
       },
       "conditions": [
         "Maximum 10 MPH Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 87493,
+        "sha256": "642349dce269924fe4e0262d03a2d9fe341d2496a316652f049b5c83e1d4b7f7",
+        "path": "pdfs/642349dce269924fe4e0262d03a2d9fe341d2496a316652f049b5c83e1d4b7f7.pdf"
+      }
     },
     {
       "id": "4134A-M-CLT-2(L)LC-(IN)",
@@ -5684,6 +5878,8 @@
       "mdotUpdatedAt": "2021-05-12",
       "family": "maintenance",
       "title": "Maintenance - Closure of Center Lane and Left Lanes of a Multi-Lane Undivided Roadway, No Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Closure of Center Lane and Left Lanes of a Multi-Lane Undivided Roadway, No Speed Reduction",
       "notes": "",
       "workbookRows": [
         32
@@ -5699,13 +5895,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 73377,
-        "sha256": "a53baf3b8133e1bb7f9714ff6862a1e0d38e886c5ab25a6fc4d5bcd369d78e4c",
-        "path": "pdfs/a53baf3b8133e1bb7f9714ff6862a1e0d38e886c5ab25a6fc4d5bcd369d78e4c.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5732,7 +5921,14 @@
       },
       "conditions": [
         "No Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 73377,
+        "sha256": "a53baf3b8133e1bb7f9714ff6862a1e0d38e886c5ab25a6fc4d5bcd369d78e4c",
+        "path": "pdfs/a53baf3b8133e1bb7f9714ff6862a1e0d38e886c5ab25a6fc4d5bcd369d78e4c.pdf"
+      }
     },
     {
       "id": "4134B-M-CLT-2(L)LC-(IN)",
@@ -5742,6 +5938,8 @@
       "mdotUpdatedAt": "2021-05-12",
       "family": "maintenance",
       "title": "Maintenance - Closure of Center Lane and Left Lanes of a Multi-Lane Undivided Roadway, with a Maximum 10 MPH Speed Reduction",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Closure of Center Lane and Left Lanes of a Multi-Lane Undivided Roadway, with a Maximum 10 MPH Speed Reduction",
       "notes": "",
       "workbookRows": [
         31
@@ -5757,13 +5955,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 88457,
-        "sha256": "b04c159e6bae639aec9541e32d4fb9898debef0cc18fb0f5387ef18afdb6fec4",
-        "path": "pdfs/b04c159e6bae639aec9541e32d4fb9898debef0cc18fb0f5387ef18afdb6fec4.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5790,7 +5981,14 @@
       },
       "conditions": [
         "Maximum 10 MPH Speed Reduction"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 88457,
+        "sha256": "b04c159e6bae639aec9541e32d4fb9898debef0cc18fb0f5387ef18afdb6fec4",
+        "path": "pdfs/b04c159e6bae639aec9541e32d4fb9898debef0cc18fb0f5387ef18afdb6fec4.pdf"
+      }
     },
     {
       "id": "4180-M-TR-NFW-2L",
@@ -5799,7 +5997,9 @@
       "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=94ef7dc6-4109-4d2b-baeb-a6a85aea49ce&fileName=4180-M-TR-NFW-2L.pdf",
       "mdotUpdatedAt": "2021-11-05",
       "family": "maintenance",
-      "title": "Leap Frog Lane Closure on a Two-Lane, Two way Roadway",
+      "title": "Leap Frog Lane Closure on a Two-Lane, Two-Way Roadway",
+      "titleSource": "mdot-pdf",
+      "workbookTitle": "Leap Frog Lane Closure on a Two-Lane, Two way Roadway",
       "notes": "Leap Frog",
       "workbookRows": [
         34
@@ -5815,13 +6015,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 2,
-        "bytes": 158265,
-        "sha256": "9d786cff7250d274886f488c55b1c6836047d59121d366949931f9168ecc5653",
-        "path": "pdfs/9d786cff7250d274886f488c55b1c6836047d59121d366949931f9168ecc5653.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -5845,7 +6038,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 2,
+        "bytes": 158265,
+        "sha256": "9d786cff7250d274886f488c55b1c6836047d59121d366949931f9168ecc5653",
+        "path": "pdfs/9d786cff7250d274886f488c55b1c6836047d59121d366949931f9168ecc5653.pdf"
+      }
     },
     {
       "id": "4200-M-FW-SHL",
@@ -5855,6 +6055,8 @@
       "mdotUpdatedAt": "2021-05-12",
       "family": "maintenance",
       "title": "Maintenance - Shoulder Closure on a Divided Roadway or Freeway",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Shoulder Closure on a Divided Roadway or Freeway",
       "notes": "",
       "workbookRows": [
         52
@@ -5870,13 +6072,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 82882,
-        "sha256": "28c125b4668655fd140b753f8fcefde1c5fbe275bee0989ed4a7005c634deb5b",
-        "path": "pdfs/28c125b4668655fd140b753f8fcefde1c5fbe275bee0989ed4a7005c634deb5b.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -5901,7 +6096,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 82882,
+        "sha256": "28c125b4668655fd140b753f8fcefde1c5fbe275bee0989ed4a7005c634deb5b",
+        "path": "pdfs/28c125b4668655fd140b753f8fcefde1c5fbe275bee0989ed4a7005c634deb5b.pdf"
+      }
     },
     {
       "id": "4203A-M-FW-1LC-(R)",
@@ -5911,6 +6113,8 @@
       "mdotUpdatedAt": "2021-05-12",
       "family": "maintenance",
       "title": "Maintenance - Single Right Lane Closure on a Freeway Using a 10 MPH Step Down in Speed Limit",
+      "titleSource": "mdot-catalog",
+      "workbookTitle": "Maintenance - Single Right Lane Closure on a Freeway Using a 10 MPH Step Down in Speed Limit",
       "notes": "",
       "workbookRows": [
         55
@@ -5926,13 +6130,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 75291,
-        "sha256": "cc7f57f17178ec46fd4d426345893cf74e3e30e9c1b2a71c33a6995a8c0115c0",
-        "path": "pdfs/cc7f57f17178ec46fd4d426345893cf74e3e30e9c1b2a71c33a6995a8c0115c0.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -5958,7 +6155,14 @@
       },
       "conditions": [
         "10 MPH Step Down in Speed Limit"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 75291,
+        "sha256": "cc7f57f17178ec46fd4d426345893cf74e3e30e9c1b2a71c33a6995a8c0115c0",
+        "path": "pdfs/cc7f57f17178ec46fd4d426345893cf74e3e30e9c1b2a71c33a6995a8c0115c0.pdf"
+      }
     },
     {
       "id": "4203B-M-FW-1LC-(R)",
@@ -5969,6 +6173,7 @@
       "family": "maintenance",
       "title": "Maintenance - Single Lane Closure on a Freeway Using a 10 MPH Step down in Speed limit with WWP and 2-Mile Advanced Warning",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -5982,13 +6187,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 105846,
-        "sha256": "decbcbbe6aca7856b5fbff0873e1e017fd7659be2145e8f735357712bd37ce1b",
-        "path": "pdfs/decbcbbe6aca7856b5fbff0873e1e017fd7659be2145e8f735357712bd37ce1b.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -6015,7 +6213,14 @@
       "conditions": [
         "10 MPH Step down in Speed limit",
         "2-Mile Advanced Warning"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 105846,
+        "sha256": "decbcbbe6aca7856b5fbff0873e1e017fd7659be2145e8f735357712bd37ce1b",
+        "path": "pdfs/decbcbbe6aca7856b5fbff0873e1e017fd7659be2145e8f735357712bd37ce1b.pdf"
+      }
     },
     {
       "id": "4204-M-FW-2LC-(R)",
@@ -6026,6 +6231,7 @@
       "family": "maintenance",
       "title": "Double Right Lane Closure on a Freeway Using a 10 MPH Step Down in Speed Limit",
       "titleSource": "mdot-pdf",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6039,13 +6245,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 80410,
-        "sha256": "6e473a9f4244754d03ba5c7c5055d5ae011ac6f096ed37be7415609266b78dbf",
-        "path": "pdfs/6e473a9f4244754d03ba5c7c5055d5ae011ac6f096ed37be7415609266b78dbf.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -6071,7 +6270,14 @@
       },
       "conditions": [
         "10 MPH Step Down in Speed Limit"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 80410,
+        "sha256": "6e473a9f4244754d03ba5c7c5055d5ae011ac6f096ed37be7415609266b78dbf",
+        "path": "pdfs/6e473a9f4244754d03ba5c7c5055d5ae011ac6f096ed37be7415609266b78dbf.pdf"
+      }
     },
     {
       "id": "4221-FW-EnR-O-LC-FREE",
@@ -6082,6 +6288,7 @@
       "family": "maintenance",
       "title": "Maintenance - Outside Lane Closure on a Freeway Through Entrance Ramp Area, Freeflow Condition",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6095,13 +6302,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 59884,
-        "sha256": "d554e5b88595e9591555e3402e8c60bb33cb003303c40a8b54acceab99b66e59",
-        "path": "pdfs/d554e5b88595e9591555e3402e8c60bb33cb003303c40a8b54acceab99b66e59.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -6127,7 +6327,14 @@
       },
       "conditions": [
         "Freeflow Condition"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 59884,
+        "sha256": "d554e5b88595e9591555e3402e8c60bb33cb003303c40a8b54acceab99b66e59",
+        "path": "pdfs/d554e5b88595e9591555e3402e8c60bb33cb003303c40a8b54acceab99b66e59.pdf"
+      }
     },
     {
       "id": "4222-FW-EnR-O-LC-YIELD",
@@ -6138,6 +6345,7 @@
       "family": "maintenance",
       "title": "Maintenance - Outside Lane Closure on a Freeway Through Entrance Ramp Area, Yield Condition",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6151,13 +6359,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 62123,
-        "sha256": "73e664895bc6a0457a210c22f0cbdeddf17b9e045cd09acc0e953fbd50c6e472",
-        "path": "pdfs/73e664895bc6a0457a210c22f0cbdeddf17b9e045cd09acc0e953fbd50c6e472.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -6183,7 +6384,14 @@
       },
       "conditions": [
         "Yield Condition"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 62123,
+        "sha256": "73e664895bc6a0457a210c22f0cbdeddf17b9e045cd09acc0e953fbd50c6e472",
+        "path": "pdfs/73e664895bc6a0457a210c22f0cbdeddf17b9e045cd09acc0e953fbd50c6e472.pdf"
+      }
     },
     {
       "id": "4224-M-FW-ExR-TR",
@@ -6194,6 +6402,7 @@
       "family": "maintenance",
       "title": "Maintenance - Work Operations on Exit Ramps with a Traffic Regulator",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6207,13 +6416,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 48832,
-        "sha256": "1273d0d72a59f92254a597294290259c61ae70879600a65e78075b3c52b3ed28",
-        "path": "pdfs/1273d0d72a59f92254a597294290259c61ae70879600a65e78075b3c52b3ed28.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -6237,7 +6439,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 48832,
+        "sha256": "1273d0d72a59f92254a597294290259c61ae70879600a65e78075b3c52b3ed28",
+        "path": "pdfs/1273d0d72a59f92254a597294290259c61ae70879600a65e78075b3c52b3ed28.pdf"
+      }
     },
     {
       "id": "4231-M-FW-ExR-O-LC",
@@ -6248,6 +6457,7 @@
       "family": "maintenance",
       "title": "Maintenance - Exit Ramp Treatment on a Freeway with Outside Lane Closure",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6261,13 +6471,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 47074,
-        "sha256": "0bf8c2bbade5e3c50595583a6ef5d42a7474544e2729e8d9192914a03e3fdaa4",
-        "path": "pdfs/0bf8c2bbade5e3c50595583a6ef5d42a7474544e2729e8d9192914a03e3fdaa4.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -6292,7 +6495,14 @@
           "Right / outside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 47074,
+        "sha256": "0bf8c2bbade5e3c50595583a6ef5d42a7474544e2729e8d9192914a03e3fdaa4",
+        "path": "pdfs/0bf8c2bbade5e3c50595583a6ef5d42a7474544e2729e8d9192914a03e3fdaa4.pdf"
+      }
     },
     {
       "id": "4400-M-NFW-SHL-MOB",
@@ -6303,6 +6513,7 @@
       "family": "maintenance",
       "title": "Maintenance - Shoulder Work with Traffic Volumes Less than 10,000 ADT and Adequate Sight Distances",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6316,13 +6527,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 49860,
-        "sha256": "467dd10a20160ff9aa840eb0b9a85159892ff9422093088ee3ade52c63deab5f",
-        "path": "pdfs/467dd10a20160ff9aa840eb0b9a85159892ff9422093088ee3ade52c63deab5f.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -6349,7 +6553,14 @@
       "conditions": [
         "Traffic Volumes Less than 10,000 ADT",
         "Adequate Sight Distances"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 49860,
+        "sha256": "467dd10a20160ff9aa840eb0b9a85159892ff9422093088ee3ade52c63deab5f",
+        "path": "pdfs/467dd10a20160ff9aa840eb0b9a85159892ff9422093088ee3ade52c63deab5f.pdf"
+      }
     },
     {
       "id": "4401-M-NFW-SHL-2L",
@@ -6360,6 +6571,7 @@
       "family": "maintenance",
       "title": "Maintenance - Shoulder Work on a 2-Lane, 2-Way Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6373,13 +6585,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 44722,
-        "sha256": "56eaa0b257e4b15c3976b074b60ffe52cbddb52f191bb0c46511627fede00387",
-        "path": "pdfs/56eaa0b257e4b15c3976b074b60ffe52cbddb52f191bb0c46511627fede00387.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -6403,7 +6608,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 44722,
+        "sha256": "56eaa0b257e4b15c3976b074b60ffe52cbddb52f191bb0c46511627fede00387",
+        "path": "pdfs/56eaa0b257e4b15c3976b074b60ffe52cbddb52f191bb0c46511627fede00387.pdf"
+      }
     },
     {
       "id": "4402-M-NFW-1LC",
@@ -6414,6 +6626,7 @@
       "family": "maintenance",
       "title": "Maintenance - Lane Closure on a Divided Roadway with Curbs and Speed Limits 45 MPH or Less",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6427,13 +6640,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 50521,
-        "sha256": "5bbd33337f1955aefcc5a89b626e49913f18ec3cede88e98d0a4089492967a49",
-        "path": "pdfs/5bbd33337f1955aefcc5a89b626e49913f18ec3cede88e98d0a4089492967a49.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided"
@@ -6460,7 +6666,14 @@
       "conditions": [
         "Speed Limits 45 MPH or Less",
         "With Curbs"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 50521,
+        "sha256": "5bbd33337f1955aefcc5a89b626e49913f18ec3cede88e98d0a4089492967a49",
+        "path": "pdfs/5bbd33337f1955aefcc5a89b626e49913f18ec3cede88e98d0a4089492967a49.pdf"
+      }
     },
     {
       "id": "4403-M-NFW-2L",
@@ -6471,6 +6684,7 @@
       "family": "maintenance",
       "title": "Maintenance - Mobile Operation on a 2-Lane Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6484,13 +6698,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 44150,
-        "sha256": "d727bd0ebb05712e7fd25b568d33a861b7968fd5121ae40955bd1aefbc923834",
-        "path": "pdfs/d727bd0ebb05712e7fd25b568d33a861b7968fd5121ae40955bd1aefbc923834.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -6514,7 +6721,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 44150,
+        "sha256": "d727bd0ebb05712e7fd25b568d33a861b7968fd5121ae40955bd1aefbc923834",
+        "path": "pdfs/d727bd0ebb05712e7fd25b568d33a861b7968fd5121ae40955bd1aefbc923834.pdf"
+      }
     },
     {
       "id": "4405-M-NFW-SHL",
@@ -6525,6 +6739,7 @@
       "family": "maintenance",
       "title": "Maintenance - Shoulder Work on a 2-Lane, 2-Way Roadway with Lane Encroachments",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6538,13 +6753,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 51407,
-        "sha256": "565a28c281ea3bd692718b5d38cf9cd0c616a2caa8e50563d533653f883117b5",
-        "path": "pdfs/565a28c281ea3bd692718b5d38cf9cd0c616a2caa8e50563d533653f883117b5.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -6568,7 +6776,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 51407,
+        "sha256": "565a28c281ea3bd692718b5d38cf9cd0c616a2caa8e50563d533653f883117b5",
+        "path": "pdfs/565a28c281ea3bd692718b5d38cf9cd0c616a2caa8e50563d533653f883117b5.pdf"
+      }
     },
     {
       "id": "4420-M-FW-SHL",
@@ -6579,6 +6794,7 @@
       "family": "maintenance",
       "title": "Maintenance - Shoulder Work on a Divided Roadway or Freeway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6592,13 +6808,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 45714,
-        "sha256": "871af6a655f17534756a4e6d29ef3dd80219e3fbd8446aa6864e63b30ed9fdb5",
-        "path": "pdfs/871af6a655f17534756a4e6d29ef3dd80219e3fbd8446aa6864e63b30ed9fdb5.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -6623,7 +6832,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 45714,
+        "sha256": "871af6a655f17534756a4e6d29ef3dd80219e3fbd8446aa6864e63b30ed9fdb5",
+        "path": "pdfs/871af6a655f17534756a4e6d29ef3dd80219e3fbd8446aa6864e63b30ed9fdb5.pdf"
+      }
     },
     {
       "id": "4421-M-FW-1LC",
@@ -6634,6 +6850,7 @@
       "family": "maintenance",
       "title": "Maintenance - Mobile Operation on a Multi-Lane Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6647,13 +6864,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 52490,
-        "sha256": "40ddd3f1f680ce7c0ed1ffe3a29a55f781b020ae1e1f48fbacc80b388e036c8e",
-        "path": "pdfs/40ddd3f1f680ce7c0ed1ffe3a29a55f781b020ae1e1f48fbacc80b388e036c8e.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -6677,7 +6887,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 52490,
+        "sha256": "40ddd3f1f680ce7c0ed1ffe3a29a55f781b020ae1e1f48fbacc80b388e036c8e",
+        "path": "pdfs/40ddd3f1f680ce7c0ed1ffe3a29a55f781b020ae1e1f48fbacc80b388e036c8e.pdf"
+      }
     },
     {
       "id": "4422-M-FW-2LC",
@@ -6688,6 +6905,7 @@
       "family": "maintenance",
       "title": "Maintenance - Mobile Operation on a Multi-Lane Roadway - 2 Lanes",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6701,13 +6919,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 58411,
-        "sha256": "95a6beff343d0ab3723e36db38cc5b5beaeffcd9941e9732f649a62ef3a83927",
-        "path": "pdfs/95a6beff343d0ab3723e36db38cc5b5beaeffcd9941e9732f649a62ef3a83927.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -6731,7 +6942,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 58411,
+        "sha256": "95a6beff343d0ab3723e36db38cc5b5beaeffcd9941e9732f649a62ef3a83927",
+        "path": "pdfs/95a6beff343d0ab3723e36db38cc5b5beaeffcd9941e9732f649a62ef3a83927.pdf"
+      }
     },
     {
       "id": "5000-S-SHL-OUT",
@@ -6742,6 +6960,7 @@
       "family": "survey",
       "title": "Survey - Work Outside Shoulder",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6755,13 +6974,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 90890,
-        "sha256": "661bf4b0ae1e64436a2d7d85aa11fed3d6e90fa3405bcf31b1aa0672e5de9160",
-        "path": "pdfs/661bf4b0ae1e64436a2d7d85aa11fed3d6e90fa3405bcf31b1aa0672e5de9160.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -6785,7 +6997,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 90890,
+        "sha256": "661bf4b0ae1e64436a2d7d85aa11fed3d6e90fa3405bcf31b1aa0672e5de9160",
+        "path": "pdfs/661bf4b0ae1e64436a2d7d85aa11fed3d6e90fa3405bcf31b1aa0672e5de9160.pdf"
+      }
     },
     {
       "id": "5110-S-TR-NFW-2L",
@@ -6796,6 +7015,7 @@
       "family": "survey",
       "title": "Survey - Lane Closure on a 2-Lane, 2-Way Roadway Utilizing Traffic Regulators",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6809,13 +7029,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 73496,
-        "sha256": "290ad2a6ae3577233caa42a23154b91f346cb996ac131fd3ed593178fb1b8ef5",
-        "path": "pdfs/290ad2a6ae3577233caa42a23154b91f346cb996ac131fd3ed593178fb1b8ef5.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -6839,7 +7052,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 73496,
+        "sha256": "290ad2a6ae3577233caa42a23154b91f346cb996ac131fd3ed593178fb1b8ef5",
+        "path": "pdfs/290ad2a6ae3577233caa42a23154b91f346cb996ac131fd3ed593178fb1b8ef5.pdf"
+      }
     },
     {
       "id": "5122-S-NFW-SHL",
@@ -6850,6 +7070,7 @@
       "family": "survey",
       "title": "Survey - Shoulder Closure on a 2-Lane, 2-Way Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6863,13 +7084,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 59501,
-        "sha256": "41354f6a5dc12d760c321dd1486d0e493d6603b216ca3d9153c2b1c33a6a3b85",
-        "path": "pdfs/41354f6a5dc12d760c321dd1486d0e493d6603b216ca3d9153c2b1c33a6a3b85.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -6893,7 +7107,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 59501,
+        "sha256": "41354f6a5dc12d760c321dd1486d0e493d6603b216ca3d9153c2b1c33a6a3b85",
+        "path": "pdfs/41354f6a5dc12d760c321dd1486d0e493d6603b216ca3d9153c2b1c33a6a3b85.pdf"
+      }
     },
     {
       "id": "5123-S-NFW-1LC-(R)",
@@ -6904,6 +7125,7 @@
       "family": "survey",
       "title": "Survey - Single Lane Closure on an Undivided Muli-Lane Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6917,13 +7139,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 53764,
-        "sha256": "91534d20a951d571bf8d1ee6eddebb713f97a3c3a2591cbca3db13ca70aaf1fc",
-        "path": "pdfs/91534d20a951d571bf8d1ee6eddebb713f97a3c3a2591cbca3db13ca70aaf1fc.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -6947,7 +7162,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 53764,
+        "sha256": "91534d20a951d571bf8d1ee6eddebb713f97a3c3a2591cbca3db13ca70aaf1fc",
+        "path": "pdfs/91534d20a951d571bf8d1ee6eddebb713f97a3c3a2591cbca3db13ca70aaf1fc.pdf"
+      }
     },
     {
       "id": "5125-S-NFW-2LC-(IN)",
@@ -6958,6 +7180,7 @@
       "family": "survey",
       "title": "Survey - Lane Closure, Inside 2 Lanes of an Undivided Multi-Lane Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -6971,13 +7194,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 64897,
-        "sha256": "d93bca3b69944ffe58f841c202f61c5ed8f7c78b1436cd4d0f007b37a52d9d4b",
-        "path": "pdfs/d93bca3b69944ffe58f841c202f61c5ed8f7c78b1436cd4d0f007b37a52d9d4b.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -7001,7 +7217,14 @@
           "Left / inside"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 64897,
+        "sha256": "d93bca3b69944ffe58f841c202f61c5ed8f7c78b1436cd4d0f007b37a52d9d4b",
+        "path": "pdfs/d93bca3b69944ffe58f841c202f61c5ed8f7c78b1436cd4d0f007b37a52d9d4b.pdf"
+      }
     },
     {
       "id": "5133-S-CLT-1LC-(L)",
@@ -7012,6 +7235,7 @@
       "family": "survey",
       "title": "Survey - Center and Left Lane Closure of an Undivided Multi-Lane Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7025,13 +7249,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 63747,
-        "sha256": "b361c4dc28b1c0d3f0da6cbe229b12b2736cffd2ca21e4ffb8956488fb381880",
-        "path": "pdfs/b361c4dc28b1c0d3f0da6cbe229b12b2736cffd2ca21e4ffb8956488fb381880.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -7056,7 +7273,14 @@
           "Center lane"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 63747,
+        "sha256": "b361c4dc28b1c0d3f0da6cbe229b12b2736cffd2ca21e4ffb8956488fb381880",
+        "path": "pdfs/b361c4dc28b1c0d3f0da6cbe229b12b2736cffd2ca21e4ffb8956488fb381880.pdf"
+      }
     },
     {
       "id": "5181-S-NFW-1LC",
@@ -7067,6 +7291,7 @@
       "family": "survey",
       "title": "Survey - Lane Closure on a 3-Lane, 2-Way Roadway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7080,13 +7305,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 88710,
-        "sha256": "340bec3f6fe2902a3484412bdd70f6900455a3bfd594ddadcfaeb375022f9b2f",
-        "path": "pdfs/340bec3f6fe2902a3484412bdd70f6900455a3bfd594ddadcfaeb375022f9b2f.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -7110,7 +7328,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 88710,
+        "sha256": "340bec3f6fe2902a3484412bdd70f6900455a3bfd594ddadcfaeb375022f9b2f",
+        "path": "pdfs/340bec3f6fe2902a3484412bdd70f6900455a3bfd594ddadcfaeb375022f9b2f.pdf"
+      }
     },
     {
       "id": "5182A-S-NFW-MID",
@@ -7121,6 +7346,7 @@
       "family": "survey",
       "title": "Survey - Closure of the Center of a 2-Lane, 2-Way Roadway Utilizing Traffic Regulators for Posted Speeds of 55 MPH or Less",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7134,13 +7360,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 81107,
-        "sha256": "53bb66c5ac97a6133d6bbbcefbd272928c2add2cfe8e0d012dae21ff34bf545f",
-        "path": "pdfs/53bb66c5ac97a6133d6bbbcefbd272928c2add2cfe8e0d012dae21ff34bf545f.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -7166,7 +7385,14 @@
       },
       "conditions": [
         "Posted Speeds of 55 MPH or Less"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 81107,
+        "sha256": "53bb66c5ac97a6133d6bbbcefbd272928c2add2cfe8e0d012dae21ff34bf545f",
+        "path": "pdfs/53bb66c5ac97a6133d6bbbcefbd272928c2add2cfe8e0d012dae21ff34bf545f.pdf"
+      }
     },
     {
       "id": "5182B-S-NFW-MID",
@@ -7177,6 +7403,7 @@
       "family": "survey",
       "title": "Survey - Closure of the Center of a 2-Lane, 2-Way Roadway with Low Traffic Volumes",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7190,13 +7417,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 75304,
-        "sha256": "862730b105d43b2c9e83c8304a585163b6e0a963b935f7b95024b7744df66e02",
-        "path": "pdfs/862730b105d43b2c9e83c8304a585163b6e0a963b935f7b95024b7744df66e02.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Undivided"
@@ -7222,7 +7442,14 @@
       },
       "conditions": [
         "Low Traffic Volumes"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 75304,
+        "sha256": "862730b105d43b2c9e83c8304a585163b6e0a963b935f7b95024b7744df66e02",
+        "path": "pdfs/862730b105d43b2c9e83c8304a585163b6e0a963b935f7b95024b7744df66e02.pdf"
+      }
     },
     {
       "id": "5200-S-FW-SHL",
@@ -7233,6 +7460,7 @@
       "family": "survey",
       "title": "Survey - Shoulder Closure on a Divided Roadway or Freeway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7246,13 +7474,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 68991,
-        "sha256": "dccaf29ae44081eb5be4aa5567cdf89c8318548f176053ef65b143a0764be9ec",
-        "path": "pdfs/dccaf29ae44081eb5be4aa5567cdf89c8318548f176053ef65b143a0764be9ec.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -7277,7 +7498,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 68991,
+        "sha256": "dccaf29ae44081eb5be4aa5567cdf89c8318548f176053ef65b143a0764be9ec",
+        "path": "pdfs/dccaf29ae44081eb5be4aa5567cdf89c8318548f176053ef65b143a0764be9ec.pdf"
+      }
     },
     {
       "id": "5203-S-FW-1LC",
@@ -7288,6 +7516,7 @@
       "family": "survey",
       "title": "Survey - Single Lane Closure on a Freeway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7301,13 +7530,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 56216,
-        "sha256": "d9a51819a33a53a7b084bed5136b7786befa4aaa4ab8101b2dd3cfeb2824db63",
-        "path": "pdfs/d9a51819a33a53a7b084bed5136b7786befa4aaa4ab8101b2dd3cfeb2824db63.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -7331,7 +7553,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 56216,
+        "sha256": "d9a51819a33a53a7b084bed5136b7786befa4aaa4ab8101b2dd3cfeb2824db63",
+        "path": "pdfs/d9a51819a33a53a7b084bed5136b7786befa4aaa4ab8101b2dd3cfeb2824db63.pdf"
+      }
     },
     {
       "id": "5205-S-FW-2LC-(L)",
@@ -7342,6 +7571,7 @@
       "family": "survey",
       "title": "Survey - 2-Lane Closure on a Freeway",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7355,13 +7585,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 62865,
-        "sha256": "4a1ed8ab0ddfacd47a474e00043fbdf89421d429df35c220e9c3a8b738f7a73c",
-        "path": "pdfs/4a1ed8ab0ddfacd47a474e00043fbdf89421d429df35c220e9c3a8b738f7a73c.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Freeway"
@@ -7385,7 +7608,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 62865,
+        "sha256": "4a1ed8ab0ddfacd47a474e00043fbdf89421d429df35c220e9c3a8b738f7a73c",
+        "path": "pdfs/4a1ed8ab0ddfacd47a474e00043fbdf89421d429df35c220e9c3a8b738f7a73c.pdf"
+      }
     },
     {
       "id": "5401-S-SHL",
@@ -7396,6 +7626,7 @@
       "family": "survey",
       "title": "Survey - Shoulder Work on a Divided Roadway, Freeway, Or 2-Lane 2-Way Roadway Within 150 Feet of Vehicle",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7409,13 +7640,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 93043,
-        "sha256": "8b5e0b87d804c22e8c9ba6d9a1276445d490386824f96cba34940fc373cc7c7c",
-        "path": "pdfs/8b5e0b87d804c22e8c9ba6d9a1276445d490386824f96cba34940fc373cc7c7c.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Divided",
@@ -7443,7 +7667,14 @@
       },
       "conditions": [
         "Within 150 Feet of Vehicle"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 93043,
+        "sha256": "8b5e0b87d804c22e8c9ba6d9a1276445d490386824f96cba34940fc373cc7c7c",
+        "path": "pdfs/8b5e0b87d804c22e8c9ba6d9a1276445d490386824f96cba34940fc373cc7c7c.pdf"
+      }
     },
     {
       "id": "5403-S-NFW-2L",
@@ -7454,6 +7685,7 @@
       "family": "survey",
       "title": "Survey - Mobile Operation on a 2-Lane Roadway within 150 Feet of Work Vehicle",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7467,13 +7699,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 61229,
-        "sha256": "518aed1e4a8eb4496b08fb70192b48634f17ae52f223c1608636ee225c55053a",
-        "path": "pdfs/518aed1e4a8eb4496b08fb70192b48634f17ae52f223c1608636ee225c55053a.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -7499,7 +7724,14 @@
       },
       "conditions": [
         "Within 150 Feet of Work Vehicle"
-      ]
+      ],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 61229,
+        "sha256": "518aed1e4a8eb4496b08fb70192b48634f17ae52f223c1608636ee225c55053a",
+        "path": "pdfs/518aed1e4a8eb4496b08fb70192b48634f17ae52f223c1608636ee225c55053a.pdf"
+      }
     },
     {
       "id": "5421-S-FW-1LC",
@@ -7510,6 +7742,7 @@
       "family": "survey",
       "title": "Survey - Mobile Operation on a Multi-Lane Roadway - 1 Lane",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7523,13 +7756,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 69610,
-        "sha256": "e06f3f90d075d7fa76682c2c7533dce686df9299002d8a6e23546d376b56beec",
-        "path": "pdfs/e06f3f90d075d7fa76682c2c7533dce686df9299002d8a6e23546d376b56beec.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -7553,7 +7779,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 69610,
+        "sha256": "e06f3f90d075d7fa76682c2c7533dce686df9299002d8a6e23546d376b56beec",
+        "path": "pdfs/e06f3f90d075d7fa76682c2c7533dce686df9299002d8a6e23546d376b56beec.pdf"
+      }
     },
     {
       "id": "5422-S-FW-2LC",
@@ -7564,6 +7797,7 @@
       "family": "survey",
       "title": "Survey - Mobile Operation on a Multilane Roadway - 2 Lanes",
       "titleSource": "mdot-catalog",
+      "workbookTitle": "",
       "notes": "",
       "workbookRows": [],
       "workbookCode": "",
@@ -7577,13 +7811,6 @@
         "rcoc": "Unspecified"
       },
       "relatedIds": [],
-      "verifiedAt": "2026-09-30T15:12:27+00:00",
-      "pdf": {
-        "pages": 1,
-        "bytes": 76963,
-        "sha256": "8c15b7e5fc1e40fee422694c8fd4d77d19deeea5ffcb6be41858e68631d8bc9d",
-        "path": "pdfs/8c15b7e5fc1e40fee422694c8fd4d77d19deeea5ffcb6be41858e68631d8bc9d.pdf"
-      },
       "classifications": {
         "roadwayType": [
           "Unspecified"
@@ -7607,7 +7834,14 @@
           "Unspecified"
         ]
       },
-      "conditions": []
+      "conditions": [],
+      "verifiedAt": "2026-09-30T15:12:27+00:00",
+      "pdf": {
+        "pages": 1,
+        "bytes": 76963,
+        "sha256": "8c15b7e5fc1e40fee422694c8fd4d77d19deeea5ffcb6be41858e68631d8bc9d",
+        "path": "pdfs/8c15b7e5fc1e40fee422694c8fd4d77d19deeea5ffcb6be41858e68631d8bc9d.pdf"
+      }
     }
   ]
 }

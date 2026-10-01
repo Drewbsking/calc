@@ -40,7 +40,7 @@
                 <label class="ttc-search-label" for="search">Search typical number, title, or notes</label>
                 <input id="search" type="search" placeholder="Try 123, lane closure, or traffic regulator" autocomplete="off">
                 <div class="ttc-filter-heading"><span>Filter by project conditions</span></div>
-                <p class="ttc-help">Choose any combination of filters. Counts include your selected details and reflect the other filters. Required sheets 100–104 are always included separately and do not appear in these results or counts.</p>
+                <!-- Choose any combination of filters. Each count shows matches for that option; counts can overlap and should not be added together. Counts include your selected details and reflect the other filters. Required typicals 100–104 are always included separately and do not appear in these results or counts. -->
                 <p id="rcoc-construction-note" class="ttc-help"><strong>RCOC construction projects:</strong> Use Construction typicals for their speed-reduction provisions.</p>
                 <div id="filters">
                     <div id="primary-filters" class="ttc-filters"></div>
@@ -49,7 +49,7 @@
             <details id="typical-code-legend" class="ttc-code-legend">
                 <summary>MDOT typical filename legend <span>Read the full code, including lane counts and suffixes</span></summary>
                 <div class="ttc-legend-content">
-                    <p class="ttc-help">Start with the typical number, then read the codes separated by hyphens. Codes describe the roadway, work, location, or traffic control. Their order and combination vary by detail. The <strong>MDOT code</strong> filter uses only the first code after the number; this legend covers the entire filename.</p>
+                    <p class="ttc-help">Start with the typical number, then read the codes separated by hyphens. Codes describe the roadway, work, location, or traffic control. Their order and combination vary by detail. The <strong>MDOT code</strong> filter matches codes throughout the filename. Numbered variants share their base code: <code>1LC</code> and <code>2LC</code> match LC; <code>CLT(7)</code> matches CLT; <code>2(R)SHIFT</code> matches SHIFT and (R). A direction code can describe a closure or a shift; review the drawing.</p>
                     <div class="ttc-legend-example">
                         <h3>Read a complete filename</h3>
                         <p><code>152-CLT(7)-3(1R+2L)LC-2(L)SHIFT.pdf</code></p>
@@ -119,7 +119,7 @@
                             </tbody>
                         </table>
                         <table>
-                            <caption>Special work and reference sheets</caption>
+                            <caption>Special work and reference typicals</caption>
                             <thead><tr><th scope="col">Code</th><th scope="col">Meaning</th></tr></thead>
                             <tbody>
                                 <tr><th scope="row">EM</th><td>Early merge</td></tr>
@@ -132,7 +132,7 @@
                                 <tr><th scope="row">PULLOFF</th><td>Emergency pull-off signing</td></tr>
                                 <tr><th scope="row">2MILE</th><td>Two-mile advance-warning sequence</td></tr>
                                 <tr><th scope="row">KEY</th><td>Typical numbering key</td></tr>
-                                <tr><th scope="row">NOTES</th><td>Typical note sheet</td></tr>
+                                <tr><th scope="row">NOTES</th><td>Typical notes</td></tr>
                                 <tr><th scope="row">SPACING-CHARTS</th><td>Spacing tables and charts</td></tr>
                             </tbody>
                         </table>
@@ -144,7 +144,7 @@
                             <li><strong>Lane counts and sides:</strong> <code>2(R+L)LC</code> means two lane closures, one right and one left. <code>(1-2)LC</code> means one- to two-lane closure. <code>1(CLT)</code> identifies a center left-turn lane closure.</li>
                             <li><strong>Shift counts:</strong> <code>2(R)SHIFT</code> and <code>SHIFT-2(R)</code> describe two lanes shifted right; <code>1(L)SHIFT</code> describes one lane shifted left.</li>
                             <li><strong>Crossover counts:</strong> The final <code>(1)</code> in 311 and <code>(2)</code> in 312 identify single and dual crossover closures.</li>
-                            <li><strong>A / B after the number:</strong> Different versions of that typical. The distinction depends on the sheet: 4110A/B differ in speed reduction, while 5182A/B differ in traffic-control and traffic-volume conditions. Read the title and drawing for the specific version.</li>
+                            <li><strong>A / B after the number:</strong> Different versions of that typical. The distinction depends on the typical: 4110A/B differ in speed reduction, while 5182A/B differ in traffic-control and traffic-volume conditions. Read the title and drawing for the specific version.</li>
                         </ul>
                     </div>
                     <div id="typical-legend-source" class="ttc-legend-source"></div>
@@ -174,14 +174,14 @@
                 <section class="ttc-pane ttc-selected-pane" aria-labelledby="project-heading">
                     <div class="ttc-pane-heading">
                         <div class="ttc-toolbar"><h2 id="project-heading">Selected details <span id="selected-count" class="ttc-count">0</span></h2><label class="ttc-select-all" title="Mark all selected details, then use the arrow to remove them"><input id="select-all-selected" type="checkbox" aria-label="Select all selected details" aria-controls="selected-list" disabled><span>Select all</span></label></div>
-                        <p>Includes required sheets 100–104 · Your choices are saved in this browser</p>
+                        <p>Includes required typicals 100–104 · Your choices are saved in this browser</p>
                     </div>
                     <div id="selected-pane" class="ttc-pane-scroll" tabindex="0" role="region" aria-label="Selected detail cards">
-                        <p id="empty-selection" class="ttc-empty" hidden>Add project-specific details using the arrows. Required sheets 100–104 are already included below.</p>
+                        <p id="empty-selection" class="ttc-empty" hidden>Add project-specific details using the arrows. Required typicals 100–104 are already included below.</p>
                         <ol id="selected-list" class="ttc-selected-list"></ol>
                         <details id="automatic-details" class="ttc-automatic" hidden>
                             <summary id="automatic-heading">Always included <span id="automatic-count" class="ttc-count">0</span></summary>
-                            <p class="ttc-help">Required sheets 100–104 are included in every project and cannot be removed. Each appears once in the Word table, combined PDF, and ZIP.</p>
+                            <p class="ttc-help">Required typicals 100–104 are included in every project and cannot be removed. Each appears once in the Word table, combined PDF, and ZIP.</p>
                             <ol id="automatic-list" class="ttc-selected-list"></ol>
                         </details>
                     </div>

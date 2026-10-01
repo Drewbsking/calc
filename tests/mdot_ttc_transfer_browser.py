@@ -27,7 +27,7 @@ async def check(origin):
             await page.locator('#new-project').click()
             await expect(page.locator('input[data-filter="projectType"][value="Construction"]')).to_be_checked()
             await expect(page.locator('#filters input:checked')).to_have_count(1)
-            await expect(page.locator('#available-count')).to_have_text('83')
+            await expect(page.locator('#available-count')).to_have_text('80')
             await expect(page.locator('#rcoc-construction-note')).to_be_visible()
             await page.locator('#reset-filters').click()
             await expect(page.locator('#filters input:checked')).to_have_count(0)
@@ -135,7 +135,7 @@ async def check(origin):
             await page.locator('#select-all-selected').check()
             await page.locator('#move-left').click()
             await expect(page.locator('#automatic-details')).to_be_visible()
-            await expect(page.locator('#available-count')).to_have_text('83')
+            await expect(page.locator('#available-count')).to_have_text('80')
             await expect(select_selected).to_be_disabled()
             await expect(select_selected).not_to_be_checked()
             await expect(select_selected).to_have_js_property('indeterminate', False)
@@ -143,9 +143,9 @@ async def check(origin):
             await page.reload()
             assert await selected_ids(page) == []
             await expect(page.locator('#download-word')).to_be_enabled()
-            print(f'PASS: {prefix or "root"} layout, marked/single transfers, automatic sheets, filter persistence, keyboard marks and independent scrolling', flush=True)
+            print(f'PASS: {prefix or "root"} layout, marked/single transfers, automatic typicals, filter persistence, keyboard marks and independent scrolling', flush=True)
 
-        for field, value in [('projectType', 'Construction'), ('roadwayType', 'Freeway'), ('workTask', 'Close the right lane')]:
+        for field, value in [('projectType', 'Construction'), ('mdotCode', 'FW'), ('workTask', 'Close the right lane')]:
             control = page.locator(f'input[data-filter="{field}"][value="{value}"]')
             await control.evaluate('el => el.closest("details").open = true')
             await control.check()
@@ -210,7 +210,7 @@ async def check(origin):
         assert positions == sorted(positions)
         await page.locator('#new-project').click()
         await expect(page.locator('#selected-count')).to_have_text('5')
-        await expect(page.locator('#available-count')).to_have_text('83')
+        await expect(page.locator('#available-count')).to_have_text('80')
         await expect(page.locator('#download-pdf')).to_be_enabled()
         assert not errors, errors
         print('PASS: card notes/flags, mobile navigation and overflow, Word/PDF/ZIP agreement, reset, no browser errors', flush=True)

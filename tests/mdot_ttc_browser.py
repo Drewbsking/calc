@@ -110,7 +110,7 @@ async def reset_project_for_catalog_checks(page):
     await page.locator('#new-project').click()
     await expect(page.locator('input[data-filter="projectType"][value="Construction"]')).to_be_checked()
     await expect(page.locator('#filters input:checked')).to_have_count(1)
-    await expect(page.locator('#match-count')).to_have_text('83 of 131 typicals match')
+    await expect(page.locator('#match-count')).to_have_text('80 of 131 typicals match')
     await page.locator('#reset-filters').click()
 
 
@@ -126,9 +126,9 @@ async def check_always_sheets(page):
     await expect(page.locator('#automatic-list input, #automatic-list button[data-toggle]')).to_have_count(0)
     await expect(page.locator('#automatic-list button[data-preview]')).to_have_count(5)
     # The permanent defaults are a complete, exportable starting report.
-    await page.locator('#project-name').fill('Required sheets only')
+    await page.locator('#project-name').fill('Required typicals only')
     inspect_word(await save_download(page, '#download-word', 'required-only.docx'), ALWAYS_IDS)
-    inspect_pdf(await save_download(page, '#download-pdf', 'required-only.pdf'), ALWAYS_IDS, 'Required sheets only')
+    inspect_pdf(await save_download(page, '#download-pdf', 'required-only.pdf'), ALWAYS_IDS, 'Required typicals only')
     with ZipFile(await save_download(page, '#download-zip', 'required-only.zip')) as archive:
         assert archive.namelist() == [identifier + '.pdf' for identifier in ALWAYS_IDS]
         for identifier in ALWAYS_IDS:
@@ -147,7 +147,7 @@ async def check_always_sheets(page):
         await page.get_by_role('button', name='Remove selected ' + identifier, exact=True).click()
         assert await report_ids(page) == ALWAYS_IDS
         await expect(page.locator('#selected-count')).to_have_text('5')
-    # Earlier saved projects may have manually selected one of today's required sheets.
+    # Earlier saved projects may have manually selected one of today's required typicals.
     await page.evaluate("localStorage.setItem('mdot-ttc-project-v1', JSON.stringify({version: 1, ids: ['100-GEN-KEY', '101-GEN-SPACING-CHARTS', '110-TR-NFW-2L'], projectName: 'Existing project'}))")
     await page.reload()
     assert await selected_ids(page) == ['110-TR-NFW-2L']
@@ -162,79 +162,59 @@ async def check_always_sheets(page):
     assert await report_ids(page) == ALWAYS_IDS
     await expect(page.locator('#download-pdf')).to_be_enabled()
     await page.locator('#reset-filters').click()
-    print('PASS: required defaults, three exports with only required sheets, no removal, saved-project migration and collapsed reset', flush=True)
+    print('PASS: required defaults, three exports with only required typicals, no removal, saved-project migration and collapsed reset', flush=True)
 
 
 async def check_general_roadways(page):
     await page.locator('#reset-filters').click()
-    for roadway in ['Divided', 'Freeway', 'Undivided']:
-        control = page.locator(f'input[data-filter="roadwayType"][value="{roadway}"]')
-        await control.evaluate('el => el.closest("details").open = true')
-        count_text = await control.locator('..').locator('.ttc-filter-count').text_content()
-        await control.check()
-        expected = sum(roadway in r['classifications']['roadwayType'] for r in RECORDS.values() if r['id'] not in ALWAYS_IDS)
-        assert count_text == f'({expected})'
-        await expect(page.locator('#results > article')).to_have_count(expected)
-        assert await report_ids(page) == ALWAYS_IDS
-        for identifier in ALWAYS_IDS:
-            await expect(page.locator(f'[data-typical="{identifier}"]')).to_have_count(0)
-            await expect(page.locator(f'[data-automatic="{identifier}"] .ttc-tags')).to_contain_text('All roadway types')
-        await page.locator('#search').fill('101 spacing')
-        await expect(page.locator('#results > article')).to_have_count(0)
-        await expect(control.locator('..').locator('.ttc-filter-count')).to_have_text('(0)')
-        assert await report_ids(page) == ALWAYS_IDS
-        await page.locator('#reset-filters').click()
-    unknown = page.locator('input[data-filter="roadwayType"][value="Unspecified"]')
-    await unknown.evaluate('el => el.closest("details").open = true')
-    await unknown.check()
-    await expect(page.locator('[data-typical="5000-S-SHL-OUT"]')).to_have_count(1)
+    await expect(page.locator('input[data-filter="roadwayType"]')).to_have_count(0)
+    await expect(page.locator('#results > article')).to_have_count(131)
+    for identifier in ALWAYS_IDS:
+        await expect(page.locator(f'[data-typical="{identifier}"]')).to_have_count(0)
+        await expect(page.locator(f'[data-automatic="{identifier}"] [data-filter-field="roadwayType"]')).to_have_text('Roadway type: All roadway types')
+    await page.locator('#search').fill('101 spacing')
+    await expect(page.locator('#results > article')).to_have_count(0)
+    assert await report_ids(page) == ALWAYS_IDS
     await page.locator('#reset-filters').click()
     await expect(page.locator('#selected-count')).to_have_text('5')
-    print('PASS: required sheets stay in report while excluded from road filters, counts and search', flush=True)
+    print('PASS: required typicals retain all-roadway tags without a roadway filter and remain excluded from browsing', flush=True)
 
 
 async def check_roadway_types(page):
     await page.locator('#reset-filters').click()
-    options = page.locator('input[data-filter="roadwayType"]')
-    assert await options.evaluate_all('els => els.map(el => el.value)') == ['Undivided', 'Divided', 'Freeway', 'Unspecified']
-    await options.first.evaluate('el => el.closest("details").open = true')
-    for control in await options.all():
-        description = await control.get_attribute('aria-describedby')
-        assert description
-        await expect(page.locator('#' + description)).to_be_visible()
-    await expect(page.locator('#roadway-help-undivided')).to_contain_text('A center turn lane is still undivided.')
+    await expect(page.locator('input[data-filter="roadwayType"]')).to_have_count(0)
+    for identifier, roadways in [
+        ('123-NFW-1LC-(R)', ['Undivided']),
+        ('203-FW-1LC-(R)', ['Divided', 'Freeway']),
+        ('5401-S-SHL', ['Divided', 'Freeway', 'Undivided']),
+        ('5000-S-SHL-OUT', ['Unspecified']),
+        ('105-GEN-SPEED-FW', ['Unspecified']),
+    ]:
+        tags = page.locator(f'#results > article[data-record="{identifier}"] [data-filter-field="roadwayType"]')
+        assert sorted(await tags.all_text_contents()) == ['Roadway type: ' + value for value in roadways]
     survey = page.locator('input[data-filter="projectType"][value="Survey"]')
     await survey.evaluate('el => el.closest("details").open = true')
     await survey.check()
-    for value, count in [('Undivided', 9), ('Divided', 2), ('Freeway', 4), ('Unspecified', 4)]:
-        control = page.locator(f'input[data-filter="roadwayType"][value="{value}"]')
-        await expect(control.locator('..').locator('.ttc-filter-count')).to_have_text(f'({count})')
-    undivided = page.locator('input[data-filter="roadwayType"][value="Undivided"]')
-    await undivided.check()
-    await expect(page.locator('#results > article')).to_have_count(9)
-    for number in ['5110', '5122', '5181', '5182A', '5182B', '5401']:
-        await expect(page.locator(f'#results > article[data-typical^="{number}-"]')).to_have_count(1)
+    await expect(page.locator('#results > article')).to_have_count(16)
+    await page.locator('#search').fill('5401 undivided')
+    await expect(page.locator('#results > article')).to_have_count(1)
     await page.get_by_role('button', name='Add 5401-S-SHL', exact=True).click()
-    for value in ['Divided', 'Freeway']:
-        control = page.locator(f'input[data-filter="roadwayType"][value="{value}"]')
-        await control.check()
     await expect(page.locator('[data-typical="5401-S-SHL"]')).to_have_count(0)
     await expect(page.locator('[data-selected="5401-S-SHL"]')).to_have_count(1)
+    await expect(page.locator('[data-selected="5401-S-SHL"] [data-filter-field="roadwayType"]')).to_have_count(3)
     assert await report_ids(page) == ALWAYS_IDS + ['5401-S-SHL']
     await page.locator('#reset-filters').click()
     maintenance = page.locator('input[data-filter="projectType"][value="Highway Maintenance"]')
     await maintenance.evaluate('el => el.closest("details").open = true')
     await maintenance.check()
-    await undivided.evaluate('el => el.closest("details").open = true')
-    await undivided.check()
-    await expect(page.locator('#results > article')).to_have_count(17)
+    await expect(page.locator('#results > article')).to_have_count(32)
     for number in ['4110A', '4110B', '4111A', '4111B', '4121', '4122', '4180', '4401', '4405']:
-        await expect(page.locator(f'#results > article[data-typical^="{number}-"]')).to_have_count(1)
+        await expect(page.locator(f'#results > article[data-typical^="{number}-"] [data-filter-field="roadwayType"]')).to_have_text('Roadway type: Undivided')
     await page.reload()
     await expect(page.locator('#selected-count')).to_have_text('6')
     assert await report_ids(page) == ALWAYS_IDS + ['5401-S-SHL']
     await reset_project_for_catalog_checks(page)
-    print('PASS: roadway definitions, option order, maintenance/survey coverage, overlapping applicability, counts and persistence', flush=True)
+    print('PASS: roadway tags, shared/unspecified applicability, search, category counts and saved selections without a roadway filter', flush=True)
 
 
 async def check_paint_flags(page):
@@ -283,16 +263,16 @@ async def check_paint_flags(page):
 
 
 async def check_catalog_coverage(page):
-    await expect(page.locator('#catalog-status')).to_contain_text('88 construction · 32 maintenance · 16 survey')
+    await expect(page.locator('#catalog-status')).to_contain_text('80 construction · 32 highway maintenance · 8 notes · 16 survey')
     await page.locator('#reset-filters').click()
     await expect(page.locator('#results > article')).to_have_count(131)
-    for label, count in [('Construction', 83), ('Highway Maintenance', 32), ('Survey', 16)]:
+    for label, count in [('Construction', 80), ('Highway Maintenance', 32), ('Notes', 3), ('Survey', 16)]:
         control = page.locator(f'input[data-filter="projectType"][value="{label}"]')
         await control.evaluate('el => { for (let group = el.closest("details"); group; group = group.parentElement.closest("details")) group.open = true; }')
         await control.check()
         await expect(page.locator('#results > article')).to_have_count(count)
         if label == 'Survey':
-            await expect(page.locator('[data-typical="5000-S-SHL-OUT"]')).to_contain_text('Workbook classifications: Unspecified.')
+            await expect(page.locator('[data-typical="5000-S-SHL-OUT"] .ttc-workbook-tag')).to_have_text('Workbook classifications: Unspecified')
             await page.get_by_role('button', name='Add 5000-S-SHL-OUT', exact=True).click()
         await control.uncheck()
     await page.locator('#search').fill('302')
@@ -320,7 +300,7 @@ async def check_filter_counts(page):
 
     await count('projectType', 'Survey', 16)
     await page.locator('#reset-filters').click()
-    for value, expected in [('Construction', 83), ('Highway Maintenance', 32), ('Survey', 16)]:
+    for value, expected in [('Construction', 80), ('Highway Maintenance', 32), ('Notes', 3), ('Survey', 16)]:
         await count('projectType', value, expected)
     survey = choice('projectType', 'Survey')
     await survey.evaluate('el => { for (let group = el.closest("details"); group; group = group.parentElement.closest("details")) group.open = true; }')
@@ -328,8 +308,8 @@ async def check_filter_counts(page):
     await expect(survey).to_be_focused()
     await expect(survey).to_have_accessible_name('Survey, 16 matching typicals')
     await expect(page.locator('.ttc-filter').filter(has=survey)).to_have_attribute('open', '')
-    await count('projectType', 'Construction', 83)
-    await count('workTask', 'Close a ramp', 0)
+    await count('projectType', 'Construction', 80)
+    await count('workTask', 'Ramp work / closures', 0)
     await count('workTask', 'Close the right lane', 0)
     await expect(page.locator('#results > article')).to_have_count(16)
 
@@ -342,15 +322,15 @@ async def check_filter_counts(page):
     await count('projectType', 'Highway Maintenance', 0)
     await expect(page.locator('#results > article')).to_have_count(1)
 
-    undivided = choice('roadwayType', 'Undivided')
-    await undivided.evaluate('el => { for (let group = el.closest("details"); group; group = group.parentElement.closest("details")) group.open = true; }')
-    await undivided.check()
+    ramp = choice('workTask', 'Ramp work / closures')
+    await ramp.evaluate('el => el.closest("details").open = true')
+    await ramp.check()
     await expect(page.locator('#empty-results')).to_be_visible()
     await count('projectType', 'Survey', 0)
-    await count('roadwayType', 'Unspecified', 1)
-    await expect(undivided).to_be_checked()
-    await expect(undivided).to_be_enabled()
-    await undivided.uncheck()
+    await count('workTask', 'Shoulder / roadside work', 1)
+    await expect(ramp).to_be_checked()
+    await expect(ramp).to_be_enabled()
+    await ramp.uncheck()
     await expect(page.locator('#results > article')).to_have_count(1)
     await page.locator('#search').fill('nonexistent-typical')
     assert all(text == '(0)' for text in await page.locator('.ttc-filter-count').all_text_contents())
@@ -370,20 +350,18 @@ async def check_filter_counts(page):
 async def check_categories(page):
     await expect(page.locator('input[data-filter="controlType"]')).to_have_count(0)
     await expect(page.locator('input[data-filter="controlMethod"][value="Crossover"]')).to_have_count(0)
-    await expect(page.locator('input[data-filter="roadwayType"][value="Special"]')).to_have_count(0)
-    crossover = page.locator('input[data-filter="workTask"][value="Other work"]')
-    await page.locator('#search').fill('crossover')
+    await expect(page.locator('input[data-filter="roadwayType"]')).to_have_count(0)
+    crossover = page.locator('input[data-filter="workTask"][value="Crossing / crossover work"]')
+    await page.locator('#search').fill('crossover closure')
     await crossover.evaluate('el => { for (let group = el.closest("details"); group; group = group.parentElement.closest("details")) group.open = true; }')
     await expect(crossover.locator('..').locator('.ttc-filter-count')).to_have_text('(3)')
     await crossover.check()
     await expect(page.locator('#results > article')).to_have_count(3)
-    await expect(page.locator('[data-typical="311-SP-CROSS-C-FW-(1)"] .ttc-tags')).to_contain_text('Arrangement: Crossover')
-    source = page.locator('[data-typical="311-SP-CROSS-C-FW-(1)"]').get_by_text('Original workbook classifications', exact=True)
-    await source.click()
-    await expect(source.locator('..')).to_contain_text('Control type: Crush and Shape')
-    divided = page.locator('input[data-filter="roadwayType"][value="Divided"]')
-    await divided.evaluate('el => { for (let group = el.closest("details"); group; group = group.parentElement.closest("details")) group.open = true; }')
-    await divided.check()
+    await expect(page.locator('[data-typical="311-SP-CROSS-C-FW-(1)"] .ttc-tags')).to_contain_text('Work activity: Crossing / crossover work')
+    await expect(page.locator('[data-typical="311-SP-CROSS-C-FW-(1)"] .ttc-tags')).not_to_contain_text('Arrangement:')
+    await expect(page.locator('[data-typical="311-SP-CROSS-C-FW-(1)"] [data-workbook-field="controlType"]')).to_have_count(0)
+    await expect(page.locator('[data-typical="311-SP-CROSS-C-FW-(1)"]')).not_to_contain_text('Crush and Shape')
+    await page.locator('#search').fill('310 crossover')
     await expect(page.locator('#results > article')).to_have_count(1)
     await page.get_by_role('button', name='Add 310-SP-CROSS-C-NFW', exact=True).click()
     assert await report_ids(page) == ALWAYS_IDS + ['310-SP-CROSS-C-NFW']
@@ -395,29 +373,235 @@ async def check_categories(page):
     await page.locator('#reset-filters').click()
     await page.locator('#search').fill('205-FW-1LC-(R)-SHIFT')
     await expect(page.locator('#results > article')).to_have_count(1)
-    await expect(page.locator('#results .ttc-tags')).to_contain_text('Arrangement: Lane shift')
-    await expect(page.locator('#results .ttc-tags')).to_contain_text('Arrangement: Lane closure')
+    await expect(page.locator('#results .ttc-tags')).to_contain_text('Work activity: Shift traffic')
+    await expect(page.locator('#results .ttc-tags')).to_contain_text('Work activity: Lane closure — side unspecified')
+    await expect(page.locator('#results .ttc-tags')).not_to_contain_text('Arrangement:')
     await reset_project_for_catalog_checks(page)
-    print('PASS: distinct roadway/arrangement/method categories, original labels, overlapping options and Always inclusion', flush=True)
+    print('PASS: roadway and work activity tags, source values, overlapping options and Always inclusion', flush=True)
+
+
+async def check_notes_category(page):
+    await page.locator('#new-project').click()
+    construction = page.locator('input[data-filter="projectType"][value="Construction"]')
+    notes = page.locator('input[data-filter="projectType"][value="Notes"]')
+    await expect(construction).to_be_checked()
+    await expect(notes).not_to_be_checked()
+    await expect(page.locator('#available-count')).to_have_text('80')
+    await expect(notes).to_have_accessible_name('Notes, 3 matching typicals')
+    await expect(page.locator('#results [data-filter-field="mdotCode"][data-filter-value="GEN"]')).to_have_count(0)
+    for identifier in ALWAYS_IDS:
+        await expect(page.locator(f'[data-automatic="{identifier}"] [data-filter-field="projectType"]')).to_have_text('Typical category: Notes')
+    await notes.check()
+    await expect(page.locator('#available-count')).to_have_text('83')
+    await construction.uncheck()
+    await expect(page.locator('#available-count')).to_have_text('3')
+    identifiers = ['105-GEN-SPEED-FW', '106-GEN-SPEED-NFW', '107-GEN-SPEED']
+    assert await page.locator('#results > article').evaluate_all('els => els.map(el => el.dataset.record)') == identifiers
+    for card in await page.locator('#results > article').all():
+        await expect(card.locator('[data-filter-field="projectType"]')).to_have_text('Typical category: Notes')
+        await expect(card.locator('.ttc-workbook-source, .ttc-note')).to_have_count(0)
+    code = page.locator('input[data-filter="mdotCode"][value="GEN"]')
+    await code.evaluate('el => el.closest("details").open = true')
+    await code.check()
+    await expect(page.locator('#available-count')).to_have_text('3')
+    await page.locator('#select-all-matches').check()
+    await page.locator('#move-right').click()
+    assert await report_ids(page) == ALWAYS_IDS + identifiers
+    await expect(notes).to_have_accessible_name('Notes, 3 matching typicals')
+    inspect_word(await save_download(page, '#download-word', 'notes-category.docx'), ALWAYS_IDS + identifiers)
+    await page.locator('#reset-filters').click()
+    await expect(page.locator('#available-count')).to_have_text('128')
+    await page.reload()
+    await expect(page.locator('#selected-count')).to_have_text('8')
+    assert await report_ids(page) == ALWAYS_IDS + identifiers
+    await expect(page.locator('#selected-list [data-filter-field="projectType"][data-filter-value="Notes"]')).to_have_count(3)
+    await reset_project_for_catalog_checks(page)
+    print('PASS: GEN Notes category, counts, default exclusion, retained Always typicals, matching tags, category combinations, Word export and saved selections', flush=True)
+
+
+async def check_typical_series(page):
+    await page.locator('#new-project').click()
+    groups = page.locator('#primary-filters .ttc-filter-options')
+    assert await groups.evaluate_all('els => els.map(el => el.getAttribute("aria-label"))') == ['Typical category', 'Typical series', 'MDOT code', 'Work activity']
+    choices = page.locator('input[data-filter="typicalSeries"]')
+    assert await choices.evaluate_all('els => els.map(el => el.value)') == ['100', '110', '120', '130', '140', '150', '160', '200', '210', '220', '230', '300', '310', '320', '340', '350', '360', '380', '4000', '5000']
+    await expect(page.locator('input[data-filter="typicalSeries"]:checked')).to_have_count(0)
+
+    def series(value):
+        return page.locator(f'input[data-filter="typicalSeries"][value="{value}"]')
+
+    async def choose(field, value):
+        control = page.locator(f'input[data-filter="{field}"][value="{value}"]')
+        await control.evaluate('el => el.closest("details").open = true')
+        await control.check()
+        return control
+
+    await choose('typicalSeries', '160')
+    await expect(series('160')).to_have_accessible_name('160 — Signal work, 5 matching typicals')
+    await expect(series('4000').locator('..').locator('.ttc-filter-count')).to_have_text('(0)')
+    await expect(series('4000')).to_be_enabled()
+    await expect(page.locator('#results > article')).to_have_count(5)
+    await page.get_by_role('button', name='Add 160-INT-LD-CLT-MID', exact=True).click()
+    assert await report_ids(page) == ALWAYS_IDS + ['160-INT-LD-CLT-MID']
+    await expect(series('160').locator('..').locator('.ttc-filter-count')).to_have_text('(5)')
+    await choose('typicalSeries', '220')
+    await expect(page.locator('#results > article')).to_have_count(10)
+    await choose('mdotCode', 'INT')
+    await expect(page.locator('#results > article')).to_have_count(4)
+    await page.locator('#search').fill('161')
+    await expect(page.locator('#results > article')).to_have_count(1)
+    await expect(series('160').locator('..').locator('.ttc-filter-count')).to_have_text('(1)')
+    await expect(series('220').locator('..').locator('.ttc-filter-count')).to_have_text('(0)')
+    await page.locator('#reset-filters').click()
+    await expect(page.locator('#filters input:checked')).to_have_count(0)
+    await expect(page.locator('#selected-count')).to_have_text('6')
+    await choose('typicalSeries', '100')
+    assert await page.locator('#results > article').evaluate_all('els => els.map(el => el.dataset.record)') == ['105-GEN-SPEED-FW', '106-GEN-SPEED-NFW', '107-GEN-SPEED']
+    await page.locator('#reset-filters').click()
+    await choose('typicalSeries', '4000')
+    await expect(page.locator('#results > article')).to_have_count(32)
+    for identifier in ['4110A-M-TR-NFW-2L', '4110B-M-TR-NFW-2L', '4221-FW-EnR-O-LC-FREE']:
+        await expect(page.locator(f'#results > article[data-record="{identifier}"]')).to_have_count(1)
+    await choose('typicalSeries', '5000')
+    await expect(page.locator('#results > article')).to_have_count(48)
+    await expect(page.locator('input[data-filter="projectType"][value="Survey"]').locator('..').locator('.ttc-filter-count')).to_have_text('(16)')
+    await page.reload()
+    await expect(page.locator('#selected-count')).to_have_text('6')
+    assert await report_ids(page) == ALWAYS_IDS + ['160-INT-LD-CLT-MID']
+    await reset_project_for_catalog_checks(page)
+    print('PASS: second-position series, numeric groups, multiple choices, cross-filter counts, required exclusions, selection persistence and resets', flush=True)
+
+
+async def check_mdot_codes(page):
+    await reset_project_for_catalog_checks(page)
+    choices = page.locator('input[data-filter="mdotCode"]')
+    await expect(choices).to_have_count(50)
+    for code in ['KEY', 'AB', 'NOTES', 'SPACING', 'CHARTS', 'CLT(7)', '1LC', 'PDF', '4110A']:
+        await expect(page.locator(f'input[data-filter="mdotCode"][value="{code}"]')).to_have_count(0)
+
+    async def choose(field, value):
+        control = page.locator(f'input[data-filter="{field}"][value="{value}"]')
+        await control.evaluate('el => el.closest("details").open = true')
+        await control.check()
+        return control
+
+    def code_count(code):
+        return page.locator(f'input[data-filter="mdotCode"][value="{code}"]').locator('..').locator('.ttc-filter-count')
+
+    tr = await choose('mdotCode', 'TR')
+    await expect(page.locator('#results > article')).to_have_count(12)
+    await expect(code_count('TR')).to_have_text('(12)')
+    for identifier in ['4110A-M-TR-NFW-2L', '4180-M-TR-NFW-2L', '4224-M-FW-ExR-TR', '5110-S-TR-NFW-2L']:
+        await expect(page.locator(f'#results > article[data-record="{identifier}"]')).to_have_count(1)
+    card = page.locator('#results > article[data-record="4110A-M-TR-NFW-2L"]')
+    await expect(card.locator('[data-filter-field="mdotCode"]')).to_have_count(0)
+    await choose('projectType', 'Highway Maintenance')
+    await expect(page.locator('#results > article')).to_have_count(6)
+    await expect(code_count('TR')).to_have_text('(6)')
+    await card.get_by_role('button', name='Add 4110A-M-TR-NFW-2L', exact=True).click()
+    await expect(page.locator('#results > article')).to_have_count(5)
+    await expect(code_count('TR')).to_have_text('(6)')
+    await choose('workTask', 'Lane closure — side unspecified')
+    await expect(page.locator('#results > article')).to_have_count(4)
+    await expect(code_count('TR')).to_have_text('(5)')
+    await page.locator('#reset-filters').click()
+    await choose('mdotCode', 'SHIFT')
+    await expect(page.locator('#results > article')).to_have_count(18)
+    await choose('mdotCode', 'LC')
+    await page.locator('#search').fill('152-CLT(7)')
+    await expect(page.locator('#results > article')).to_have_count(1)
+    card = page.locator('#results > article')
+    await expect(card.locator('[data-filter-field="mdotCode"]')).to_have_count(0)
+    await expect(code_count('LC')).to_have_text('(1)')
+    await expect(code_count('SHIFT')).to_have_text('(1)')
+    await page.locator('#reset-filters').click()
+    await choose('mdotCode', 'FW')
+    await page.locator('#search').fill('110-TR-NFW-2L')
+    await expect(page.locator('#results > article')).to_have_count(0)
+    await expect(page.locator('#possible-results > article')).to_have_count(0)
+    await page.locator('#reset-filters').click()
+    await choose('mdotCode', '(L)')
+    await page.locator('#search').fill('110-TR-NFW-2L')
+    await expect(page.locator('#results > article')).to_have_count(0)
+    await page.reload()
+    assert await selected_ids(page) == ['4110A-M-TR-NFW-2L']
+    await expect(page.locator('[data-selected="4110A-M-TR-NFW-2L"] [data-filter-field="mdotCode"]')).to_have_count(0)
+    await page.locator('#reset-filters').click()
+    await page.locator('#automatic-details').evaluate('el => el.open = true')
+    await expect(page.locator('#automatic-list [data-filter-field="mdotCode"]')).to_have_count(0)
+    await page.locator('#typical-code-legend').evaluate('el => el.open = true')
+    await expect(page.locator('#typical-code-legend')).to_contain_text('filter matches codes throughout the filename')
+    await expect(page.locator('#typical-code-legend')).not_to_contain_text('only the first code')
+    await page.locator('#typical-code-legend').evaluate('el => el.open = false')
+    original_viewport = page.viewport_size
+    for width in [1440, 390, 320]:
+        await page.set_viewport_size({'width': width, 'height': 1050 if width == 1440 else 844})
+        await choose('mdotCode', 'ZIP')
+        await expect(page.locator('#results > article')).to_have_count(5)
+        assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
+        await page.locator('input[data-filter="mdotCode"][value="ZIP"]').uncheck()
+        await tr.scroll_into_view_if_needed()
+        await page.locator('.ttc-filter-panel').screenshot(path=str(OUTPUT / f'all-codes-{width}.png'))
+    await page.set_viewport_size(original_viewport)
+    await reset_project_for_catalog_checks(page)
+    print('PASS: all-position MDOT filtering without duplicate code tags, compound variants, counts, combinations, persistence and mobile layout', flush=True)
 
 
 async def check_work_tasks(page):
+    await reset_project_for_catalog_checks(page)
     await expect(page.locator('#primary-filters > .ttc-filter')).to_have_count(4)
     await expect(page.locator('#more-filters, #additional-filters')).to_have_count(0)
     for field in ['existingLanes', 'workSituation', 'lanesClosed', 'lanePosition', 'controlMethod']:
         await expect(page.locator(f'input[data-filter="{field}"]')).to_have_count(0)
     choices = page.locator('input[data-filter="workTask"]')
-    assert await choices.evaluate_all('els => els.map(el => el.value)') == ['Close the right lane', 'Close the left lane', 'Close the center turn lane', 'Close multiple lanes', 'Work on the shoulder', 'Close a ramp', 'Other work']
+    expected_counts = {
+        'Close the right lane': 21, 'Close the left lane': 30, 'Close the center turn lane': 4,
+        'Close multiple lanes': 33, 'Lane closure — side unspecified': 25, 'Shift traffic': 23,
+        'Shoulder / roadside work': 18, 'Ramp work / closures': 15, 'Intersection work': 5,
+        'Mobile work / rolling roadblocks': 8, 'Crossing / crossover work': 5,
+        'Traffic control / signing': 9, 'Other work': 3,
+    }
+    assert await choices.evaluate_all('els => els.map(el => el.value)') == list(expected_counts)
+    for value, count in expected_counts.items():
+        option = page.locator(f'input[data-filter="workTask"][value="{value}"]')
+        await option.evaluate('el => el.closest("details").open = true')
+        await option.check()
+        await expect(option.locator('..').locator('.ttc-filter-count')).to_have_text(f'({count})')
+        await expect(page.locator('#results > article')).to_have_count(count)
+        assert await page.locator('#results > article').evaluate_all('''(cards, value) => cards.every(card =>
+            [...card.querySelectorAll('[data-filter-field="workTask"]')].some(tag => tag.dataset.filterValue === value))''', value)
+        if value == 'Other work':
+            assert await page.locator('#results > article').evaluate_all('cards => cards.map(card => card.dataset.typical.split("-")[0])') == ['320', '5182A', '5182B']
+        await option.uncheck()
+    # The full activity list remains usable at desktop and narrow mobile widths.
+    original_viewport = page.viewport_size
+    for width in [1440, 390, 320]:
+        await page.set_viewport_size({'width': width, 'height': 1050 if width == 1440 else 844})
+        await choices.last.scroll_into_view_if_needed()
+        assert await page.evaluate('document.documentElement.scrollWidth <= innerWidth'), width
+        await expect(choices.last).to_be_in_viewport()
+        await choices.last.check()
+        await expect(page.locator('#results > article')).to_have_count(3)
+        await choices.last.uncheck()
+        await choices.first.scroll_into_view_if_needed()
+        await page.locator('.ttc-filter-panel').screenshot(path=str(OUTPUT / f'work-activities-{width}.png'))
+    await page.set_viewport_size(original_viewport)
     right = page.locator('input[data-filter="workTask"][value="Close the right lane"]')
     await right.evaluate('el => el.closest("details").open = true')
     await right.check()
-    await expect(page.locator('#results > article')).to_have_count(23)
+    await expect(page.locator('#results > article')).to_have_count(21)
+    await expect(page.locator('#results [data-typical^="131-"]')).to_have_count(0)
+    await expect(page.locator('#possible-results [data-typical^="131-"]')).to_have_count(0)
+    await expect(page.locator('#possible-results [data-typical="110-TR-NFW-2L"]')).to_have_count(1)
     await expect(page.locator('#results [data-typical="204-FW-1LC-(L)"]')).to_have_count(0)
     await expect(page.locator('#possible-results [data-typical="204-FW-1LC-(L)"]')).to_have_count(0)
     await expect(page.locator('#possible-results [data-typical="5205-S-FW-2LC-(L)"]')).to_have_count(1)
+    for number in ['105', '106', '107', '120', '121', '300', '301', '380', '4121']:
+        await expect(page.locator(f'#possible-results [data-typical^="{number}-"]')).to_have_count(0)
     await page.get_by_role('button', name='Add 123-NFW-1LC-(R)', exact=True).click()
     left = page.locator('input[data-filter="workTask"][value="Close the left lane"]')
     await left.check()
+    await expect(page.locator('#results [data-typical^="131-"] [data-filter-value="Close the left lane"]')).to_have_count(1)
     await expect(page.locator('#results [data-typical="124-NFW-2(R+L)LC-SHIFT"]')).to_have_count(1)
     await right.uncheck()
     await expect(page.locator('#selected-count')).to_have_text('6')
@@ -425,23 +609,28 @@ async def check_work_tasks(page):
     await page.locator('#reset-filters').click()
     await expect(page.locator('#filters input:checked')).to_have_count(0)
     await expect(page.locator('#match-count')).to_have_text('131 of 131 typicals match')
+    await page.reload()
+    assert await selected_ids(page) == ['123-NFW-1LC-(R)']
+    await expect(page.locator('[data-selected="123-NFW-1LC-(R)"] [data-filter-field="workTask"]')).to_have_text('Work activity: Close the right lane')
     await reset_project_for_catalog_checks(page)
-    print('PASS: four filter sections, plain work tasks, possible sides, overlap without duplicates, retained selection and clear filters', flush=True)
+    print('PASS: 13 activities, 131 covered details, three Other work typicals, matching tags/counts, possible sides, persistence and desktop/mobile layout', flush=True)
 
 
 async def check_lane_information(page):
     await expect(page.locator('input[data-filter="lanes"]')).to_have_count(0)
+    assert not await page.locator('.ttc-tag').filter(has_text=re.compile(r'^Lane:')).count()
 
     async def choose(field, value):
         control = page.locator(f'input[data-filter="{field}"][value="{value}"]')
         await control.evaluate('el => { for (let group = el.closest("details"); group; group = group.parentElement.closest("details")) group.open = true; }')
         await control.check()
 
-    await choose('workTask', 'Close the right lane')
+    await choose('workTask', 'Lane closure — side unspecified')
     await page.locator('#search').fill('110-TR-NFW-2L')
     await expect(page.locator('#results > article')).to_have_count(1)
     await expect(page.locator('#results .ttc-tags')).to_contain_text('Existing: 2 total (both directions)')
     await expect(page.locator('#results .ttc-tags')).to_contain_text('Closed: 1 lane')
+    await expect(page.locator('#results .ttc-note')).to_contain_text('Work area: 1 outside lane')
     await page.get_by_role('button', name='Add 110-TR-NFW-2L', exact=True).click()
     assert await report_ids(page) == ALWAYS_IDS + ['110-TR-NFW-2L']
     await page.locator('#reset-filters').click()
@@ -450,11 +639,9 @@ async def check_lane_information(page):
     await page.locator('#search').fill('202-FW-(1-2)LC-(L)')
     await expect(page.locator('#results > article')).to_have_count(1)
     await expect(page.locator('#results .ttc-tags')).to_contain_text('Existing: 3 in affected direction')
-    source = page.locator('#results').get_by_text('Original workbook classifications', exact=True)
-    await source.click()
-    await expect(source.locator('..')).to_contain_text('Number of lanes: 1+')
+    await expect(page.locator('#results [data-workbook-field="lanes"]')).to_have_text('Workbook lanes: 1+')
     await page.locator('#reset-filters').click()
-    await choose('workTask', 'Work on the shoulder')
+    await choose('workTask', 'Shoulder / roadside work')
     await choose('workTask', 'Close the right lane')
     await page.locator('#search').fill('205-FW-1LC-(R)-SHIFT')
     await expect(page.locator('#results > article')).to_have_count(1)
@@ -479,7 +666,7 @@ async def check_possible_matches_and_conditions(page):
         await control.check()
         return control
 
-    for field, value in [('projectType', 'Construction'), ('roadwayType', 'Freeway'), ('workTask', 'Close the right lane')]:
+    for field, value in [('projectType', 'Construction'), ('mdotCode', 'FW'), ('workTask', 'Close the right lane')]:
         await choose(field, value)
     possible = page.locator('#possible-matches')
     await expect(possible).to_be_visible()
@@ -498,7 +685,7 @@ async def check_possible_matches_and_conditions(page):
     await expect(card).to_have_count(0)
     assert await report_ids(page) == ALWAYS_IDS + ['205-FW-1LC-(R)-SHIFT']
     await page.get_by_role('button', name='Remove selected 205-FW-1LC-(R)-SHIFT', exact=True).click()
-    known = await choose('workTask', 'Work on the shoulder')
+    known = await choose('workTask', 'Shoulder / roadside work')
     await expect(page.locator('#results [data-typical="205-FW-1LC-(R)-SHIFT"]')).to_have_count(1)
     await expect(card).to_have_count(0)
     await known.uncheck()
@@ -516,7 +703,7 @@ async def check_possible_matches_and_conditions(page):
     await expect(possible).to_be_hidden()
     await expect(possible).not_to_have_attribute('open', '')
     assert await report_ids(page) == ALWAYS_IDS + ['205-FW-1LC-(R)-SHIFT']
-    await choose('workTask', 'Other work')
+    await choose('workTask', 'Mobile work / rolling roadblocks')
     await page.locator('#search').fill('mobile operation')
     await expect(page.locator('#results > article')).to_have_count(6)
     await page.locator('#reset-filters').click()
@@ -524,7 +711,7 @@ async def check_possible_matches_and_conditions(page):
     await page.locator('#search').fill('5182')
     await expect(page.locator('#results > article')).to_have_count(2)
     await page.locator('#reset-filters').click()
-    await choose('workTask', 'Other work')
+    await choose('workTask', 'Shift traffic')
     await page.locator('#search').fill('parking lane')
     await expect(page.locator('#results > article')).to_have_count(3)
     await page.locator('#reset-filters').click()
@@ -553,7 +740,7 @@ async def check(origin):
         await page.goto(origin + '/calc/index.html')
         await page.locator('a[href="calculators/mdot-ttc/"]').click()
         await expect(page.locator('#selected-count')).to_have_text('5')
-        await expect(page.locator('#match-count')).to_have_text('83 of 131 typicals match')
+        await expect(page.locator('#match-count')).to_have_text('80 of 131 typicals match')
         await expect(page.locator('#filters input:checked')).to_have_count(1)
         await expect(page.locator('input[data-filter="projectType"][value="Construction"]')).to_be_checked()
         await page.locator('#reset-filters').click()
@@ -565,6 +752,9 @@ async def check(origin):
         await check_always_sheets(page)
         await check_general_roadways(page)
         await check_roadway_types(page)
+        await check_notes_category(page)
+        await check_typical_series(page)
+        await check_mdot_codes(page)
         await check_work_tasks(page)
         await check_categories(page)
         await check_lane_information(page)
@@ -573,7 +763,7 @@ async def check(origin):
         await check_paint_flags(page)
         await check_catalog_coverage(page)
 
-        for field, value in [('roadwayType', 'Undivided'), ('workTask', 'Close the right lane')]:
+        for field, value in [('mdotCode', 'TR'), ('workTask', 'Lane closure — side unspecified')]:
             control = page.locator(f'input[data-filter="{field}"][value="{value}"]')
             await control.evaluate('el => { for (let group = el.closest("details"); group; group = group.parentElement.closest("details")) group.open = true; }')
             await control.check()
@@ -606,7 +796,7 @@ async def check(origin):
         print('PASS: project name validation/persistence, filters, 136 Word rows, linked index and 150 numbered detail pages', flush=True)
 
         await page.locator('#search').fill('do not use')
-        await expect(page.locator('#selected-list > li > article > .ttc-note.warning')).to_have_count(3)
+        await expect(page.locator('#selected-list > li > article > .ttc-note.warning')).to_have_count(0)
         await reset_project_for_catalog_checks(page)
         await expect(page.locator('#project-name')).to_have_value('')
         await expect(page.locator('#selected-count')).to_have_text('5')
@@ -647,7 +837,7 @@ async def check(origin):
         await reset_project_for_catalog_checks(page)
         await page.locator('#project-name').fill('Maple Road resurfacing')
         await page.get_by_role('button', name='Add 110-TR-NFW-2L', exact=True).click()
-        print('PASS: frozen export selections and saved project retaining required sheets', flush=True)
+        print('PASS: frozen export selections and saved project retaining required typicals', flush=True)
 
         downloaded = []
         page.on('download', lambda download: downloaded.append(download.suggested_filename))

@@ -47,9 +47,7 @@
 .ttc-filter-options label { display: flex; align-items: start; gap: 8px; font-size: 13px; font-weight: 400; line-height: 1.4; padding: 5px 0; overflow-wrap: anywhere; }
 .ttc-filter-options input { width: 16px; height: 16px; flex: 0 0 auto; margin: 1px 0 0; accent-color: #1f5970; }
 .ttc-filter-value { flex: 1; min-width: 0; }
-.ttc-filter-description { display: block; color: #526577; font-size: 12px; line-height: 1.45; margin-top: 3px; }
-.ttc-roadway-options { max-height: none; }
-.ttc-task-options { max-height: none; }
+.ttc-task-options { max-height: 320px; }
 .ttc-filter-count { flex: 0 0 auto; color: #24536d; font-size: 12px; font-variant-numeric: tabular-nums; }
 .ttc-code-legend { margin-top: 14px; border: 1px solid #c5d4df; border-radius: 8px; background: #fff; }
 .ttc-code-legend > summary { cursor: pointer; padding: 14px 18px; color: #1d5164; font-size: 14px; font-weight: 700; }
@@ -109,15 +107,19 @@
 .ttc-result h3 { font-size: 16px; line-height: 1.4; margin: 8px 0 12px; color: #183047; }
 .ttc-tags { display: flex; flex-wrap: wrap; gap: 5px; }
 .ttc-tag { font-size: 11px; padding: 4px 7px; color: #425c70; background: #eef3f7; border-radius: 4px; }
+.ttc-rcoc-yes { color: #166534; background: #dcfce7; border: 1px solid #86cda0; font-weight: 600; }
+.ttc-rcoc-no { color: #991b1b; background: #fee2e2; border: 1px solid #e7aaaa; font-weight: 600; }
+.ttc-filter-tag { max-width: 100%; box-sizing: border-box; overflow-wrap: anywhere; line-height: 1.4; color: #1d5164; background: #e5eff2; }
 .ttc-paint-flag { display: inline-block; background: #fff0cb; color: #704409; border: 1px solid #d4ab64; font-weight: 700; }
 .ttc-paint-flag.possible { background: #fff8ea; font-weight: 600; }
 .ttc-paint-warning { font-weight: 600; }
 .ttc-note { font-size: 13px; line-height: 1.5; padding: 8px 10px; margin: 12px 0; background: #fff6e9; border-left: 3px solid #c88b35; color: #68451b; overflow-wrap: anywhere; }
 .ttc-note.warning { border-color: #b14637; background: #fff0ee; color: #862e23; font-weight: 700; }
 .ttc-result-links { display: flex; flex-wrap: wrap; gap: 12px; font-size: 12px; margin-top: 12px; }
-.ttc-related, .ttc-workbook-source { margin-top: 12px; padding-top: 12px; border-top: 1px solid #d9e3ea; }
-.ttc-related summary, .ttc-workbook-source summary { font-size: 13px; cursor: pointer; }
-.ttc-related p, .ttc-workbook-source p { font-size: 13px; line-height: 1.5; }
+.ttc-workbook-tag { max-width: 100%; box-sizing: border-box; overflow-wrap: anywhere; line-height: 1.4; }
+.ttc-related { margin-top: 12px; padding-top: 12px; border-top: 1px solid #d9e3ea; }
+.ttc-related summary { font-size: 13px; cursor: pointer; }
+.ttc-related p { font-size: 13px; line-height: 1.5; }
 .ttc-selected-list { display: grid; gap: 12px; list-style: none; padding: 0; margin: 0; }
 .ttc-selected-list > li { min-width: 0; }
 .ttc-automatic { margin-top: 18px; padding-top: 16px; border-top: 1px solid #dce4ea; }
