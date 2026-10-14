@@ -38,26 +38,19 @@
       showGroup(hoursGroup);
       showGroup(daysGroup);
       hideGroup(plannedGroup, 'plannedTime');
-      hideGroup(longTermGroup, 'longTermMedical');
-      hideGroup(personalExhaustedGroup, 'personalLeaveExhausted');
+      showGroup(longTermGroup);
+      if (getSelected('longTermMedical') === true) {
+        showGroup(personalExhaustedGroup);
+      } else {
+        hideGroup(personalExhaustedGroup, 'personalLeaveExhausted');
+      }
     } else if (healthRelated === false) {
       hideGroup(hoursGroup);
       hideGroup(daysGroup);
       showGroup(plannedGroup);
 
-      const plannedTime = getSelected('plannedTime');
-      if (plannedTime === false) {
-        showGroup(longTermGroup);
-        const longTerm = getSelected('longTermMedical');
-        if (longTerm === true) {
-          showGroup(personalExhaustedGroup);
-        } else {
-          hideGroup(personalExhaustedGroup, 'personalLeaveExhausted');
-        }
-      } else {
-        hideGroup(longTermGroup, 'longTermMedical');
-        hideGroup(personalExhaustedGroup, 'personalLeaveExhausted');
-      }
+      hideGroup(longTermGroup, 'longTermMedical');
+      hideGroup(personalExhaustedGroup, 'personalLeaveExhausted');
     } else {
       hideGroup(hoursGroup);
       hideGroup(daysGroup);
@@ -79,9 +72,10 @@
   }
 
   function parseNumber(value) {
+    if (value.trim() === '') return null;
     const num = Number(value);
-    if (!Number.isFinite(num)) return null;
-    return Math.max(0, num);
+    if (!Number.isFinite(num) || num < 0) return null;
+    return num;
   }
 
   function validateInputs(inputs) {
@@ -90,16 +84,18 @@
     }
 
     if (inputs.healthRelated) {
-      if (inputs.hoursUsed === null) return 'Enter personal leave hours already used this benefit year.';
-      if (inputs.consecutiveDays === null) return 'Enter the expected number of consecutive days absent.';
-    } else {
-      if (inputs.plannedTime === null) return 'Select whether this is planned time off.';
-      if (inputs.plannedTime === false && inputs.longTermMedical === null) {
+      if (inputs.hoursUsed === null) return 'Enter personal leave hours already used this benefit year (zero or more).';
+      if (inputs.consecutiveDays === null || inputs.consecutiveDays < 1 || !Number.isInteger(inputs.consecutiveDays)) {
+        return 'Enter the expected number of consecutive days absent (a whole number of at least 1).';
+      }
+      if (inputs.longTermMedical === null) {
         return 'Select whether this is long-term medical leave.';
       }
       if (inputs.longTermMedical === true && inputs.personalLeaveExhausted === null) {
         return 'Select whether personal leave has been exhausted.';
       }
+    } else {
+      if (inputs.plannedTime === null) return 'Select whether this is planned time off.';
     }
 
     return '';
@@ -116,15 +112,28 @@
       const under72 = inputs.hoursUsed < 72;
       const longAbsence = inputs.consecutiveDays >= 3;
 
-      headline = under72 ? 'Personal leave (ESTA-covered)' : 'Personal leave (non-ESTA rules)';
-      steps.push('Reason is illness/medical/family/mental/public health so personal leave applies.');
-
-      if (under72) {
-        steps.push('Under 72 hours used this benefit year: automatically ESTA-covered if hours remain.');
-        path.push('<72 hours used');
+      if (inputs.longTermMedical && inputs.personalLeaveExhausted) {
+        headline = 'Frozen Sick Bank and FMLA/Extended Sick Leave';
+        steps.push('Personal leave is exhausted: move to the Frozen Sick Bank.');
+        steps.push('Initiate FMLA/Extended Sick Leave application.');
+        path.push('Long-term medical', 'Personal leave exhausted');
       } else {
-        steps.push('Over 72 hours used: follow non-ESTA personal leave rules.');
-        path.push('72+ hours used');
+        headline = under72 ? 'Personal leave (ESTA-covered)' : 'Personal leave (non-ESTA rules)';
+        steps.push('Reason is illness/medical/family/mental/public health so personal leave applies.');
+
+        if (under72) {
+          steps.push('Under 72 hours used this benefit year: automatically ESTA-covered if hours remain.');
+          path.push('<72 hours used');
+        } else {
+          steps.push('72 or more hours used: follow non-ESTA personal leave rules.');
+          path.push('72+ hours used');
+        }
+
+        if (inputs.longTermMedical) {
+          steps.push('Use remaining personal leave for long-term medical need.');
+          steps.push('When personal leave is exhausted, transition to Frozen Sick Bank and FMLA/Extended Sick Leave.');
+          path.push('Long-term medical', 'Personal leave available');
+        }
       }
 
       if (longAbsence) {
@@ -141,20 +150,6 @@
         meta = 'Employee can choose either option if balances are available.';
         steps.push('Planned travel/personal time: use vacation or personal leave at employee choice.');
         path.push('Planned');
-      } else if (inputs.longTermMedical) {
-        path.push('Unplanned, long-term medical');
-        const exhausted = inputs.personalLeaveExhausted === true;
-        if (exhausted) {
-          headline = 'Frozen Sick Bank and FMLA/Extended Sick Leave';
-          steps.push('Personal leave is exhausted: move to the Frozen Sick Bank.');
-          steps.push('Initiate FMLA/Extended Sick Leave application.');
-          path.push('Personal leave exhausted');
-        } else {
-          headline = 'Personal leave';
-          steps.push('Use remaining personal leave for long-term medical need.');
-          steps.push('When personal leave is exhausted, transition to Frozen Sick Bank and FMLA/Extended Sick Leave.');
-          path.push('Personal leave available');
-        }
       } else {
         headline = 'Unpaid leave (if approved)';
         steps.push('Not planned and not medical: defaults to unpaid leave pending approval.');

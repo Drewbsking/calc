@@ -1,0 +1,301 @@
+{
+  "checkedDate": "2026-10-14",
+  "communitySource": "https://www.oaklandcountymi.gov/community/local-communities",
+  "mapSource": "https://mdotjboss.state.mi.us/SpecProv/act51.htm",
+  "municipalities": [
+    {
+      "name": "Auburn Hills",
+      "type": "City",
+      "projectNo": 1065350,
+      "fileName": "Auburn Hills 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Berkley",
+      "type": "City",
+      "projectNo": 1065583,
+      "fileName": "Berkley 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Beverly Hills",
+      "type": "Village",
+      "projectNo": 1065591,
+      "fileName": "Beverly Hills 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Bingham Farms",
+      "type": "Village",
+      "projectNo": 1067849,
+      "fileName": "Bingham Farms 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Birmingham",
+      "type": "City",
+      "projectNo": 1080399,
+      "fileName": "Birmingham 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Bloomfield Hills",
+      "type": "City",
+      "projectNo": 1080403,
+      "fileName": "Bloomfield Hills 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Cass Lake",
+      "type": "Village",
+      "projectNo": null,
+      "fileName": null,
+      "year": null
+    },
+    {
+      "name": "Clarkston",
+      "type": "City",
+      "projectNo": 1082656,
+      "fileName": "Clarkston 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Clawson",
+      "type": "City",
+      "projectNo": 1082660,
+      "fileName": "Clawson 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Farmington",
+      "type": "City",
+      "projectNo": 1082796,
+      "fileName": "Farmington 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Farmington Hills",
+      "type": "City",
+      "projectNo": 1082798,
+      "fileName": "Farmington Hills 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Fenton",
+      "type": "City",
+      "projectNo": 1082804,
+      "fileName": "Fenton 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Ferndale",
+      "type": "City",
+      "projectNo": 1082806,
+      "fileName": "Ferndale 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Franklin",
+      "type": "Village",
+      "projectNo": 1082830,
+      "fileName": "Franklin 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Hazel Park",
+      "type": "City",
+      "projectNo": 1082927,
+      "fileName": "Hazel Park 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Holly",
+      "type": "Village",
+      "projectNo": 1082941,
+      "fileName": "Holly 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Huntington Woods",
+      "type": "City",
+      "projectNo": 1082964,
+      "fileName": "Huntington Woods 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Keego Harbor",
+      "type": "City",
+      "projectNo": 1082993,
+      "fileName": "Keego Harbor 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Lake Angelus",
+      "type": "City",
+      "projectNo": 1083011,
+      "fileName": "Lake Angelus 2018.pdf",
+      "year": 2018
+    },
+    {
+      "name": "Lake Orion",
+      "type": "Village",
+      "projectNo": 1083024,
+      "fileName": "Lake Orion 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Lathrup Village",
+      "type": "City",
+      "projectNo": 1083035,
+      "fileName": "Lathrup Village 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Leonard",
+      "type": "Village",
+      "projectNo": 1083047,
+      "fileName": "Leonard 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Madison Heights",
+      "type": "City",
+      "projectNo": 1083077,
+      "fileName": "Madison Heights 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Milford",
+      "type": "Village",
+      "projectNo": 1083829,
+      "fileName": "Milford 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Northville",
+      "type": "City",
+      "projectNo": 1083895,
+      "fileName": "Northville 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Novi",
+      "type": "City",
+      "projectNo": 1083901,
+      "fileName": "Novi 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Oak Park",
+      "type": "City",
+      "projectNo": 1083903,
+      "fileName": "Oak Park 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Orchard Lake Village",
+      "type": "City",
+      "projectNo": 1083919,
+      "fileName": "Orchard Lake 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Ortonville",
+      "type": "Village",
+      "projectNo": 1083921,
+      "fileName": "Ortonville 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Oxford",
+      "type": "Village",
+      "projectNo": 1083935,
+      "fileName": "Oxford 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Pleasant Ridge",
+      "type": "City",
+      "projectNo": 1083971,
+      "fileName": "Pleasant Ridge 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Pontiac",
+      "type": "City",
+      "projectNo": 1083975,
+      "fileName": "Pontiac 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Rochester",
+      "type": "City",
+      "projectNo": 1084015,
+      "fileName": "Rochester 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Rochester Hills",
+      "type": "City",
+      "projectNo": 1084018,
+      "fileName": "Rochester Hills 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Royal Oak",
+      "type": "City",
+      "projectNo": 1084042,
+      "fileName": "Royal Oak 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "South Lyon",
+      "type": "City",
+      "projectNo": 1084078,
+      "fileName": "South Lyon 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Southfield",
+      "type": "City",
+      "projectNo": 1084084,
+      "fileName": "Southfield 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Sylvan Lake",
+      "type": "City",
+      "projectNo": 1084135,
+      "fileName": "Sylvan Lake 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Troy",
+      "type": "City",
+      "projectNo": 1084159,
+      "fileName": "Troy 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Walled Lake",
+      "type": "City",
+      "projectNo": 1084196,
+      "fileName": "Walled Lake 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Wixom",
+      "type": "City",
+      "projectNo": 1084233,
+      "fileName": "Wixom 2026.pdf",
+      "year": 2026
+    },
+    {
+      "name": "Wolverine Lake",
+      "type": "Village",
+      "projectNo": 1084237,
+      "fileName": "Wolverine Lake 2026.pdf",
+      "year": 2026
+    }
+  ]
+}

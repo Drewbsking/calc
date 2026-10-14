@@ -150,6 +150,47 @@
             background: #eef3ff;
             outline: none;
         }
+        .municipality-filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 16px 0;
+        }
+        .municipality-filters[hidden] { display: none; }
+        .municipality-filters label {
+            display: grid;
+            gap: 6px;
+            font-weight: 600;
+            flex: 1 1 220px;
+        }
+        .municipality-filters input, .municipality-filters select {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 10px 12px;
+            border: 1px solid #94a3b8;
+            border-radius: 6px;
+            background: #fff;
+            color: #0b2a4a;
+            font: inherit;
+        }
+        .municipality-filters input:focus-visible, .municipality-filters select:focus-visible {
+            outline: 2px solid #2563eb;
+            outline-offset: 2px;
+        }
+        .municipality-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .municipality-list a { height: 100%; box-sizing: border-box; }
+        .municipality-list small {
+            display: block;
+            margin-top: 5px;
+            color: #475569;
+            font-weight: 400;
+        }
+        .municipality-list [hidden] { display: none; }
+        .cert-source { color: #475569; font-size: 14px; }
         @media (max-width: 600px) {
             .map-pin {
                 font-size: 11px;
@@ -163,10 +204,12 @@
     <main class="cert-map-page">
         <header class="cert-map-header">
             <h1>RCOC Certification Map Finder</h1>
-            <p>Click a township name on the map to open its certification PDF.</p>
+            <p>Open a county-road certification sheet from the map, or find a city or village's MDOT certification PDF below.</p>
             <div class="cert-map-actions">
                 <a class="cert-link" href="certMap/2024%20Countywide%20Cert.pdf" target="_blank" rel="noopener">Open Full Book (2024)</a>
                 <a class="cert-link secondary" href="certMap/2024_districtmap.pdf" target="_blank" rel="noopener">View District Map</a>
+                <a class="cert-link secondary" href="https://mdotjboss.state.mi.us/SpecProv/act51.htm" target="_blank" rel="noopener">MDOT Act 51 Maps</a>
+                <a class="cert-link secondary" href="#municipal-certifications">Cities &amp; Villages</a>
             </div>
         </header>
 
@@ -177,13 +220,35 @@
         </div>
 
         <section class="link-fallback" aria-label="Certification links list">
-            <h2>Direct PDF Links</h2>
+            <h2>RCOC County-Road Sheets (2024)</h2>
             <div class="link-grid" id="cert-links-list"></div>
+        </section>
+
+        <section class="link-fallback" id="municipal-certifications" aria-labelledby="municipal-heading">
+            <h2 id="municipal-heading">Oakland County Cities &amp; Villages</h2>
+            <p>First <a href="https://mdotjboss.state.mi.us/SpecProv/act51.htm" target="_blank" rel="noopener">open MDOT Act 51 Maps</a> and accept its terms, then return here to choose a municipality. MDOT requires that first visit before its PDF links will open. The map year appears with each link.</p>
+            <div class="municipality-filters" id="municipality-filters" hidden>
+                <label for="municipality-search">Find a city or village
+                    <input id="municipality-search" type="search" placeholder="Search by name" autocomplete="off">
+                </label>
+                <label for="municipality-type">Community type
+                    <select id="municipality-type">
+                        <option value="">All cities and villages</option>
+                        <option value="City">Cities</option>
+                        <option value="Village">Villages</option>
+                    </select>
+                </label>
+            </div>
+            <p id="municipality-status" role="status">Loading city and village links...</p>
+            <ul class="link-grid municipality-list" id="municipality-links"></ul>
+            <p class="cert-source">Sources: <a href="https://www.oaklandcountymi.gov/community/local-communities" target="_blank" rel="noopener">Oakland County community directory</a> and <a href="https://mdotjboss.state.mi.us/SpecProv/act51.htm" target="_blank" rel="noopener">MDOT Act 51 maps</a>. <span id="municipality-checked"></span> For updated maps, select “City or Village” on MDOT's site.</p>
+            <noscript>JavaScript is needed to display this list. Use the MDOT Act 51 maps link above to find city and village maps.</noscript>
         </section>
     </main>
     <div id="footer-placeholder"></div>
 
     <script src="shared/layout.js"></script>
+    <script src="certMap/municipalities.js"></script>
     <script>
         const locations = [
             { name: 'Addison Township', file: 'Addison-24-CW.pdf', left: 83, top: 16 },
