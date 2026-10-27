@@ -12,7 +12,69 @@
     <main class="container underclearance-tool">
         <section class="calculator" aria-labelledby="underclearance-heading">
             <h1 id="underclearance-heading">Two-Way Bridge Clearance Calculator</h1>
-            <p class="underclearance-lede">Enter six decimal-foot readings for each travel direction. The calculator follows each lane through both ends of the bridge and produces a separate feet–inches result for each direction.</p>
+            <p class="underclearance-lede">Enter six decimal-foot readings for each travel direction. Choose one clearance for the whole bridge or calculate a separate clearance for each direction.</p>
+
+            <aside class="underclearance-change-notice" aria-labelledby="mmutcd-changes-heading">
+                <h2 id="mmutcd-changes-heading">Why this calculator: the MMUTCD changed</h2>
+                <p class="underclearance-change-lead">Michigan’s advance-warning threshold increased by <strong>1 foot: from below 13 ft 6 in to below 14 ft 6 in.</strong> A bridge with 14 ft of actual clearance falls within the new advance-warning threshold even though it did not fall within the old threshold.</p>
+                <div class="underclearance-change-table-wrap" role="region" aria-label="Old and new MMUTCD low-clearance provisions" tabindex="0">
+                    <table class="underclearance-change-table">
+                        <caption>Low-clearance signing: earlier MMUTCD versus 2025 MMUTCD</caption>
+                        <thead>
+                            <tr>
+                                <th scope="col">Provision</th>
+                                <th scope="col">Earlier MMUTCD · Section 2C.27</th>
+                                <th scope="col">2025 MMUTCD · Section 2C.25</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th scope="row">Advance warning</th>
+                                <td>W12-2 required below 13 ft 6 in.</td>
+                                <td>W12-2 required below 14 ft 6 in, or below the statutory maximum vehicle height plus 12 inches, whichever is greater. Michigan’s 13 ft 6 in statutory height makes the threshold 14 ft 6 in.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Displayed clearance</th>
+                                <td>Guidance uses 2-inch increments without exceeding actual clearance.</td>
+                                <td>Guidance uses 1-inch increments without exceeding actual clearance.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Measurement coverage</th>
+                                <td>Guidance includes the travel lanes and a point 2 feet off the edge of the traveled way to account for vehicle overhang.</td>
+                                <td>Michigan guidance applies minimum-clearance determinations over the complete usable shoulder width.</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Overhead signs</th>
+                                <td>Rectangular low-clearance signing recommended at structures with clearance of 14 ft or less.</td>
+                                <td>W12-2a or W12-2b overhead signing recommended at 14 ft 6 in or less. W12-2b identifies a specific low-clearance lane or shoulder; the advance legend should match the lowest overhead value.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p><strong>What this calculator helps with:</strong> Check the new advance-warning threshold using actual field measurements, then convert decimal feet to a sign legend using whole-inch rounding. The selected logic determines whether both sides share one bridge minimum or each direction uses its own minimum.</p>
+                <p><strong>The frost allowance existed in both editions.</strong> Both include guidance for a reduction of up to 3 inches where frost action affects clearance. This calculator applies a fixed 3-inch allowance after checking the actual minimum against the advance-warning threshold.</p>
+                <p class="underclearance-change-sources">Compare the <a href="images/mmutcd-low-clearance-signs-section-2c-27.jpg" target="_blank" rel="noopener">earlier Section 2C.27 excerpt</a>, <a href="images/mmutcd-low-clearance-signs-section-2c-25.jpg" target="_blank" rel="noopener">2025 Section 2C.25 excerpt</a>, and <a href="https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=dfced8da-d272-47f3-a1e4-92ad651c97e3&amp;fileName=2-2025+MMUTCD+List+of+Changes+to+the+11th+Edition+National+MUTCD.pdf#page=13" target="_blank" rel="noopener">MDOT’s Michigan provisions for Section 2C.25 (PDF, page 13)</a>. See the compliance dates below.</p>
+            </aside>
+
+            <aside class="underclearance-logic-notice" aria-labelledby="logic-notice-heading">
+                <h2 id="logic-notice-heading">How this calculator works</h2>
+                <div class="underclearance-logic-selector">
+                    <label for="clearance-logic">Choose the calculation logic</label>
+                    <select id="clearance-logic" name="clearance-logic" form="underclearance-form" aria-describedby="logic-mode-summary">
+                        <option value="bridge" selected>Logic 1: One height for the whole bridge</option>
+                        <option value="direction">Logic 2: Separate height for each direction</option>
+                    </select>
+                    <p id="logic-mode-summary" role="status">Logic 1 uses the lowest of all 12 readings for both sides of the bridge. Both sides use the same sign legend and threshold decision.</p>
+                </div>
+                <p class="underclearance-logic-key">The 14 ft 6 in threshold is checked <strong>BEFORE the 3-inch reduction.</strong></p>
+                <ol>
+                    <li><strong>Find the actual minimum.</strong> <span id="logic-minimum-description">Use the lowest of all 12 readings across both travel directions and both bridge ends. Apply that minimum to both sides.</span></li>
+                    <li><strong>Check whether signing is required.</strong> Compare that actual minimum with 14 ft 6 in. Only a measurement below 14 ft 6 in triggers signing in this calculator. Exactly 14 ft 6 in or higher does not trigger signing.</li>
+                    <li><strong>Calculate the sign legend.</strong> Subtract the 3-inch frost/resurfacing allowance from the actual minimum, then round down to a whole inch. This adjusted value determines the displayed legend; it does not change the threshold decision.</li>
+                </ol>
+                <p class="underclearance-logic-example" id="logic-mode-example">Logic 1 example: If the directional minimums are 14 ft 2 in and 14 ft 4 in, both sides use 14 ft 2 in as the actual minimum and display 13 ft 11 in after the 3-inch reduction.</p>
+                <p class="underclearance-logic-example"><strong>Example:</strong> An actual minimum of <strong>14 ft 7 in</strong> produces a calculated legend of <strong>14 ft 4 in</strong> after the reduction. Signing is <strong>not required by this calculator’s threshold</strong> because the actual minimum is above 14 ft 6 in.</p>
+            </aside>
 
             <div class="note underclearance-source-note">
                 <p><strong>Two-way layout:</strong> Each travel direction uses six readings: EM left, crown, and EM right at the entering and exiting ends of the bridge. See the <a href="https://rcoc.miraheze.org/wiki/Low_Clearance_Signs" target="_blank" rel="noopener">RCOC Low Clearance Signs guidance</a>.</p>
@@ -31,17 +93,20 @@
                     <li><strong>Displayed clearance:</strong> Show the clearance to the nearest inch without exceeding the actual clearance. A reduction of up to 3 inches should be used where frost action can change the clearance.</li>
                     <li><strong>Overhead signs:</strong> W12-2a or lane-specific W12-2b signs may supplement the advance sign. Use additional overhead signs where clearance varies greatly, and keep the advance legend consistent with the lowest overhead value.</li>
                 </ul>
+                <div class="note underclearance-source-note">
+                    <p><strong><a href="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Design/Design-Advisories/DA-2026-02-2025-MMUTCD.pdf" target="_blank" rel="noopener">MDOT Design Advisory DA 2026-02 — 2025 MMUTCD (PDF)</a></strong><br>Issued <time datetime="2026-04-20">April 20, 2026</time>. The advisory includes Table 1B-1 and its five-year target compliance periods for low-clearance advance signs and variable-clearance overhead signs. These items are coordinated statewide and are excluded from the August 7, 2026 project-use requirement.</p>
+                </div>
                 <div class="underclearance-compliance-grid">
                     <div>
                         <time datetime="2026-08-07">August 7, 2026</time>
-                        <p><strong>Michigan project-use date:</strong> The 2025 MMUTCD applies to applicable MDOT-let projects beginning with this bid letting. Table 1B-1 items are coordinated statewide.</p>
+                        <p><strong>Michigan project-use date:</strong> The 2025 MMUTCD applies to MDOT-let projects whose contract documents reference its latest version beginning with this bid letting. Table 1B-1 items follow separate statewide coordination.</p>
                     </div>
                     <div>
                         <time datetime="2029-01-18">January 18, 2029</time>
-                        <p><strong>Low-clearance target date:</strong> Five years after the 11th Edition's January 18, 2024 effective date for the W12-2 advance-sign requirement and variable-clearance overhead-sign guidance.</p>
+                        <p><strong>Low-clearance target date:</strong> Five years after the 11th Edition's January 18, 2024 effective date for Section 2C.25, Paragraph 1 (W12-2 advance-sign requirement) and Paragraph 8 (variable-clearance overhead-sign guidance).</p>
                     </div>
                 </div>
-                <p class="underclearance-standard-sources">Sources: <a href="https://mutcd.fhwa.dot.gov/pdfs/11th_Edition/part1.pdf" target="_blank" rel="noopener">MUTCD Table 1B-1</a> and <a href="https://www.michigan.gov/mdot/-/media/Project/Websites/MDOT/Business/Design/Design-Advisories/DA-2026-02-2025-MMUTCD.pdf" target="_blank" rel="noopener">MDOT Design Advisory 2026-02</a>.</p>
+                <p class="underclearance-standard-sources">Sources: <a href="https://mutcd.fhwa.dot.gov/pdfs/11th_Edition/part1.pdf" target="_blank" rel="noopener">MUTCD Table 1B-1</a> and the MDOT Design Advisory linked above.</p>
             </aside>
 
             <form id="underclearance-form" novalidate>
@@ -49,6 +114,7 @@
                     <div>
                         <h2>Field measurements</h2>
                         <p>A two-way bridge uses 12 readings total—six for each travel direction.</p>
+                        <p><a href="https://mdotjboss.state.mi.us/webforms/GetDocument.htm?fileName=1190+%28BOBS%29.pdf" target="_blank" rel="noopener">MDOT Form 1190 (BOBS) — Structure Clearance Measurements (PDF)</a> · February 2026 revision</p>
                     </div>
                     <div class="underclearance-actions">
                         <button type="button" class="underclearance-secondary-button" id="load-example">Load sample values</button>
@@ -109,25 +175,6 @@
                         </fieldset>
                     </div>
 
-                    <div class="underclearance-existing-sign">
-                        <div class="form-group">
-                            <label for="direction1-existing-status">Existing clearance sign posted?</label>
-                            <select id="direction1-existing-status" class="existing-sign-status" data-direction="direction1">
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
-                            </select>
-                        </div>
-                        <div class="underclearance-existing-value" id="direction1-existing-value" hidden>
-                            <div class="form-group">
-                                <label for="direction1-existing-feet">Existing sign feet</label>
-                                <input type="number" id="direction1-existing-feet" class="existing-sign-feet" data-direction="direction1" min="0" step="1" inputmode="numeric" placeholder="14">
-                            </div>
-                            <div class="form-group">
-                                <label for="direction1-existing-inches">Existing sign inches</label>
-                                <input type="number" id="direction1-existing-inches" class="existing-sign-inches" data-direction="direction1" min="0" max="11" step="1" inputmode="numeric" placeholder="6">
-                            </div>
-                        </div>
-                    </div>
                 </section>
 
                 <section class="underclearance-direction-card" aria-labelledby="direction2-input-heading">
@@ -183,36 +230,17 @@
                         </fieldset>
                     </div>
 
-                    <div class="underclearance-existing-sign">
-                        <div class="form-group">
-                            <label for="direction2-existing-status">Existing clearance sign posted?</label>
-                            <select id="direction2-existing-status" class="existing-sign-status" data-direction="direction2">
-                                <option value="no">No</option>
-                                <option value="yes">Yes</option>
-                            </select>
-                        </div>
-                        <div class="underclearance-existing-value" id="direction2-existing-value" hidden>
-                            <div class="form-group">
-                                <label for="direction2-existing-feet">Existing sign feet</label>
-                                <input type="number" id="direction2-existing-feet" class="existing-sign-feet" data-direction="direction2" min="0" step="1" inputmode="numeric" placeholder="15">
-                            </div>
-                            <div class="form-group">
-                                <label for="direction2-existing-inches">Existing sign inches</label>
-                                <input type="number" id="direction2-existing-inches" class="existing-sign-inches" data-direction="direction2" min="0" max="11" step="1" inputmode="numeric" placeholder="4">
-                            </div>
-                        </div>
-                    </div>
                 </section>
             </form>
 
             <section class="underclearance-results" aria-labelledby="results-heading">
                 <div class="underclearance-results-heading">
-                    <h2 id="results-heading">Directional results</h2>
-                    <p>The sign legend includes the 3-inch frost/resurfacing allowance and is rounded down to a whole inch.</p>
+                    <h2 id="results-heading">Bridge-wide results</h2>
+                    <p id="results-logic-summary">Logic 1: Both sides use the lowest of all 12 readings. Each sign legend includes the 3-inch frost/resurfacing allowance and is rounded down to a whole inch.</p>
                 </div>
 
                 <article class="underclearance-direction-result" id="direction1-result">
-                    <div class="underclearance-empty" id="direction1-empty">Enter all six readings for Travel Direction 1.</div>
+                    <div class="underclearance-empty" id="direction1-empty">Enter all 12 readings to calculate one height for both sides.</div>
                     <div id="direction1-calculation" hidden>
                         <div class="underclearance-result-hero">
                             <p class="underclearance-result-kicker">Travel Direction 1</p>
@@ -225,12 +253,7 @@
                                 </div>
                             </div>
                             <p class="underclearance-result-label">Calculated W12-2a overhead sign legend</p>
-                            <p id="direction1-threshold" class="underclearance-threshold-status"></p>
-                        </div>
-                        <div class="underclearance-action-card" id="direction1-action" role="status">
-                            <p class="underclearance-action-kicker">Recommended action</p>
-                            <h3 id="direction1-action-title">—</h3>
-                            <p id="direction1-action-detail">—</p>
+                            <p id="direction1-threshold" class="underclearance-threshold-status" role="status"></p>
                         </div>
                         <div class="underclearance-result-grid">
                             <article class="underclearance-metric">
@@ -257,7 +280,7 @@
                 </article>
 
                 <article class="underclearance-direction-result" id="direction2-result">
-                    <div class="underclearance-empty" id="direction2-empty">Enter all six readings for Travel Direction 2.</div>
+                    <div class="underclearance-empty" id="direction2-empty">Enter all 12 readings to calculate one height for both sides.</div>
                     <div id="direction2-calculation" hidden>
                         <div class="underclearance-result-hero">
                             <p class="underclearance-result-kicker">Travel Direction 2</p>
@@ -270,12 +293,7 @@
                                 </div>
                             </div>
                             <p class="underclearance-result-label">Calculated W12-2a overhead sign legend</p>
-                            <p id="direction2-threshold" class="underclearance-threshold-status"></p>
-                        </div>
-                        <div class="underclearance-action-card" id="direction2-action" role="status">
-                            <p class="underclearance-action-kicker">Recommended action</p>
-                            <h3 id="direction2-action-title">—</h3>
-                            <p id="direction2-action-detail">—</p>
+                            <p id="direction2-threshold" class="underclearance-threshold-status" role="status"></p>
                         </div>
                         <div class="underclearance-result-grid">
                             <article class="underclearance-metric">
@@ -303,8 +321,73 @@
             </section>
 
             <div class="note underclearance-disclaimer">
-                <p><strong>Important:</strong> “Sign legend” and “sign required” are separate. The standard threshold is checked against the actual measured minimum before the 3-inch allowance. When the threshold is not met, the calculator recommends removing an existing sign; confirm that no separate site-specific requirement applies before removal.</p>
+                <p><strong>Important:</strong> “Sign legend” and “sign required” are separate. The standard threshold is checked against the actual measured minimum before the 3-inch allowance. A calculated sign legend below 14 ft 6 in does not itself trigger signing.</p>
             </div>
+
+            <section class="underclearance-references" aria-labelledby="reference-images-heading">
+                <h2 id="reference-images-heading">Reference images</h2>
+                <p>Expand a reference to view the excerpt. Select an image to open it at full size in a new tab.</p>
+
+                <details class="underclearance-reference">
+                    <summary>Low clearance signs — Section 2C.25</summary>
+                    <figure>
+                        <a href="images/mmutcd-low-clearance-signs-section-2c-25.jpg" target="_blank" rel="noopener">
+                            <img src="images/mmutcd-low-clearance-signs-section-2c-25.jpg" alt="Section 2C.25 Low Clearance Signs excerpt covering W12-2, W12-2a, and W12-2b signs, the 14 ft 6 in threshold, and clearance display guidance." width="652" height="635" loading="lazy" decoding="async">
+                        </a>
+                        <figcaption>Section 2C.25: Low Clearance Signs (W12-2, W12-2a, and W12-2b).</figcaption>
+                    </figure>
+                </details>
+
+                <details class="underclearance-reference">
+                    <summary>Low clearance signs — Section 2C.27</summary>
+                    <figure>
+                        <a href="images/mmutcd-low-clearance-signs-section-2c-27.jpg" target="_blank" rel="noopener">
+                            <img src="images/mmutcd-low-clearance-signs-section-2c-27.jpg" alt="Section 2C.27 Low Clearance Signs excerpt covering W12-2 and W12-2a signs, with a 13 ft 6 in threshold and two-inch display guidance." width="748" height="430" loading="lazy" decoding="async">
+                        </a>
+                        <figcaption>Section 2C.27: Low Clearance Signs (W12-2 and W12-2a). This excerpt uses different thresholds and rounding guidance from Section 2C.25 above.</figcaption>
+                    </figure>
+                </details>
+
+                <details class="underclearance-reference">
+                    <summary>Bridge clearance sign placement — Table 21</summary>
+                    <figure>
+                        <a href="images/bridge-clearance-sign-placement-table-21.jpg" target="_blank" rel="noopener">
+                            <img src="images/bridge-clearance-sign-placement-table-21.jpg" alt="Bridge Clearance row in Table 21, Miscellaneous Sign Placement on All Types of Roadways, showing application and sign location guidance." width="605" height="309" loading="lazy" decoding="async">
+                        </a>
+                        <figcaption>Table 21: Miscellaneous Sign Placement on All Types of Roadways — Bridge Clearance row.</figcaption>
+                    </figure>
+                </details>
+
+                <details class="underclearance-reference">
+                    <summary>Vertical clearance requirements — Section 7.01.08A</summary>
+                    <figure>
+                        <a href="images/bridge-design-vertical-clearance-requirements-7-01-08a.jpg" target="_blank" rel="noopener">
+                            <img src="images/bridge-design-vertical-clearance-requirements-7-01-08a.jpg" alt="Section 7.01.08A Requirements excerpt describing desired and minimum bridge underclearances and design exceptions, revised May 23, 2022." width="612" height="239" loading="lazy" decoding="async">
+                        </a>
+                        <figcaption>Section 7.01.08 Vertical Clearance, 7.01.08A Requirements (revised May 23, 2022).</figcaption>
+                    </figure>
+                </details>
+
+                <details class="underclearance-reference">
+                    <summary>Bridge design vertical clearance requirement table</summary>
+                    <figure>
+                        <a href="images/bridge-design-vertical-clearance-requirement-table.jpg" target="_blank" rel="noopener">
+                            <img src="images/bridge-design-vertical-clearance-requirement-table.jpg" alt="Michigan Design Manual Bridge Design Vertical Clearance Requirement Table, listing clearances by route classification and construction type, with explanatory footnotes." width="628" height="852" loading="lazy" decoding="async">
+                        </a>
+                        <figcaption>Michigan Design Manual — Bridge Design: Vertical Clearance Requirement Table (revised June 22, 2015), with footnotes and additional clearance criteria.</figcaption>
+                    </figure>
+                </details>
+
+                <details class="underclearance-reference">
+                    <summary>Bridge clearance signs and interstate exceptions — Section 7.01.08B</summary>
+                    <figure>
+                        <a href="images/bridge-clearance-signs-and-interstate-exceptions-7-01-08b.png" target="_blank" rel="noopener">
+                            <img src="images/bridge-clearance-signs-and-interstate-exceptions-7-01-08b.png" alt="Michigan Design Manual Bridge Design excerpt on clearance signs, shared use path clearances, and Section 7.01.08B Interstate Vertical Clearance Exception Coordination, revised September 28, 2026." width="604" height="707" loading="lazy" decoding="async">
+                        </a>
+                        <figcaption>Michigan Design Manual — Bridge Design: clearance signing and shared use path guidance, followed by Section 7.01.08B Interstate Vertical Clearance Exception Coordination (revised September 28, 2026).</figcaption>
+                    </figure>
+                </details>
+            </section>
         </section>
     </main>
 
