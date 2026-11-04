@@ -3,6 +3,7 @@
   const sources = {
     mmutcd: {
       label: 'MMUTCD (2025)',
+      warningSign: ['MMUTCD §2C.07, paragraphs 1–2', 'references/mmutcd-curve-reference.pdf#page=5'],
       need: ['Tables 2C-4 / 2C-6; §§2C.06, 2C.59', 'references/mmutcd-curve-reference.pdf#page=4'],
       plaque: ['Table 2C-6; §2C.59', 'references/mmutcd-curve-reference.pdf#page=8'],
       spacing: ['Table 2C-5; §2C.08', 'references/mmutcd-curve-reference.pdf#page=6'],
@@ -12,6 +13,7 @@
     },
     mdot: {
       label: 'MDOT signing guide (2023)',
+      warningSign: ['MDOT p. 24 — sign type refers to MMUTCD', 'references/mdot-curve-reference.pdf#page=3'],
       need: ['Table 5, p. 25', 'references/mdot-curve-reference.pdf#page=4'],
       plaque: ['Table 5, pp. 24–25', 'references/mdot-curve-reference.pdf#page=3'],
       spacing: ['Appendix B-9', 'references/mdot-curve-reference.pdf#page=6'],
@@ -23,6 +25,9 @@
     },
     advisory: ['MDOT Appendices B-11 / B-12', 'references/mdot-curve-reference.pdf#page=7']
   };
+  sources.rcoc = { ...sources.mmutcd, label:'RCOC (MMUTCD base)',
+    size:['RCOC local/primary chevron sizing — agency practice supplied for this calculator', 'references/rcoc-chevron-sizing.html'] };
+  const baseMethod = method => method === 'rcoc' ? 'mmutcd' : method;
   // Rows are freeway/expressway, arterial without markings, arterial with markings, other.
   const needs = {
     lt1000: ['Required', 'Optional', 'Optional', 'Optional'],
@@ -36,10 +41,11 @@
   function deviceGuidance({ method, approachMPH, advisoryMPH, roadwayType, aadtKey, surfaceType,
     includeOptional = false, pavedTreatment = 'markings', omitEligible = false, urbanLowVolume = false,
     speedBasis = 'posted', roadType } = {}) {
+    method = baseMethod(method);
     const delta = approachMPH - advisoryMPH;
     const r = { delta, need: 'Not tabulated', warning: 'Not tabulated', plaque: 'Not tabulated',
       alignment: 'Not tabulated', treatment: 'none', showWarning: false, showChevrons: false,
-      showDelineators: false, note: '', omitEligible: false };
+      showDelineators: false, warningSign: null, note: '', omitEligible: false };
     if (!sources[method] || !Number.isFinite(delta) || approachMPH <= 0 || advisoryMPH <= 0) {
       r.note = 'Enter valid approach and study advisory speeds.'; return r;
     }
@@ -79,10 +85,49 @@
       r.note = 'Table 5: chevrons and/or a directional large arrow. Layout uses chevrons.';
       if (roadType === 'freeway_ramp') r.rampSign = delta >= 20 ? 'Required' : delta >= 15 ? 'Recommended' : 'Optional';
     }
+    // MDOT p. 24 defers specific W1 sign use to MMUTCD §2C.07.
+    // Select a single-curve sign only when advance warning is a treatment.
+    if (['warning', 'delineators', 'chevrons'].includes(r.treatment)) {
+      r.warningSign = advisoryMPH <= 30
+        ? { code:'W1-1', name:'Turn', image:'w1-1l.gif' }
+        : { code:'W1-2', name:'Curve', image:'w1-2l.gif' };
+    }
     return r;
   }
 
+  // Presentation of the existing device decision, independent of map visibility.
+  function treatmentDecisions(g, method) {
+    const omitted = g.need === 'Omitted by selection';
+    const unresolved = g.treatment === 'none' && !omitted;
+    const inactive = omitted ? 'Omitted' : unresolved ? 'Not tabulated' : 'Not selected';
+    const markings = g.treatment === 'markings';
+    const rows = [
+      { id:'warning', title:'Advance warning', status:markings ? 'Alternative' : g.warning,
+        image:g.warningSign?.image || 'w1-2l.gif',
+        detail:g.warningSign ? `${g.warningSign.name} (${g.warningSign.code})` : markings ? 'Instead of pavement markings' : 'Turn / Curve sign',
+        note:markings ? `${g.need}: choose pavement markings or an advance warning sign.`
+          : g.warning === 'Optional' ? `May be used. Warning placement is ${g.showWarning ? 'shown' : 'hidden'} on the map.` : '' },
+      { id:'plaque', title:'Advisory-speed plaque', status:g.plaque,
+        detail:'W13-1P', note:'Status applies if the warning sign is installed. Never install the plaque alone.' },
+      { id:'chevrons', title:method === 'mdot' ? 'Chevrons / large arrow' : 'Chevrons',
+        status:method === 'mdot' ? g.alignment : g.treatment === 'chevrons' ? g.alignment : inactive,
+        image:'w1-8l.gif', detail:method === 'mdot' ? 'W1-8 and/or W1-6' : 'W1-8',
+        note:method === 'mdot' ? 'Use chevrons and/or a directional large arrow.' : g.treatment === 'chevrons' ? '' : 'Not selected by this device-selection result; shown on the map for comparison.' },
+      { id:'delineators', title:'Delineators',
+        status:method === 'mdot' ? 'Check site conditions' : g.treatment === 'delineators' ? g.alignment : inactive,
+        image:'txdot-delineators.png', detail:'Reflective roadside posts',
+        note:method === 'mdot' ? 'R-127-I: on two-lane, two-way roads, use on curves with radius ≤1,900 ft or as directed by the Region/TSC engineer.'
+          : g.treatment === 'delineators' ? '' : 'Not selected by this device-selection result; shown on the map for comparison.' }
+    ];
+    if (markings) rows.unshift({ id:'markings', title:'Pavement markings', status:g.need,
+      image:'pavement-markings.svg', detail:'Selected 5-mph alternative', note:'Advance warning may be used instead.' });
+    if (g.rampSign) rows.push({ id:'ramp', title:'Exit / ramp speed sign', status:g.rampSign,
+      image:'ramp-speed.svg', detail:'Ground-mounted warning sign', note:'Confirm the exit or ramp sign for the site.' });
+    return rows;
+  }
+
   function chevronSpacing(method, radius, advisory) {
+    method = baseMethod(method);
     if (!(radius > 0) || !(advisory > 0)) return { feet: null, note: 'Enter a valid radius and advisory speed.' };
     if (method === 'mdot') return radius > 50
       ? { feet: 6 * Math.sqrt(radius - 50), note: 'S = 6√(R − 50), R in feet.' }
@@ -119,6 +164,7 @@
     85:[825,800,750,675,575,450,300,150]
   };
   function advanceDistance(method, approach, advisory, override) {
+    method = baseMethod(method);
     let feet = null, note = '', lookupSpeed = advisory;
     if (method === 'mdot') {
       feet = mdotAdvance[approach]?.[advisory] ?? null;
@@ -217,7 +263,7 @@
     const speed = (low+high)/2;
     return { speed, friction: sideFrictionAt(speed), note: 'Design-equation estimate using measured full superelevation. Device selection uses the entered study advisory speed.' };
   }
-  const api = { sources, deviceGuidance, chevronSpacing, advanceDistance, placement, delineatorLayout, mdotDelineatorSpacing, sideFrictionAt, advisoryEstimate };
+  const api = { sources, baseMethod, deviceGuidance, treatmentDecisions, chevronSpacing, advanceDistance, placement, delineatorLayout, mdotDelineatorSpacing, sideFrictionAt, advisoryEstimate };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.CurveGuidance = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

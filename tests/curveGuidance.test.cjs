@@ -46,6 +46,70 @@ test('MDOT Table 5 uses its own warning, plaque and chevron thresholds', () => {
   assert.equal(guide({method:'mdot',roadType:'freeway_ramp',advisoryMPH:40}).rampSign,'Recommended');
 });
 
+test('RCOC inherits MMUTCD device rules, spacing, distances, and exceptions', () => {
+  for (const roadwayType of ['arterial_no_markings','arterial_with_markings','all_other'])
+    for (const aadtKey of ['lt1000','1000_2999','3000_3999','4000_plus'])
+      for (const advisoryMPH of [5,20,30,40,45,50,55,60])
+        for (const includeOptional of [false,true]) {
+          const args={roadwayType,aadtKey,advisoryMPH,includeOptional};
+          assert.deepEqual(guide({...args,method:'rcoc'}), guide(args));
+          assert.deepEqual(g.advanceDistance('rcoc',55,advisoryMPH),g.advanceDistance('mmutcd',55,advisoryMPH));
+        }
+  for (const patch of [{approachMPH:20,advisoryMPH:5,omitEligible:true},
+    {urbanLowVolume:true,omitEligible:true,aadtKey:'lt1000'},
+    {speedBasis:'85th',advisoryMPH:50,surfaceType:'paved',pavedTreatment:'warning'}]) {
+    assert.deepEqual(guide({...patch,method:'rcoc'}),guide(patch));
+  }
+  for (const radius of [50,200,400,1000,20000]) {
+    assert.deepEqual(g.chevronSpacing('rcoc',radius,35),g.chevronSpacing('mmutcd',radius,35));
+    assert.deepEqual(g.delineatorLayout(1200,radius,'snapEnds',{method:'rcoc'}),g.delineatorLayout(1200,radius,'snapEnds',{method:'mmutcd'}));
+  }
+  assert.deepEqual(g.advanceDistance('rcoc',55,30,'250'),g.advanceDistance('mmutcd',55,30,'250'));
+});
+
+test('advance warning recommends Turn through 30 mph and Curve above, only for sign treatments', () => {
+  for (const method of ['mmutcd', 'mdot', 'rcoc']) {
+    for (const advisoryMPH of [5, 25, 30, 35, 45]) {
+      const result = guide({method, advisoryMPH});
+      assert.equal(result.warningSign.code, advisoryMPH <= 30 ? 'W1-1' : 'W1-2');
+    }
+    for (const advisoryMPH of [0, NaN, 55, 60]) {
+      assert.equal(guide({method, advisoryMPH}).warningSign, null);
+    }
+  }
+  assert.equal(guide({advisoryMPH:50, pavedTreatment:'markings'}).warningSign, null);
+  assert.equal(guide({approachMPH:20, advisoryMPH:5, omitEligible:true}).warningSign, null);
+  const optional = guide({roadwayType:'all_other', advisoryMPH:30});
+  assert.equal(optional.showWarning, false);
+  assert.equal(optional.warningSign.code, 'W1-1');
+  assert.equal(guide({method:'mdot', speedBasis:'85th'}).warningSign, null);
+});
+
+test('treatment cards distinguish source status from the always-visible map layouts', () => {
+  const rows = patch => Object.fromEntries(g.treatmentDecisions(guide(patch), patch.method || 'mmutcd').map(row => [row.id, row]));
+  assert.equal(rows({}).warning.status, 'Required');
+  assert.equal(rows({}).chevrons.status, 'Required');
+  assert.equal(rows({}).delineators.status, 'Not selected');
+  assert.equal(rows({advisoryMPH:40}).delineators.status, 'Required');
+  assert.equal(rows({advisoryMPH:40}).chevrons.status, 'Not selected');
+  assert.equal(rows({aadtKey:'1000_2999'}).warning.status, 'Recommended');
+  assert.equal(rows({roadwayType:'all_other'}).chevrons.status, 'Optional');
+  assert.equal(rows({roadwayType:'all_other'}).plaque.status, 'Required');
+  assert.match(rows({roadwayType:'all_other'}).plaque.note, /if the warning sign is installed/);
+  assert.equal(rows({advisoryMPH:50}).markings.status, 'Required');
+  assert.equal(rows({advisoryMPH:50}).warning.status, 'Alternative');
+  for (const id of ['warning','plaque','chevrons','delineators']) {
+    assert.equal(rows({approachMPH:20,advisoryMPH:5,omitEligible:true})[id].status, 'Omitted');
+    assert.equal(rows({advisoryMPH:55})[id].status, 'Not tabulated');
+  }
+  for (const [advisoryMPH,status] of [[50,'Optional'],[45,'Recommended'],[40,'Required']]) {
+    assert.equal(rows({method:'mdot',advisoryMPH}).chevrons.status, status);
+    assert.equal(rows({method:'mdot',advisoryMPH}).delineators.status, 'Check site conditions');
+  }
+  assert.equal(rows({method:'mdot',roadType:'freeway_ramp',advisoryMPH:40}).ramp.status, 'Recommended');
+  assert.deepEqual(rows({method:'rcoc'}),rows({}));
+});
+
 test('chevron spacing follows the selected source and reports mismatched table rows', () => {
   assert.equal(g.chevronSpacing('mmutcd',1000,55).feet,160);
   assert.ok(Math.abs(g.chevronSpacing('mdot',1000,55).feet-184.932420089)<1e-8);
@@ -149,6 +213,6 @@ test('MMUTCD sizing distinguishes expressway, freeway and conventional classific
 });
 
 test('calculation citations resolve to bundled source excerpts', () => {
-  const entries=[...Object.values(g.sources.mmutcd),...Object.values(g.sources.mdot),g.sources.advisory].filter(Array.isArray);
+  const entries=[...Object.values(g.sources.mmutcd),...Object.values(g.sources.mdot),...Object.values(g.sources.rcoc),g.sources.advisory].filter(Array.isArray);
   for(const [,url] of entries) assert.ok(fs.existsSync(path.join(__dirname,'../calculators/curve',url.split('#')[0])),url);
 });

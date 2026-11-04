@@ -13,7 +13,7 @@
 <main class="curve-app">
 <div class="wrap">
       <div class="panel" id="panel">
-    <h1>Horizontal Alignment Tool</h1>
+    <h1 class="sign-heading"><img class="sign-image title-sign" src="images/signs/w1-2l.gif" width="40" height="40" alt="" />Horizontal Alignment Tool</h1>
 
     <div class="card method-card">
       <h2 class="step-title"><span class="step-number">1</span> Choose a method</h2>
@@ -22,9 +22,10 @@
         <div class="method-toggle-options">
           <label class="method-choice"><input id="methodMdot" type="radio" name="calculationMethod" value="mdot" /><span>MDOT</span></label>
           <label class="method-choice"><input id="methodMmutcd" type="radio" name="calculationMethod" value="mmutcd" checked /><span>MMUTCD</span></label>
+          <label class="method-choice"><input id="methodRcoc" type="radio" name="calculationMethod" value="rcoc" /><span>RCOC</span></label>
         </div>
       </fieldset>
-      <output id="methodName" for="methodMdot methodMmutcd">MMUTCD (2025)</output>
+      <output id="methodName" for="methodMdot methodMmutcd methodRcoc">MMUTCD (2025)</output>
       <div id="methodDescription" class="small-note muted">Device selection, advisory plaques, chevron and delineator spacing, advance placement, and standard sizing use the selected source. MDOT delineators use R-127-I (2025).</div>
     </div>
 
@@ -32,7 +33,7 @@
       <div class="card">
         <h2 class="step-title"><span class="step-number">2</span> Enter road and speeds</h2>
         <div class="input-stack">
-          <label for="chevronRoadTypeSel">Roadway type — MDOT / MMUTCD (required)</label>
+          <label id="chevronRoadTypeLabel" for="chevronRoadTypeSel">Roadway type — MDOT / MMUTCD (required)</label>
           <select id="chevronRoadTypeSel" required aria-describedby="chevronRoadTypeHelp chevronSizingMessage">
             <option value="" selected>Select road type</option>
             <option value="conventional">Conventional road</option>
@@ -41,7 +42,7 @@
             <option value="freeway_ramp">Freeway ramp</option>
           </select>
           <div id="chevronRoadTypeHelp" class="small-note muted">Used by the selected method for sign sizing and applicable ramp rules.</div>
-          <details class="roadway-definition small-note">
+          <details id="roadwayDefinition" class="roadway-definition small-note">
             <summary>Freeway vs. expressway</summary>
             <p><strong>Freeway:</strong> A divided highway with full access control. Traffic enters and leaves by ramps; there are no at-grade intersections or driveways.</p>
             <p><strong>Expressway:</strong> A divided highway with partial access control. It may have at-grade intersections or limited direct access.</p>
@@ -52,13 +53,25 @@
         </div>
         <div class="input-stack">
           <label id="roadwayTypeLabel" for="roadwayTypeSel">MMUTCD roadway class (Table 2C-4)</label>
-          <select id="roadwayTypeSel">
-            <option value="freeway_expressway">Freeway or expressway</option>
+          <select id="roadwayTypeSel" required>
+            <option value="" disabled>Select roadway class</option>
+            <option id="freewayRoadwayClassOption" value="freeway_expressway">Freeway or expressway</option>
             <option value="arterial_no_markings">Arterial or collector without pavement markings</option>
             <option value="arterial_with_markings" selected>Arterial or collector with pavement markings</option>
             <option value="all_other">All other roadways</option>
           </select>
         </div>
+        <fieldset class="rcoc-sizing-input">
+          <legend>RCOC road type — chevron size only</legend>
+          <label id="rcocRoadClassLabel" for="rcocRoadClassSel">RCOC classification (optional)</label>
+          <select id="rcocRoadClassSel" aria-describedby="rcocSizeHelp">
+            <option id="rcocRoadClassPlaceholder" value="" selected>Do not show RCOC sizing</option>
+            <option value="local">Local road — 18 × 24 in</option>
+            <option value="primary">Primary road — 24 × 30 in</option>
+          </select>
+          <div id="rcocSizeHelp" class="small-note muted">Sets only the RCOC chevron size shown in results. Roadway classification, device selection, and spacing use the inputs above.</div>
+          <div id="rcocSizeMessage" class="small-note warn" role="status"></div>
+        </fieldset>
         <div class="input-stack" data-method="mdot" hidden>
           <label for="mdotDelineatorLocationSel">Delineator location (MDOT R-127-I)</label>
           <select id="mdotDelineatorLocationSel" aria-describedby="mdotDelineatorLocationHelp">
@@ -118,16 +131,6 @@
             </div>
           </div>
         </div>
-        <fieldset class="rcoc-sizing-input">
-          <legend>RCOC chevron size only</legend>
-          <label for="rcocRoadClassSel">RCOC classification (optional)</label>
-          <select id="rcocRoadClassSel" aria-describedby="rcocSizeHelp">
-            <option value="" selected>Do not show RCOC sizing</option>
-            <option value="local">Local road — 18 × 24 in</option>
-            <option value="primary">Primary road — 24 × 30 in</option>
-          </select>
-          <div id="rcocSizeHelp" class="small-note muted">Sets only the RCOC chevron size shown in results. Roadway classification, device selection, and spacing use the inputs above.</div>
-        </fieldset>
         <details class="layout-options">
           <summary>Advanced options</summary>
           <p class="small-note muted">Adjust placement, treatment exceptions, or study-support inputs. Existing values apply when this section is closed.</p>
@@ -214,42 +217,32 @@
 
     <div class="section section-results">
       <h2 class="step-title"><span class="step-number">4</span> Review results</h2>
-      <p class="layout-comparison"><strong>Both layouts are displayed.</strong> The map shows chevrons and delineators for comparison, even when the recommended treatment differs.</p>
       <div id="results"></div>
     </div>
 
     <details class="section section-chevron-sizing reference-details">
       <summary>Chevron sizing details: RCOC and selected method</summary>
       <section class="card" aria-labelledby="rcocSizingTitle">
-        <h2 id="rcocSizingTitle">RCOC chevron sizing (W1-8)</h2>
+        <h2 id="rcocSizingTitle" class="sign-heading"><img class="sign-image" src="images/signs/w1-8l.gif" width="48" height="48" alt="Chevron sign, left-direction example" />RCOC chevron sizing (W1-8)</h2>
         <div class="small-note muted">Local roads: 18 &times; 24 in. Primary roads: 24 &times; 30 in. Dimensions are width &times; height.</div>
         <div class="small-note muted">Source: RCOC local/primary practice supplied for this calculator.</div>
         <div id="rcocChevronSize" class="stat" aria-live="polite">RCOC sizing is not selected.</div>
       </section>
       <section class="card" aria-labelledby="mdotSizingTitle">
-        <h2 id="mdotSizingTitle">Selected-method chevron sizing (W1-8)</h2>
+        <h2 id="mdotSizingTitle" class="sign-heading"><img class="sign-image" src="images/signs/w1-8l.gif" width="48" height="48" alt="Chevron sign, left-direction example" />Selected-method chevron sizing (W1-8)</h2>
         <div id="standardSizingRules" class="small-note muted"></div>
         <div id="mdotChevronSize" class="stat" aria-live="polite">Select a road type above.</div>
         <div id="standardSizingSource" class="small-note"></div>
       </section>
     </details>
 
-    <section class="section section-reference" aria-labelledby="table2c4Title">
-      <details class="card reference-details">
-        <summary id="table2c4Title">MUTCD Table 2C-4 image</summary>
-        <figure class="reference-figure">
-          <a href="images/Table%202C-4.png" target="_blank" rel="noopener noreferrer">
-            <img src="images/Table%202C-4.png" width="1044" height="736" loading="lazy" alt="MUTCD 11th Edition, Table 2C-4: Application of Traffic Control Devices for Changes in Horizontal Alignment. Part A determines device need by roadway type and AADT; Part B selects devices by speed differential." />
-          </a>
-          <figcaption class="small-note muted">Application of Traffic Control Devices for Changes in Horizontal Alignment. <a href="images/Table%202C-4.png" target="_blank" rel="noopener noreferrer">Open full-size table (new tab)</a>.</figcaption>
-        </figure>
-      </details>
-    </section>
     <section class="section section-reference" aria-labelledby="sourceSectionsTitle">
       <h2 id="sourceSectionsTitle">Source sections</h2>
       <p class="small-note muted">The MDOT signing guide is dated 2023; MDOT delineator detail R-127-I is dated October 24, 2025; the MMUTCD is the 2025 edition. Each result cites its selected source. PDFs retain the original pages and notes.</p>
+      <p class="small-note"><a href="references/rcoc-chevron-sizing.html" target="_blank" rel="noopener noreferrer">RCOC method: MMUTCD base with local/primary chevron sizes</a>. Sizes follow the RCOC practice supplied for this calculator.</p>
       <div id="referenceSections"></div>
     </section>
+    <p class="small-note sign-credit">Sign images are from the <a href="https://www.trafficsign.us/" target="_blank" rel="noopener noreferrer">Manual of Traffic Signs</a>, by <a href="https://www.richardcmoeur.com/" target="_blank" rel="noopener noreferrer">Richard C. Moeur</a>. Advisory-speed plaques adapt the <a href="images/signs/w13-1p.pdf" target="_blank" rel="noopener noreferrer">W13-1P artwork (PDF)</a> with the selected speed.</p>
   </div>
 
   <div id="map" role="region" aria-label="Map">

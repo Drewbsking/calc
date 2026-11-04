@@ -100,6 +100,7 @@
   const roadHeightInput = document.getElementById('roadHeightInput');
   const methodMdot = document.getElementById('methodMdot');
   const methodMmutcd = document.getElementById('methodMmutcd');
+  const methodRcoc = document.getElementById('methodRcoc');
   const speedBasisSel = document.getElementById('speedBasisSel');
   const includeOptional = document.getElementById('includeOptional');
   const pavedTreatmentSel = document.getElementById('pavedTreatmentSel');
@@ -111,6 +112,7 @@
   const delineatorSidesSel = document.getElementById('delineatorSidesSel');
   const mdotDelineatorLocationSel = document.getElementById('mdotDelineatorLocationSel');
   let mdotLocationBeforeRamp = null;
+  let roadInputsBeforeRcoc = null;
   // Keep measured percentile speeds separate from speed limits when changing methods/basis.
   const approachSpeeds = { limit: postedSel.value, percentile: '' };
   let activeSpeedInput = 'limit';
@@ -322,7 +324,7 @@
   if (surfaceSel) surfaceSel.addEventListener('change', update);
   if (roadWidthInput) roadWidthInput.addEventListener('input', update);
   if (roadHeightInput) roadHeightInput.addEventListener('input', update);
-  [methodMdot, methodMmutcd].forEach(input => input.addEventListener('change', update));
+  [methodMdot, methodMmutcd, methodRcoc].forEach(input => input.addEventListener('change', update));
   [speedBasisSel, includeOptional, pavedTreatmentSel, urbanLowVolume, omitEligible, delineatorSidesSel, mdotDelineatorLocationSel]
     .forEach(input => input.addEventListener('change', update));
   [advanceOverride, shoulderWidthInput, delineatorOffsetInput].forEach(input => input.addEventListener('input', update));
@@ -366,17 +368,35 @@
     return AADT_CATEGORY_META[key] || AADT_CATEGORY_META[DEFAULT_AADT_KEY];
   }
 
-  const selectedMethod = () => methodMdot.checked ? 'mdot' : 'mmutcd';
+  const selectedMethod = () => methodMdot.checked ? 'mdot' : methodRcoc.checked ? 'rcoc' : 'mmutcd';
   const sourceLink = entry => `<a class="source-link" href="${entry[1]}" target="_blank" rel="noopener noreferrer">Source: ${entry[0]}</a>`;
 
   function updateMethod(){
     const method = selectedMethod();
     const label = CurveGuidance.sources[method].label;
     document.getElementById('methodName').textContent = label;
+    document.getElementById('methodDescription').textContent = method === 'rcoc'
+      ? 'Uses MMUTCD (2025) for all calculations and guidance. Only W1-8 chevron sizes change: RCOC local roads 18 × 24 in; primary roads 24 × 30 in.'
+      : 'Device selection, advisory plaques, chevron and delineator spacing, advance placement, and standard sizing use the selected source. MDOT delineators use R-127-I (2025).';
     document.querySelectorAll('[data-method]').forEach(group => {
-      group.hidden = group.dataset.method !== method;
+      group.hidden = group.dataset.method !== CurveGuidance.baseMethod(method);
       group.querySelectorAll('input, select').forEach(input => { input.disabled = group.hidden; });
     });
+    if (method === 'rcoc') {
+      if (roadInputsBeforeRcoc === null) roadInputsBeforeRcoc = {
+        roadType:chevronRoadTypeSel.value, roadwayClass:roadwayTypeSel.value };
+      chevronRoadTypeSel.value = 'conventional';
+      if (roadwayTypeSel.value === 'freeway_expressway') roadwayTypeSel.value = '';
+    } else if (roadInputsBeforeRcoc !== null) {
+      chevronRoadTypeSel.value = roadInputsBeforeRcoc.roadType;
+      roadwayTypeSel.value = roadInputsBeforeRcoc.roadwayClass;
+      roadInputsBeforeRcoc = null;
+    }
+    chevronRoadTypeSel.disabled = method === 'rcoc';
+    document.getElementById('roadwayDefinition').hidden = method === 'rcoc';
+    document.getElementById('freewayRoadwayClassOption').disabled = method === 'rcoc';
+    document.getElementById('chevronRoadTypeLabel').textContent = method === 'rcoc'
+      ? 'Roadway type — RCOC' : 'Roadway type — MDOT / MMUTCD (required)';
     if (method === 'mdot' && chevronRoadTypeSel.value === 'freeway_ramp') {
       if (mdotLocationBeforeRamp === null) mdotLocationBeforeRamp = mdotDelineatorLocationSel.value;
       mdotDelineatorLocationSel.value = 'ramp';
@@ -385,7 +405,7 @@
       mdotDelineatorLocationSel.value = mdotLocationBeforeRamp;
       mdotLocationBeforeRamp = null;
     }
-    const nextSpeedInput = method === 'mmutcd' && speedBasisSel.value === '85th' ? 'percentile' : 'limit';
+    const nextSpeedInput = method !== 'mdot' && speedBasisSel.value === '85th' ? 'percentile' : 'limit';
     if (nextSpeedInput !== activeSpeedInput) {
       approachSpeeds[activeSpeedInput] = postedSel.value;
       postedSel.value = approachSpeeds[nextSpeedInput];
@@ -398,7 +418,14 @@
       ? 'Roadway class (sizing cross-check)' : 'MMUTCD roadway class (Table 2C-4)';
     document.getElementById('chevronRoadTypeHelp').textContent = method === 'mdot'
       ? 'Roadway class cross-checks the selected road type for sizing. Ramp sizing uses the study advisory speed.'
+      : method === 'rcoc' ? 'RCOC roads use the conventional-road MMUTCD base. Choose Local or Primary below for the chevron size.'
       : 'Used for standard sign sizing; cross-checked against the MMUTCD roadway class below.';
+    rcocRoadClassSel.required = method === 'rcoc';
+    document.getElementById('rcocRoadClassLabel').textContent = `RCOC classification (${method === 'rcoc' ? 'required' : 'optional comparison'})`;
+    document.getElementById('rcocRoadClassPlaceholder').textContent = method === 'rcoc' ? 'Select local or primary road' : 'Do not show RCOC sizing';
+    document.getElementById('rcocSizeHelp').textContent = method === 'rcoc'
+      ? 'Sets the chevron size for the RCOC method. Device selection and spacing follow the MMUTCD.'
+      : 'Sets only the RCOC chevron size shown for comparison. Roadway classification, device selection, and spacing use the inputs above.';
     return method;
   }
 
@@ -411,18 +438,24 @@
     });
     // Agency sizing is independent of the roadway inputs used by either calculation method.
     sizes.rcoc = CurveChevronSizing.lookupRcocChevronSize(rcocRoadClassSel.value);
+    sizes.rcocMessage = method === 'rcoc' && !sizes.rcoc ? 'Select an RCOC local or primary classification for chevron sizing.' : '';
+    document.getElementById('rcocSizeMessage').textContent = sizes.rcocMessage;
+    rcocRoadClassSel.setCustomValidity(sizes.rcocMessage);
+    rcocRoadClassSel.setAttribute('aria-invalid', String(Boolean(sizes.rcocMessage)));
     const format = size => `${size.width} × ${size.height} in — ${size.rationale}`;
     chevronSizingMessage.textContent = sizes.message;
     chevronSizingMessage.classList.toggle('warn', sizes.conflict);
     chevronRoadTypeSel.setCustomValidity(sizes.message);
     chevronRoadTypeSel.setAttribute('aria-invalid', String(Boolean(sizes.message)));
     rcocChevronSizeEl.textContent = sizes.rcoc ? format(sizes.rcoc) : 'RCOC sizing is not selected.';
-    document.getElementById('mdotSizingTitle').textContent = `${method === 'mdot' ? 'MDOT' : 'MMUTCD'} chevron sizing (W1-8)`;
+    document.getElementById('mdotSizingTitle').textContent = `${method.toUpperCase()} chevron sizing (W1-8)`;
     document.getElementById('standardSizingRules').textContent = method === 'mdot'
       ? 'Conventional: 24 × 30 in. Mainline: 36 × 48 in. Ramps: 24 × 30 in at ≤40 mph; 36 × 48 in at 45–55 mph advisory speed.'
+      : method === 'rcoc' ? 'RCOC local roads: 18 × 24 in. RCOC primary roads: 24 × 30 in. All other calculations use the MMUTCD base.'
       : 'Conventional: 18 × 24 in. Expressway: 30 × 36 in. Freeway: 36 × 48 in. Larger signs may be used (§2C.03).';
     document.getElementById('standardSizingSource').innerHTML = sourceLink(CurveGuidance.sources[method].size);
-    mdotChevronSizeEl.textContent = sizes.message ? 'Select consistent road types above to see sizing.'
+    mdotChevronSizeEl.textContent = method === 'rcoc' ? sizes.rcoc ? format(sizes.rcoc) : sizes.rcocMessage
+      : sizes.message ? 'Select consistent road types above to see sizing.'
       : sizes[method] ? format(sizes[method]) : sizes[`${method}Note`];
     return sizes;
   }
@@ -433,19 +466,50 @@
       delineators:'Delineators and advance warning', warning:'Advance warning sign', markings:'Pavement markings' }[g.treatment];
   }
 
+  function treatmentCardsHTML(g, method){
+    const cards = CurveGuidance.treatmentDecisions(g, method).map(row => {
+      const statusClass = {Required:'required', Recommended:'recommended', Optional:'optional'}[row.status] || 'neutral';
+      const imagePath = row.id === 'plaque' ? `w13-1p-${Number(advisorySel.value)}.svg` : row.image;
+      return `<article class="treatment-card ${row.id === 'warning' ? 'warning-sign-card' : ''}" data-treatment="${row.id}">
+        <div class="treatment-picture">${row.id === 'delineators'
+          ? `<a class="delineator-preview" href="images/signs/${row.image}" target="_blank" rel="noopener noreferrer" aria-label="Enlarge TxDOT delineator design examples"><img class="sign-image" src="images/signs/${row.image}" width="80" height="97" alt="Single and double yellow reflectors on delineator posts" /><span>Enlarge</span></a>`
+          : `<img class="sign-image" src="images/signs/${imagePath}" width="56" height="56" alt="${row.id === 'plaque' ? `${advisorySel.value} MPH advisory-speed plaque (W13-1P)` : `${row.title} illustration`}" />`}
+          ${row.id === 'chevrons' && method === 'mdot' ? '<img class="sign-image" src="images/signs/w1-6r.gif" width="56" height="56" alt="Directional large arrow example" />' : ''}</div>
+        <div class="treatment-body"><h4>${row.title}</h4><span class="treatment-status status-${statusClass}">${row.status}</span>
+          <div class="treatment-detail">${row.detail}${row.id === 'plaque' ? ` · ${advisorySel.value} mph` : ''}</div>
+          ${row.note ? `<p>${row.note}</p>` : ''}
+          ${row.id === 'delineators' ? '<p class="image-credit">Design examples: <a href="https://www.txdot.gov/manuals/trf/sfb/markers_and_delineation/dilineators-i1003914.html" target="_blank" rel="noopener noreferrer">TxDOT, Figure 8-4</a> (illustration only).</p>' : ''}</div>
+      </article>`;
+    }).join('');
+    return `<div class="treatment-list">${cards}</div>
+      <details class="treatment-explanation"><summary>Decision rules and sources</summary>
+        <p>Required = shall use. Recommended = should use. Optional = may use. “Not selected” means this table does not select that treatment; it is not a prohibition.</p>
+        ${sourceLink(CurveGuidance.sources[method].need)}
+        ${sourceLink(CurveGuidance.sources[method].plaque)}
+        ${method === 'mdot' ? sourceLink(CurveGuidance.sources.mdot.delineators) : ''}
+        <p>Turn (W1-1) at a study advisory speed of 30 mph or less; Curve (W1-2) above 30 mph. Match direction to each approach. Check §2C.07 for reverse, winding, and hairpin alignments.</p>
+        ${method === 'mdot' ? sourceLink(CurveGuidance.sources.mdot.warningSign) : ''}
+        ${sourceLink(CurveGuidance.sources.mmutcd.warningSign)}
+        <p>Pictures illustrate treatment types; confirm direction and installation for the site.</p>
+      </details>`;
+  }
+
   function resultSummary(g, method, sizes, layout){
     const dimensions = size => size ? `${size.width} × ${size.height} in` : 'See sizing details';
     const spacing = value => Number.isFinite(value) ? `${value.toFixed(1)} ft` : 'No spacing available';
     return `<section class="result-summary" aria-label="Results summary">
       <div class="summary-method">${CurveGuidance.sources[method].label}${method === 'mdot' ? '<br>Delineators: R-127-I (2025)' : ''}</div>
-      <div class="summary-treatment"><span>Treatment from selected method</span><strong>${treatmentLabel(g)}</strong>
-        <span>Advance warning: ${g.warning}</span>
-        <span>${method === 'mdot' ? 'Chevrons / large arrow' : 'Curve delineation'}: ${g.alignment}</span></div>
-      ${sizes.message ? `<p class="warn">${sizes.message} MDOT/MMUTCD size recommendations are withheld.</p>` : ''}
+      <h3 class="results-subheading">Treatment decisions</h3>
+      <p class="status-key">Required: shall use · Recommended: should use · Optional: may use</p>
       ${g.note && (g.treatment === 'none' || g.need === 'Omitted by selection') ? `<p class="small-note">${g.note}</p>` : ''}
+      ${treatmentCardsHTML(g, method)}
+      <h3 class="results-subheading layout-heading">Sizes and map placement</h3>
+      <p class="layout-comparison"><strong>Both layouts are displayed.</strong> Chevrons and delineators are drawn for comparison, regardless of their treatment status above.</p>
+      ${sizes.message ? `<p class="warn">${sizes.message} MDOT/MMUTCD size recommendations are withheld.</p>` : ''}
+      ${sizes.rcocMessage ? `<p class="warn">${sizes.rcocMessage}</p>` : ''}
       <dl class="summary-grid">
-        <div><dt>${method === 'mdot' ? 'MDOT' : 'MMUTCD'} chevron size</dt><dd>${sizes.message ? 'Select road type' : dimensions(sizes[method])}</dd></div>
-        ${sizes.rcoc ? `<div><dt>RCOC chevron size</dt><dd>${dimensions(sizes.rcoc)}</dd></div>` : ''}
+        <div><dt>${method.toUpperCase()} chevron size</dt><dd>${method === 'rcoc' ? sizes.rcoc ? dimensions(sizes.rcoc) : 'Select local or primary' : sizes.message ? 'Select road type' : dimensions(sizes[method])}</dd></div>
+        ${method !== 'rcoc' && sizes.rcoc ? `<div><dt>RCOC chevron size</dt><dd>${dimensions(sizes.rcoc)}</dd></div>` : ''}
         ${layout ? `<div><dt>Chevron spacing on map</dt><dd>${spacing(layout.chevronStep)}</dd><small>Target: ${spacing(layout.chevronTarget)}</small></div>
           <div><dt>Delineator spacing on curve</dt><dd>${spacing(layout.delineatorStep)}</dd><small>Target: ${spacing(layout.delineatorTarget)}</small></div>
           <div class="summary-wide"><dt>Advance-warning placement</dt><dd>${layout.warning}</dd></div>`
@@ -459,7 +523,7 @@
     const treatment = treatmentLabel(g);
     return `<h2>${source.label}: device selection</h2>
       <div class="stat"><strong>Speed differential:</strong> ${g.delta.toFixed(0)} mph</div>
-      ${method === 'mmutcd' ? `<div class="stat"><strong>Chart A device need:</strong> ${g.need} (AADT ${getAadtCategoryMeta(aadtSel.value).description})</div>` : ''}
+      ${method !== 'mdot' ? `<div class="stat"><strong>Chart A device need:</strong> ${g.need} (AADT ${getAadtCategoryMeta(aadtSel.value).description})</div>` : ''}
       <div class="stat"><strong>Advance warning:</strong> ${g.warning}</div>
       <div class="stat"><strong>${method === 'mdot' ? 'Chevrons / large arrow' : 'Curve delineation'}:</strong> ${g.alignment}</div>
       <div class="stat"><strong>Treatment:</strong> ${treatment}</div>
@@ -476,6 +540,7 @@
         ['Sizing — Table 2C-1 / §2C.03', 1, null],
         ['Advance placement — Table 2C-3 / §2C.04', 3, 'mmutcd-198.png'],
         ['Device selection — Table 2C-4 / §§2C.06–07', 4, 'mmutcd-201.png'],
+        ['Turn vs. Curve sign — §2C.07', 5, null],
         ['Chevron spacing — Table 2C-5 / §2C.08', 6, 'mmutcd-204.png'],
         ['Advisory-speed plaques — Table 2C-6 / §2C.59', 8, 'mmutcd-242.png'],
         ['Delineators — §§3G.01–04 / Table 3G-1', 9, 'mmutcd-665.png']
@@ -603,7 +668,7 @@
     const guidance = CurveGuidance.deviceGuidance({ method, approachMPH: postedMPH, advisoryMPH,
       roadwayType: roadwayTypeSel.value, aadtKey: aadtSel.value, surfaceType: surfaceSel.value,
       roadType: chevronRoadTypeSel.value, speedBasis: method === 'mdot' ? 'posted' : speedBasisSel.value,
-      includeOptional: method === 'mmutcd' && includeOptional.checked, pavedTreatment: pavedTreatmentSel.value,
+      includeOptional: method !== 'mdot' && includeOptional.checked, pavedTreatment: pavedTreatmentSel.value,
       urbanLowVolume: urbanLowVolume.checked, omitEligible: omitEligible.checked });
     const selectionHTML = guidanceHTML(guidance, method);
     resultsEl.innerHTML = `${resultSummary(guidance,method,chevronSizes)}
@@ -618,7 +683,7 @@
       resultsEl.innerHTML += '<div class="warn">Enter a positive road width, a nonnegative shoulder width, and a delineator offset of 2–8 ft.</div>';
       return;
     }
-    if (urbanLowVolume.checked && method === 'mmutcd' && !['lt1000','1000_2999'].includes(aadtSel.value)) {
+    if (urbanLowVolume.checked && method !== 'mdot' && !['lt1000','1000_2999'].includes(aadtSel.value)) {
       resultsEl.innerHTML += '<div class="warn">The urban AADT ≤1,000 selection conflicts with the AADT category.</div>';
       return;
     }
@@ -739,7 +804,7 @@
       <div class="layout-note">${chevronSpacing.note}</div>
       <div class="stat"><strong>Actual spacing:</strong> ${formatStep(Nchev>1 ? chevrons.step : null)}</div>
       <div class="stat"><strong>Chevron positions shown:</strong> ${Nchev}</div>
-      ${method==='mdot' && Nchev>0 && isConventional ? '<div class="layout-note">MDOT p. 26 / B-9: place W1-6 target arrows for both directions before finalizing chevrons. Each target arrow replaces a chevron; the shown positions are preliminary.</div>' : ''}
+      ${method==='mdot' && Nchev>0 && isConventional ? '<div class="layout-note sign-heading"><img class="sign-image" src="images/signs/w1-6r.gif" width="64" height="64" alt="W1-6 large arrow, right-direction example" /><span>MDOT p. 26 / B-9: place W1-6 target arrows for both directions before finalizing chevrons. Each target arrow replaces a chevron; the shown positions are preliminary.</span></div>' : ''}
       ${sourceLink(source.spacing)}
       <h2>Advance warning placement</h2><div class="stat">${warningDisplay}</div>
       <div class="layout-note">${advance.note}</div>

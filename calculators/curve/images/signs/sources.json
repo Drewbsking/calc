@@ -1,0 +1,30 @@
+{
+  "sourcePage": "https://www.trafficsign.us/w1.html",
+  "creator": "Richard C. Moeur",
+  "terms": "https://www.trafficsign.us/copyright.html",
+  "use": "Non-commercial use with credit on every page displaying these images.",
+  "retrieved": "2026-11-04",
+  "txdotDelineators": {
+    "file": "txdot-delineators.png",
+    "title": "Sign Crew Field Book, Figure 8-4. Delineators",
+    "creator": "Texas Department of Transportation",
+    "sourcePage": "https://www.txdot.gov/manuals/trf/sfb/markers_and_delineation/dilineators-i1003914.html",
+    "sourceImage": "https://www.txdot.gov/content/dam/txdotoms/trf/sfb/sign-crew-field-book/ch08/Figure8-4.png/_jcr_content/renditions/original",
+    "retrieved": "2026-11-04",
+    "purpose": "Design illustration only; not a source for Michigan calculation rules. Original image retained without edits."
+  },
+  "images": {
+    "w1-1l.gif": "https://www.trafficsign.us/100/warn/ylw/w1-1l.gif",
+    "w1-2l.gif": "https://www.trafficsign.us/100/warn/ylw/w1-2l.gif",
+    "w1-6r.gif": "https://www.trafficsign.us/100/warn/ylw/w1-6r.gif",
+    "w1-8l.gif": "https://www.trafficsign.us/100/warn/ylw/w1-8l.gif"
+  },
+  "advisoryPlaques": {
+    "source": "https://www.trafficsign.us/pdf/warn/w13-1p.pdf",
+    "original": "w13-1p.pdf",
+    "creator": "Richard C. Moeur",
+    "retrieved": "2026-11-04",
+    "files": "w13-1p-{speed}.svg, 5 through 70 mph in 5-mph increments",
+    "adaptation": "Border and MPH vector artwork from page 1; speed numerals replaced with selected speed in Arial bold. Credit displayed in calculator."
+  }
+}

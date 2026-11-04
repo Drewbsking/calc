@@ -70,7 +70,32 @@ async def check(origin):
         await page.select_option('#rcocRoadClassSel', 'primary')
         await page.select_option('#aadtSel', '4000_plus')
         await page.select_option('#postedSel', '55')
+        speeds = await page.locator('#advisorySel option').evaluate_all('(options) => options.map(option => option.value)')
+        for speed in speeds:
+            await page.select_option('#advisorySel', speed)
+            plaque = page.locator('[data-treatment="plaque"] img')
+            await expect(plaque).to_have_attribute('src', f'images/signs/w13-1p-{speed}.svg')
+            await expect(plaque).to_have_attribute('alt', f'{speed} MPH advisory-speed plaque (W13-1P)')
+            await page.wait_for_function('''() => {
+                const img = document.querySelector('[data-treatment="plaque"] img');
+                return img.complete && img.naturalWidth > 0;
+            }''')
+            assert await plaque.evaluate('''async img => {
+                const svg = new DOMParser().parseFromString(await (await fetch(img.src)).text(), 'image/svg+xml');
+                return svg.querySelector('text').textContent;
+            }''') == speed
+        gallery = await context.new_page()
+        await gallery.set_content('<body style="display:grid;grid-template-columns:repeat(7,100px);gap:20px;padding:20px;background:white">' + ''.join(
+            f'<img width="100" height="100" alt="{speed} MPH" src="{origin}/calculators/curve/images/signs/w13-1p-{speed}.svg">' for speed in speeds) + '</body>')
+        await gallery.wait_for_function('() => [...document.images].every(img => img.complete && img.naturalWidth > 0)')
+        await gallery.screenshot(path=str(ARTIFACTS / 'advisory-speed-plaques.png'))
+        await gallery.close()
         await page.select_option('#advisorySel', '30')
+        await expect(page.locator('.warning-sign-card')).to_contain_text('Turn (W1-1)')
+        await page.select_option('#advisorySel', '35')
+        await expect(page.locator('.warning-sign-card')).to_contain_text('Curve (W1-2)')
+        await page.select_option('#advisorySel', '30')
+        await page.wait_for_function('''() => [...document.querySelectorAll('.sign-image')].every(img => img.complete && img.naturalWidth > 0)''')
         await expect(page.locator('#rcocChevronSize')).to_contain_text('24 × 30 in')
         await expect(page.locator('#mdotChevronSize')).to_contain_text('18 × 24 in')
         await page.locator('.rcoc-sizing-input').scroll_into_view_if_needed()
@@ -84,14 +109,16 @@ async def check(origin):
             }''', angle)
             await page.wait_for_timeout(220)  # The calculator intentionally debounces map clicks.
         await expect(page.locator('#results')).to_contain_text('200 ft before PC')
-        await expect(page.locator('.result-summary')).to_contain_text('Chevrons and advance warning')
+        await expect(page.locator('[data-treatment="warning"] .treatment-status')).to_have_text('Required')
+        await expect(page.locator('[data-treatment="chevrons"] .treatment-status')).to_have_text('Required')
+        await expect(page.locator('[data-treatment="delineators"] .treatment-status')).to_have_text('Not selected')
         await expect(page.locator('.result-summary')).to_contain_text('18 × 24 in')
         await expect(page.locator('.result-summary')).to_contain_text('24 × 30 in')
         await expect(page.locator('#calculationDetails .callout')).not_to_be_visible()
         await expect(page.locator('.layout-comparison')).to_contain_text('Both layouts are displayed')
         assert '?' not in await page.locator('#results').inner_text()
         assert '?' not in await page.locator('#spacing').inner_text()
-        await page.locator('#results').scroll_into_view_if_needed()
+        await page.locator('.section-results').evaluate('(el) => el.scrollIntoView({block:"start"})')
         await page.screenshot(path=str(ARTIFACTS / 'outputs.png'))
         assert await page.locator('.leaflet-chevrons-pane path').count() > 0
         assert await page.locator('.leaflet-delineators-pane path').count() > 0
@@ -107,8 +134,37 @@ async def check(origin):
                 assert await page.locator('.leaflet-overlay-pane path, .leaflet-chevrons-pane path, .leaflet-delineators-pane path, .leaflet-advance-pane path').evaluate_all('(els) => els.map(el => el.getAttribute("d"))') == geometry
             await page.select_option('#rcocRoadClassSel', 'primary')
         await check_rcoc_independence()
+        mmutcd_geometry = await page.locator('.leaflet-chevrons-pane path, .leaflet-delineators-pane path, .leaflet-advance-pane path').evaluate_all('(els) => els.map(el => el.getAttribute("d"))')
+        await page.locator('#methodRcoc').check()
+        await expect(page.locator('#methodName')).to_have_text('RCOC (MMUTCD base)')
+        await expect(page.locator('#roadwayDefinition')).not_to_be_visible()
+        await expect(page.locator('#chevronRoadTypeSel')).to_have_value('conventional')
+        await expect(page.locator('#chevronRoadTypeSel')).to_be_disabled()
+        await expect(page.locator('#rcocRoadClassSel')).to_have_attribute('required', '')
+        for field in ['aadtSel','surfaceSel','speedBasisSel']:
+            await expect(page.locator('#' + field)).to_be_visible()
+            await expect(page.locator('#' + field)).to_be_enabled()
+        await expect(page.locator('#mdotDelineatorLocationSel')).not_to_be_visible()
+        for classification, size in [('local','18 × 24 in'),('primary','24 × 30 in')]:
+            await page.select_option('#rcocRoadClassSel', classification)
+            await expect(page.locator('#mdotChevronSize')).to_contain_text(size)
+            await expect(page.locator('.result-summary')).to_contain_text('RCOC chevron size')
+            await expect(page.locator('.result-summary')).to_contain_text(size)
+            await expect(page.locator('#results')).to_contain_text('200 ft before PC')
+            assert await page.locator('.leaflet-chevrons-pane path, .leaflet-delineators-pane path, .leaflet-advance-pane path').evaluate_all('(els) => els.map(el => el.getAttribute("d"))') == mmutcd_geometry
+        await page.select_option('#rcocRoadClassSel', '')
+        await expect(page.locator('#rcocSizeMessage')).to_contain_text('Select an RCOC local or primary')
+        await expect(page.locator('.result-summary')).to_contain_text('Select local or primary')
+        assert await page.locator('.leaflet-advance-pane path').count() == 4
+        await page.select_option('#rcocRoadClassSel', 'primary')
+        await page.locator('.section-inputs').scroll_into_view_if_needed()
+        await page.screenshot(path=str(ARTIFACTS / 'rcoc-method-inputs.png'))
+        await page.locator('#results').scroll_into_view_if_needed()
+        await page.screenshot(path=str(ARTIFACTS / 'rcoc-method-results.png'))
+        await page.locator('#methodMmutcd').check()
         await page.locator('#methodMdot').check()
         await expect(page.locator('#methodName')).to_have_text('MDOT signing guide (2023)')
+        await expect(page.locator('#roadwayDefinition')).to_be_visible()
         for field in ['aadtSel', 'surfaceSel', 'speedBasisSel', 'pavedTreatmentSel', 'urbanLowVolume', 'omitEligible', 'includeOptional']:
             await expect(page.locator('#' + field)).not_to_be_visible()
             await expect(page.locator('#' + field)).to_be_disabled()
@@ -130,9 +186,9 @@ async def check(origin):
         await page.select_option('#mdotDelineatorLocationSel', 'ramp')
         await expect(page.locator('#results')).to_contain_text('100.0, 100.0, 100.0 ft')
         await page.locator('#calculationDetails > summary').click()
-        await expect(page.locator('#results a[href="references/mdot-r-127-i.pdf#page=5"]')).to_be_visible()
+        await expect(page.locator('#calculationDetails a[href="references/mdot-r-127-i.pdf#page=5"]')).to_be_visible()
         await page.select_option('#mdotDelineatorLocationSel', 'normal')
-        await page.locator('#results a[href="references/mdot-r-127-i.pdf#page=5"]').scroll_into_view_if_needed()
+        await page.locator('#calculationDetails a[href="references/mdot-r-127-i.pdf#page=5"]').scroll_into_view_if_needed()
         await page.screenshot(path=str(ARTIFACTS / 'mdot-delineators.png'))
         assert await page.locator('.leaflet-chevrons-pane path').count() > 0
         assert await page.locator('.leaflet-delineators-pane path').count() > 0
@@ -194,6 +250,16 @@ async def check(origin):
         await page.locator('#methodMmutcd').check()
         await page.select_option('#chevronRoadTypeSel', 'expressway_mainline')
         await expect(page.locator('#mdotChevronSize')).to_contain_text('30 × 36 in')
+        await page.locator('#methodRcoc').check()
+        await expect(page.locator('#chevronRoadTypeSel')).to_have_value('conventional')
+        await expect(page.locator('#roadwayTypeSel')).to_have_value('')
+        await expect(page.locator('#freewayRoadwayClassOption')).to_be_disabled()
+        await page.select_option('#roadwayTypeSel','all_other')
+        await expect(page.locator('#chevronSizingMessage')).to_have_text('')
+        await page.locator('#methodMmutcd').check()
+        await expect(page.locator('#chevronRoadTypeSel')).to_have_value('expressway_mainline')
+        await expect(page.locator('#chevronRoadTypeSel')).to_be_enabled()
+        await expect(page.locator('#roadwayTypeSel')).to_have_value('freeway_expressway')
         # Switching methods must never reinterpret a percentile measurement as a speed limit.
         await page.select_option('#speedBasisSel', '85th')
         await expect(page.locator('#postedSel')).to_have_value('')
@@ -206,6 +272,10 @@ async def check(origin):
         await page.locator('#methodMmutcd').check()
         await expect(page.locator('#speedBasisSel')).to_have_value('85th')
         await expect(page.locator('#postedSel')).to_have_value('75')
+        await page.locator('#methodRcoc').check()
+        await expect(page.locator('#speedBasisSel')).to_have_value('85th')
+        await expect(page.locator('#postedSel')).to_have_value('75')
+        await page.locator('#methodMmutcd').check()
         await page.select_option('#speedBasisSel', 'posted')
         await expect(page.locator('#postedSel')).to_have_value('65')
         await page.locator('.section-inputs').scroll_into_view_if_needed()
@@ -257,14 +327,14 @@ async def check(origin):
         await expect(page.locator('#panel')).not_to_have_class('panel open')
         await page.locator('#menuBtn').click()
         await page.locator('#calculationDetails').evaluate('(el) => el.open = false')
-        await page.locator('.result-summary').scroll_into_view_if_needed()
+        await page.locator('.section-results').evaluate('(el) => el.scrollIntoView({block:"start"})')
         await page.screenshot(path=str(ARTIFACTS / 'mobile-summary.png'))
         assert await page.locator('#panel').evaluate('(el) => el.scrollWidth <= el.clientWidth + 1')
         await page.locator('#resetBtn').click()
         assert await page.locator('.leaflet-chevrons-pane path').count() == 0
         assert await page.locator('.leaflet-delineators-pane path').count() == 0
         assert not errors, errors
-        print('PASS: both methods, always-visible chevrons and delineators, transitions, optional warning, overrides, sizing, citations, keyboard toggle, reset, desktop/mobile layout')
+        print('PASS: all three methods, RCOC conventional road and sizing, always-visible chevrons and delineators, transitions, optional warning, overrides, citations, keyboard toggle, reset, desktop/mobile layout')
         print(f'Screenshots: {ARTIFACTS}')
         await browser.close()
 
