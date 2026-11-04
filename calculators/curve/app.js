@@ -90,6 +90,7 @@
   const aadtSel     = document.getElementById('aadtSel');
   const roadwayTypeSel = document.getElementById('roadwayTypeSel');
   const chevronRoadTypeSel = document.getElementById('chevronRoadTypeSel');
+  const rcocRoadClassSel = document.getElementById('rcocRoadClassSel');
   const chevronSizingMessage = document.getElementById('chevronSizingMessage');
   const rcocChevronSizeEl = document.getElementById('rcocChevronSize');
   const mdotChevronSizeEl = document.getElementById('mdotChevronSize');
@@ -316,6 +317,7 @@
   if (aadtSel) aadtSel.addEventListener('change', update);
   if (roadwayTypeSel) roadwayTypeSel.addEventListener('change', update);
   chevronRoadTypeSel.addEventListener('change', update);
+  rcocRoadClassSel.addEventListener('change', update);
   if (surfaceSel) surfaceSel.addEventListener('change', update);
   if (roadWidthInput) roadWidthInput.addEventListener('input', update);
   if (roadHeightInput) roadHeightInput.addEventListener('input', update);
@@ -396,7 +398,7 @@
       ? 'Roadway class (sizing cross-check)' : 'MMUTCD roadway class (Table 2C-4)';
     document.getElementById('chevronRoadTypeHelp').textContent = method === 'mdot'
       ? 'Roadway class cross-checks the selected road type for sizing. Ramp sizing uses the study advisory speed.'
-      : 'RCOC local/primary classification is separate from the MMUTCD roadway class below.';
+      : 'Used for standard sign sizing; cross-checked against the MMUTCD roadway class below.';
     return method;
   }
 
@@ -407,13 +409,14 @@
       roadwayType: roadwayTypeSel.value,
       advisoryMPH: advisorySel.value
     });
+    // Agency sizing is independent of the roadway inputs used by either calculation method.
+    sizes.rcoc = CurveChevronSizing.lookupRcocChevronSize(rcocRoadClassSel.value);
     const format = size => `${size.width} × ${size.height} in — ${size.rationale}`;
     chevronSizingMessage.textContent = sizes.message;
     chevronSizingMessage.classList.toggle('warn', sizes.conflict);
     chevronRoadTypeSel.setCustomValidity(sizes.message);
     chevronRoadTypeSel.setAttribute('aria-invalid', String(Boolean(sizes.message)));
-    rcocChevronSizeEl.textContent = sizes.message ? 'Select consistent road types above to see sizing.'
-      : sizes.rcoc ? format(sizes.rcoc) : 'RCOC local/primary sizing does not apply to the selected road type.';
+    rcocChevronSizeEl.textContent = sizes.rcoc ? format(sizes.rcoc) : 'RCOC sizing is not selected.';
     document.getElementById('mdotSizingTitle').textContent = `${method === 'mdot' ? 'MDOT' : 'MMUTCD'} chevron sizing (W1-8)`;
     document.getElementById('standardSizingRules').textContent = method === 'mdot'
       ? 'Conventional: 24 × 30 in. Mainline: 36 × 48 in. Ramps: 24 × 30 in at ≤40 mph; 36 × 48 in at 45–55 mph advisory speed.'
@@ -438,7 +441,7 @@
       <div class="summary-treatment"><span>Treatment from selected method</span><strong>${treatmentLabel(g)}</strong>
         <span>Advance warning: ${g.warning}</span>
         <span>${method === 'mdot' ? 'Chevrons / large arrow' : 'Curve delineation'}: ${g.alignment}</span></div>
-      ${sizes.message ? `<p class="warn">${sizes.message} Size recommendations are withheld.</p>` : ''}
+      ${sizes.message ? `<p class="warn">${sizes.message} MDOT/MMUTCD size recommendations are withheld.</p>` : ''}
       ${g.note && (g.treatment === 'none' || g.need === 'Omitted by selection') ? `<p class="small-note">${g.note}</p>` : ''}
       <dl class="summary-grid">
         <div><dt>${method === 'mdot' ? 'MDOT' : 'MMUTCD'} chevron size</dt><dd>${sizes.message ? 'Select road type' : dimensions(sizes[method])}</dd></div>
@@ -721,7 +724,7 @@
     const sides = bothSides && innerPossible ? 2 : 1;
     const advisoryDisplay = estimate.speed === null ? 'Outside supported estimate / inputs unavailable'
       : `${estimate.speed.toFixed(1)} mph (f = ${estimate.friction.toFixed(3)})`;
-    const isConventional = ['rcoc_local','rcoc_primary','conventional'].includes(chevronRoadTypeSel.value);
+    const isConventional = chevronRoadTypeSel.value === 'conventional';
     const warningDisplay = !showWarning ? 'Not drawn for the selected treatment.'
       : Number.isFinite(advance.feet) ? `${advance.feet} ft before PC / beyond PT${advance.custom ? ' — site distance entered by user' : ''}.`
       : 'Site placement distance needed; no warning ticks drawn.';
@@ -730,7 +733,7 @@
       delineatorStep:delineators.step, delineatorTarget:delineators.target, warning:warningDisplay })}
       <details id="calculationDetails" class="calculation-details" ${detailsOpen ? 'open' : ''}>
       <summary>Calculation details and sources</summary><div class="callout">${selectionHTML}
-      ${!validSelection ? `<div class="warn">${chevronSizes.message} Size recommendations are withheld.</div>` : ''}
+      ${!validSelection ? `<div class="warn">${chevronSizes.message} MDOT/MMUTCD size recommendations are withheld.</div>` : ''}
       <hr /><h2>Chevron layout</h2>
       <div class="stat"><strong>Target:</strong> ${formatStep(chevronSpacing.feet)}</div>
       <div class="layout-note">${chevronSpacing.note}</div>

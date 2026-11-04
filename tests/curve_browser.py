@@ -65,12 +65,16 @@ async def check(origin):
         await expect(page.locator('#roadHeightInput')).to_be_disabled()
         await expect(page.locator('#mdotDelineatorLocationSel')).not_to_be_visible()
         await expect(page.locator('#chevronSizingMessage')).to_contain_text('Select a road type')
-        await page.select_option('#chevronRoadTypeSel', 'rcoc_primary')
+        assert 'RCOC' not in await page.locator('#chevronRoadTypeSel').inner_text()
+        await page.select_option('#chevronRoadTypeSel', 'conventional')
+        await page.select_option('#rcocRoadClassSel', 'primary')
         await page.select_option('#aadtSel', '4000_plus')
         await page.select_option('#postedSel', '55')
         await page.select_option('#advisorySel', '30')
         await expect(page.locator('#rcocChevronSize')).to_contain_text('24 × 30 in')
         await expect(page.locator('#mdotChevronSize')).to_contain_text('18 × 24 in')
+        await page.locator('.rcoc-sizing-input').scroll_into_view_if_needed()
+        await page.screenshot(path=str(ARTIFACTS / 'rcoc-sizing-input.png'))
         for angle in [200, 245, 290]:
             await page.evaluate('''angle => {
                 const latitude=42.6389, longitude=-83.2910, earth=6378137, radius=304.8;
@@ -91,6 +95,18 @@ async def check(origin):
         await page.screenshot(path=str(ARTIFACTS / 'outputs.png'))
         assert await page.locator('.leaflet-chevrons-pane path').count() > 0
         assert await page.locator('.leaflet-delineators-pane path').count() > 0
+        async def check_rcoc_independence():
+            calculation = await page.locator('#calculationDetails').text_content()
+            geometry = await page.locator('.leaflet-overlay-pane path, .leaflet-chevrons-pane path, .leaflet-delineators-pane path, .leaflet-advance-pane path').evaluate_all('(els) => els.map(el => el.getAttribute("d"))')
+            for classification, size in [('local', '18 × 24 in'), ('primary', '24 × 30 in'), ('', 'not selected')]:
+                await page.select_option('#rcocRoadClassSel', classification)
+                await expect(page.locator('#rcocChevronSize')).to_contain_text(size)
+                await expect(page.locator('#chevronRoadTypeSel')).to_have_value('conventional')
+                await expect(page.locator('#roadwayTypeSel')).to_have_value('arterial_with_markings')
+                assert await page.locator('#calculationDetails').text_content() == calculation
+                assert await page.locator('.leaflet-overlay-pane path, .leaflet-chevrons-pane path, .leaflet-delineators-pane path, .leaflet-advance-pane path').evaluate_all('(els) => els.map(el => el.getAttribute("d"))') == geometry
+            await page.select_option('#rcocRoadClassSel', 'primary')
+        await check_rcoc_independence()
         await page.locator('#methodSlider').fill('0')
         await expect(page.locator('#methodName')).to_have_text('MDOT signing guide (2023)')
         for field in ['aadtSel', 'surfaceSel', 'speedBasisSel', 'pavedTreatmentSel', 'urbanLowVolume', 'omitEligible', 'includeOptional']:
@@ -107,6 +123,7 @@ async def check(origin):
         await expect(page.locator('#results')).to_contain_text('275 ft before PC')
         await expect(page.locator('#results')).to_contain_text('184.9 ft')
         await expect(page.locator('#results')).to_contain_text('Known-radius chart: 950-ft minimum-radius row gives S = 90 ft')
+        await check_rcoc_independence()
         await expect(page.locator('#mdotDelineatorLocationSel')).to_be_visible()
         await page.select_option('#mdotDelineatorLocationSel', 'interchange')
         await expect(page.locator('#results')).to_contain_text('200-ft maximum gaps')
@@ -154,7 +171,7 @@ async def check(origin):
         assert await page.locator('.leaflet-advance-pane path').count() == 4
         # A class conflict withholds sizing but keeps both comparison layouts visible.
         await page.select_option('#chevronRoadTypeSel', 'freeway_ramp')
-        await expect(page.locator('#results')).to_contain_text('Size recommendations are withheld')
+        await expect(page.locator('#results')).to_contain_text('MDOT/MMUTCD size recommendations are withheld')
         assert await page.locator('.leaflet-chevrons-pane path').count() > 0
         assert await page.locator('.leaflet-delineators-pane path').count() == 2 * dots
         assert await page.locator('.leaflet-advance-pane path').count() == 0
@@ -223,6 +240,8 @@ async def check(origin):
         await page.locator('#menuBtn').click()
         await expect(page.locator('#panel')).to_have_class('panel open')
         await expect(page.locator('#menuBtn')).to_have_attribute('aria-label', 'Close controls')
+        await page.locator('.rcoc-sizing-input').scroll_into_view_if_needed()
+        await page.screenshot(path=str(ARTIFACTS / 'mobile-rcoc-sizing.png'))
         await page.locator('#panel').evaluate('(el) => el.scrollTop = 0')
         await page.wait_for_timeout(300)
         await page.screenshot(path=str(ARTIFACTS / 'mobile.png'))

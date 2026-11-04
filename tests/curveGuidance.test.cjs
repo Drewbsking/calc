@@ -4,7 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const g = require('../calculators/curve/guidance.js');
 const sizing = require('../calculators/curve/chevron-sizing.js');
-const base = {method:'mmutcd',approachMPH:55,advisoryMPH:35,roadwayType:'arterial_with_markings',aadtKey:'4000_plus',surfaceType:'paved',roadType:'rcoc_primary'};
+const base = {method:'mmutcd',approachMPH:55,advisoryMPH:35,roadwayType:'arterial_with_markings',aadtKey:'4000_plus',surfaceType:'paved',roadType:'conventional'};
 const guide = patch => g.deviceGuidance({...base,...patch});
 
 test('MMUTCD Table 2C-4A: all 16 cells and Table B treatments', () => {
@@ -142,7 +142,7 @@ test('MDOT delineator layouts respect location caps through curve-to-tangent tra
 });
 
 test('MMUTCD sizing distinguishes expressway, freeway and conventional classifications', () => {
-  for(const [roadType,roadwayType,w,h] of [['rcoc_local','all_other',18,24],['expressway_mainline','freeway_expressway',30,36],['freeway_mainline','freeway_expressway',36,48]]){
+  for(const [roadType,roadwayType,w,h] of [['conventional','all_other',18,24],['expressway_mainline','freeway_expressway',30,36],['freeway_mainline','freeway_expressway',36,48]]){
     const r=sizing.lookupChevronSizes({roadType,roadwayType,advisoryMPH:50});
     assert.deepEqual([r.mmutcd.width,r.mmutcd.height],[w,h]);
   }

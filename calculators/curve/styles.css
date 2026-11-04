@@ -23,6 +23,9 @@ body {
 .panel, .input-stack, .card { min-width:0; }
 .panel [hidden] { display:none !important; }
 .panel select { width:100%; min-width:0; }
+.rcoc-sizing-input { min-width:0; margin:18px 0 0; padding:12px; border:1px solid #cbd5df; border-radius:8px; background:#f7f9fb; }
+.rcoc-sizing-input legend { padding:0 5px; font-size:13px; font-weight:600; color:#344b60; }
+.rcoc-sizing-input select { margin:6px 0 8px; }
 .panel .step-title { display:flex; align-items:center; gap:9px; margin:0 0 14px; text-align:left; font-size:1rem; color:#243b53; opacity:1; }
 .step-number { display:inline-flex; align-items:center; justify-content:center; flex:0 0 26px; height:26px; border-radius:50%; background:#1f78b4; color:#fff; font-size:13px; }
 .section-instructions, .section-results { border-top:1px solid #dce3e9; padding-top:18px; }

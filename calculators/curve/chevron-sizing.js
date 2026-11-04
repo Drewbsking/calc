@@ -4,12 +4,18 @@
   // RCOC local/primary sizes supplied by the agency for this calculator.
   // MDOT Traffic Sign Design, Placement, and Application Guidelines,
   // Table 2 (2023), and Appendix B-9. Dimensions are width x height in inches.
-  const ROAD_TYPES = ['rcoc_local', 'rcoc_primary', 'conventional', 'freeway_mainline', 'expressway_mainline', 'freeway_expressway', 'freeway_ramp'];
+  const ROAD_TYPES = ['conventional', 'freeway_mainline', 'expressway_mainline', 'freeway_expressway', 'freeway_ramp'];
   const ROADWAY_CLASSES = ['freeway_expressway', 'arterial_no_markings', 'arterial_with_markings', 'all_other'];
   const size = (width, height, rationale) => ({ width, height, rationale });
 
+  function lookupRcocChevronSize(classification){
+    if (classification === 'local') return size(18, 24, 'RCOC local road');
+    if (classification === 'primary') return size(24, 30, 'RCOC primary road');
+    return null;
+  }
+
   function lookupChevronSizes({ roadType, roadwayType, advisoryMPH } = {}){
-    const result = { rcoc: null, mdot: null, mmutcd: null, message: '', conflict: false };
+    const result = { mdot: null, mmutcd: null, message: '', conflict: false };
     if (!ROAD_TYPES.includes(roadType)) {
       result.message = 'Select a road type for chevron sizing.';
       return result;
@@ -27,10 +33,6 @@
         : 'Road type and MMUTCD roadway class disagree. Select a conventional-road MMUTCD class, or correct the road type.';
       return result;
     }
-
-    // RCOC local/primary is an agency classification, not a functional class.
-    if (roadType === 'rcoc_local') result.rcoc = size(18, 24, 'RCOC local road');
-    if (roadType === 'rcoc_primary') result.rcoc = size(24, 30, 'RCOC primary road');
 
     if (!isFreeway) {
       result.mdot = size(24, 30, 'Conventional roadway');
@@ -54,6 +56,6 @@
     return result;
   }
 
-  if (typeof module === 'object' && module.exports) module.exports = { lookupChevronSizes };
-  else root.CurveChevronSizing = { lookupChevronSizes };
+  if (typeof module === 'object' && module.exports) module.exports = { lookupChevronSizes, lookupRcocChevronSize };
+  else root.CurveChevronSizing = { lookupChevronSizes, lookupRcocChevronSize };
 })(typeof globalThis !== 'undefined' ? globalThis : this);

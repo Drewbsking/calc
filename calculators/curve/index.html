@@ -28,17 +28,15 @@
       <div class="card">
         <h2 class="step-title"><span class="step-number">2</span> Enter road and speeds</h2>
         <div class="input-stack">
-          <label for="chevronRoadTypeSel">Road type for chevron sizing (required)</label>
+          <label for="chevronRoadTypeSel">Roadway type — MDOT / MMUTCD (required)</label>
           <select id="chevronRoadTypeSel" required aria-describedby="chevronRoadTypeHelp chevronSizingMessage">
             <option value="" selected>Select road type</option>
-            <option value="rcoc_local">RCOC local road</option>
-            <option value="rcoc_primary">RCOC primary road</option>
-            <option value="conventional">Other conventional road</option>
+            <option value="conventional">Conventional road</option>
             <option value="freeway_mainline">Freeway mainline</option>
             <option value="expressway_mainline">Expressway mainline</option>
             <option value="freeway_ramp">Freeway ramp</option>
           </select>
-          <div id="chevronRoadTypeHelp" class="small-note muted">RCOC local/primary classification is separate from the roadway class below.</div>
+          <div id="chevronRoadTypeHelp" class="small-note muted">Used by the selected method for sign sizing and applicable ramp rules.</div>
           <div id="chevronSizingMessage" class="small-note" role="status"></div>
         </div>
         <div class="input-stack">
@@ -109,6 +107,16 @@
             </div>
           </div>
         </div>
+        <fieldset class="rcoc-sizing-input">
+          <legend>RCOC chevron size only</legend>
+          <label for="rcocRoadClassSel">RCOC classification (optional)</label>
+          <select id="rcocRoadClassSel" aria-describedby="rcocSizeHelp">
+            <option value="" selected>Do not show RCOC sizing</option>
+            <option value="local">Local road — 18 × 24 in</option>
+            <option value="primary">Primary road — 24 × 30 in</option>
+          </select>
+          <div id="rcocSizeHelp" class="small-note muted">Sets only the RCOC chevron size shown in results. Roadway classification, device selection, and spacing use the inputs above.</div>
+        </fieldset>
         <details class="layout-options">
           <summary>Advanced options</summary>
           <p class="small-note muted">Adjust placement, treatment exceptions, or study-support inputs. Existing values apply when this section is closed.</p>
@@ -205,7 +213,7 @@
         <h2 id="rcocSizingTitle">RCOC chevron sizing (W1-8)</h2>
         <div class="small-note muted">Local roads: 18 &times; 24 in. Primary roads: 24 &times; 30 in. Dimensions are width &times; height.</div>
         <div class="small-note muted">Source: RCOC local/primary practice supplied for this calculator.</div>
-        <div id="rcocChevronSize" class="stat" aria-live="polite">Select a road type above.</div>
+        <div id="rcocChevronSize" class="stat" aria-live="polite">RCOC sizing is not selected.</div>
       </section>
       <section class="card" aria-labelledby="mdotSizingTitle">
         <h2 id="mdotSizingTitle">Selected-method chevron sizing (W1-8)</h2>
