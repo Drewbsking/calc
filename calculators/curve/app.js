@@ -6,80 +6,6 @@
   const AW_TICK_FT = 12;  // purple AW tick length
   const AW_GUIDE_WEIGHT = 5;                 // thickness of the highlighted AW distance
   const AW_GUIDE_STYLE = '10,7';             // dashed line
-  const DELINEATOR_OFFSET_FT = 35;           // lateral offset from centerline
-  const DELINEATOR_MIN_SPACING_FT = 20;      // minimum delineator spacing
-  const DELINEATOR_MAX_SPACING_FT = 300;     // maximum delineator spacing
-  const MDOT_RAMP_SLOW_MAX = 40;             // ramp speeds using 24" (MDOT)
-  const MDOT_RAMP_FAST_MIN = 45;             // ramp speeds using 36" (MDOT)
-  const MDOT_RAMP_FAST_MAX = 55;             // ramp speeds using 36" (MDOT)
-
-  // Side-friction lookup table (AASHTO 2011 Fig. 3-6 approximations)
-  const SIDE_FRICTION_TABLE = [
-    { speed: 15, friction: 0.32 },
-    { speed: 20, friction: 0.27 },
-    { speed: 25, friction: 0.23 },
-    { speed: 30, friction: 0.20 },
-    { speed: 35, friction: 0.18 },
-    { speed: 40, friction: 0.16 },
-    { speed: 45, friction: 0.15 },
-    { speed: 50, friction: 0.14 }
-  ];
-
-  function sideFrictionAt(mph){
-    if (!Number.isFinite(mph) || SIDE_FRICTION_TABLE.length === 0) return 0;
-    if (mph <= SIDE_FRICTION_TABLE[0].speed) return SIDE_FRICTION_TABLE[0].friction;
-    for (let i = 0; i < SIDE_FRICTION_TABLE.length - 1; i++){
-      const a = SIDE_FRICTION_TABLE[i];
-      const b = SIDE_FRICTION_TABLE[i + 1];
-      if (mph <= b.speed){
-        const t = (mph - a.speed) / (b.speed - a.speed);
-        return a.friction + t * (b.friction - a.friction);
-      }
-    }
-    if (SIDE_FRICTION_TABLE.length < 2) return SIDE_FRICTION_TABLE[0].friction;
-    const a = SIDE_FRICTION_TABLE[SIDE_FRICTION_TABLE.length - 2];
-    const b = SIDE_FRICTION_TABLE[SIDE_FRICTION_TABLE.length - 1];
-    const t = (mph - a.speed) / (b.speed - a.speed || 1);
-    return a.friction + t * (b.friction - a.friction);
-  }
-
-  function solveAdvisorySpeedFromRadius(radiusFt, superelevationDecimal, guessMPH = 45){
-    const result = { speed: NaN, friction: NaN, iterations: 0, converged: false };
-    if (!Number.isFinite(radiusFt) || radiusFt <= 0) return result;
-    const e = Number.isFinite(superelevationDecimal) ? superelevationDecimal : 0;
-    let v = Number.isFinite(guessMPH) && guessMPH > 0 ? guessMPH : 35;
-    v = Math.max(5, v);
-    const MAX_ITER = 30;
-    const TOL = 1e-2;
-    for (let i = 0; i < MAX_ITER; i++){
-      const f = sideFrictionAt(v);
-      const balance = e + f;
-      if (balance <= 0){
-        result.speed = 0;
-        result.friction = f;
-        result.iterations = i + 1;
-        return result;
-      }
-      const next = Math.sqrt(15 * radiusFt * balance);
-      if (!Number.isFinite(next)){
-        result.speed = v;
-        result.friction = f;
-        result.iterations = i + 1;
-        return result;
-      }
-      result.iterations = i + 1;
-      if (Math.abs(next - v) < TOL){
-        v = next;
-        result.converged = true;
-        break;
-      }
-      v = next;
-    }
-    result.speed = v;
-    result.friction = sideFrictionAt(v);
-    return result;
-  }
-
   // ---- Map ----
   const INITIAL_CENTER = [42.6389, -83.2910];
   const INITIAL_ZOOM = 15;
@@ -154,54 +80,31 @@
   const advisorySel = document.getElementById('advisorySel');
   const aadtSel     = document.getElementById('aadtSel');
   const roadwayTypeSel = document.getElementById('roadwayTypeSel');
+  const chevronRoadTypeSel = document.getElementById('chevronRoadTypeSel');
+  const chevronSizingMessage = document.getElementById('chevronSizingMessage');
+  const rcocChevronSizeEl = document.getElementById('rcocChevronSize');
+  const mdotChevronSizeEl = document.getElementById('mdotChevronSize');
   const surfaceSel  = document.getElementById('surfaceSel');
   const locateBtn   = document.getElementById('locateBtn');
   const roadWidthInput  = document.getElementById('roadWidthInput');
   const roadHeightInput = document.getElementById('roadHeightInput');
+  const methodSlider = document.getElementById('methodSlider');
+  const speedBasisSel = document.getElementById('speedBasisSel');
+  const includeOptional = document.getElementById('includeOptional');
+  const pavedTreatmentSel = document.getElementById('pavedTreatmentSel');
+  const urbanLowVolume = document.getElementById('urbanLowVolume');
+  const omitEligible = document.getElementById('omitEligible');
+  const advanceOverride = document.getElementById('advanceOverride');
+  const shoulderWidthInput = document.getElementById('shoulderWidthInput');
+  const delineatorOffsetInput = document.getElementById('delineatorOffsetInput');
+  const delineatorSidesSel = document.getElementById('delineatorSidesSel');
   // MUTCD Table 2C-4 lookup data (AADT vs roadway class).
   const DEFAULT_AADT_KEY = '1000_2999';
-  const DEFAULT_ROADWAY_TYPE = 'arterial_with_markings';
   const AADT_CATEGORY_META = {
     lt1000:      { key: 'lt1000', description: 'Less than 1,000' },
     '1000_2999':   { key: '1000_2999', description: '1,000-2,999' },
     '3000_3999':   { key: '3000_3999', description: '3,000-3,999' },
     '4000_plus':   { key: '4000_plus', description: 'Greater than 3,999' }
-  };
-  const ROADWAY_ROWS = [
-    { id: 'freeway_expressway', label: 'Freeway or expressway' },
-    { id: 'arterial_no_markings', label: 'Arterial or collector without pavement markings' },
-    { id: 'arterial_with_markings', label: 'Arterial or collector with pavement markings' },
-    { id: 'all_other', label: 'All other roadways' }
-  ];
-  const ALIGNMENT_NEED_MATRIX = {
-    lt1000: {
-      freeway_expressway: 'Required',
-      arterial_no_markings: 'Optional',
-      arterial_with_markings: 'Optional',
-      all_other: 'Optional'
-    },
-    '1000_2999': {
-      freeway_expressway: 'Required',
-      arterial_no_markings: 'Recommended',
-      arterial_with_markings: 'Recommended',
-      all_other: 'Optional'
-    },
-    '3000_3999': {
-      freeway_expressway: 'Required',
-      arterial_no_markings: 'Required',
-      arterial_with_markings: 'Recommended',
-      all_other: 'Optional'
-    },
-    '4000_plus': {
-      freeway_expressway: 'Required',
-      arterial_no_markings: 'Required',
-      arterial_with_markings: 'Required',
-      all_other: 'Optional'
-    }
-  };
-  const SURFACE_META = {
-    paved:  { key: 'paved', label: 'Paved (hard surface)' },
-    gravel: { key: 'gravel', label: 'Gravel / unpaved' }
   };
   const instructionsSection = document.querySelector('.section-instructions');
   const instructionsToggle  = document.getElementById('instructionsToggle');
@@ -420,14 +323,21 @@
   advisorySel.addEventListener('change', update);
   if (aadtSel) aadtSel.addEventListener('change', update);
   if (roadwayTypeSel) roadwayTypeSel.addEventListener('change', update);
+  chevronRoadTypeSel.addEventListener('change', update);
   if (surfaceSel) surfaceSel.addEventListener('change', update);
   if (roadWidthInput) roadWidthInput.addEventListener('input', update);
   if (roadHeightInput) roadHeightInput.addEventListener('input', update);
+  methodSlider.addEventListener('input', update);
+  [speedBasisSel, includeOptional, pavedTreatmentSel, urbanLowVolume, omitEligible, delineatorSidesSel]
+    .forEach(input => input.addEventListener('change', update));
+  [advanceOverride, shoulderWidthInput, delineatorOffsetInput].forEach(input => input.addEventListener('input', update));
   if (locateBtn) locateBtn.addEventListener('click', goToDeviceLocation);
 
   function togglePanel(){
     const isOpen = panel.classList.toggle('open');
     document.body.classList.toggle('panel-open', isOpen);
+    menuBtn.setAttribute('aria-expanded', String(isOpen));
+    menuBtn.setAttribute('aria-label', isOpen ? 'Close controls' : 'Open controls');
     setTimeout(() => map.invalidateSize(false), 250);
   }
   menuBtn && menuBtn.addEventListener('click', togglePanel);
@@ -442,6 +352,7 @@
     }
     resultsEl.innerHTML = '';
     spacingEl.innerHTML = '';
+    update();
     lastCurveBounds = null;
     lastCalc = null;
     statusEl.textContent = STATUS_DEFAULT;
@@ -452,167 +363,88 @@
   window.addEventListener('resize', () => map.invalidateSize(false), { passive: true });
   window.addEventListener('orientationchange', () => setTimeout(() => map.invalidateSize(false), 250), { passive: true });
 
-  // ---- Advance warning lookup ----
-  const AW_TABLE = {
-    25:{5:125,10:100,15:100,20:100},
-    30:{5:150,10:115,15:100,20:100,25:100},
-    35:{5:185,10:125,15:115,20:100,25:100,30:100},
-    40:{5:225,10:150,15:135,20:125,25:120,30:115,35:100,45:100},
-    45:{5:280,10:200,15:185,20:175,25:160,30:150,35:125},
-    50:{5:350,10:275,15:250,20:225,25:215,30:200,35:175,40:150,45:100},
-    55:{5:425,10:350,15:335,20:325,25:300,30:275,35:240,40:200,45:175,50:150},
-    60:{5:510,10:450,15:425,20:400,25:375,30:350,35:315,40:275,45:240,50:200,55:150},
-    65:{5:585,10:525,15:515,20:500,25:475,30:450,35:415,40:375,45:315,50:275,55:215,60:150},
-    70:{5:675,10:625,15:615,20:600,25:575,30:550,35:515,40:475,45:425,50:375,55:315,60:250,65:150},
-    75:{5:745,10:710,15:705,20:695,25:685,30:675,35:640,40:600,45:550,50:500,55:425,60:350,65:275,70:200}
-  };
-  const MUTCD_MIN_FT = 100;
-
-  function lookupAWdistanceFt(postedMPH, advisoryMPH){
-    const ps = Number(postedMPH), as = Number(advisoryMPH);
-    const row = AW_TABLE[ps] || {};
-    return Number.isFinite(row[as]) ? row[as] : MUTCD_MIN_FT;
-  }
-
   function getAadtCategoryMeta(key){
     return AADT_CATEGORY_META[key] || AADT_CATEGORY_META[DEFAULT_AADT_KEY];
   }
 
-  function getSurfaceMeta(key){
-    return SURFACE_META[key] || SURFACE_META.paved;
+  const selectedMethod = () => methodSlider.value === '0' ? 'mdot' : 'mmutcd';
+  const sourceLink = entry => `<a class="source-link" href="${entry[1]}" target="_blank" rel="noopener noreferrer">Source: ${entry[0]}</a>`;
+
+  function updateMethod(){
+    const method = selectedMethod();
+    const label = CurveGuidance.sources[method].label;
+    document.getElementById('methodName').textContent = label;
+    methodSlider.setAttribute('aria-valuetext', label);
+    [pavedTreatmentSel, urbanLowVolume, omitEligible, aadtSel].forEach(el => { el.disabled = method !== 'mmutcd'; });
+    return method;
   }
 
-  function lookupAlignmentNeedByRoadway(key, selectedRoadwayId){
-    const matrix = ALIGNMENT_NEED_MATRIX[key] || ALIGNMENT_NEED_MATRIX[DEFAULT_AADT_KEY];
-    const selectedId = selectedRoadwayId || DEFAULT_ROADWAY_TYPE;
-    return ROADWAY_ROWS.map(row => {
-      const status = matrix[row.id] || 'Optional';
-      return {
-        id: row.id,
-        label: row.label,
-        status,
-        statusClass: status.toLowerCase(),
-        selected: row.id === selectedId
-      };
+  function updateChevronSizing(){
+    const method = selectedMethod();
+    const sizes = CurveChevronSizing.lookupChevronSizes({
+      roadType: chevronRoadTypeSel.value,
+      roadwayType: roadwayTypeSel.value,
+      advisoryMPH: advisorySel.value
     });
+    const format = size => `${size.width} × ${size.height} in — ${size.rationale}`;
+    chevronSizingMessage.textContent = sizes.message;
+    chevronSizingMessage.classList.toggle('warn', sizes.conflict);
+    chevronRoadTypeSel.setCustomValidity(sizes.message);
+    chevronRoadTypeSel.setAttribute('aria-invalid', String(Boolean(sizes.message)));
+    rcocChevronSizeEl.textContent = sizes.message ? 'Select consistent road types above to see sizing.'
+      : sizes.rcoc ? format(sizes.rcoc) : 'RCOC local/primary sizing does not apply to the selected road type.';
+    document.getElementById('mdotSizingTitle').textContent = `${method === 'mdot' ? 'MDOT' : 'MMUTCD'} chevron sizing (W1-8)`;
+    document.getElementById('standardSizingRules').textContent = method === 'mdot'
+      ? 'Conventional: 24 × 30 in. Mainline: 36 × 48 in. Ramps: 24 × 30 in at ≤40 mph; 36 × 48 in at 45–55 mph advisory speed.'
+      : 'Conventional: 18 × 24 in. Expressway: 30 × 36 in. Freeway: 36 × 48 in. Larger signs may be used (§2C.03).';
+    document.getElementById('standardSizingSource').innerHTML = sourceLink(CurveGuidance.sources[method].size);
+    mdotChevronSizeEl.textContent = sizes.message ? 'Select consistent road types above to see sizing.'
+      : sizes[method] ? format(sizes[method]) : sizes[`${method}Note`];
+    return sizes;
   }
 
-  function lookupDeviceGuidance(speedDifferential, surfaceType = 'paved'){
-    const surf = getSurfaceMeta(surfaceType).key;
-    if (!Number.isFinite(speedDifferential) || speedDifferential <= 0){
-      return {
-        summary: 'Speed differential below MUTCD threshold; confirm inputs.',
-        category: 'below_threshold',
-        tableRow: '<5 mph'
-      };
-    }
-    if (speedDifferential >= 20){
-      return {
-        summary: 'Chevrons and advance horizontal alignment warning sign',
-        category: 'chevron_aw',
-        tableRow: '20 mph or more'
-      };
-    }
-    if (speedDifferential >= 15){
-      return {
-        summary: 'Delineators plus advance horizontal alignment warning sign',
-        category: 'delineator_aw',
-        tableRow: '15 mph'
-      };
-    }
-    if (speedDifferential >= 10){
-      return {
-        summary: 'Advance horizontal alignment warning sign',
-        category: 'advance_aw',
-        tableRow: '10 mph'
-      };
-    }
-    if (speedDifferential >= 5){
-      const pavedSummary = 'Pavement markings or advance horizontal alignment warning sign (paved roadway)';
-      const gravelSummary = 'Advance horizontal alignment warning sign (unpaved roadway)';
-      return {
-        summary: surf === 'gravel' ? gravelSummary : pavedSummary,
-        category: 'pavement_markings',
-        tableRow: '5 mph'
-      };
-    }
-    return {
-      summary: 'Speed differential below 5 mph; use engineering judgment.',
-      category: 'below_threshold',
-      tableRow: '<5 mph'
-    };
+  function guidanceHTML(g, method){
+    const source = CurveGuidance.sources[method];
+    const treatment = { none:'No automatic layout', chevrons:'Chevrons and advance warning',
+      delineators:'Delineators and advance warning', warning:'Advance warning sign', markings:'Pavement markings' }[g.treatment];
+    return `<h2>${source.label}: device selection</h2>
+      <div class="stat"><strong>Speed differential:</strong> ${g.delta.toFixed(0)} mph</div>
+      ${method === 'mmutcd' ? `<div class="stat"><strong>Chart A device need:</strong> ${g.need} (AADT ${getAadtCategoryMeta(aadtSel.value).description})</div>` : ''}
+      <div class="stat"><strong>Advance warning:</strong> ${g.warning}</div>
+      <div class="stat"><strong>${method === 'mdot' ? 'Chevrons / large arrow' : 'Curve delineation'}:</strong> ${g.alignment}</div>
+      <div class="stat"><strong>Treatment:</strong> ${treatment}</div>
+      ${g.rampSign ? `<div class="stat"><strong>Exit/ramp speed sign:</strong> ${g.rampSign}</div>` : ''}
+      <div class="layout-note">${g.note}</div>${sourceLink(source.need)}
+      <div class="stat"><strong>Advisory-speed plaque (W13-1P):</strong> ${g.plaque}</div>
+      <div class="small-note muted">Plaque status applies when installing the advance warning sign; use the study advisory speed. Do not install the plaque alone.</div>
+      ${sourceLink(source.plaque)}`;
   }
 
-  function lookupChevronSizes({ advisoryMPH, roadwayType } = {}){
-    const advisory = Number(advisoryMPH);
-    const speedBasis = Number.isFinite(advisory) ? advisory : NaN;
-    const isFreeway = roadwayType === 'freeway_expressway';
-    const rcoc = {
-      agency: 'RCOC',
-      sizeInches: 24,
-      rationale: 'All locations'
-    };
-
-    let mdotSize = 24;
-    let mdotNote = 'Ramp 10-40 mph or non-freeway';
-    if (isFreeway){
-      mdotSize = 36;
-      mdotNote = 'Freeway or expressway';
-    } else if (speedBasis >= MDOT_RAMP_FAST_MIN && speedBasis <= MDOT_RAMP_FAST_MAX){
-      mdotSize = 36;
-      mdotNote = 'Ramp 45-55 mph (based on advisory speed selection)';
-    } else if (Number.isFinite(speedBasis) && speedBasis > MDOT_RAMP_SLOW_MAX){
-      mdotNote = 'Non-freeway (assumed for this advisory speed); ramps 10-40 mph use 24"';
-    }
-
-    return { rcoc, mdot: { sizeInches: mdotSize, rationale: mdotNote }, basisMph: speedBasis };
-  }
-
-  function computePlacementProfile(length_m, targetSpacing_m, mode, opts = {}){
-    const spacing = Math.max(targetSpacing_m, 1e-6);
-    const minCount = Math.max(1, opts.minCount || 1);
-    const minSnap = Math.max(opts.minCountSnap || 2, 2);
-    const eps = 1e-9;
-    let count, step, margin;
-
-    if (mode === 'centered'){
-      count = Math.max(minCount, Math.floor(length_m / spacing) + 1);
-      step = spacing;
-      margin = Math.max(0, (length_m - (count - 1) * step) / 2);
-    } else if (mode === 'startAtA'){
-      count = Math.max(minCount, Math.floor(length_m / spacing) + 1);
-      step = spacing;
-      margin = 0;
-    } else { // snapEnds
-      count = Math.max(minSnap, Math.ceil(length_m / spacing) + 1);
-      if (length_m <= eps) count = Math.max(minSnap, 2);
-      step = (count > 1) ? length_m / (count - 1) : 0;
-      margin = 0;
-    }
-
-    const positions = [];
-    for (let i = 0; i < count; i++){
-      let pos = margin + i * step;
-      if (mode === 'snapEnds' && i === count - 1){
-        pos = length_m;
-      }
-      if (pos > length_m + eps){
-        if (mode === 'snapEnds' && i === count - 1){
-          positions.push(length_m);
-        }
-        break;
-      }
-      positions.push(Math.max(0, Math.min(pos, length_m)));
-    }
-    if (!positions.length){
-      positions.push(0);
-    }
-    return {
-      count: positions.length,
-      step_m: step,
-      margin_m: margin,
-      positions_m: positions
-    };
+  function renderReferences(){
+    const groups = [
+      ['MMUTCD (2025)', 'mmutcd-curve-reference.pdf', [
+        ['Sizing — Table 2C-1 / §2C.03', 1, null],
+        ['Advance placement — Table 2C-3 / §2C.04', 3, 'mmutcd-198.png'],
+        ['Device selection — Table 2C-4 / §§2C.06–07', 4, 'mmutcd-201.png'],
+        ['Chevron spacing — Table 2C-5 / §2C.08', 6, 'mmutcd-204.png'],
+        ['Advisory-speed plaques — Table 2C-6 / §2C.59', 8, 'mmutcd-242.png'],
+        ['Delineators — §§3G.01–04 / Table 3G-1', 9, 'mmutcd-665.png']
+      ]],
+      ['MDOT signing guide (2023)', 'mdot-curve-reference.pdf', [
+        ['Sign sizes — Table 2, p. 18', 1, 'mdot-23.png'],
+        ['Advance placement — Table 3, p. 21', 2, 'mdot-26.png'],
+        ['Advisory speed and device selection — pp. 24–26 / Table 5', 3, 'mdot-30.png'],
+        ['Chevron spacing — Appendix B-9', 6, 'mdot-98.png'],
+        ['Design-equation estimate — Appendices B-11 / B-12', 7, 'mdot-101.png']
+      ]]
+    ];
+    document.getElementById('referenceSections').innerHTML = groups.map(([title,file,sections]) =>
+      `<details class="card reference-details"><summary>${title}</summary>
+        <p><a href="references/${file}" target="_blank" rel="noopener noreferrer">Open all included sections (PDF)</a></p>
+        ${sections.map(([label,page,img]) => `<details class="reference-details"><summary>${label}</summary>
+          <a href="references/${file}#page=${page}" target="_blank" rel="noopener noreferrer">Read the section and notes in the PDF</a>
+          ${img ? `<a href="references/${img}" target="_blank" rel="noopener noreferrer"><img src="references/${img}" alt="${label}: original source page" loading="lazy" /></a>` : ''}
+        </details>`).join('')}</details>`).join('');
   }
 
   // ---- Geometry helpers ----
@@ -661,13 +493,6 @@
       y: (a2*(C.x-B.x) + b2*(A.x-C.x) + c2*(B.x-A.x)) / d
     };
   }
-  function centralAngle(A,C,O){
-    const uA = { x: A.x - O.x, y: A.y - O.y };
-    const uC = { x: C.x - O.x, y: C.y - O.y };
-    const dot = uA.x*uC.x + uA.y*uC.y;
-    const den = Math.hypot(uA.x,uA.y) * Math.hypot(uC.x,uC.y);
-    return Math.acos(Math.max(-1, Math.min(1, dot / den)));
-  }
   const angleAt = (P,O) => Math.atan2(P.y - O.y, P.x - O.x);
   const norm = a => ((a % (2*Math.PI)) + 2*Math.PI) % (2*Math.PI);
   const angDiffCCW = (a,b) => norm(b - a);
@@ -709,400 +534,184 @@
   function update(){
     clearOverlays();
     spacingEl.innerHTML = '';
-    resultsEl.innerHTML = '';
-
+    lastCalc = null;
+    const method = updateMethod();
+    const source = CurveGuidance.sources[method];
+    const chevronSizes = updateChevronSizing();
     const postedMPH = Number(postedSel.value);
     const advisoryMPH = Number(advisorySel.value);
-    const roadWidthFt = roadWidthInput ? parseFloat(roadWidthInput.value) : NaN;
-    const roadHeightFt = roadHeightInput ? parseFloat(roadHeightInput.value) : NaN;
-    const hasSuperelevationInputs = Number.isFinite(roadWidthFt) && roadWidthFt > 0 && Number.isFinite(roadHeightFt);
-    const superelevationDecimal = hasSuperelevationInputs ? roadHeightFt / roadWidthFt : null;
-    const superelevationPercent = Number.isFinite(superelevationDecimal) ? superelevationDecimal * 100 : null;
-    const speedDifferential = Math.max(0, postedMPH - advisoryMPH);
-    const aadtKey = aadtSel ? aadtSel.value : DEFAULT_AADT_KEY;
-    const roadwayType = roadwayTypeSel ? roadwayTypeSel.value : DEFAULT_ROADWAY_TYPE;
-    const surfaceType = surfaceSel ? surfaceSel.value : 'paved';
-    const aadtMeta = getAadtCategoryMeta(aadtKey);
-    const deviceNeedRowsAll = lookupAlignmentNeedByRoadway(aadtKey, roadwayType);
-    const deviceNeedRows = deviceNeedRowsAll.filter(row => row.selected);
-    const deviceRecommendation = lookupDeviceGuidance(speedDifferential, surfaceType);
-
+    const roadWidthFt = parseFloat(roadWidthInput.value);
+    const roadHeightFt = parseFloat(roadHeightInput.value);
+    const shoulderFt = parseFloat(shoulderWidthInput.value);
+    const offsetFt = parseFloat(delineatorOffsetInput.value);
+    const guidance = CurveGuidance.deviceGuidance({ method, approachMPH: postedMPH, advisoryMPH,
+      roadwayType: roadwayTypeSel.value, aadtKey: aadtSel.value, surfaceType: surfaceSel.value,
+      roadType: chevronRoadTypeSel.value, speedBasis: speedBasisSel.value,
+      includeOptional: includeOptional.checked, pavedTreatment: pavedTreatmentSel.value,
+      urbanLowVolume: urbanLowVolume.checked, omitEligible: omitEligible.checked });
+    const selectionHTML = guidanceHTML(guidance, method);
+    resultsEl.innerHTML = `<div class="callout">${selectionHTML}</div>`;
     if (pts.length < 3){
-      statusEl.textContent = `Pick ${3 - pts.length} more point${(3 - pts.length) === 1 ? '' : 's'}.`;
+      statusEl.textContent = `Pick ${3 - pts.length} more point${3 - pts.length === 1 ? '' : 's'}.`;
       lastCurveBounds = null;
-      lastCalc = null;
       return;
     }
-
-    const A_ll = pts[0].getLatLng();
-    const B_ll = pts[1].getLatLng();
-    const C_ll = pts[2].getLatLng();
+    if (!(roadWidthFt > 0) || !(shoulderFt >= 0) || !(offsetFt >= 2 && offsetFt <= 8)) {
+      resultsEl.innerHTML += '<div class="warn">Enter a positive road width, a nonnegative shoulder width, and a delineator offset of 2–8 ft.</div>';
+      return;
+    }
+    if (urbanLowVolume.checked && method === 'mmutcd' && !['lt1000','1000_2999'].includes(aadtSel.value)) {
+      resultsEl.innerHTML += '<div class="warn">The urban AADT ≤1,000 selection conflicts with the AADT category.</div>';
+      return;
+    }
+    if (advanceOverride.value !== '' && !(Number(advanceOverride.value) > 0)) {
+      resultsEl.innerHTML += '<div class="warn">Enter a positive site advance-warning distance or clear the override.</div>';
+      return;
+    }
+    const A_ll = pts[0].getLatLng(), B_ll = pts[1].getLatLng(), C_ll = pts[2].getLatLng();
     const ORG = originFrom(A_ll, B_ll, C_ll);
-    const A = toXY_local(A_ll, ORG);
-    const B = toXY_local(B_ll, ORG);
-    const C = toXY_local(C_ll, ORG);
-
-    const area = triArea(A,B,C);
-    if (area < 1e-6){
-      resultsEl.innerHTML = '<div class="warn">Points are nearly colinear — spread them out along the curve.</div>';
-      lastCalc = null;
-      return;
-    }
-
+    const A = toXY_local(A_ll, ORG), B = toXY_local(B_ll, ORG), C = toXY_local(C_ll, ORG);
     const O = circumcenter(A,B,C);
-    if (!O){
-      resultsEl.innerHTML = '<div class="warn">Couldn\'t find circle center.</div>';
-      lastCalc = null;
+    if (!O || triArea(A,B,C) < 1e-6) {
+      resultsEl.innerHTML += '<div class="warn">Points are nearly collinear. Spread them along the curve.</div>';
       return;
     }
-
-    const Rm = dist(O, A);
-    const Rf = Rm * FT_PER_M;
-    const O_ll = fromXY_local(O.x, O.y, ORG);
-
-    const thA = angleAt(A,O);
-    const thB = angleAt(B,O);
-    const thC = angleAt(C,O);
-    const dAC_ccw = angDiffCCW(thA, thC);
-    const onMinorCCW = angDiffCCW(thA, thB) <= dAC_ccw;
-    const arcPts = drawArcMinorLL(O, Rm, thA, onMinorCCW ? thC : thC - 2*Math.PI, 90, ORG);
-
-    const gamma = centralAngle(A,C,O);
-    const arcLen_m = Rm * gamma;
-    const arcLen_f = arcLen_m * FT_PER_M;
-    const centralDeg = gamma * 180 / Math.PI;
-    const D_arc = 5729.57795 / Rf;
-
-    let advisoryComputation = null;
-    let advisoryComputedRaw = null;
-    let advisoryComputedRounded = null;
-    let advisoryComputedFriction = null;
-    let advisoryComputationConverged = false;
-    let advisoryDeltaFromSelected = null;
-    if (hasSuperelevationInputs){
-      advisoryComputation = solveAdvisorySpeedFromRadius(Rf, superelevationDecimal ?? 0, (Number.isFinite(advisoryMPH) && advisoryMPH > 0) ? advisoryMPH : postedMPH || 45);
-      if (advisoryComputation){
-        advisoryComputedRaw = advisoryComputation.speed;
-        advisoryComputedFriction = advisoryComputation.friction;
-        advisoryComputationConverged = Boolean(advisoryComputation.converged);
-        if (Number.isFinite(advisoryComputedRaw)){
-          advisoryComputedRounded = Math.max(0, 5 * Math.floor(advisoryComputedRaw / 5));
-        }
-        if (Number.isFinite(advisoryComputedRounded) && Number.isFinite(advisoryMPH)){
-          advisoryDeltaFromSelected = advisoryComputedRounded - advisoryMPH;
-        }
-      }
+    const Rm = dist(O,A), Rf = Rm * FT_PER_M;
+    const thA = angleAt(A,O), thB = angleAt(B,O), thC = angleAt(C,O);
+    const ccw = angDiffCCW(thA,thC);
+    const span = angDiffCCW(thA,thB) <= ccw ? ccw : ccw - 2*Math.PI;
+    if (Math.abs(span) > Math.PI + 1e-8) {
+      resultsEl.innerHTML += '<div class="warn">This layout supports a single circular arc up to 180°. Select a shorter curve with point 2 between PC and PT.</div>';
+      return;
     }
+    const signDir = span >= 0 ? 1 : -1;
+    const gamma = Math.abs(span), arcLen_m = Rm*gamma, arcLen_f = arcLen_m*FT_PER_M;
+    const centralDeg = gamma*180/Math.PI;
+    const O_ll = fromXY_local(O.x,O.y,ORG);
+    const e = Number.isFinite(roadHeightFt) ? roadHeightFt/roadWidthFt : NaN;
+    const estimate = CurveGuidance.advisoryEstimate(Rf,e);
+    const chevronSpacing = CurveGuidance.chevronSpacing(method,Rf,advisoryMPH);
+    const advance = CurveGuidance.advanceDistance(method,postedMPH,advisoryMPH,advanceOverride.value);
+    const validSelection = !chevronSizes.message;
+    const showChevrons = validSelection && guidance.showChevrons;
+    const showDelineators = validSelection && guidance.showDelineators;
+    const showWarning = validSelection && guidance.showWarning;
+    const chevrons = CurveGuidance.placement(arcLen_f,chevronSpacing.feet,modeSel.value);
+    const delineators = CurveGuidance.delineatorLayout(arcLen_f,Rf,modeSel.value);
+    const chevronPositions = showChevrons ? chevrons.positions : [];
+    const delineatorPositions = showDelineators
+      ? [...delineators.approaches,...delineators.positions,...delineators.departures] : [];
+    const offset_m = (roadWidthFt/2 + shoulderFt + offsetFt)/FT_PER_M;
+    const bothSides = delineatorSidesSel.value === 'both';
+    const innerPossible = Rm > offset_m;
 
-    const PLACEMENT_MODE = modeSel.value;
-    let Sft = 6 * Math.sqrt(Math.max(Rf, 0) - 50);
-    if (!isFinite(Sft) || Sft <= 0) Sft = 1;
-    const Sm = Sft / FT_PER_M;
-    const Lm = arcLen_m;
-    const chevronPlacement = computePlacementProfile(Lm, Sm, PLACEMENT_MODE, { minCount: 1, minCountSnap: 2 });
-    const Nchev = chevronPlacement.count;
-    const step_m = chevronPlacement.step_m;
-    const margin_m = chevronPlacement.margin_m;
-    const chevronPositions = chevronPlacement.positions_m;
-    const actualStepFt = (Nchev > 1 ? step_m : Sm) * FT_PER_M;
-    const sepDivisor = (PLACEMENT_MODE === 'centered') ? Math.max(Nchev, 1) : Math.max(Nchev - 1, 1);
-    const sepDeg = sepDivisor > 0 ? (centralDeg / sepDivisor) : centralDeg;
-
-    centerMarker = L.circleMarker(O_ll, {
-      radius: 5,
-      weight: 2,
-      opacity: 0.95,
-      color: '#1f78b4',
-      fillColor: '#1f78b4',
-      fillOpacity: 1
-    }).addTo(map).bindTooltip('Center');
-    circle = L.circle(O_ll, { radius: Rm, weight: 1, color: '#1f78b4', opacity: 0.6, fillOpacity: 0 }).addTo(map);
-    chord = L.polyline([A_ll, C_ll], { weight: 2, dashArray: '6,6', color: '#333' }).addTo(map);
-    poly123 = L.polyline([A_ll, B_ll, C_ll], { weight: 2, color: '#666' }).addTo(map);
-    arcSeg = L.polyline(arcPts, { weight: 3, opacity: 0.85, color: '#1f78b4' }).addTo(map);
-
-    // Tangents and PI
-    const rA = { x: A.x - O.x, y: A.y - O.y };
-    const rC = { x: C.x - O.x, y: C.y - O.y };
-    const tdirA = perpCCW(rA);
-    const tdirC = perpCCW(rC);
-    let PI = null;
-    let AP_m = null;
-    let CP_m = null;
-    let PI_ll = null;
-    let PIangle_deg = null;
-    const denom = cross(tdirA, tdirC);
+    // Extend stationing onto the approach/departure tangents; never extend the circle.
+    function pointAt(stationFt){
+      const station = stationFt/FT_PER_M;
+      const theta = station < 0 ? thA : station > arcLen_m ? thC : thA + signDir*station/Rm;
+      const radial = { x:Math.cos(theta), y:Math.sin(theta) };
+      const tangent = { x:-signDir*radial.y, y:signDir*radial.x };
+      const extension = station < 0 ? station : station > arcLen_m ? station-arcLen_m : 0;
+      return { x:O.x+Rm*radial.x+extension*tangent.x, y:O.y+Rm*radial.y+extension*tangent.y, radial, tangent };
+    }
+    const ll = P => fromXY_local(P.x,P.y,ORG);
+    centerMarker = L.circleMarker(O_ll,{radius:5,color:'#1f78b4',fillOpacity:1}).addTo(map).bindTooltip('Center');
+    circle = L.circle(O_ll,{radius:Rm,weight:1,color:'#1f78b4',opacity:.6,fillOpacity:0}).addTo(map);
+    chord = L.polyline([A_ll,C_ll],{weight:2,dashArray:'6,6',color:'#333'}).addTo(map);
+    poly123 = L.polyline([A_ll,B_ll,C_ll],{weight:2,color:'#666'}).addTo(map);
+    arcSeg = L.polyline(drawArcMinorLL(O,Rm,thA,thA+span,90,ORG),{weight:3,color:'#1f78b4'}).addTo(map);
+    const approachEnd = ll(pointAt(-EXT_FT)), departureEnd = ll(pointAt(arcLen_f+EXT_FT));
+    ext1 = L.polyline([A_ll,approachEnd],{weight:5,color:'#e53935'}).addTo(map);
+    ext3 = L.polyline([C_ll,departureEnd],{weight:5,color:'#e53935'}).addTo(map);
+    lastCurveBounds = L.latLngBounds([A_ll,B_ll,C_ll,O_ll,approachEnd,departureEnd]).extend(circle.getBounds());
+    const tA = pointAt(0).tangent, tC = pointAt(arcLen_f).tangent;
+    const denom = cross(tA,tC);
     if (Math.abs(denom) > 1e-9) {
-      const s = cross({ x: C.x - A.x, y: C.y - A.y }, tdirC) / denom;
-      PI = add(A, s, tdirA);
-      PI_ll = fromXY_local(PI.x, PI.y, ORG);
-      tan1 = L.polyline([A_ll, PI_ll], { weight: 2.5, color: '#111' }).addTo(map);
-      tan3 = L.polyline([C_ll, PI_ll], { weight: 2.5, color: '#111' }).addTo(map);
-      piMarker = L.circleMarker(PI_ll, { radius: 4.5, weight: 2, color: '#111', fillColor: '#fff', fillOpacity: 1 }).addTo(map);
-
-      AP_m = dist(A, PI);
-      CP_m = dist(C, PI);
-      const v1 = { x: A.x - PI.x, y: A.y - PI.y };
-      const v2 = { x: C.x - PI.x, y: C.y - PI.y };
-      const dot = v1.x*v2.x + v1.y*v2.y;
-      PIangle_deg = Math.acos(Math.max(-1, Math.min(1, dot/(Math.hypot(v1.x,v1.y)*Math.hypot(v2.x,v2.y))))) * 180 / Math.PI;
-
-      const EXT_M = EXT_FT / FT_PER_M;
-      const uA = unit(tdirA);
-      const uC = unit(tdirC);
-      const signA = (uA.x*(PI.x - A.x) + uA.y*(PI.y - A.y)) >= 0 ? -1 : 1;
-      const signC = (uC.x*(PI.x - C.x) + uC.y*(PI.y - C.y)) >= 0 ? -1 : 1;
-      const A_ext = add(A, signA * EXT_M, uA);
-      const C_ext = add(C, signC * EXT_M, uC);
-      const A_ext_ll = fromXY_local(A_ext.x, A_ext.y, ORG);
-      const C_ext_ll = fromXY_local(C_ext.x, C_ext.y, ORG);
-      ext1 = L.polyline([A_ll, A_ext_ll], { weight: 5, color: '#e53935', opacity: 0.95, lineCap: 'round' }).addTo(map);
-      ext3 = L.polyline([C_ll, C_ext_ll], { weight: 5, color: '#e53935', opacity: 0.95, lineCap: 'round' }).addTo(map);
-
-      lastCurveBounds = L.latLngBounds([A_ll, B_ll, C_ll, O_ll, PI_ll, A_ext_ll, C_ext_ll]).extend(circle.getBounds());
-
-      // Advance warning ticks
-      const aw_ft = lookupAWdistanceFt(postedMPH, advisoryMPH);
-      const aw_m  = aw_ft / FT_PER_M;
-
-      if (awTicksLayer) { awTicksLayer.clearLayers(); map.removeLayer(awTicksLayer); }
-      awTicksLayer = L.layerGroup([], { pane: 'advance' }).addTo(map);
-
-      const uAt = unit(tdirA);
-      const uCt = unit(tdirC);
-      const projectFootOnLine = (P, U, X) => {
-        const t = ((X.x - P.x)*U.x + (X.y - P.y)*U.y);
-        return { x: P.x + t*U.x, y: P.y + t*U.y };
-      };
-      const addGuide = (P0, P1) => {
-        const a = fromXY_local(P0.x, P0.y, ORG);
-        const b = fromXY_local(P1.x, P1.y, ORG);
-        L.polyline([a,b], {
-          pane: 'advance', color: '#7b1fa2', weight: AW_GUIDE_WEIGHT,
-          opacity: 0.85, dashArray: AW_GUIDE_STYLE
-        }).addTo(awTicksLayer);
-      };
-      const addTickAtPoint = (px, py, U, label) => {
-        const N = unit(perpCCW(U));
-        const half = (AW_TICK_FT / FT_PER_M) / 2;
-        const p1 = fromXY_local(px + N.x*half, py + N.y*half, ORG);
-        const p2 = fromXY_local(px - N.x*half, py - N.y*half, ORG);
-        L.polyline([p1,p2], {
-          pane: 'advance', color: '#7b1fa2', weight: TICK_WEIGHT, opacity: 0.95, lineCap: 'round'
-        }).addTo(awTicksLayer).bindTooltip(label, { direction: 'top', offset: [0, -8] });
-      };
-
-      const PC = projectFootOnLine(PI, uAt, O);
-      const PT = projectFootOnLine(PI, uCt, O);
-      const signAwayPC = (uAt.x*(PI.x - PC.x) + uAt.y*(PI.y - PC.y)) > 0 ? -1 : 1;
-      const signAwayPT = (uCt.x*(PI.x - PT.x) + uCt.y*(PI.y - PT.y)) > 0 ? -1 : 1;
-      const PC_aw = { x: PC.x + signAwayPC * aw_m * uAt.x, y: PC.y + signAwayPC * aw_m * uAt.y };
-      const PT_aw = { x: PT.x + signAwayPT * aw_m * uCt.x, y: PT.y + signAwayPT * aw_m * uCt.y };
-
-      addGuide(PC, PC_aw);
-      addGuide(PT, PT_aw);
-      addTickAtPoint(PC_aw.x, PC_aw.y, uAt, `AW ${aw_ft} ft`);
-      addTickAtPoint(PT_aw.x, PT_aw.y, uCt, `AW ${aw_ft} ft`);
-
-    } else {
-      resultsEl.innerHTML = '<div class="warn">Tangents are parallel — adjust points 1 and 3.</div>';
-      lastCurveBounds = L.latLngBounds([A_ll, B_ll, C_ll, O_ll]).extend(circle.getBounds());
+      const PI = add(A,cross({x:C.x-A.x,y:C.y-A.y},tC)/denom,tA);
+      const PI_ll = ll(PI);
+      tan1 = L.polyline([A_ll,PI_ll],{weight:2.5,color:'#111'}).addTo(map);
+      tan3 = L.polyline([C_ll,PI_ll],{weight:2.5,color:'#111'}).addTo(map);
+      piMarker = L.circleMarker(PI_ll,{radius:4.5,color:'#111',fillColor:'#fff'}).addTo(map);
     }
-
-    // Spacing diagnostics
-    const sepAB = minorSepDeg(thA, thB);
-    const sepBC = minorSepDeg(thB, thC);
-    const inRange = d => d >= 30 && d <= 120;
-    const arcAB = drawArcMinorLL(O, Rm, thA, thB, 45, ORG);
-    const arcBC = drawArcMinorLL(O, Rm, thB, thC, 45, ORG);
-    spacingArcs.push(L.polyline(arcAB, { weight: 6, opacity: 0.35, color: inRange(sepAB) ? '#2e7d32' : '#c62828' }).addTo(map));
-    spacingArcs.push(L.polyline(arcBC, { weight: 6, opacity: 0.35, color: inRange(sepBC) ? '#2e7d32' : '#c62828' }).addTo(map));
-
-    spacingEl.innerHTML = `
-      <div class="stat"><strong>Sample Point Spacing diagnostics</strong></div>
-      <div class="stat">1(A):2(B) separation: ${sepAB.toFixed(1)}&deg; ${inRange(sepAB) ? '' : '<span class="warn">(outside 30–120&deg;)</span>'}</div>
-      <div class="stat">2(B):3(C) separation: ${sepBC.toFixed(1)}&deg; ${inRange(sepBC) ? '' : '<span class="warn">(outside 30–120&deg;)</span>'}</div>
-    `;
-
-    // Chevron ticks
-    if (chevTicksLayer) { chevTicksLayer.clearLayers(); map.removeLayer(chevTicksLayer); }
-    chevTicksLayer = L.layerGroup([], { pane: 'chevrons' }).addTo(map);
-    const ccw = angDiffCCW(thA, thC);
-    const signDir = (ccw <= Math.PI) ? 1 : -1;
-    chevronPositions.forEach(s_m => {
-      const theta = thA + signDir * (s_m / Rm);
-      const Px = O.x + Rm * Math.cos(theta);
-      const Py = O.y + Rm * Math.sin(theta);
-      const nx = Math.cos(theta);
-      const ny = Math.sin(theta);
-      const p1 = fromXY_local(Px, Py, ORG);
-      const p2 = fromXY_local(Px + nx * (TICK_FT / FT_PER_M), Py + ny * (TICK_FT / FT_PER_M), ORG);
-      L.polyline([p1, p2], { pane: 'chevrons', color: '#ff9800', weight: TICK_WEIGHT, opacity: 0.95, lineCap: 'round' }).addTo(chevTicksLayer);
-    });
-
-    let delineatorTargetSpacingFt = 3 * Math.sqrt(Math.max(Rf - 50, 0));
-    if (!Number.isFinite(delineatorTargetSpacingFt) || delineatorTargetSpacingFt <= 0) delineatorTargetSpacingFt = DELINEATOR_MIN_SPACING_FT;
-    delineatorTargetSpacingFt = Math.min(DELINEATOR_MAX_SPACING_FT, Math.max(DELINEATOR_MIN_SPACING_FT, delineatorTargetSpacingFt));
-    const delineatorSm = delineatorTargetSpacingFt / FT_PER_M;
-    const delineatorPlacement = computePlacementProfile(Lm, delineatorSm, PLACEMENT_MODE, { minCount: 1, minCountSnap: 2 });
-    const delineatorPositions = delineatorPlacement.positions_m;
-    const delineatorActualSpacingFt = (delineatorPlacement.count > 1 ? delineatorPlacement.step_m : delineatorSm) * FT_PER_M;
-    const delineatorOffset_m = DELINEATOR_OFFSET_FT / FT_PER_M;
-    if (delineatorLayer) {
-      delineatorLayer.clearLayers();
-      map.removeLayer(delineatorLayer);
-    }
-    delineatorLayer = L.layerGroup([], { pane: 'delineators' }).addTo(map);
-    const innerPossible = Rm > delineatorOffset_m + 0.05;
-    const delineatorDotOptions = {
-      pane: 'delineators',
-      radius: 3.4,
-      color: '#90a4ae',
-      weight: 1.2,
-      opacity: 0.95,
-      fillColor: '#ffffff',
-      fillOpacity: 1,
-      className: 'delineator-dot'
-    };
-    delineatorPositions.forEach(s => {
-      const theta = thA + signDir * (s / Rm);
-      const Px = O.x + Rm * Math.cos(theta);
-      const Py = O.y + Rm * Math.sin(theta);
-      const radial = unit({ x: Px - O.x, y: Py - O.y });
-      const outerLL = fromXY_local(Px + radial.x * delineatorOffset_m, Py + radial.y * delineatorOffset_m, ORG);
-      L.circleMarker(outerLL, delineatorDotOptions).addTo(delineatorLayer);
-      if (innerPossible) {
-        const innerLL = fromXY_local(Px - radial.x * delineatorOffset_m, Py - radial.y * delineatorOffset_m, ORG);
-        L.circleMarker(innerLL, delineatorDotOptions).addTo(delineatorLayer);
+    if (showWarning && Number.isFinite(advance.feet)) {
+      awTicksLayer = L.layerGroup([],{pane:'advance'}).addTo(map);
+      for (const [origin,station] of [[0,-advance.feet],[arcLen_f,arcLen_f+advance.feet]]) {
+        const P = pointAt(station), half = AW_TICK_FT/FT_PER_M/2;
+        L.polyline([ll(pointAt(origin)),ll(P)],{pane:'advance',color:'#7b1fa2',weight:AW_GUIDE_WEIGHT,dashArray:AW_GUIDE_STYLE}).addTo(awTicksLayer);
+        L.polyline([ll(add(P,half,P.radial)),ll(add(P,-half,P.radial))],{pane:'advance',color:'#7b1fa2',weight:TICK_WEIGHT})
+          .addTo(awTicksLayer).bindTooltip(`Advance warning: ${advance.feet} ft`);
       }
-    });
-    const delineatorCountPerSide = delineatorPositions.length;
-    const delineatorTotal = innerPossible ? delineatorCountPerSide * 2 : delineatorCountPerSide;
-
-    const superelevationDisplay = Number.isFinite(superelevationPercent) && Number.isFinite(superelevationDecimal)
-      ? `${superelevationPercent.toFixed(2)}% <span class="muted">(${superelevationDecimal.toFixed(4)})</span>`
-      : '&mdash;';
-    let advisoryComputedDisplay = '&mdash;';
-    if (Number.isFinite(advisoryComputedRaw)){
-      const summaryParts = [`raw ${advisoryComputedRaw.toFixed(1)} mph`];
-      if (Number.isFinite(advisoryComputedFriction)) summaryParts.push(`f ~ ${advisoryComputedFriction.toFixed(2)}`);
-      if (Number.isFinite(advisoryDeltaFromSelected)) summaryParts.push(`delta vs selected ${advisoryDeltaFromSelected >= 0 ? '+' : ''}${advisoryDeltaFromSelected.toFixed(0)} mph`);
-      if (!advisoryComputationConverged) summaryParts.push('did not fully converge');
-      const roundedLabel = Number.isFinite(advisoryComputedRounded) ? `${advisoryComputedRounded} mph` : `${advisoryComputedRaw.toFixed(1)} mph`;
-      advisoryComputedDisplay = `${roundedLabel}<span class="muted"> (${summaryParts.join('; ')})</span>`;
     }
-
-    const modeLabel = (PLACEMENT_MODE === 'snapEnds') ? 'Snap to ends'
-                      : (PLACEMENT_MODE === 'startAtA') ? 'Start at A'
-                      : 'Centered';
-    const calloutAW = lookupAWdistanceFt(postedMPH, advisoryMPH);
-    const chevronSizes = lookupChevronSizes({ advisoryMPH, roadwayType });
-    const rcocChevronSize = chevronSizes.rcoc.sizeInches;
-    const mdotChevronSize = chevronSizes.mdot.sizeInches;
-    const mdotChevronNote = chevronSizes.mdot.rationale;
-    const needRowsHtml = deviceNeedRows.length ? deviceNeedRows.map(row => {
-      const selectedSuffix = row.selected ? ' (selected)' : '';
-      const selectedClass = row.selected ? ' selected' : '';
-      return `<div class="need-item${selectedClass}"><span class="need-road">${row.label}${selectedSuffix}</span>: ` +
-        `<span class="need-status need-${row.statusClass}">${row.status}</span></div>`;
-    }).join('') : '<div class="need-item muted">No guidance available for these inputs.</div>';
-
-    resultsEl.innerHTML = `
-      <div class="callout">
-        <h1>Outputs</h1>
-        <h2>Need for Devices for Changes in Horizontal Alignment</h2>
-        <div class="small-note muted">Per 11th Ed MUTCD</div>
-        <div class="stat">
-          <strong>Table 2C-4A device guidance</strong>
-          <span class="muted">(AADT ${aadtMeta.description})</span>
-          <div class="need-list">${needRowsHtml}</div>
-        </div>
-        <div class="stat">
-          <strong>Table 2C-4B device guidance</strong>
-          <span class="muted">(delta V = ${speedDifferential.toFixed(0)} mph)</span>
-          <div>${deviceRecommendation.summary}</div>
-        </div>
-
-        <hr class="results-sep" />
-
-        <h2>Computed Advisory Speed</h2>
-        <div class="small-note muted">Per MDOT Guide</div>
-        <div class="stat"><strong>Superelevation (e)</strong>: ${superelevationDisplay}</div>
-        <div class="stat"><strong>Computed advisory speed</strong>: ${advisoryComputedDisplay}</div>
-
-        <hr class="results-sep" />
-
-        <h2>Warning Signs:</h2>
-        <div class="small-note muted">Per MDOT Guide</div>
-        <div class="stat"><strong>Chevron size (W1-8) - RCOC</strong>: ${rcocChevronSize}&Prime; <span class="muted">(${chevronSizes.rcoc.rationale})</span></div>
-        <div class="stat"><strong>Chevron size (W1-8) - MDOT</strong>: ${mdotChevronSize}&Prime; <span class="muted">${mdotChevronNote}${Number.isFinite(chevronSizes.basisMph) ? ` • based on advisory ${chevronSizes.basisMph} mph` : ''}</span></div>
-        <div class="stat"><strong>Target Chevron Spacing (S):</strong> ${Sft.toFixed(1)} ft
-          <span class="muted"> &bull; ${modeLabel}</span>
-        </div>
-        <div class="stat"><strong>Actual chevron spacing (S)</strong>: ${actualStepFt.toFixed(1)} ft
-          <span class="muted">${PLACEMENT_MODE==='snapEnds' ? '(~ S to hit both ends)' : '(= S)'}</span>
-        </div>
-
-        <div class="stat"><strong>Count</strong>: ~${Nchev} chevrons
-          <span class="muted">(~${sepDeg.toFixed(1)}&deg; apart)</span>
-        </div>
-
-        <div class="stat"><strong>Advance Warning distance</strong>: ${calloutAW} ft from PC/PT (purple dashed).</div>
-        
-        <hr class="results-sep" />
-
-        <h2>Delineators:</h2>
-        <div class="small-note muted">Per MDOT Guide</div>
-        <div class="stat"><strong>Delineator spacing</strong>: ${delineatorActualSpacingFt.toFixed(1)} ft <span class="muted">(target 3*sqrt(R - 50) = ${delineatorTargetSpacingFt.toFixed(1)} ft)</span></div>
-        <div class="stat"><strong>Delineators placed</strong>: ${delineatorCountPerSide} per side (${delineatorTotal} total from PC to PT)</div>
-
-        <hr class="results-sep" />
-
-        <h2>Curve Details:</h2>
-        <div class="small-note muted">For Info Only</div>
-        <div class="stat"><strong>Radius</strong>: ${formatFeet(Rf)}</div>
-        <div class="stat"><strong>Central angle (minor 1&ndash;3)</strong>: ${centralDeg.toFixed(4)}&deg;</div>
-        <div class="stat"><strong>Arc length (minor 1&ndash;3)</strong>: ${formatFeet(arcLen_f)}</div>
-        <div class="stat"><strong>Degree of curve (100-ft arc)</strong>: ${D_arc.toFixed(4)}&deg;</div>
-        <div class="stat"><strong>Center (lat, lon)</strong>: ${O_ll.lat.toFixed(6)}, ${O_ll.lng.toFixed(6)}</div>
-      </div>
-    `;
-
-    lastCalc = {
-      ORG, A, B, C, O, Rm, Rf, thA, thB, thC, gamma,
-      arcLen_m, arcLen_f, D_arc,
-      O_ll, A_ll, B_ll, C_ll,
-      PI, PI_ll, AP_m, CP_m, PIangle_deg,
-      EXT_FT, Sft, Nchev, sepDeg, PLACEMENT_MODE, actualStepFt,
-      calloutAW,
-      chevronSizes,
-      postedMPH,
-      advisoryMPH,
-      speedDifferential,
-      aadtKey,
-      aadtDescription: aadtMeta.description,
-      roadwayType,
-      surfaceType,
-      deviceRecommendation,
-      deviceNeedRows,
-      delineatorTargetSpacingFt,
-      delineatorActualSpacingFt,
-      delineatorCountPerSide,
-      delineatorTotal,
-      roadWidthFt,
-      roadHeightFt,
-      superelevationDecimal,
-      superelevationPercent,
-      advisoryComputedRaw,
-      advisoryComputedRounded,
-      advisoryComputedFriction,
-      advisoryComputationConverged,
-      advisoryDeltaFromSelected
-    };
-
-    statusEl.textContent = STATUS_READY;
+    chevTicksLayer = L.layerGroup([],{pane:'chevrons'}).addTo(map);
+    chevronPositions.forEach(station => {
+      const P = pointAt(station);
+      const roadside = add(P,(roadWidthFt/2+shoulderFt+3)/FT_PER_M,P.radial);
+      L.polyline([ll(roadside),ll(add(roadside,TICK_FT/FT_PER_M,P.radial))],
+        {pane:'chevrons',color:'#ff9800',weight:TICK_WEIGHT,opacity:.95,lineCap:'round'}).addTo(chevTicksLayer);
+    });
+    delineatorLayer = L.layerGroup([],{pane:'delineators'}).addTo(map);
+    delineatorPositions.forEach(station => {
+      const P=pointAt(station);
+      const opts={pane:'delineators',radius:3.4,color:'#607d8b',weight:1.2,fillColor:'#fff',fillOpacity:1,className:'delineator-dot'};
+      L.circleMarker(ll(add(P,offset_m,P.radial)),opts).addTo(delineatorLayer);
+      if (bothSides && innerPossible) L.circleMarker(ll(add(P,-offset_m,P.radial)),opts).addTo(delineatorLayer);
+    });
+    const sepAB=minorSepDeg(thA,thB), sepBC=minorSepDeg(thB,thC);
+    spacingEl.innerHTML=`<div class="stat"><strong>Sample point spacing</strong></div>
+      <div class="stat">PC–midpoint: ${sepAB.toFixed(1)}°; midpoint–PT: ${sepBC.toFixed(1)}°.</div>
+      ${sepAB<30||sepAB>120||sepBC<30||sepBC>120 ? '<div class="warn">Target 30–120° between sample points.</div>' : ''}`;
+    const formatStep = value => Number.isFinite(value) ? `${value.toFixed(1)} ft` : 'Not applicable';
+    const Nchev = chevronPositions.length;
+    const curveDelineators = showDelineators ? delineators.positions.length : 0;
+    const transitionCount = showDelineators ? 6 : 0;
+    const sides = bothSides && innerPossible ? 2 : 1;
+    const advisoryDisplay = estimate.speed === null ? 'Outside supported estimate / inputs unavailable'
+      : `${estimate.speed.toFixed(1)} mph (f = ${estimate.friction.toFixed(3)})`;
+    const isConventional = ['rcoc_local','rcoc_primary','conventional'].includes(chevronRoadTypeSel.value);
+    const warningDisplay = !showWarning ? 'Not drawn for the selected treatment.'
+      : Number.isFinite(advance.feet) ? `${advance.feet} ft before PC / beyond PT${advance.custom ? ' — site distance entered by user' : ''}.`
+      : 'Site placement distance needed; no warning ticks drawn.';
+    resultsEl.innerHTML=`<div class="callout"><h1>Outputs</h1>${selectionHTML}
+      ${!validSelection ? `<div class="warn">${chevronSizes.message} Device layout is withheld.</div>` : ''}
+      <hr /><h2>Chevron layout</h2>
+      <div class="stat"><strong>Target:</strong> ${formatStep(chevronSpacing.feet)}</div>
+      <div class="layout-note">${chevronSpacing.note}</div>
+      <div class="stat"><strong>Actual spacing:</strong> ${formatStep(Nchev>1 ? chevrons.step : null)}</div>
+      <div class="stat"><strong>Chevron positions shown:</strong> ${Nchev}</div>
+      ${!showChevrons ? '<div class="small-note muted">Chevrons are not drawn for the selected treatment.</div>' : ''}
+      ${method==='mdot' && showChevrons && isConventional ? '<div class="layout-note">MDOT p. 26 / B-9: place W1-6 target arrows for both directions before finalizing chevrons. Each target arrow replaces a chevron; the shown positions are preliminary.</div>' : ''}
+      ${sourceLink(source.spacing)}
+      <h2>Advance warning placement</h2><div class="stat">${warningDisplay}</div>
+      <div class="layout-note">${advance.note}</div>
+      ${advance.custom && advance.tableFeet !== null ? `<div class="small-note muted">Selected-source table value: ${advance.tableFeet} ft.</div>` : ''}
+      ${sourceLink(source.advance)}
+      <h2>Delineator layout</h2>
+      <div class="stat"><strong>Target S:</strong> ${formatStep(delineators.target)} (3√(R − 50), limited to 20–300 ft)</div>
+      <div class="stat"><strong>Actual curve spacing:</strong> ${formatStep(showDelineators ? delineators.step : null)}</div>
+      <div class="stat"><strong>Positions shown:</strong> ${curveDelineators} on curve + ${transitionCount} on tangents per side; ${(curveDelineators+transitionCount)*sides} total.</div>
+      <div class="small-note muted">Tangent intervals away from PC: ${delineators.approachIntervals.map(x=>x.toFixed(1)).join(', ')} ft; away from PT: ${delineators.departureIntervals.map(x=>x.toFixed(1)).join(', ')} ft (2S, 3S, 6S, with 300-ft maximum gaps).</div>
+      <div class="layout-note">${delineators.note}${bothSides && !innerPossible ? ' Inner offset exceeds curve radius; only outside delineators can be shown.' : ''}</div>
+      ${sourceLink(CurveGuidance.sources.delineators)}
+      <h2>Advisory-speed study support</h2>
+      <div class="stat"><strong>Study speed used for signing:</strong> ${advisoryMPH} mph</div>
+      <div class="stat"><strong>Superelevation:</strong> ${Number.isFinite(e) ? (e*100).toFixed(2)+'%' : 'Not entered'}</div>
+      <div class="stat"><strong>MDOT design-equation estimate:</strong> ${advisoryDisplay}</div>
+      <div class="layout-note">${estimate.note} Advisory speed must be established by an engineering study (§2C.59).</div>
+      ${sourceLink(CurveGuidance.sources.advisory)}
+      ${sourceLink(CurveGuidance.sources.mmutcd.plaque)}
+      <h2>Curve details</h2>
+      <div class="stat"><strong>Radius:</strong> ${formatFeet(Rf)}</div>
+      <div class="stat"><strong>Central angle:</strong> ${centralDeg.toFixed(2)}°</div>
+      <div class="stat"><strong>Arc length:</strong> ${formatFeet(arcLen_f)}</div>
+      <div class="stat"><strong>Degree of curve (100-ft arc):</strong> ${(5729.57795/Rf).toFixed(4)}°</div>
+      <div class="small-note muted">Map symbols show the selected layout. Confirm field visibility, sign orientation, and site offsets. Purple: advance warning; orange: chevrons; dots: delineators. Tangent layouts are shown at both ends; evaluate each approach speed separately.</div>
+    </div>`;
+    lastCalc={method,Rf,arcLen_f,guidance,chevronSizes,chevronSpacing,advance,Nchev,curveDelineators,transitionCount,estimate};
+    statusEl.textContent=STATUS_READY;
   }
 
+  renderReferences();
+  update();
   statusEl.textContent = STATUS_DEFAULT;
 })();
 

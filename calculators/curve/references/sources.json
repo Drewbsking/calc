@@ -1,0 +1,37 @@
+{
+  "mmutcd": {
+    "title": "2025 MMUTCD - curve references",
+    "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=d95b89e0-2079-451c-9188-a1f1258c3a8c&fileName=1-2025+MMUTCD+with+Hot+Links.pdf",
+    "retrieved": "2026-11-04",
+    "originalPdfPages": [
+      194,
+      197,
+      198,
+      200,
+      201,
+      204,
+      205,
+      242,
+      662,
+      664,
+      665
+    ],
+    "sha256": "2a80deba86500624261745c7bd562c62797da9be6af7e19827220ec1edd700a9"
+  },
+  "mdot": {
+    "title": "MDOT Signing Guide (2023) - curve references",
+    "sourceUrl": "https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=b6544036-b4a5-428b-b5ca-2a444b5a72c4&fileName=Traffic%20Sign%20Design%20Guidelines.pdf",
+    "retrieved": "2026-11-04",
+    "originalPdfPages": [
+      23,
+      26,
+      29,
+      30,
+      31,
+      98,
+      100,
+      101
+    ],
+    "sha256": "9417c281613fb3f626dfc5df08d7689941fcb17599f7f372b580a8cf43d4ed4f"
+  }
+}
