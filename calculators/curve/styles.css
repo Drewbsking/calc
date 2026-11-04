@@ -26,6 +26,9 @@ body {
 .rcoc-sizing-input { min-width:0; margin:18px 0 0; padding:12px; border:1px solid #cbd5df; border-radius:8px; background:#f7f9fb; }
 .rcoc-sizing-input legend { padding:0 5px; font-size:13px; font-weight:600; color:#344b60; }
 .rcoc-sizing-input select { margin:6px 0 8px; }
+.roadway-definition { color:#526575; line-height:1.45; }
+.roadway-definition summary { cursor:pointer; color:#1f78b4; padding:6px 0; font-weight:600; }
+.roadway-definition p { margin:8px 0; }
 .panel .step-title { display:flex; align-items:center; gap:9px; margin:0 0 14px; text-align:left; font-size:1rem; color:#243b53; opacity:1; }
 .step-number { display:inline-flex; align-items:center; justify-content:center; flex:0 0 26px; height:26px; border-radius:50%; background:#1f78b4; color:#fff; font-size:13px; }
 .section-instructions, .section-results { border-top:1px solid #dce3e9; padding-top:18px; }
@@ -48,8 +51,14 @@ body {
 .method-card { margin:0 0 14px; background:#eef5fb; }
 .method-card label, .method-card output { display:block; }
 .method-card output { font-weight:600; margin-bottom:6px; }
-.method-labels { display:flex; justify-content:space-between; font-weight:600; margin-top:10px; }
-#methodSlider { width:100%; margin:8px 0; accent-color:#1f78b4; cursor:pointer; }
+.method-toggle { border:0; padding:0; margin:0 0 12px; min-width:0; }
+.method-toggle-options { display:grid; grid-template-columns:1fr 1fr; gap:4px; padding:4px; border:1px solid #bdcddd; border-radius:12px; background:#e6edf4; }
+.method-choice { position:relative; margin:0; cursor:pointer; }
+.method-choice input { position:absolute; inset:0; width:100%; height:100%; margin:0; opacity:0; cursor:pointer; }
+.method-choice span { display:flex; align-items:center; justify-content:center; min-height:44px; border-radius:8px; font-size:14px; font-weight:600; color:#344b60; }
+.method-choice input:checked + span { background:#1f78b4; color:#fff; box-shadow:0 1px 3px rgba(0,0,0,.15); }
+.method-choice input:focus-visible + span { outline:3px solid #111; outline-offset:2px; }
+.method-choice input:hover:not(:checked) + span { background:#d7e3ed; }
 .layout-options { margin-top:14px; }
 .layout-options summary, .reference-details summary { cursor:pointer; padding:8px 0; font-weight:600; }
 .check-label { display:flex; align-items:flex-start; gap:8px; margin:12px 0; line-height:1.4; }
@@ -198,7 +207,7 @@ input[type="number"] {
 /* Highlight advisory speed dropdown */
 #advisorySel { background-color: #fff59d; }
 
-/* Keep the close control clear of the method slider and inputs. */
+/* Keep the close control clear of the method toggle and inputs. */
 .panel-open .fab { top:auto; bottom:calc(env(safe-area-inset-bottom, 0px) + 12px); left:auto; right:12px; }
 
 .instructions-header { display:flex; align-items:center; justify-content:flex-start; gap:12px; }

@@ -98,7 +98,8 @@
   const locateBtn   = document.getElementById('locateBtn');
   const roadWidthInput  = document.getElementById('roadWidthInput');
   const roadHeightInput = document.getElementById('roadHeightInput');
-  const methodSlider = document.getElementById('methodSlider');
+  const methodMdot = document.getElementById('methodMdot');
+  const methodMmutcd = document.getElementById('methodMmutcd');
   const speedBasisSel = document.getElementById('speedBasisSel');
   const includeOptional = document.getElementById('includeOptional');
   const pavedTreatmentSel = document.getElementById('pavedTreatmentSel');
@@ -321,7 +322,7 @@
   if (surfaceSel) surfaceSel.addEventListener('change', update);
   if (roadWidthInput) roadWidthInput.addEventListener('input', update);
   if (roadHeightInput) roadHeightInput.addEventListener('input', update);
-  methodSlider.addEventListener('input', update);
+  [methodMdot, methodMmutcd].forEach(input => input.addEventListener('change', update));
   [speedBasisSel, includeOptional, pavedTreatmentSel, urbanLowVolume, omitEligible, delineatorSidesSel, mdotDelineatorLocationSel]
     .forEach(input => input.addEventListener('change', update));
   [advanceOverride, shoulderWidthInput, delineatorOffsetInput].forEach(input => input.addEventListener('input', update));
@@ -365,14 +366,13 @@
     return AADT_CATEGORY_META[key] || AADT_CATEGORY_META[DEFAULT_AADT_KEY];
   }
 
-  const selectedMethod = () => methodSlider.value === '0' ? 'mdot' : 'mmutcd';
+  const selectedMethod = () => methodMdot.checked ? 'mdot' : 'mmutcd';
   const sourceLink = entry => `<a class="source-link" href="${entry[1]}" target="_blank" rel="noopener noreferrer">Source: ${entry[0]}</a>`;
 
   function updateMethod(){
     const method = selectedMethod();
     const label = CurveGuidance.sources[method].label;
     document.getElementById('methodName').textContent = label;
-    methodSlider.setAttribute('aria-valuetext', label);
     document.querySelectorAll('[data-method]').forEach(group => {
       group.hidden = group.dataset.method !== method;
       group.querySelectorAll('input, select').forEach(input => { input.disabled = group.hidden; });

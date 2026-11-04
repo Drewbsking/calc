@@ -107,7 +107,7 @@ async def check(origin):
                 assert await page.locator('.leaflet-overlay-pane path, .leaflet-chevrons-pane path, .leaflet-delineators-pane path, .leaflet-advance-pane path').evaluate_all('(els) => els.map(el => el.getAttribute("d"))') == geometry
             await page.select_option('#rcocRoadClassSel', 'primary')
         await check_rcoc_independence()
-        await page.locator('#methodSlider').fill('0')
+        await page.locator('#methodMdot').check()
         await expect(page.locator('#methodName')).to_have_text('MDOT signing guide (2023)')
         for field in ['aadtSel', 'surfaceSel', 'speedBasisSel', 'pavedTreatmentSel', 'urbanLowVolume', 'omitEligible', 'includeOptional']:
             await expect(page.locator('#' + field)).not_to_be_visible()
@@ -137,7 +137,7 @@ async def check(origin):
         assert await page.locator('.leaflet-chevrons-pane path').count() > 0
         assert await page.locator('.leaflet-delineators-pane path').count() > 0
         await expect(page.locator('#mdotChevronSize')).to_contain_text('24 × 30 in')
-        await page.locator('#methodSlider').fill('1')
+        await page.locator('#methodMmutcd').check()
         for field in ['aadtSel', 'surfaceSel', 'speedBasisSel']:
             await expect(page.locator('#' + field)).to_be_visible()
             await expect(page.locator('#' + field)).to_be_enabled()
@@ -182,7 +182,7 @@ async def check(origin):
         assert await page.locator('.leaflet-delineators-pane path').count() == 2 * dots
         await page.select_option('#chevronRoadTypeSel', 'freeway_ramp')
         await page.select_option('#roadwayTypeSel', 'freeway_expressway')
-        await page.locator('#methodSlider').fill('0')
+        await page.locator('#methodMdot').check()
         await page.select_option('#advisorySel', '45')
         await page.select_option('#postedSel', '65')
         await expect(page.locator('#mdotDelineatorLocationSel')).to_have_value('ramp')
@@ -191,19 +191,19 @@ async def check(origin):
         await expect(page.locator('#mdotChevronSize')).to_contain_text('36 × 48 in')
         await page.select_option('#advisorySel', '40')
         await expect(page.locator('#mdotChevronSize')).to_contain_text('24 × 30 in')
-        await page.locator('#methodSlider').fill('1')
+        await page.locator('#methodMmutcd').check()
         await page.select_option('#chevronRoadTypeSel', 'expressway_mainline')
         await expect(page.locator('#mdotChevronSize')).to_contain_text('30 × 36 in')
         # Switching methods must never reinterpret a percentile measurement as a speed limit.
         await page.select_option('#speedBasisSel', '85th')
         await expect(page.locator('#postedSel')).to_have_value('')
         await page.select_option('#postedSel', '75')
-        await page.locator('#methodSlider').fill('0')
+        await page.locator('#methodMdot').check()
         await expect(page.locator('#postedSel')).to_have_value('65')
         await expect(page.locator('#mdotDelineatorLocationSel')).to_have_value('normal')
         await expect(page.locator('#mdotDelineatorLocationSel')).to_be_enabled()
         await expect(page.locator('#results')).not_to_contain_text('Select posted or statutory speed')
-        await page.locator('#methodSlider').fill('1')
+        await page.locator('#methodMmutcd').check()
         await expect(page.locator('#speedBasisSel')).to_have_value('85th')
         await expect(page.locator('#postedSel')).to_have_value('75')
         await page.select_option('#speedBasisSel', 'posted')
@@ -247,10 +247,10 @@ async def check(origin):
         await page.screenshot(path=str(ARTIFACTS / 'mobile.png'))
         assert await page.locator('#panel').evaluate('(el) => el.scrollWidth <= el.clientWidth + 1')
         assert abs((await page.locator('#map').bounding_box())['width'] - 390) < 2
-        slider_box = await page.locator('#methodSlider').bounding_box()
+        toggle_box = await page.locator('.method-toggle').bounding_box()
         button_box = await page.locator('#menuBtn').bounding_box()
-        assert button_box['y'] > slider_box['y'] + slider_box['height']
-        await page.locator('#methodSlider').focus()
+        assert button_box['y'] > toggle_box['y'] + toggle_box['height']
+        await page.locator('#methodMmutcd').focus()
         await page.keyboard.press('ArrowLeft')
         await expect(page.locator('#methodName')).to_have_text('MDOT signing guide (2023)')
         await page.locator('#placePointsBtn').click()
@@ -264,7 +264,7 @@ async def check(origin):
         assert await page.locator('.leaflet-chevrons-pane path').count() == 0
         assert await page.locator('.leaflet-delineators-pane path').count() == 0
         assert not errors, errors
-        print('PASS: both methods, always-visible chevrons and delineators, transitions, optional warning, overrides, sizing, citations, keyboard slider, reset, desktop/mobile layout')
+        print('PASS: both methods, always-visible chevrons and delineators, transitions, optional warning, overrides, sizing, citations, keyboard toggle, reset, desktop/mobile layout')
         print(f'Screenshots: {ARTIFACTS}')
         await browser.close()
 

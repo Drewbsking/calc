@@ -75,9 +75,10 @@ test('page updates both sizing sections and cross-checks changes before any map 
   }]));
   for (const [id, value] of Object.entries({
     roadwayTypeSel: 'arterial_with_markings', advisorySel: '45', postedSel: '55',
-    methodSlider: '0', speedBasisSel: 'posted', pavedTreatmentSel: 'markings',
+    speedBasisSel: 'posted', pavedTreatmentSel: 'markings',
     roadWidthInput: '24', roadHeightInput: '0.5', aadtSel: '1000_2999', surfaceSel: 'paved'
   })) elements[id].value = value;
+  elements.methodMdot.checked = true;
   const map = { setView() { return this; }, createPane() {},
     getPane() { return { style: {}, classList: { add() {} } }; }, on() {} };
   const context = {

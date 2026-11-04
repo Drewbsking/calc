@@ -17,10 +17,14 @@
 
     <div class="card method-card">
       <h2 class="step-title"><span class="step-number">1</span> Choose a method</h2>
-      <label for="methodSlider" class="card-title">Calculation method</label>
-      <div class="method-labels"><span>MDOT</span><span>MMUTCD</span></div>
-      <input id="methodSlider" type="range" min="0" max="1" step="1" value="1" aria-valuetext="MMUTCD (2025)" aria-describedby="methodDescription" />
-      <output id="methodName" for="methodSlider">MMUTCD (2025)</output>
+      <fieldset class="method-toggle" aria-describedby="methodDescription">
+        <legend class="card-title">Calculation method</legend>
+        <div class="method-toggle-options">
+          <label class="method-choice"><input id="methodMdot" type="radio" name="calculationMethod" value="mdot" /><span>MDOT</span></label>
+          <label class="method-choice"><input id="methodMmutcd" type="radio" name="calculationMethod" value="mmutcd" checked /><span>MMUTCD</span></label>
+        </div>
+      </fieldset>
+      <output id="methodName" for="methodMdot methodMmutcd">MMUTCD (2025)</output>
       <div id="methodDescription" class="small-note muted">Device selection, advisory plaques, chevron and delineator spacing, advance placement, and standard sizing use the selected source. MDOT delineators use R-127-I (2025).</div>
     </div>
 
@@ -37,6 +41,13 @@
             <option value="freeway_ramp">Freeway ramp</option>
           </select>
           <div id="chevronRoadTypeHelp" class="small-note muted">Used by the selected method for sign sizing and applicable ramp rules.</div>
+          <details class="roadway-definition small-note">
+            <summary>Freeway vs. expressway</summary>
+            <p><strong>Freeway:</strong> A divided highway with full access control. Traffic enters and leaves by ramps; there are no at-grade intersections or driveways.</p>
+            <p><strong>Expressway:</strong> A divided highway with partial access control. It may have at-grade intersections or limited direct access.</p>
+            <p>Choose based on how vehicles enter and leave the road.</p>
+            <a href="https://mutcd.fhwa.dot.gov/pdfs/11th_Edition/part1.pdf#page=17" target="_blank" rel="noopener noreferrer">Source: MUTCD §1C.02 — definitions (PDF)</a>
+          </details>
           <div id="chevronSizingMessage" class="small-note" role="status"></div>
         </div>
         <div class="input-stack">
