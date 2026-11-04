@@ -21,6 +21,7 @@ body {
   height:100%;
 }
 .panel, .input-stack, .card { min-width:0; }
+.panel [hidden] { display:none !important; }
 .panel select { width:100%; min-width:0; }
 .method-card { margin:0 0 14px; background:#eef5fb; }
 .method-card label, .method-card output { display:block; }
@@ -38,7 +39,7 @@ body {
 .reference-details p { font-size:0.85rem; line-height:1.4; }
 .layout-note { font-size:0.85rem; line-height:1.4; margin:8px 0; }
 .panel a:focus-visible, .panel input:focus-visible, .panel select:focus-visible, .panel summary:focus-visible { outline:2px solid #1f78b4; outline-offset:2px; }
-  #map { width: 100%; height: 100%; }
+  #map { width: 100%; height: 100%; isolation:isolate; }
   .panel {
     padding: 14px; overflow:auto; border-right: 1px solid #ddd;
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
@@ -261,3 +262,41 @@ input[type="number"] {
   stroke-width:1.2;
   fill:#fff;
 }
+
+.map-legend {
+  width:230px;
+  max-width:calc(100vw - 80px);
+  max-height:60vh;
+  overflow:auto;
+  box-sizing:border-box;
+  background:#fff;
+  color:#333;
+  border:1px solid #ccc;
+  border-radius:10px;
+  box-shadow:0 2px 8px rgba(0,0,0,.2);
+  font:13px/1.4 system-ui, sans-serif;
+}
+.map-legend > summary { padding:12px; font-weight:650; cursor:pointer; }
+.map-legend summary:focus-visible { outline:2px solid #1f78b4; outline-offset:-3px; }
+.map-legend-body { padding:0 12px 12px; }
+.map-legend ul { list-style:none; margin:0; padding:0; }
+.map-legend li { display:flex; align-items:center; gap:9px; margin:8px 0; }
+.map-legend p { font-size:12px; color:#555; margin:12px 0; }
+.legend-geometry { border-top:1px solid #e0e0e0; }
+.legend-geometry summary { padding:10px 0 2px; cursor:pointer; font-weight:600; }
+.legend-symbol { position:relative; display:inline-block; flex:0 0 30px; height:18px; }
+.legend-symbol::before, .legend-symbol::after { content:''; position:absolute; box-sizing:border-box; }
+.legend-chevron::before { left:12px; top:1px; height:16px; border-left:6px solid #ff9800; border-radius:3px; }
+.legend-delineator::before { left:11px; top:5px; width:8px; height:8px; border:1.2px solid #90a4ae; border-radius:50%; background:#fff; }
+.legend-warning::before { left:0; right:0; top:7px; border-top:4px dashed #7b1fa2; }
+.legend-warning::after { right:0; top:2px; height:14px; border-left:5px solid #7b1fa2; }
+.legend-point { height:22px; text-align:center; font-size:12px; font-weight:600; line-height:22px; color:#111; }
+.legend-point::before { inset:0 4px; border:2px solid #111; border-radius:50%; }
+.legend-curve::before, .legend-tangent::before, .legend-extension::before, .legend-chord::before, .legend-segments::before { left:0; right:0; top:8px; border-top:3px solid #1f78b4; }
+.legend-circle::before { left:6px; top:0; width:18px; height:18px; border:1px solid #1f78b4; border-radius:50%; }
+.legend-circle::after { left:13px; top:7px; width:4px; height:4px; border-radius:50%; background:#1f78b4; }
+.legend-tangent::before { border-color:#111; }
+.legend-tangent::after { left:12px; top:5px; width:8px; height:8px; background:#fff; border:2px solid #111; border-radius:50%; }
+.legend-extension::before { border-top:5px solid #e53935; }
+.legend-chord::before { border-top:2px dashed #333; }
+.legend-segments::before { border-top:2px solid #666; }

@@ -65,7 +65,7 @@
       r.showWarning = useDevices && r.treatment !== 'markings';
       r.showChevrons = useDevices && r.treatment === 'chevrons';
       r.showDelineators = useDevices && r.treatment === 'delineators';
-      if (r.need === 'Optional' && !includeOptional) r.note = 'Optional treatment is not shown. Enable optional treatments to lay it out.';
+      if (r.need === 'Optional' && !includeOptional) r.note = 'Optional advance-warning placement is hidden. Enable it in layout options to show it.';
     } else {
       if (delta < 5) { r.note = 'Below the tabulated 5-mph differential; determine treatment by engineering judgment.'; return r; }
       r.need = r.warning = r.plaque = delta >= 10 ? 'Required' : 'Recommended';

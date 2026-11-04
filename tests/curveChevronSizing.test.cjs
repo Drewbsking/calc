@@ -85,9 +85,9 @@ test('page updates both sizing sections and cross-checks changes before any map 
   const context = {
     CurveChevronSizing: sizing,
     CurveGuidance: guidance,
-    document: { getElementById: id => elements[id], querySelector: () => null },
+    document: { getElementById: id => elements[id], querySelector: () => null, querySelectorAll: () => [] },
     window: { addEventListener() {} },
-    L: { map: () => map, tileLayer: () => ({ addTo() {} }) }
+    L: { map: () => map, tileLayer: () => ({ addTo() {} }), control: () => ({ addTo() {} }) }
   };
   vm.runInNewContext(fs.readFileSync(path.join(directory, 'app.js'), 'utf8'), context);
   const change = (id, value) => { elements[id].value = value; elements[id].events.change(); };

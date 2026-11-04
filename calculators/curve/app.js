@@ -20,6 +20,15 @@
     tap: true
   }).setView(INITIAL_CENTER, INITIAL_ZOOM);
 
+  const legend = L.control({ position: 'topright' });
+  legend.onAdd = () => {
+    const element = document.getElementById('mapLegend');
+    L.DomEvent.disableClickPropagation(element);
+    L.DomEvent.disableScrollPropagation(element);
+    return element;
+  };
+  legend.addTo(map);
+
   const imagery = L.tileLayer(
     'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
     { attribution: '&copy; Esri & partners', maxNativeZoom: 19, maxZoom: 22, crossOrigin: 'anonymous' }
@@ -98,6 +107,9 @@
   const shoulderWidthInput = document.getElementById('shoulderWidthInput');
   const delineatorOffsetInput = document.getElementById('delineatorOffsetInput');
   const delineatorSidesSel = document.getElementById('delineatorSidesSel');
+  // Keep measured percentile speeds separate from speed limits when changing methods/basis.
+  const approachSpeeds = { limit: postedSel.value, percentile: '' };
+  let activeSpeedInput = 'limit';
   // MUTCD Table 2C-4 lookup data (AADT vs roadway class).
   const DEFAULT_AADT_KEY = '1000_2999';
   const AADT_CATEGORY_META = {
@@ -375,7 +387,24 @@
     const label = CurveGuidance.sources[method].label;
     document.getElementById('methodName').textContent = label;
     methodSlider.setAttribute('aria-valuetext', label);
-    [pavedTreatmentSel, urbanLowVolume, omitEligible, aadtSel].forEach(el => { el.disabled = method !== 'mmutcd'; });
+    document.querySelectorAll('[data-method]').forEach(group => {
+      group.hidden = group.dataset.method !== method;
+      group.querySelectorAll('input, select').forEach(input => { input.disabled = group.hidden; });
+    });
+    const nextSpeedInput = method === 'mmutcd' && speedBasisSel.value === '85th' ? 'percentile' : 'limit';
+    if (nextSpeedInput !== activeSpeedInput) {
+      approachSpeeds[activeSpeedInput] = postedSel.value;
+      postedSel.value = approachSpeeds[nextSpeedInput];
+      activeSpeedInput = nextSpeedInput;
+    }
+    document.getElementById('approachSpeedLabel').textContent = method === 'mdot'
+      ? 'Posted / statutory speed limit (mph)' : nextSpeedInput === 'percentile'
+        ? '85th-percentile approach speed (mph)' : 'Approach speed limit (mph)';
+    document.getElementById('roadwayTypeLabel').textContent = method === 'mdot'
+      ? 'Roadway class (sizing cross-check)' : 'MMUTCD roadway class (Table 2C-4)';
+    document.getElementById('chevronRoadTypeHelp').textContent = method === 'mdot'
+      ? 'Roadway class cross-checks the selected road type for sizing. Ramp sizing uses the study advisory speed.'
+      : 'RCOC local/primary classification is separate from the MMUTCD roadway class below.';
     return method;
   }
 
@@ -546,8 +575,8 @@
     const offsetFt = parseFloat(delineatorOffsetInput.value);
     const guidance = CurveGuidance.deviceGuidance({ method, approachMPH: postedMPH, advisoryMPH,
       roadwayType: roadwayTypeSel.value, aadtKey: aadtSel.value, surfaceType: surfaceSel.value,
-      roadType: chevronRoadTypeSel.value, speedBasis: speedBasisSel.value,
-      includeOptional: includeOptional.checked, pavedTreatment: pavedTreatmentSel.value,
+      roadType: chevronRoadTypeSel.value, speedBasis: method === 'mdot' ? 'posted' : speedBasisSel.value,
+      includeOptional: method === 'mmutcd' && includeOptional.checked, pavedTreatment: pavedTreatmentSel.value,
       urbanLowVolume: urbanLowVolume.checked, omitEligible: omitEligible.checked });
     const selectionHTML = guidanceHTML(guidance, method);
     resultsEl.innerHTML = `<div class="callout">${selectionHTML}</div>`;
@@ -588,19 +617,17 @@
     const gamma = Math.abs(span), arcLen_m = Rm*gamma, arcLen_f = arcLen_m*FT_PER_M;
     const centralDeg = gamma*180/Math.PI;
     const O_ll = fromXY_local(O.x,O.y,ORG);
-    const e = Number.isFinite(roadHeightFt) ? roadHeightFt/roadWidthFt : NaN;
+    const e = method === 'mdot' && Number.isFinite(roadHeightFt) ? roadHeightFt/roadWidthFt : NaN;
     const estimate = CurveGuidance.advisoryEstimate(Rf,e);
     const chevronSpacing = CurveGuidance.chevronSpacing(method,Rf,advisoryMPH);
     const advance = CurveGuidance.advanceDistance(method,postedMPH,advisoryMPH,advanceOverride.value);
     const validSelection = !chevronSizes.message;
-    const showChevrons = validSelection && guidance.showChevrons;
-    const showDelineators = validSelection && guidance.showDelineators;
     const showWarning = validSelection && guidance.showWarning;
     const chevrons = CurveGuidance.placement(arcLen_f,chevronSpacing.feet,modeSel.value);
     const delineators = CurveGuidance.delineatorLayout(arcLen_f,Rf,modeSel.value);
-    const chevronPositions = showChevrons ? chevrons.positions : [];
-    const delineatorPositions = showDelineators
-      ? [...delineators.approaches,...delineators.positions,...delineators.departures] : [];
+    // Always show both layouts; device-selection guidance remains a separate recommendation.
+    const chevronPositions = chevrons.positions;
+    const delineatorPositions = [...delineators.approaches,...delineators.positions,...delineators.departures];
     const offset_m = (roadWidthFt/2 + shoulderFt + offsetFt)/FT_PER_M;
     const bothSides = delineatorSidesSel.value === 'both';
     const innerPossible = Rm > offset_m;
@@ -662,8 +689,8 @@
       ${sepAB<30||sepAB>120||sepBC<30||sepBC>120 ? '<div class="warn">Target 30–120° between sample points.</div>' : ''}`;
     const formatStep = value => Number.isFinite(value) ? `${value.toFixed(1)} ft` : 'Not applicable';
     const Nchev = chevronPositions.length;
-    const curveDelineators = showDelineators ? delineators.positions.length : 0;
-    const transitionCount = showDelineators ? 6 : 0;
+    const curveDelineators = delineators.positions.length;
+    const transitionCount = delineators.approaches.length + delineators.departures.length;
     const sides = bothSides && innerPossible ? 2 : 1;
     const advisoryDisplay = estimate.speed === null ? 'Outside supported estimate / inputs unavailable'
       : `${estimate.speed.toFixed(1)} mph (f = ${estimate.friction.toFixed(3)})`;
@@ -672,14 +699,14 @@
       : Number.isFinite(advance.feet) ? `${advance.feet} ft before PC / beyond PT${advance.custom ? ' — site distance entered by user' : ''}.`
       : 'Site placement distance needed; no warning ticks drawn.';
     resultsEl.innerHTML=`<div class="callout"><h1>Outputs</h1>${selectionHTML}
-      ${!validSelection ? `<div class="warn">${chevronSizes.message} Device layout is withheld.</div>` : ''}
+      ${!validSelection ? `<div class="warn">${chevronSizes.message} Size recommendations are withheld.</div>` : ''}
+      <div class="layout-note">Chevron and delineator layouts are always shown for comparison, even when device-selection guidance calls for a different treatment.</div>
       <hr /><h2>Chevron layout</h2>
       <div class="stat"><strong>Target:</strong> ${formatStep(chevronSpacing.feet)}</div>
       <div class="layout-note">${chevronSpacing.note}</div>
       <div class="stat"><strong>Actual spacing:</strong> ${formatStep(Nchev>1 ? chevrons.step : null)}</div>
       <div class="stat"><strong>Chevron positions shown:</strong> ${Nchev}</div>
-      ${!showChevrons ? '<div class="small-note muted">Chevrons are not drawn for the selected treatment.</div>' : ''}
-      ${method==='mdot' && showChevrons && isConventional ? '<div class="layout-note">MDOT p. 26 / B-9: place W1-6 target arrows for both directions before finalizing chevrons. Each target arrow replaces a chevron; the shown positions are preliminary.</div>' : ''}
+      ${method==='mdot' && Nchev>0 && isConventional ? '<div class="layout-note">MDOT p. 26 / B-9: place W1-6 target arrows for both directions before finalizing chevrons. Each target arrow replaces a chevron; the shown positions are preliminary.</div>' : ''}
       ${sourceLink(source.spacing)}
       <h2>Advance warning placement</h2><div class="stat">${warningDisplay}</div>
       <div class="layout-note">${advance.note}</div>
@@ -687,24 +714,25 @@
       ${sourceLink(source.advance)}
       <h2>Delineator layout</h2>
       <div class="stat"><strong>Target S:</strong> ${formatStep(delineators.target)} (3√(R − 50), limited to 20–300 ft)</div>
-      <div class="stat"><strong>Actual curve spacing:</strong> ${formatStep(showDelineators ? delineators.step : null)}</div>
+      <div class="stat"><strong>Actual curve spacing:</strong> ${formatStep(delineators.step)}</div>
       <div class="stat"><strong>Positions shown:</strong> ${curveDelineators} on curve + ${transitionCount} on tangents per side; ${(curveDelineators+transitionCount)*sides} total.</div>
       <div class="small-note muted">Tangent intervals away from PC: ${delineators.approachIntervals.map(x=>x.toFixed(1)).join(', ')} ft; away from PT: ${delineators.departureIntervals.map(x=>x.toFixed(1)).join(', ')} ft (2S, 3S, 6S, with 300-ft maximum gaps).</div>
       <div class="layout-note">${delineators.note}${bothSides && !innerPossible ? ' Inner offset exceeds curve radius; only outside delineators can be shown.' : ''}</div>
       ${sourceLink(CurveGuidance.sources.delineators)}
       <h2>Advisory-speed study support</h2>
       <div class="stat"><strong>Study speed used for signing:</strong> ${advisoryMPH} mph</div>
-      <div class="stat"><strong>Superelevation:</strong> ${Number.isFinite(e) ? (e*100).toFixed(2)+'%' : 'Not entered'}</div>
+      ${method === 'mdot' ? `<div class="stat"><strong>Superelevation:</strong> ${Number.isFinite(e) ? (e*100).toFixed(2)+'%' : 'Not entered'}</div>
       <div class="stat"><strong>MDOT design-equation estimate:</strong> ${advisoryDisplay}</div>
-      <div class="layout-note">${estimate.note} Advisory speed must be established by an engineering study (§2C.59).</div>
-      ${sourceLink(CurveGuidance.sources.advisory)}
+      <div class="layout-note">${estimate.note}</div>
+      ${sourceLink(CurveGuidance.sources.advisory)}` : ''}
+      <div class="layout-note">Advisory speed must be established by an engineering study (§2C.59).</div>
       ${sourceLink(CurveGuidance.sources.mmutcd.plaque)}
       <h2>Curve details</h2>
       <div class="stat"><strong>Radius:</strong> ${formatFeet(Rf)}</div>
       <div class="stat"><strong>Central angle:</strong> ${centralDeg.toFixed(2)}°</div>
       <div class="stat"><strong>Arc length:</strong> ${formatFeet(arcLen_f)}</div>
       <div class="stat"><strong>Degree of curve (100-ft arc):</strong> ${(5729.57795/Rf).toFixed(4)}°</div>
-      <div class="small-note muted">Map symbols show the selected layout. Confirm field visibility, sign orientation, and site offsets. Purple: advance warning; orange: chevrons; dots: delineators. Tangent layouts are shown at both ends; evaluate each approach speed separately.</div>
+      <div class="small-note muted">Map symbols show both chevron and delineator layouts. Confirm field visibility, sign orientation, and site offsets. Purple: advance warning; orange: chevrons; dots: delineators. Tangent layouts are shown at both ends; evaluate each approach speed separately.</div>
     </div>`;
     lastCalc={method,Rf,arcLen_f,guidance,chevronSizes,chevronSpacing,advance,Nchev,curveDelineators,transitionCount,estimate};
     statusEl.textContent=STATUS_READY;

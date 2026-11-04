@@ -33,7 +33,7 @@
           <li>Drag a marker to refine; red tangent lines should align with the centerline.</li>
           <li>Target 30&ndash;120&deg; separation on the constant-radius portion.</li>
           <li><strong>Only use with circular curves</strong> (avoid spirals).</li>
-          <li>Enter the advisory speed from an engineering study. The separate MDOT design-equation estimate uses measured <strong>full superelevation only</strong>.</li>
+          <li>Enter the advisory speed from an engineering study.<span data-method="mdot" hidden> The separate MDOT design-equation estimate uses measured <strong>full superelevation only</strong>.</span></li>
           <li>Mobile: pinch to zoom. Desktop: Shift+drag for box zoom.</li>
         </ul>
       </div>
@@ -65,10 +65,10 @@
             <option value="expressway_mainline">Expressway mainline</option>
             <option value="freeway_ramp">Freeway ramp</option>
           </select>
-          <div id="chevronRoadTypeHelp" class="small-note muted">RCOC local/primary classification is separate from the MMUTCD roadway class below. Ramp sizing uses the selected advisory speed.</div>
+          <div id="chevronRoadTypeHelp" class="small-note muted">RCOC local/primary classification is separate from the roadway class below.</div>
         </div>
         <div class="input-stack">
-          <label for="roadwayTypeSel">MMUTCD roadway class (Table 2C-4)</label>
+          <label id="roadwayTypeLabel" for="roadwayTypeSel">MMUTCD roadway class (Table 2C-4)</label>
           <select id="roadwayTypeSel">
             <option value="freeway_expressway">Freeway or expressway</option>
             <option value="arterial_no_markings">Arterial or collector without pavement markings</option>
@@ -76,14 +76,14 @@
             <option value="all_other">All other roadways</option>
           </select>
         </div>
-        <div class="input-stack">
+        <div class="input-stack" data-method="mmutcd">
           <label for="surfaceSel">Roadway surface</label>
           <select id="surfaceSel">
             <option value="paved" selected>Paved</option>
             <option value="gravel">Gravel / unpaved</option>
           </select>
         </div>
-        <div class="input-stack">
+        <div class="input-stack" data-method="mmutcd">
           <label for="aadtSel">AADT category (MMUTCD device need)</label>
           <select id="aadtSel">
             <option value="lt1000">&lt; 1,000</option>
@@ -95,7 +95,7 @@
             Need counts? <a href="https://maps.semcog.org/TrafficVolume/#/" target="_blank" rel="noopener noreferrer">SEMCOG Traffic Volume Map</a>
           </div>
         </div>
-        <div class="input-stack">
+        <div class="input-stack" data-method="mmutcd">
           <label for="speedBasisSel">Approach-speed basis</label>
           <select id="speedBasisSel">
             <option value="posted">Posted speed limit</option>
@@ -106,8 +106,9 @@
         <div class="speeds-card">
           <div class="grp">
             <div>
-              <label for="postedSel">Approach speed (mph)</label>
-              <select id="postedSel">
+              <label id="approachSpeedLabel" for="postedSel">Approach speed (mph)</label>
+              <select id="postedSel" required>
+                <option value="" disabled>Select speed</option>
                 <option>20</option><option>25</option><option>30</option><option>35</option><option>40</option>
                 <option selected>45</option><option>50</option><option>55</option><option>60</option>
                 <option>65</option><option>70</option><option>75</option><option>80</option><option>85</option>
@@ -128,22 +129,23 @@
               <label for="roadWidthInput">Road width (ft)</label>
               <input id="roadWidthInput" type="number" inputmode="decimal" step="0.1" min="0" value="24" placeholder="24" />
             </div>
-            <div>
-              <label for="roadHeightInput">Height (ft)</label>
+            <div data-method="mdot" hidden>
+              <label for="roadHeightInput">Superelevation height (ft)</label>
               <input id="roadHeightInput" type="number" inputmode="decimal" step="0.01" value="0.5" placeholder="0.5" />
+              <div class="small-note muted">Height difference across the road width, used for the MDOT speed estimate.</div>
             </div>
           </div>
         </div>
         <details class="layout-options">
           <summary>Treatment and placement options</summary>
-          <label class="check-label"><input id="includeOptional" type="checkbox" /> Include optional treatments in the layout</label>
-          <div class="input-stack">
+          <label class="check-label" data-method="mmutcd"><input id="includeOptional" type="checkbox" /> Show optional advance-warning placement</label>
+          <div class="input-stack" data-method="mmutcd">
             <label for="pavedTreatmentSel">MMUTCD 5-mph differential on paved roads</label>
             <select id="pavedTreatmentSel"><option value="markings">Pavement markings</option><option value="warning">Advance warning sign</option></select>
           </div>
-          <label class="check-label"><input id="urbanLowVolume" type="checkbox" /> Urban street with AADT at or below 1,000</label>
-          <label class="check-label"><input id="omitEligible" type="checkbox" /> Use MMUTCD omission option when eligible</label>
-          <div class="small-note muted">§2C.06: speed limit ≤20 mph, or urban street with AADT ≤1,000. This choice applies only in MMUTCD mode.</div>
+          <label class="check-label" data-method="mmutcd"><input id="urbanLowVolume" type="checkbox" /> Urban street with AADT at or below 1,000</label>
+          <label class="check-label" data-method="mmutcd"><input id="omitEligible" type="checkbox" /> Use MMUTCD omission option when eligible</label>
+          <div class="small-note muted" data-method="mmutcd">§2C.06: speed limit ≤20 mph, or urban street with AADT ≤1,000.</div>
           <div class="input-stack">
             <label for="advanceOverride">Site advance-warning distance (ft, optional)</label>
             <input id="advanceOverride" type="number" min="1" step="1" placeholder="Use selected source" />
@@ -213,7 +215,31 @@
     </section>
   </div>
 
-  <div id="map" role="region" aria-label="Map"></div>
+  <div id="map" role="region" aria-label="Map">
+    <details id="mapLegend" class="map-legend" open>
+      <summary>Map legend</summary>
+      <div class="map-legend-body">
+        <ul>
+          <li><span class="legend-symbol legend-chevron" aria-hidden="true"></span>Chevron position</li>
+          <li><span class="legend-symbol legend-delineator" aria-hidden="true"></span>Delineator position</li>
+          <li><span class="legend-symbol legend-warning" aria-hidden="true"></span>Advance-warning placement</li>
+        </ul>
+        <p>Both device layouts are shown. See outputs for the recommended treatment.</p>
+        <details class="legend-geometry">
+          <summary>Curve geometry</summary>
+          <ul>
+            <li><span class="legend-symbol legend-point" aria-hidden="true">1</span>Selected points (1–3)</li>
+            <li><span class="legend-symbol legend-curve" aria-hidden="true"></span>Curve arc</li>
+            <li><span class="legend-symbol legend-circle" aria-hidden="true"></span>Fitted circle and center</li>
+            <li><span class="legend-symbol legend-tangent" aria-hidden="true"></span>Tangents and intersection</li>
+            <li><span class="legend-symbol legend-extension" aria-hidden="true"></span>Tangent extensions</li>
+            <li><span class="legend-symbol legend-chord" aria-hidden="true"></span>Chord (point 1 to 3)</li>
+            <li><span class="legend-symbol legend-segments" aria-hidden="true"></span>Sample-point segments</li>
+          </ul>
+        </details>
+      </div>
+    </details>
+  </div>
 </div>
 </main>
 <div id="footer-placeholder"></div>

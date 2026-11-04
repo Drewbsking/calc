@@ -46,7 +46,19 @@ async def check(origin):
         errors = []
         page.on('pageerror', lambda error: errors.append(str(error)))
         await page.goto(origin + '/calculators/curve/')
+        await expect(page.locator('#mapLegend')).to_be_visible()
+        await page.locator('.legend-geometry > summary').click()
+        await expect(page.get_by_text('Fitted circle and center', exact=True)).to_be_visible()
+        await page.locator('.legend-geometry > summary').click()
+        await page.locator('#mapLegend > summary').click()
+        await expect(page.locator('.map-legend-body')).not_to_be_visible()
+        await page.locator('#mapLegend > summary').focus()
+        await page.keyboard.press('Enter')
+        await expect(page.locator('.map-legend-body')).to_be_visible()
+        assert await page.locator('.num-marker').count() == 0
         await expect(page.locator('#methodName')).to_have_text('MMUTCD (2025)')
+        await expect(page.locator('#roadHeightInput')).not_to_be_visible()
+        await expect(page.locator('#roadHeightInput')).to_be_disabled()
         await expect(page.locator('#chevronSizingMessage')).to_contain_text('Select a road type')
         await page.select_option('#chevronRoadTypeSel', 'rcoc_primary')
         await page.select_option('#aadtSel', '4000_plus')
@@ -68,16 +80,31 @@ async def check(origin):
         await page.locator('#results').scroll_into_view_if_needed()
         await page.screenshot(path=str(ARTIFACTS / 'outputs.png'))
         assert await page.locator('.leaflet-chevrons-pane path').count() > 0
-        assert await page.locator('.leaflet-delineators-pane path').count() == 0
+        assert await page.locator('.leaflet-delineators-pane path').count() > 0
         await page.locator('#methodSlider').fill('0')
         await expect(page.locator('#methodName')).to_have_text('MDOT signing guide (2023)')
+        for field in ['aadtSel', 'surfaceSel', 'speedBasisSel', 'pavedTreatmentSel', 'urbanLowVolume', 'omitEligible', 'includeOptional']:
+            await expect(page.locator('#' + field)).not_to_be_visible()
+            await expect(page.locator('#' + field)).to_be_disabled()
+        await expect(page.locator('#roadHeightInput')).to_be_visible()
+        await expect(page.locator('#roadHeightInput')).to_be_enabled()
+        await expect(page.locator('#roadwayTypeLabel')).to_have_text('Roadway class (sizing cross-check)')
+        await page.locator('.section-inputs').scroll_into_view_if_needed()
+        await page.screenshot(path=str(ARTIFACTS / 'mdot-inputs.png'))
         await expect(page.locator('#results')).to_contain_text('275 ft before PC')
         await expect(page.locator('#results')).to_contain_text('184.9 ft')
+        assert await page.locator('.leaflet-chevrons-pane path').count() > 0
+        assert await page.locator('.leaflet-delineators-pane path').count() > 0
         await expect(page.locator('#mdotChevronSize')).to_contain_text('24 × 30 in')
         await page.locator('#methodSlider').fill('1')
-        await page.select_option('#advisorySel', '40')  # MMUTCD 15 mph: delineators, not chevrons.
+        for field in ['aadtSel', 'surfaceSel', 'speedBasisSel']:
+            await expect(page.locator('#' + field)).to_be_visible()
+            await expect(page.locator('#' + field)).to_be_enabled()
+        await expect(page.locator('#aadtSel')).to_have_value('4000_plus')
+        await expect(page.locator('#results')).not_to_contain_text('MDOT design-equation estimate')
+        await page.select_option('#advisorySel', '40')  # MMUTCD 15 mph recommends delineators; both layouts remain visible.
         await expect(page.locator('#results')).to_contain_text('Delineators and advance warning')
-        assert await page.locator('.leaflet-chevrons-pane path').count() == 0
+        assert await page.locator('.leaflet-chevrons-pane path').count() > 0
         dots = await page.locator('.leaflet-delineators-pane path').count()
         assert dots >= 7
         await expect(page.locator('#results')).to_contain_text('+ 6 on tangents per side')
@@ -85,7 +112,8 @@ async def check(origin):
         await page.select_option('#delineatorSidesSel', 'both')
         assert await page.locator('.leaflet-delineators-pane path').count() == 2 * dots
         await page.select_option('#roadwayTypeSel', 'all_other')
-        assert await page.locator('.leaflet-delineators-pane path').count() == 0
+        assert await page.locator('.leaflet-delineators-pane path').count() == 2 * dots
+        assert await page.locator('.leaflet-chevrons-pane path').count() > 0
         assert await page.locator('.leaflet-advance-pane path').count() == 0
         await page.check('#includeOptional')
         assert await page.locator('.leaflet-delineators-pane path').count() == 2 * dots
@@ -97,10 +125,18 @@ async def check(origin):
         await page.fill('#advanceOverride', '75')
         await expect(page.locator('#results')).to_contain_text('75 ft before PC')
         assert await page.locator('.leaflet-advance-pane path').count() == 4
-        # A class conflict removes all device overlays, including previously drawn ones.
+        # A class conflict withholds sizing but keeps both comparison layouts visible.
         await page.select_option('#chevronRoadTypeSel', 'freeway_ramp')
-        await expect(page.locator('#results')).to_contain_text('Device layout is withheld')
+        await expect(page.locator('#results')).to_contain_text('Size recommendations are withheld')
+        assert await page.locator('.leaflet-chevrons-pane path').count() > 0
+        assert await page.locator('.leaflet-delineators-pane path').count() == 2 * dots
         assert await page.locator('.leaflet-advance-pane path').count() == 0
+        await page.select_option('#chevronRoadTypeSel', '')
+        await page.select_option('#advisorySel', '25')
+        await expect(page.locator('#results')).to_contain_text('Below the tabulated 5-mph differential')
+        assert await page.locator('.leaflet-chevrons-pane path').count() > 0
+        assert await page.locator('.leaflet-delineators-pane path').count() == 2 * dots
+        await page.select_option('#chevronRoadTypeSel', 'freeway_ramp')
         await page.select_option('#roadwayTypeSel', 'freeway_expressway')
         await page.locator('#methodSlider').fill('0')
         await page.select_option('#advisorySel', '45')
@@ -111,6 +147,20 @@ async def check(origin):
         await page.locator('#methodSlider').fill('1')
         await page.select_option('#chevronRoadTypeSel', 'expressway_mainline')
         await expect(page.locator('#mdotChevronSize')).to_contain_text('30 × 36 in')
+        # Switching methods must never reinterpret a percentile measurement as a speed limit.
+        await page.select_option('#speedBasisSel', '85th')
+        await expect(page.locator('#postedSel')).to_have_value('')
+        await page.select_option('#postedSel', '75')
+        await page.locator('#methodSlider').fill('0')
+        await expect(page.locator('#postedSel')).to_have_value('65')
+        await expect(page.locator('#results')).not_to_contain_text('Select posted or statutory speed')
+        await page.locator('#methodSlider').fill('1')
+        await expect(page.locator('#speedBasisSel')).to_have_value('85th')
+        await expect(page.locator('#postedSel')).to_have_value('75')
+        await page.select_option('#speedBasisSel', 'posted')
+        await expect(page.locator('#postedSel')).to_have_value('65')
+        await page.locator('.section-inputs').scroll_into_view_if_needed()
+        await page.screenshot(path=str(ARTIFACTS / 'mmutcd-inputs.png'))
         # Every dynamically generated reference link and preview resolves locally.
         references = await page.locator('#referenceSections a').evaluate_all('(links) => links.map(a => a.href.split("#")[0])')
         for href in set(references):
@@ -124,6 +174,11 @@ async def check(origin):
         await page.locator('#panel').evaluate('(el) => el.scrollTop = 0')
         await page.screenshot(path=str(ARTIFACTS / 'desktop.png'))
         await page.set_viewport_size({'width': 390, 'height': 844})
+        await page.wait_for_timeout(300)
+        await page.screenshot(path=str(ARTIFACTS / 'mobile-map.png'))
+        legend_box = await page.locator('#mapLegend').bounding_box()
+        assert legend_box['x'] >= 0 and legend_box['x'] + legend_box['width'] <= 390
+        assert await page.locator('#mapLegend').evaluate('(el) => el.scrollWidth <= el.clientWidth + 1')
         await page.locator('#menuBtn').click()
         await expect(page.locator('#panel')).to_have_class('panel open')
         await expect(page.locator('#menuBtn')).to_have_attribute('aria-label', 'Close controls')
@@ -142,7 +197,7 @@ async def check(origin):
         assert await page.locator('.leaflet-chevrons-pane path').count() == 0
         assert await page.locator('.leaflet-delineators-pane path').count() == 0
         assert not errors, errors
-        print('PASS: both methods, actual map layers, transitions, optional devices, overrides, sizing, citations, keyboard slider, reset, desktop/mobile layout')
+        print('PASS: both methods, always-visible chevrons and delineators, transitions, optional warning, overrides, sizing, citations, keyboard slider, reset, desktop/mobile layout')
         print(f'Screenshots: {ARTIFACTS}')
         await browser.close()
 
