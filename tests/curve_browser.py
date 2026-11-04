@@ -46,6 +46,10 @@ async def check(origin):
         errors = []
         page.on('pageerror', lambda error: errors.append(str(error)))
         await page.goto(origin + '/calculators/curve/')
+        assert await page.locator('.step-number').all_text_contents() == ['1', '2', '3', '4']
+        await expect(page.locator('.layout-options')).not_to_have_attribute('open', '')
+        for field in ['modeSel', 'shoulderWidthInput', 'delineatorOffsetInput', 'roadWidthInput']:
+            await expect(page.locator('#' + field)).not_to_be_visible()
         await expect(page.locator('#mapLegend')).to_be_visible()
         await page.locator('.legend-geometry > summary').click()
         await expect(page.get_by_text('Fitted circle and center', exact=True)).to_be_visible()
@@ -59,6 +63,7 @@ async def check(origin):
         await expect(page.locator('#methodName')).to_have_text('MMUTCD (2025)')
         await expect(page.locator('#roadHeightInput')).not_to_be_visible()
         await expect(page.locator('#roadHeightInput')).to_be_disabled()
+        await expect(page.locator('#mdotDelineatorLocationSel')).not_to_be_visible()
         await expect(page.locator('#chevronSizingMessage')).to_contain_text('Select a road type')
         await page.select_option('#chevronRoadTypeSel', 'rcoc_primary')
         await page.select_option('#aadtSel', '4000_plus')
@@ -75,6 +80,11 @@ async def check(origin):
             }''', angle)
             await page.wait_for_timeout(220)  # The calculator intentionally debounces map clicks.
         await expect(page.locator('#results')).to_contain_text('200 ft before PC')
+        await expect(page.locator('.result-summary')).to_contain_text('Chevrons and advance warning')
+        await expect(page.locator('.result-summary')).to_contain_text('18 × 24 in')
+        await expect(page.locator('.result-summary')).to_contain_text('24 × 30 in')
+        await expect(page.locator('#calculationDetails .callout')).not_to_be_visible()
+        await expect(page.locator('.layout-comparison')).to_contain_text('Both layouts are displayed')
         assert '?' not in await page.locator('#results').inner_text()
         assert '?' not in await page.locator('#spacing').inner_text()
         await page.locator('#results').scroll_into_view_if_needed()
@@ -86,13 +96,27 @@ async def check(origin):
         for field in ['aadtSel', 'surfaceSel', 'speedBasisSel', 'pavedTreatmentSel', 'urbanLowVolume', 'omitEligible', 'includeOptional']:
             await expect(page.locator('#' + field)).not_to_be_visible()
             await expect(page.locator('#' + field)).to_be_disabled()
+        await expect(page.locator('#roadHeightInput')).not_to_be_visible()
+        await page.locator('.layout-options > summary').click()
         await expect(page.locator('#roadHeightInput')).to_be_visible()
         await expect(page.locator('#roadHeightInput')).to_be_enabled()
+        await page.locator('.layout-options > summary').click()
         await expect(page.locator('#roadwayTypeLabel')).to_have_text('Roadway class (sizing cross-check)')
         await page.locator('.section-inputs').scroll_into_view_if_needed()
         await page.screenshot(path=str(ARTIFACTS / 'mdot-inputs.png'))
         await expect(page.locator('#results')).to_contain_text('275 ft before PC')
         await expect(page.locator('#results')).to_contain_text('184.9 ft')
+        await expect(page.locator('#results')).to_contain_text('Known-radius chart: 950-ft minimum-radius row gives S = 90 ft')
+        await expect(page.locator('#mdotDelineatorLocationSel')).to_be_visible()
+        await page.select_option('#mdotDelineatorLocationSel', 'interchange')
+        await expect(page.locator('#results')).to_contain_text('200-ft maximum gaps')
+        await page.select_option('#mdotDelineatorLocationSel', 'ramp')
+        await expect(page.locator('#results')).to_contain_text('100.0, 100.0, 100.0 ft')
+        await page.locator('#calculationDetails > summary').click()
+        await expect(page.locator('#results a[href="references/mdot-r-127-i.pdf#page=5"]')).to_be_visible()
+        await page.select_option('#mdotDelineatorLocationSel', 'normal')
+        await page.locator('#results a[href="references/mdot-r-127-i.pdf#page=5"]').scroll_into_view_if_needed()
+        await page.screenshot(path=str(ARTIFACTS / 'mdot-delineators.png'))
         assert await page.locator('.leaflet-chevrons-pane path').count() > 0
         assert await page.locator('.leaflet-delineators-pane path').count() > 0
         await expect(page.locator('#mdotChevronSize')).to_contain_text('24 × 30 in')
@@ -102,6 +126,9 @@ async def check(origin):
             await expect(page.locator('#' + field)).to_be_enabled()
         await expect(page.locator('#aadtSel')).to_have_value('4000_plus')
         await expect(page.locator('#results')).not_to_contain_text('MDOT design-equation estimate')
+        await expect(page.locator('#mdotDelineatorLocationSel')).not_to_be_visible()
+        await expect(page.locator('#results')).to_contain_text('MMUTCD Table 3G-1')
+        assert await page.locator('#results a[href*="mdot-r-127-i"]').count() == 0
         await page.select_option('#advisorySel', '40')  # MMUTCD 15 mph recommends delineators; both layouts remain visible.
         await expect(page.locator('#results')).to_contain_text('Delineators and advance warning')
         assert await page.locator('.leaflet-chevrons-pane path').count() > 0
@@ -141,6 +168,9 @@ async def check(origin):
         await page.locator('#methodSlider').fill('0')
         await page.select_option('#advisorySel', '45')
         await page.select_option('#postedSel', '65')
+        await expect(page.locator('#mdotDelineatorLocationSel')).to_have_value('ramp')
+        await expect(page.locator('#mdotDelineatorLocationSel')).to_be_disabled()
+        await expect(page.locator('#results')).to_contain_text('100-ft maximum gaps')
         await expect(page.locator('#mdotChevronSize')).to_contain_text('36 × 48 in')
         await page.select_option('#advisorySel', '40')
         await expect(page.locator('#mdotChevronSize')).to_contain_text('24 × 30 in')
@@ -153,6 +183,8 @@ async def check(origin):
         await page.select_option('#postedSel', '75')
         await page.locator('#methodSlider').fill('0')
         await expect(page.locator('#postedSel')).to_have_value('65')
+        await expect(page.locator('#mdotDelineatorLocationSel')).to_have_value('normal')
+        await expect(page.locator('#mdotDelineatorLocationSel')).to_be_enabled()
         await expect(page.locator('#results')).not_to_contain_text('Select posted or statutory speed')
         await page.locator('#methodSlider').fill('1')
         await expect(page.locator('#speedBasisSel')).to_have_value('85th')
@@ -166,6 +198,15 @@ async def check(origin):
         for href in set(references):
             response = await page.request.get(href)
             assert response.ok, href
+        mdot_detail = page.locator('#referenceSections > details').nth(2)
+        await mdot_detail.evaluate('(el) => el.open = true')
+        await mdot_detail.locator('details').nth(1).evaluate('(el) => el.open = true')
+        await mdot_detail.locator('img').nth(1).scroll_into_view_if_needed()
+        await page.wait_for_function('(selector) => document.querySelector(selector).naturalWidth > 0',
+                                     arg='img[src="references/mdot-r-127-i-5.png"]')
+        await mdot_detail.locator('img').nth(1).scroll_into_view_if_needed()
+        await page.screenshot(path=str(ARTIFACTS / 'mdot-detail-reference.png'))
+        await mdot_detail.evaluate('(el) => el.open = false')
         await page.locator('#referenceSections > details').first.evaluate('(el) => el.open = true')
         await page.locator('#referenceSections > details').first.locator('details').nth(1).evaluate('(el) => el.open = true')
         await page.locator('#referenceSections img').first.scroll_into_view_if_needed()
@@ -193,6 +234,13 @@ async def check(origin):
         await page.locator('#methodSlider').focus()
         await page.keyboard.press('ArrowLeft')
         await expect(page.locator('#methodName')).to_have_text('MDOT signing guide (2023)')
+        await page.locator('#placePointsBtn').click()
+        await expect(page.locator('#panel')).not_to_have_class('panel open')
+        await page.locator('#menuBtn').click()
+        await page.locator('#calculationDetails').evaluate('(el) => el.open = false')
+        await page.locator('.result-summary').scroll_into_view_if_needed()
+        await page.screenshot(path=str(ARTIFACTS / 'mobile-summary.png'))
+        assert await page.locator('#panel').evaluate('(el) => el.scrollWidth <= el.clientWidth + 1')
         await page.locator('#resetBtn').click()
         assert await page.locator('.leaflet-chevrons-pane path').count() == 0
         assert await page.locator('.leaflet-delineators-pane path').count() == 0

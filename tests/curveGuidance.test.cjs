@@ -105,6 +105,42 @@ test('design equation uses the complete printed friction table without extrapola
   assert.equal(g.advisoryEstimate(20,0).speed,null);
 });
 
+test('MDOT R-127-I selects known-radius chart rows and closer location limits', () => {
+  for (const [radius,target] of [[50,20],[149.9,20],[150,30],[949.9,80],[950,90],
+    [1000,90],[1160,100],[1930,130],[9395,290],[10049.9,290],[10050,300],[17830,300],[17830.1,400]]) {
+    assert.equal(g.mdotDelineatorSpacing(radius).target,target,`radius ${radius}`);
+  }
+  assert.equal(g.mdotDelineatorSpacing(49).target,null);
+  assert.equal(g.mdotDelineatorSpacing(NaN).target,null);
+  assert.equal(g.mdotDelineatorSpacing(10000,{context:'interchange'}).target,200);
+  assert.equal(g.mdotDelineatorSpacing(10000,{context:'right_turn'}).target,100);
+  assert.equal(g.mdotDelineatorSpacing(10000,{context:'normal',roadType:'freeway_ramp'}).target,100);
+  assert.equal(g.mdotDelineatorSpacing(1000,{context:'ramp'}).target,90);
+  const normal=g.delineatorLayout(1000,20000,'snapEnds',{method:'mdot'});
+  assert.deepEqual(normal.intervals,[400,400,400]);
+  assert.equal(normal.normalSpacing,true);
+  const curve=g.delineatorLayout(1000,1000,'snapEnds',{method:'mdot'});
+  assert.deepEqual(curve.intervals,[180,270,300]);
+  const ramp=g.delineatorLayout(1000,1000,'snapEnds',{method:'mdot',roadType:'freeway_ramp'});
+  assert.deepEqual(ramp.intervals,[100,100,100]);
+  // Switching back preserves the MMUTCD formula, not the MDOT chart rounding.
+  assert.ok(Math.abs(g.delineatorLayout(1000,1000,'snapEnds').target-3*Math.sqrt(950))<1e-9);
+});
+
+test('MDOT delineator layouts respect location caps through curve-to-tangent transitions', () => {
+  for (const context of ['normal','interchange','ramp','right_turn'])
+    for (const mode of ['snapEnds','centered','startAtA'])
+      for (const radius of [50,150,1000,10050,17830,20000])
+        for (const length of [1,19,20,39,100,301,499,1000,5000]) {
+          const r=g.delineatorLayout(length,radius,mode,{method:'mdot',context});
+          const positions=[...r.approaches,...r.positions,...r.departures].sort((a,b)=>a-b);
+          for (let i=1;i<positions.length;i++) {
+            const gap=positions[i]-positions[i-1];
+            assert.ok(gap>=20-1e-8 && gap<=r.maximumGap+1e-8,`${context}, ${mode}, R=${radius}, L=${length}: ${gap}`);
+          }
+        }
+});
+
 test('MMUTCD sizing distinguishes expressway, freeway and conventional classifications', () => {
   for(const [roadType,roadwayType,w,h] of [['rcoc_local','all_other',18,24],['expressway_mainline','freeway_expressway',30,36],['freeway_mainline','freeway_expressway',36,48]]){
     const r=sizing.lookupChevronSizes({roadType,roadwayType,advisoryMPH:50});
@@ -113,6 +149,6 @@ test('MMUTCD sizing distinguishes expressway, freeway and conventional classific
 });
 
 test('calculation citations resolve to bundled source excerpts', () => {
-  const entries=[...Object.values(g.sources.mmutcd),...Object.values(g.sources.mdot),g.sources.delineators,g.sources.advisory].filter(Array.isArray);
+  const entries=[...Object.values(g.sources.mmutcd),...Object.values(g.sources.mdot),g.sources.advisory].filter(Array.isArray);
   for(const [,url] of entries) assert.ok(fs.existsSync(path.join(__dirname,'../calculators/curve',url.split('#')[0])),url);
 });

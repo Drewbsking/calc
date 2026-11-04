@@ -7,7 +7,8 @@
       plaque: ['Table 2C-6; §2C.59', 'references/mmutcd-curve-reference.pdf#page=8'],
       spacing: ['Table 2C-5; §2C.08', 'references/mmutcd-curve-reference.pdf#page=6'],
       advance: ['Table 2C-3; §2C.04', 'references/mmutcd-curve-reference.pdf#page=3'],
-      size: ['Table 2C-1; §2C.03', 'references/mmutcd-curve-reference.pdf#page=1']
+      size: ['Table 2C-1; §2C.03', 'references/mmutcd-curve-reference.pdf#page=1'],
+      delineators: ['MMUTCD §3G.04 / Table 3G-1', 'references/mmutcd-curve-reference.pdf#page=10']
     },
     mdot: {
       label: 'MDOT signing guide (2023)',
@@ -15,9 +16,11 @@
       plaque: ['Table 5, pp. 24–25', 'references/mdot-curve-reference.pdf#page=3'],
       spacing: ['Appendix B-9', 'references/mdot-curve-reference.pdf#page=6'],
       advance: ['Table 3, p. 21', 'references/mdot-curve-reference.pdf#page=2'],
-      size: ['Table 2 / Appendix B-9', 'references/mdot-curve-reference.pdf#page=1']
+      size: ['Table 2 / Appendix B-9', 'references/mdot-curve-reference.pdf#page=1'],
+      delineators: ['MDOT R-127-I (10/24/2025), sheet 5 — curve spacing', 'references/mdot-r-127-i.pdf#page=5'],
+      delineatorLimits: ['MDOT R-127-I, sheet 4 — location limits; use closer spacing', 'references/mdot-r-127-i.pdf#page=4'],
+      delineatorInstallation: ['MDOT R-127-I, sheet 8 — installation notes', 'references/mdot-r-127-i.pdf#page=8']
     },
-    delineators: ['MMUTCD §3G.04 / Table 3G-1', 'references/mmutcd-curve-reference.pdf#page=10'],
     advisory: ['MDOT Appendices B-11 / B-12', 'references/mdot-curve-reference.pdf#page=7']
   };
   // Rows are freeway/expressway, arterial without markings, arterial with markings, other.
@@ -150,19 +153,48 @@
     }
     return { positions: Array.from({length: count}, (_, i) => margin + i * step), step: count > 1 ? step : null, note };
   }
-  function delineatorLayout(length, radius, mode) {
-    const target = Math.max(20, Math.min(300, 3 * Math.sqrt(Math.max(0, radius - 50))));
+  // R-127-I sheet 5: minimum radius of each known-radius chart row, in feet.
+  const mdotDelineatorRows = [[50,20],[150,30],[230,40],[325,50],[450,60],[595,70],
+    [760,80],[950,90],[1160,100],[1395,110],[1650,120],[1930,130],[2230,140],
+    [2550,150],[2895,160],[3260,170],[3650,180],[4060,190],[4495,200],
+    [4950,210],[5430,220],[5930,230],[6450,240],[6995,250],[7560,260],
+    [8150,270],[8760,280],[9395,290],[10050,300]];
+  function mdotDelineatorSpacing(radius, { context = 'normal', roadType } = {}) {
+    // A ramp road type always enforces the ramp limit, including after method switches.
+    const location = roadType === 'freeway_ramp' ? 'ramp' : context;
+    const limits = { normal:400, interchange:200, ramp:100, right_turn:100 };
+    const names = { normal:'Outside interchange', interchange:'Interchange / merge or diverge area',
+      ramp:'Interchange ramp', right_turn:'Right-turn lane (back-to-back white panels)' };
+    const locationLimit = limits[location];
+    if (!locationLimit || !Number.isFinite(radius) || radius < 50) return { target:null,
+      maximumGap:null, normalSpacing:false, note:'MDOT R-127-I known-radius chart starts at 50 ft. Confirm the radius and location; spacing outside the chart needs engineering judgment.' };
+    const normalSpacing = radius > 17830;
+    const row = mdotDelineatorRows.findLast(([minRadius]) => radius >= minRadius);
+    const chartSpacing = normalSpacing ? locationLimit : row[1];
+    return { target:Math.min(chartSpacing,locationLimit), locationLimit, location,
+      maximumGap:normalSpacing ? locationLimit : Math.min(300,locationLimit), normalSpacing,
+      note: `${normalSpacing ? 'Radius exceeds 17,830 ft: normal spacing applies.'
+        : `Known-radius chart: ${row[0].toLocaleString('en-US')}-ft minimum-radius row gives S = ${chartSpacing} ft (chart based on 3√(R − 50)).`}
+        ${names[location]}: ${locationLimit}-ft location maximum. Use the closer spacing from sheets 4 and 5.` };
+  }
+  function delineatorLayout(length, radius, mode, options = {}) {
+    const rule = options.method === 'mdot' ? mdotDelineatorSpacing(radius,options) : {
+      target:Math.max(20, Math.min(300, 3 * Math.sqrt(Math.max(0, radius - 50)))),
+      maximumGap:300, normalSpacing:false, note:'MMUTCD Table 3G-1: S = 3√(R − 50), limited to 20–300 ft.' };
+    const { target, maximumGap, normalSpacing } = rule;
+    if (!(target > 0)) return { ...rule, positions:[], step:null, intervals:[],
+      approachIntervals:[], departureIntervals:[], approaches:[], departures:[] };
     const curve = placement(length, target, mode, 20);
-    // Note 4 intervals proceed outward from the end of the curve, cumulatively.
-    const intervals = [2,3,6].map(factor => Math.min(300, factor * target));
+    // Transition intervals proceed outward from the curve ends, cumulatively.
+    const intervals = [2,3,6].map(factor => normalSpacing ? target : Math.min(maximumGap, factor * target));
     const first = curve.positions[0] || 0;
     const last = curve.positions.at(-1) ?? length;
-    const approachIntervals = [Math.min(intervals[0],300-first), ...intervals.slice(1)];
-    const departureIntervals = [Math.min(intervals[0],300-(length-last)), ...intervals.slice(1)];
+    const approachIntervals = [Math.min(intervals[0],maximumGap-first), ...intervals.slice(1)];
+    const departureIntervals = [Math.min(intervals[0],maximumGap-(length-last)), ...intervals.slice(1)];
     const cumulative = gaps => { let sum=0; return gaps.map(gap => sum+=gap); };
     const shortened = approachIntervals[0] < intervals[0] || departureIntervals[0] < intervals[0];
-    return { ...curve, target, intervals, approachIntervals, departureIntervals,
-      note: [curve.note, shortened ? 'First tangent interval shortened to keep the gap from the outermost curve delineator at or below 300 ft.' : ''].filter(Boolean).join(' '),
+    return { ...rule, ...curve, intervals, approachIntervals, departureIntervals,
+      note: [rule.note, curve.note, shortened ? `First tangent interval shortened to keep the gap from the outermost curve delineator at or below ${maximumGap} ft.` : ''].filter(Boolean).join(' '),
       approaches: cumulative(approachIntervals).map(x => -x), departures: cumulative(departureIntervals).map(x => length + x) };
   }
 
@@ -185,7 +217,7 @@
     const speed = (low+high)/2;
     return { speed, friction: sideFrictionAt(speed), note: 'Design-equation estimate using measured full superelevation. Device selection uses the entered study advisory speed.' };
   }
-  const api = { sources, deviceGuidance, chevronSpacing, advanceDistance, placement, delineatorLayout, sideFrictionAt, advisoryEstimate };
+  const api = { sources, deviceGuidance, chevronSpacing, advanceDistance, placement, delineatorLayout, mdotDelineatorSpacing, sideFrictionAt, advisoryEstimate };
   if (typeof module === 'object' && module.exports) module.exports = api;
   else root.CurveGuidance = api;
 })(typeof globalThis !== 'undefined' ? globalThis : this);

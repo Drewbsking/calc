@@ -107,6 +107,8 @@
   const shoulderWidthInput = document.getElementById('shoulderWidthInput');
   const delineatorOffsetInput = document.getElementById('delineatorOffsetInput');
   const delineatorSidesSel = document.getElementById('delineatorSidesSel');
+  const mdotDelineatorLocationSel = document.getElementById('mdotDelineatorLocationSel');
+  let mdotLocationBeforeRamp = null;
   // Keep measured percentile speeds separate from speed limits when changing methods/basis.
   const approachSpeeds = { limit: postedSel.value, percentile: '' };
   let activeSpeedInput = 'limit';
@@ -125,23 +127,8 @@
   const STATUS_DEFAULT = 'Tap the map to place three points on the road centerline.';
   const STATUS_READY = 'Computed from 3 points. Drag markers to refine or press Reset.';
 
-  // ---- Instructions toggle (mobile fly-out) ----
+  // ---- Optional map instructions ----
   if (instructionsSection && instructionsToggle && instructionsBody) {
-    const mq = window.matchMedia('(max-width: 900px)');
-    const applyResponsiveState = (isMobile) => {
-      if (isMobile) {
-        instructionsSection.classList.remove('open');
-        instructionsToggle.setAttribute('aria-expanded', 'false');
-        instructionsToggle.textContent = 'Show instructions';
-        instructionsBody.hidden = true;
-      } else {
-        instructionsSection.classList.add('open');
-        instructionsToggle.setAttribute('aria-expanded', 'true');
-        instructionsToggle.textContent = 'Hide instructions';
-        instructionsBody.hidden = false;
-      }
-    };
-
     instructionsToggle.addEventListener('click', () => {
       const isOpen = instructionsSection.classList.toggle('open');
       instructionsToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
@@ -149,13 +136,6 @@
       instructionsBody.hidden = !isOpen;
     });
 
-    const handleMediaChange = (e) => applyResponsiveState(e.matches);
-    applyResponsiveState(mq.matches);
-    if (typeof mq.addEventListener === 'function') {
-      mq.addEventListener('change', handleMediaChange);
-    } else if (typeof mq.addListener === 'function') {
-      mq.addListener(handleMediaChange);
-    }
   }
 
   // Numbered draggable markers
@@ -340,7 +320,7 @@
   if (roadWidthInput) roadWidthInput.addEventListener('input', update);
   if (roadHeightInput) roadHeightInput.addEventListener('input', update);
   methodSlider.addEventListener('input', update);
-  [speedBasisSel, includeOptional, pavedTreatmentSel, urbanLowVolume, omitEligible, delineatorSidesSel]
+  [speedBasisSel, includeOptional, pavedTreatmentSel, urbanLowVolume, omitEligible, delineatorSidesSel, mdotDelineatorLocationSel]
     .forEach(input => input.addEventListener('change', update));
   [advanceOverride, shoulderWidthInput, delineatorOffsetInput].forEach(input => input.addEventListener('input', update));
   if (locateBtn) locateBtn.addEventListener('click', goToDeviceLocation);
@@ -353,6 +333,10 @@
     setTimeout(() => map.invalidateSize(false), 250);
   }
   menuBtn && menuBtn.addEventListener('click', togglePanel);
+  document.getElementById('placePointsBtn').addEventListener('click', () => {
+    if (panel.classList.contains('open')) togglePanel();
+    map.getContainer().focus();
+  });
 
   document.getElementById('resetBtn').onclick = () => {
     pts.forEach(m => map.removeLayer(m));
@@ -391,6 +375,14 @@
       group.hidden = group.dataset.method !== method;
       group.querySelectorAll('input, select').forEach(input => { input.disabled = group.hidden; });
     });
+    if (method === 'mdot' && chevronRoadTypeSel.value === 'freeway_ramp') {
+      if (mdotLocationBeforeRamp === null) mdotLocationBeforeRamp = mdotDelineatorLocationSel.value;
+      mdotDelineatorLocationSel.value = 'ramp';
+      mdotDelineatorLocationSel.disabled = true;
+    } else if (method === 'mdot' && mdotLocationBeforeRamp !== null) {
+      mdotDelineatorLocationSel.value = mdotLocationBeforeRamp;
+      mdotLocationBeforeRamp = null;
+    }
     const nextSpeedInput = method === 'mmutcd' && speedBasisSel.value === '85th' ? 'percentile' : 'limit';
     if (nextSpeedInput !== activeSpeedInput) {
       approachSpeeds[activeSpeedInput] = postedSel.value;
@@ -432,10 +424,36 @@
     return sizes;
   }
 
+  function treatmentLabel(g){
+    if (g.need === 'Omitted by selection') return 'Omitted by selection';
+    return { none:'Engineering judgment needed', chevrons:'Chevrons and advance warning',
+      delineators:'Delineators and advance warning', warning:'Advance warning sign', markings:'Pavement markings' }[g.treatment];
+  }
+
+  function resultSummary(g, method, sizes, layout){
+    const dimensions = size => size ? `${size.width} × ${size.height} in` : 'See sizing details';
+    const spacing = value => Number.isFinite(value) ? `${value.toFixed(1)} ft` : 'No spacing available';
+    return `<section class="result-summary" aria-label="Results summary">
+      <div class="summary-method">${CurveGuidance.sources[method].label}${method === 'mdot' ? '<br>Delineators: R-127-I (2025)' : ''}</div>
+      <div class="summary-treatment"><span>Treatment from selected method</span><strong>${treatmentLabel(g)}</strong>
+        <span>Advance warning: ${g.warning}</span>
+        <span>${method === 'mdot' ? 'Chevrons / large arrow' : 'Curve delineation'}: ${g.alignment}</span></div>
+      ${sizes.message ? `<p class="warn">${sizes.message} Size recommendations are withheld.</p>` : ''}
+      ${g.note && (g.treatment === 'none' || g.need === 'Omitted by selection') ? `<p class="small-note">${g.note}</p>` : ''}
+      <dl class="summary-grid">
+        <div><dt>${method === 'mdot' ? 'MDOT' : 'MMUTCD'} chevron size</dt><dd>${sizes.message ? 'Select road type' : dimensions(sizes[method])}</dd></div>
+        ${sizes.rcoc ? `<div><dt>RCOC chevron size</dt><dd>${dimensions(sizes.rcoc)}</dd></div>` : ''}
+        ${layout ? `<div><dt>Chevron spacing on map</dt><dd>${spacing(layout.chevronStep)}</dd><small>Target: ${spacing(layout.chevronTarget)}</small></div>
+          <div><dt>Delineator spacing on curve</dt><dd>${spacing(layout.delineatorStep)}</dd><small>Target: ${spacing(layout.delineatorTarget)}</small></div>
+          <div class="summary-wide"><dt>Advance-warning placement</dt><dd>${layout.warning}</dd></div>`
+          : '<div class="summary-wide summary-pending">Place three map points in step 3 to calculate device spacing.</div>'}
+      </dl>
+    </section>`;
+  }
+
   function guidanceHTML(g, method){
     const source = CurveGuidance.sources[method];
-    const treatment = { none:'No automatic layout', chevrons:'Chevrons and advance warning',
-      delineators:'Delineators and advance warning', warning:'Advance warning sign', markings:'Pavement markings' }[g.treatment];
+    const treatment = treatmentLabel(g);
     return `<h2>${source.label}: device selection</h2>
       <div class="stat"><strong>Speed differential:</strong> ${g.delta.toFixed(0)} mph</div>
       ${method === 'mmutcd' ? `<div class="stat"><strong>Chart A device need:</strong> ${g.need} (AADT ${getAadtCategoryMeta(aadtSel.value).description})</div>` : ''}
@@ -465,6 +483,11 @@
         ['Advisory speed and device selection — pp. 24–26 / Table 5', 3, 'mdot-30.png'],
         ['Chevron spacing — Appendix B-9', 6, 'mdot-98.png'],
         ['Design-equation estimate — Appendices B-11 / B-12', 7, 'mdot-101.png']
+      ]],
+      ['MDOT R-127-I — delineator and drainage marker installations (10/24/2025)', 'mdot-r-127-i.pdf', [
+        ['Location spacing limits — sheet 4', 4, 'mdot-r-127-i-4.png'],
+        ['Curve spacing and transitions — sheet 5', 5, 'mdot-r-127-i-5.png'],
+        ['Installation details and notes — sheet 8', 8, 'mdot-r-127-i-8.png']
       ]]
     ];
     document.getElementById('referenceSections').innerHTML = groups.map(([title,file,sections]) =>
@@ -561,6 +584,7 @@
   }
 
   function update(){
+    const detailsOpen = document.getElementById('calculationDetails')?.open || false;
     clearOverlays();
     spacingEl.innerHTML = '';
     lastCalc = null;
@@ -579,7 +603,9 @@
       includeOptional: method === 'mmutcd' && includeOptional.checked, pavedTreatment: pavedTreatmentSel.value,
       urbanLowVolume: urbanLowVolume.checked, omitEligible: omitEligible.checked });
     const selectionHTML = guidanceHTML(guidance, method);
-    resultsEl.innerHTML = `<div class="callout">${selectionHTML}</div>`;
+    resultsEl.innerHTML = `${resultSummary(guidance,method,chevronSizes)}
+      <details id="calculationDetails" class="calculation-details" ${detailsOpen ? 'open' : ''}>
+        <summary>Calculation details and sources</summary><div class="callout">${selectionHTML}</div></details>`;
     if (pts.length < 3){
       statusEl.textContent = `Pick ${3 - pts.length} more point${3 - pts.length === 1 ? '' : 's'}.`;
       lastCurveBounds = null;
@@ -624,7 +650,8 @@
     const validSelection = !chevronSizes.message;
     const showWarning = validSelection && guidance.showWarning;
     const chevrons = CurveGuidance.placement(arcLen_f,chevronSpacing.feet,modeSel.value);
-    const delineators = CurveGuidance.delineatorLayout(arcLen_f,Rf,modeSel.value);
+    const delineators = CurveGuidance.delineatorLayout(arcLen_f,Rf,modeSel.value,
+      { method, context:mdotDelineatorLocationSel.value, roadType:chevronRoadTypeSel.value });
     // Always show both layouts; device-selection guidance remains a separate recommendation.
     const chevronPositions = chevrons.positions;
     const delineatorPositions = [...delineators.approaches,...delineators.positions,...delineators.departures];
@@ -698,9 +725,12 @@
     const warningDisplay = !showWarning ? 'Not drawn for the selected treatment.'
       : Number.isFinite(advance.feet) ? `${advance.feet} ft before PC / beyond PT${advance.custom ? ' — site distance entered by user' : ''}.`
       : 'Site placement distance needed; no warning ticks drawn.';
-    resultsEl.innerHTML=`<div class="callout"><h1>Outputs</h1>${selectionHTML}
+    resultsEl.innerHTML=`${resultSummary(guidance,method,chevronSizes,{
+      chevronStep:Nchev>1 ? chevrons.step : null, chevronTarget:chevronSpacing.feet,
+      delineatorStep:delineators.step, delineatorTarget:delineators.target, warning:warningDisplay })}
+      <details id="calculationDetails" class="calculation-details" ${detailsOpen ? 'open' : ''}>
+      <summary>Calculation details and sources</summary><div class="callout">${selectionHTML}
       ${!validSelection ? `<div class="warn">${chevronSizes.message} Size recommendations are withheld.</div>` : ''}
-      <div class="layout-note">Chevron and delineator layouts are always shown for comparison, even when device-selection guidance calls for a different treatment.</div>
       <hr /><h2>Chevron layout</h2>
       <div class="stat"><strong>Target:</strong> ${formatStep(chevronSpacing.feet)}</div>
       <div class="layout-note">${chevronSpacing.note}</div>
@@ -712,13 +742,16 @@
       <div class="layout-note">${advance.note}</div>
       ${advance.custom && advance.tableFeet !== null ? `<div class="small-note muted">Selected-source table value: ${advance.tableFeet} ft.</div>` : ''}
       ${sourceLink(source.advance)}
-      <h2>Delineator layout</h2>
-      <div class="stat"><strong>Target S:</strong> ${formatStep(delineators.target)} (3√(R − 50), limited to 20–300 ft)</div>
+      <h2>${method === 'mdot' ? 'MDOT R-127-I' : 'MMUTCD'} delineator layout</h2>
+      <div class="stat"><strong>Target S:</strong> ${formatStep(delineators.target)}</div>
       <div class="stat"><strong>Actual curve spacing:</strong> ${formatStep(delineators.step)}</div>
       <div class="stat"><strong>Positions shown:</strong> ${curveDelineators} on curve + ${transitionCount} on tangents per side; ${(curveDelineators+transitionCount)*sides} total.</div>
-      <div class="small-note muted">Tangent intervals away from PC: ${delineators.approachIntervals.map(x=>x.toFixed(1)).join(', ')} ft; away from PT: ${delineators.departureIntervals.map(x=>x.toFixed(1)).join(', ')} ft (2S, 3S, 6S, with 300-ft maximum gaps).</div>
+      ${transitionCount ? `<div class="small-note muted">Tangent intervals away from PC: ${delineators.approachIntervals.map(x=>x.toFixed(1)).join(', ')} ft; away from PT: ${delineators.departureIntervals.map(x=>x.toFixed(1)).join(', ')} ft (${delineators.normalSpacing ? 'normal spacing' : '2S, 3S, 6S'}, with ${delineators.maximumGap}-ft maximum gaps).</div>` : ''}
       <div class="layout-note">${delineators.note}${bothSides && !innerPossible ? ' Inner offset exceeds curve radius; only outside delineators can be shown.' : ''}</div>
-      ${sourceLink(CurveGuidance.sources.delineators)}
+      ${sourceLink(source.delineators)}
+      ${method === 'mdot' ? `${sourceLink(source.delineatorLimits)}
+        <div class="layout-note">Sheet 5: on two-lane, two-way roadways, place delineators on curves with radius 1,900 ft or less, or as directed by the Region/TSC Traffic and Safety Engineer. Both device layouts remain visible for comparison. The map uses your selected sides and offsets; confirm installation against sheet 8.</div>
+        ${sourceLink(source.delineatorInstallation)}` : ''}
       <h2>Advisory-speed study support</h2>
       <div class="stat"><strong>Study speed used for signing:</strong> ${advisoryMPH} mph</div>
       ${method === 'mdot' ? `<div class="stat"><strong>Superelevation:</strong> ${Number.isFinite(e) ? (e*100).toFixed(2)+'%' : 'Not entered'}</div>
@@ -733,7 +766,7 @@
       <div class="stat"><strong>Arc length:</strong> ${formatFeet(arcLen_f)}</div>
       <div class="stat"><strong>Degree of curve (100-ft arc):</strong> ${(5729.57795/Rf).toFixed(4)}°</div>
       <div class="small-note muted">Map symbols show both chevron and delineator layouts. Confirm field visibility, sign orientation, and site offsets. Purple: advance warning; orange: chevrons; dots: delineators. Tangent layouts are shown at both ends; evaluate each approach speed separately.</div>
-    </div>`;
+    </div></details>`;
     lastCalc={method,Rf,arcLen_f,guidance,chevronSizes,chevronSpacing,advance,Nchev,curveDelineators,transitionCount,estimate};
     statusEl.textContent=STATUS_READY;
   }

@@ -33,5 +33,22 @@
       101
     ],
     "sha256": "9417c281613fb3f626dfc5df08d7689941fcb17599f7f372b580a8cf43d4ed4f"
+  },
+  "mdotDelineators": {
+    "title": "MDOT R-127-I - Delineator and Drainage Marker Installations",
+    "planDate": "2025-10-24",
+    "sourceUrl": "https://mdotjboss.state.mi.us/stdplan/getStandardPlanDocument.htm?docGuid=25d9c0aa-7b1e-4e16-8306-983895195583&fileName=R-127-I.pdf",
+    "retrieved": "2026-11-04",
+    "originalPdfPages": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "sha256": "7c8b85aea6e42827176187eeb17ab9291ce05ba64f3288b9dc72f831a62fcced"
   }
 }
