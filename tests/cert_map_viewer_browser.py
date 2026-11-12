@@ -88,9 +88,75 @@ def check(origin):
             viewer.locator('#zoom').select_option('100')
             ready(viewer)
             assert viewer.locator('canvas').evaluate('el => el.getBoundingClientRect().width') > 1400
+            if not prefix:
+                stage = viewer.locator('#map-stage')
+                stage.evaluate('el => { el.scrollLeft = 120; el.scrollTop = 250; }')
+                bounds = stage.bounding_box()
+                x, y = bounds['x'] + 700, bounds['y'] + 300
+
+                def point():
+                    return viewer.locator('.pdf-page').evaluate('''(el, point) => {
+                        const rect = el.getBoundingClientRect();
+                        return { x: (point.x - rect.left) / rect.width,
+                            y: (point.y - rect.top) / rect.height, width: rect.width };
+                    }''', {'x': x, 'y': y})
+
+                before = point()
+                viewer.mouse.move(x, y)
+                viewer.mouse.wheel(0, -120)
+                expect(viewer.locator('#zoom')).to_have_value('custom')
+                ready(viewer)
+                after = point()
+                assert after['width'] > before['width']
+                assert abs(after['x'] - before['x']) * after['width'] < 2
+                assert abs(after['y'] - before['y']) * after['width'] * 4 / 3 < 2
+                assert viewer.evaluate('window.scrollY') == 0
+
+                # Rapid wheel input updates the preview, then finishes with a
+                # sharp drawing at the final scale without jumping to the top.
+                for _ in range(4):
+                    viewer.mouse.wheel(0, -40)
+                viewer.wait_for_function('document.querySelector(".pdf-page").getBoundingClientRect().width > ' + str(after['width'] + 10))
+                ready(viewer)
+                larger = point()
+                assert abs(larger['x'] - before['x']) * larger['width'] < 4
+                assert abs(larger['y'] - before['y']) * larger['width'] * 4 / 3 < 4
+                viewer.mouse.wheel(0, 120)
+                viewer.wait_for_function('document.querySelector(".pdf-page").getBoundingClientRect().width < ' + str(larger['width'] - 10))
+                ready(viewer)
+
+                start = stage.evaluate('el => ({x: el.scrollLeft, y: el.scrollTop})')
+                viewer.mouse.move(x, y)
+                viewer.mouse.down()
+                viewer.mouse.move(x - 70, y - 60, steps=5)
+                expect(stage).to_have_class('is-panning')
+                viewer.mouse.up()
+                expect(stage).not_to_have_class('is-panning')
+                end = stage.evaluate('el => ({x: el.scrollLeft, y: el.scrollTop})')
+                assert abs(end['x'] - start['x'] - 70) < 2
+                assert abs(end['y'] - start['y'] - 60) < 2
+                viewer.screenshot(path=str(OUTPUT / 'wheel-zoom-pan.png'))
+
             viewer.locator('#zoom').select_option('page')
             ready(viewer)
             if not prefix:
+                # A drag starting on a link must pan without activating it;
+                # a plain click on the same link must still navigate.
+                link = viewer.locator('.map-links a[title*="(east)"]')
+                box = link.bounding_box()
+                lx, ly = box['x'] + box['width'] / 2, box['y'] + box['height'] / 2
+                previous_url = viewer.url
+                viewer.mouse.move(lx, ly)
+                viewer.mouse.down()
+                viewer.mouse.move(lx - 60, ly - 20, steps=5)
+                viewer.mouse.up()
+                viewer.wait_for_timeout(150)
+                assert viewer.url == previous_url
+                link.click()
+                ready(viewer)
+                expect(viewer.locator('#map-title')).to_have_text('Independence Township')
+                viewer.go_back()
+                ready(viewer)
                 viewer.screenshot(path=str(OUTPUT / 'springfield-desktop.png'))
 
             viewer.goto(base + '/certMap/viewer.html?file=Holly-24-CW.pdf')
@@ -148,7 +214,7 @@ def check(origin):
         ready(page)
         assert errors == [], errors
         context.close()
-    print('Passed: browser rendering, margin links, book navigation, zoom, mobile, download and recovery.')
+    print('Passed: browser rendering, margin links, book navigation, wheel zoom, drag pan, mobile, download and recovery.')
     print('PDF downloads were forced in Chrome preferences and HTTP headers; navigation caused zero downloads.')
     print('Screenshots:', OUTPUT)
 

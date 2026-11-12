@@ -1,10 +1,79 @@
-import { maps, isMapFile, viewerHref, neighboringFile, pageFromHash } from './viewer-core.mjs';
+import { maps, isMapFile, viewerHref, neighboringFile, pageFromHash, wheelZoomScale } from './viewer-core.mjs';
 
 const $ = id => document.getElementById(id);
 const stage = $('map-stage');
 const file = new URLSearchParams(location.search).get('file') || '2024 Countywide Cert.pdf';
 const vendor = new URL('../calculators/mdot-ttc/vendor/pdfjs/', import.meta.url);
 let pdf, pdfUrl, pageNumber = 1, renderTask, drawVersion = 0, resizeTimer;
+let renderedScale = 0, displayScale = 0, displayedPage = 0, customScale = 1, wheelTimer, pan;
+let suppressClick = false;
+
+function viewPoint(clientX, clientY) {
+    const page = stage.querySelector('.pdf-page');
+    if (!page) return null;
+    const box = page.getBoundingClientRect();
+    return { x: (clientX - box.left) / box.width, y: (clientY - box.top) / box.height, clientX, clientY };
+}
+
+function restorePoint(point) {
+    if (!point) return;
+    const box = stage.querySelector('.pdf-page').getBoundingClientRect();
+    stage.scrollLeft += box.left + point.x * box.width - point.clientX;
+    stage.scrollTop += box.top + point.y * box.height - point.clientY;
+}
+
+function zoomWithWheel(event) {
+    if (!pdf || !displayScale || displayedPage !== pageNumber || !event.deltaY
+        || event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+    event.preventDefault();
+    if (pan?.dragging) return;
+    const scale = wheelZoomScale(displayScale, event.deltaY, event.deltaMode, stage.clientHeight);
+    if (scale === displayScale) return;
+    const point = viewPoint(event.clientX, event.clientY);
+    if (!point) return;
+    const container = stage.querySelector('.pdf-page');
+    const canvas = container.querySelector('canvas');
+    const links = container.querySelector('.map-links');
+    const naturalWidth = parseFloat(container.style.width) / displayScale;
+    const naturalHeight = parseFloat(container.style.height) / displayScale;
+    // Resize the existing drawing immediately, then render it sharply once
+    // wheel events settle. Link hit areas follow the same scale throughout.
+    container.style.width = canvas.style.width = `${naturalWidth * scale}px`;
+    container.style.height = canvas.style.height = `${naturalHeight * scale}px`;
+    Object.assign(links.style, {
+        width: `${naturalWidth * renderedScale}px`, height: `${naturalHeight * renderedScale}px`,
+        right: 'auto', bottom: 'auto', transformOrigin: 'top left',
+        transform: `scale(${scale / renderedScale})`,
+    });
+    displayScale = customScale = scale;
+    let option = $('zoom').querySelector('[value="custom"]');
+    if (!option) {
+        option = document.createElement('option');
+        option.value = 'custom';
+        $('zoom').appendChild(option);
+    }
+    option.textContent = `${Math.round(scale * 75)}%`;
+    $('zoom').value = 'custom';
+    restorePoint(point);
+    ++drawVersion;
+    renderTask?.cancel();
+    controls(true);
+    stage.setAttribute('aria-busy', 'true');
+    clearTimeout(wheelTimer);
+    wheelTimer = setTimeout(() => draw({ preserveView: true }), 100);
+}
+
+function endPan(event) {
+    if (!pan || (event && event.pointerId !== pan.pointerId)) return;
+    const previous = pan;
+    pan = null;
+    stage.classList.remove('is-panning');
+    if (stage.hasPointerCapture(previous.pointerId)) stage.releasePointerCapture(previous.pointerId);
+    if (previous.dragging) {
+        suppressClick = true;
+        setTimeout(() => { suppressClick = false; }, 0);
+    }
+}
 
 function controls(busy = false) {
     $('previous').disabled = busy || !pdf || pageNumber <= 1;
@@ -17,6 +86,9 @@ function controls(busy = false) {
 }
 
 function failed(message, retry = true) {
+    clearTimeout(wheelTimer);
+    displayScale = renderedScale = displayedPage = 0;
+    endPan();
     stage.replaceChildren();
     stage.setAttribute('aria-busy', 'false');
     $('status').textContent = message;
@@ -65,8 +137,9 @@ async function linkLayer(page, viewport) {
     return layer;
 }
 
-async function draw() {
+async function draw({ preserveView = false } = {}) {
     if (!pdf) return;
+    clearTimeout(wheelTimer);
     const version = ++drawVersion;
     renderTask?.cancel();
     controls(true);
@@ -82,7 +155,8 @@ async function draw() {
         const widthScale = (stage.clientWidth - padding - 16) / natural.width;
         const pageScale = Math.min(widthScale, (stage.clientHeight - padding) / natural.height);
         const zoom = $('zoom').value;
-        const scale = zoom === 'page' ? pageScale : zoom === 'width' ? widthScale : Number(zoom) / 75;
+        const scale = zoom === 'page' ? pageScale : zoom === 'width' ? widthScale
+            : zoom === 'custom' ? customScale : Number(zoom) / 75;
         const viewport = page.getViewport({ scale: Math.max(0.05, scale) });
         const density = Math.min(devicePixelRatio || 1, 2, Math.sqrt(12000000 / (viewport.width * viewport.height)));
         const canvas = document.createElement('canvas');
@@ -102,9 +176,19 @@ async function draw() {
         const [, links] = await Promise.all([renderTask.promise, linkLayer(page, viewport)]);
         if (version !== drawVersion) return;
         container.appendChild(links);
+        // Capture the current position at commit time so dragging during a
+        // render is preserved too, rather than restoring an old scroll offset.
+        const bounds = stage.getBoundingClientRect();
+        const point = preserveView ? viewPoint(bounds.left + stage.clientWidth / 2,
+            bounds.top + stage.clientHeight / 2) : null;
         stage.replaceChildren(container);
-        stage.scrollTop = 0;
-        stage.scrollLeft = 0;
+        renderedScale = displayScale = viewport.scale;
+        displayedPage = pageNumber;
+        if (point) restorePoint(point);
+        else {
+            stage.scrollTop = 0;
+            stage.scrollLeft = 0;
+        }
         stage.setAttribute('aria-busy', 'false');
         $('status').textContent = '';
         controls();
@@ -159,8 +243,38 @@ $('page-controls').addEventListener('submit', event => {
     goToPage(Number($('page-number').value));
 });
 $('page-number').addEventListener('change', () => goToPage(Number($('page-number').value)));
-$('zoom').addEventListener('change', draw);
+$('zoom').addEventListener('change', () => draw({ preserveView: true }));
 $('retry').addEventListener('click', () => location.reload());
+stage.addEventListener('wheel', zoomWithWheel, { passive: false });
+stage.addEventListener('pointerdown', event => {
+    if (event.button !== 0 || event.pointerType === 'touch' || !displayScale) return;
+    suppressClick = false;
+    pan = { pointerId: event.pointerId, x: event.clientX, y: event.clientY,
+        left: stage.scrollLeft, top: stage.scrollTop, dragging: false };
+});
+stage.addEventListener('pointermove', event => {
+    if (!pan || event.pointerId !== pan.pointerId) return;
+    const dx = event.clientX - pan.x, dy = event.clientY - pan.y;
+    if (!pan.dragging && Math.hypot(dx, dy) < 5) return;
+    if (!pan.dragging) {
+        pan.dragging = true;
+        stage.setPointerCapture(event.pointerId);
+        stage.classList.add('is-panning');
+    }
+    event.preventDefault();
+    stage.scrollLeft = pan.left - dx;
+    stage.scrollTop = pan.top - dy;
+});
+stage.addEventListener('pointerup', endPan);
+stage.addEventListener('pointercancel', endPan);
+stage.addEventListener('lostpointercapture', endPan);
+stage.addEventListener('pointerleave', event => { if (pan && !pan.dragging) endPan(event); });
+stage.addEventListener('dragstart', event => event.preventDefault());
+stage.addEventListener('click', event => {
+    if (!suppressClick || event.detail === 0) return;
+    event.preventDefault();
+    event.stopPropagation();
+}, true);
 window.addEventListener('hashchange', () => {
     if (!pdf) return;
     pageNumber = pageFromHash(location.hash, pdf.numPages);
@@ -168,6 +282,6 @@ window.addEventListener('hashchange', () => {
 });
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(draw, 150);
+    resizeTimer = setTimeout(() => draw({ preserveView: true }), 150);
 });
 load();

@@ -47,3 +47,15 @@ test('page fragments are bounded to actual pages', async () => {
     assert.equal(pageFromHash(hash, 27), 1);
   }
 });
+
+test('wheel zoom normalizes device units, reverses direction, and stays bounded', async () => {
+  const { wheelZoomScale } = await core;
+  const zoomed = wheelZoomScale(1, -120);
+  assert.ok(zoomed > 1);
+  assert.ok(wheelZoomScale(1, 120) < 1);
+  assert.ok(Math.abs(wheelZoomScale(zoomed, 120) - 1) < 1e-10);
+  assert.equal(wheelZoomScale(1, -3, 1), wheelZoomScale(1, -48));
+  assert.equal(wheelZoomScale(1, 0.1, 2, 800), wheelZoomScale(1, 80));
+  assert.equal(wheelZoomScale(400 / 75, -1000), 400 / 75);
+  assert.equal(wheelZoomScale(10 / 75, 1000), 10 / 75);
+});

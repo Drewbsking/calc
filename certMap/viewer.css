@@ -21,11 +21,12 @@ h1 { margin: 0; font-size: 20px; }
 .status-row { display: flex; align-items: center; justify-content: center; gap: 12px; min-height: 28px; padding: 3px 12px; }
 #status { margin: 0; font-size: 14px; }
 #status[data-error="true"] { color: #9a281e; }
-#map-stage { flex: 1; min-height: 0; overflow: auto; padding: 16px; }
+#map-stage { flex: 1; min-height: 0; overflow: auto; padding: 16px; cursor: grab; overflow-anchor: none; }
+#map-stage.is-panning, #map-stage.is-panning a { cursor: grabbing; user-select: none; }
 .pdf-page { position: relative; margin: 0 auto; background: #fff; box-shadow: 0 3px 14px #0b2a4a26; }
 .pdf-page canvas { display: block; }
 .map-links { position: absolute; inset: 0; pointer-events: none; }
-.map-links a { position: absolute; display: block; pointer-events: auto; border-radius: 4px; }
+.map-links a { position: absolute; display: block; pointer-events: auto; border-radius: 4px; cursor: pointer; }
 .map-links a:hover { background: #2563eb1a; outline: 2px solid #2563eb; }
 .map-links a:focus-visible { background: #2563eb26; }
 .no-script { padding: 20px; }

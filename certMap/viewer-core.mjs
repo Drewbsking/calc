@@ -43,6 +43,12 @@ export function pageFromHash(hash, count) {
     return Number.isInteger(page) && page >= 1 ? Math.min(page, count) : 1;
 }
 
+export function wheelZoomScale(scale, deltaY, deltaMode = 0, pageHeight = 800) {
+    const pixels = deltaY * (deltaMode === 1 ? 16 : deltaMode === 2 ? pageHeight : 1);
+    const step = Math.max(-160, Math.min(160, pixels));
+    return Math.max(10 / 75, Math.min(400 / 75, scale * Math.exp(-step * 0.0015)));
+}
+
 // Support both the new browser-viewer links and older direct PDF links. Keep
 // navigation on the current site during local previews or subfolder hosting.
 export function neighboringFile(value, pdfUrl) {

@@ -32,15 +32,16 @@
                 <option value="100">100%</option>
                 <option value="150">150%</option>
                 <option value="200">200%</option>
+                <option value="400">400%</option>
             </select>
         </label>
-        <p class="viewer-hint">Blue margin links open adjacent maps.</p>
+        <p class="viewer-hint" id="map-help">Scroll to zoom. Drag to pan. Blue margin links open adjacent maps.</p>
     </div>
     <div class="status-row">
         <p id="status" role="status">Loading map...</p>
         <button id="retry" type="button" hidden>Try again</button>
     </div>
-    <main id="map-stage" tabindex="0" aria-label="Certification map" aria-busy="true"></main>
+    <main id="map-stage" tabindex="0" aria-label="Certification map" aria-describedby="map-help" aria-busy="true"></main>
     <noscript><p class="no-script">Enable JavaScript to view the map here, or <a href="../certMap.html">return to the map finder</a>.</p></noscript>
     <script type="module" src="viewer.js"></script>
 </body>
