@@ -2,7 +2,7 @@
 
 Run from any directory: py -3.13 scripts/link_cert_maps.py
 Dependencies: pypdf, reportlab. Existing navigation is replaced on reruns.
-Standalone links use the live server even when a PDF is downloaded. Use
+Standalone links open the live browser viewer even when a PDF is downloaded. Use
 --base-url to change the published directory containing the township PDFs.
 """
 
@@ -53,6 +53,10 @@ ANNOTATION_PREFIX = "cert-map-neighbor-"
 
 def filename(sheet):
     return f"{sheet}-24-CW.pdf"
+
+
+def viewer_url(sheet, base_url=MAP_BASE_URL):
+    return validate_base_url(base_url) + "viewer.html?file=" + quote(filename(sheet))
 
 
 def validate_base_url(value):
@@ -152,7 +156,7 @@ def add_navigation(writer, page_index, sheet, book_pages=None, *, base_url=MAP_B
     ])
     for direction, neighbor, rect, label in links:
         target = ({"target_page_index": book_pages[neighbor]} if book_pages is not None
-                  else {"url": base_url + quote(filename(neighbor))})
+                  else {"url": viewer_url(neighbor, base_url)})
         annotation = Link(rect=rect, **target)
         annotation[NameObject("/NM")] = TextStringObject(ANNOTATION_PREFIX + direction)
         annotation[NameObject("/Contents")] = TextStringObject(f"Open {label} certification map ({direction})")

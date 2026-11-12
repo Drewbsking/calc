@@ -65,7 +65,7 @@ class CertificationNavigationTests(unittest.TestCase):
                 for direction, neighbor in expected.items():
                     self.assertEqual(links[direction]["/A"]["/S"], "/URI")
                     self.assertEqual(links[direction]["/A"]["/URI"],
-                                     "https://calc.rcocwiki.org/certMap/" + navigation.filename(neighbor))
+                                     "https://calc.rcocwiki.org/certMap/viewer.html?file=" + navigation.filename(neighbor))
                     self.assertTrue((self.folder / navigation.filename(neighbor)).is_file())
                     self.assertEqual(navigation.neighbors(neighbor)[opposite[direction]], sheet)
                 self.assertEqual(self.navigation_text(page).count("N/A (county boundary)"), 4 - len(links))
@@ -123,10 +123,10 @@ class CertificationNavigationTests(unittest.TestCase):
         for direction, link in self.links(page).items():
             neighbor = navigation.neighbors("Springfield")[direction]
             self.assertEqual(link["/A"]["/URI"],
-                             f"https://example.org/maps/certMap/{navigation.filename(neighbor)}")
+                             f"https://example.org/maps/certMap/viewer.html?file={navigation.filename(neighbor)}")
             self.assertEqual(urlsplit(link["/A"]["/URI"]).scheme, "https")
         self.assertEqual(self.links(page)["east"]["/A"]["/URI"],
-                         "https://example.org/maps/certMap/Independence-24-CW.pdf")
+                         "https://example.org/maps/certMap/viewer.html?file=Independence-24-CW.pdf")
 
     def test_server_url_is_required_and_must_be_absolute(self):
         for value in ("certMap/", "file:///C:/Downloads/", "https:///certMap/",

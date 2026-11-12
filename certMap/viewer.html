@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>RCOC Certification Map Viewer</title>
+    <link rel="stylesheet" href="viewer.css">
+</head>
+<body>
+    <header class="viewer-header">
+        <a class="back-link" href="../certMap.html">&larr; Map finder</a>
+        <div class="map-heading">
+            <h1 id="map-title">Certification map</h1>
+            <p>2024 county-road certification</p>
+        </div>
+        <a id="download" class="button" hidden>Download PDF</a>
+    </header>
+    <div class="viewer-toolbar" aria-label="Map controls">
+        <form id="page-controls" class="page-controls" aria-label="Page navigation">
+            <button id="previous" type="button" aria-label="Previous page" disabled>&larr;</button>
+            <label for="page-number">Page</label>
+            <input id="page-number" type="number" min="1" value="1" inputmode="numeric" disabled>
+            <span id="page-count">of 1</span>
+            <button id="next" type="button" aria-label="Next page" disabled>&rarr;</button>
+        </form>
+        <label class="zoom-control" for="zoom">Zoom
+            <select id="zoom" disabled>
+                <option value="page">Fit page</option>
+                <option value="width">Fit width</option>
+                <option value="50">50%</option>
+                <option value="75">75%</option>
+                <option value="100">100%</option>
+                <option value="150">150%</option>
+                <option value="200">200%</option>
+            </select>
+        </label>
+        <p class="viewer-hint">Blue margin links open adjacent maps.</p>
+    </div>
+    <div class="status-row">
+        <p id="status" role="status">Loading map...</p>
+        <button id="retry" type="button" hidden>Try again</button>
+    </div>
+    <main id="map-stage" tabindex="0" aria-label="Certification map" aria-busy="true"></main>
+    <noscript><p class="no-script">Enable JavaScript to view the map here, or <a href="../certMap.html">return to the map finder</a>.</p></noscript>
+    <script type="module" src="viewer.js"></script>
+</body>
+</html>

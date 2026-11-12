@@ -206,8 +206,8 @@
             <h1>RCOC Certification Map Finder</h1>
             <p>Open a county-road certification sheet from the map, or find a city or village's MDOT certification PDF below.</p>
             <div class="cert-map-actions">
-                <a class="cert-link" href="certMap/2024%20Countywide%20Cert.pdf" target="_blank" rel="noopener">Open Full Book (2024)</a>
-                <a class="cert-link secondary" href="certMap/2024_districtmap.pdf" target="_blank" rel="noopener">View District Map</a>
+                <a class="cert-link" href="certMap/viewer.html?file=2024%20Countywide%20Cert.pdf" target="_blank" rel="noopener">Open Full Book (2024)</a>
+                <a class="cert-link secondary" href="certMap/viewer.html?file=2024_districtmap.pdf" target="_blank" rel="noopener">View District Map</a>
                 <a class="cert-link secondary" href="https://mdotjboss.state.mi.us/SpecProv/act51.htm" target="_blank" rel="noopener">MDOT Act 51 Maps</a>
                 <a class="cert-link secondary" href="#municipal-certifications">Cities &amp; Villages</a>
             </div>
@@ -249,7 +249,8 @@
 
     <script src="shared/layout.js"></script>
     <script src="certMap/municipalities.js"></script>
-    <script>
+    <script type="module">
+        import { viewerHref } from './certMap/viewer-core.mjs';
         const locations = [
             { name: 'Addison Township', file: 'Addison-24-CW.pdf', left: 83, top: 16 },
             { name: 'Oxford Township', file: 'Oxford-24-CW.pdf', left: 65, top: 18 },
@@ -300,7 +301,7 @@
         function buildList() {
             [...locations].sort((a, b) => a.name.localeCompare(b.name)).forEach((loc) => {
                 const link = document.createElement('a');
-                link.href = `certMap/${encodeURIComponent(loc.file)}`;
+                link.href = `certMap/${viewerHref(loc.file)}`;
                 link.target = '_blank';
                 link.rel = 'noopener';
                 link.textContent = loc.name;
@@ -311,7 +312,7 @@
         function openPdf(file) {
             const cleanFile = file.trim();
             if (!cleanFile) return;
-            window.open(`certMap/${encodeURIComponent(cleanFile)}`, '_blank', 'noopener');
+            window.open(`certMap/${viewerHref(cleanFile)}`, '_blank', 'noopener');
         }
 
         function normalizeFileValue(raw) {
