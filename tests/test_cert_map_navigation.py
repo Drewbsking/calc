@@ -4,6 +4,7 @@ from io import BytesIO
 from pathlib import Path
 import sys
 import unittest
+from urllib.parse import urlsplit
 
 from pypdf import PageObject, PdfReader, PdfWriter
 from pypdf.generic import NameObject
@@ -63,7 +64,8 @@ class CertificationNavigationTests(unittest.TestCase):
                 self.assertEqual(set(links), set(expected))
                 for direction, neighbor in expected.items():
                     self.assertEqual(links[direction]["/A"]["/S"], "/URI")
-                    self.assertEqual(links[direction]["/A"]["/URI"], navigation.filename(neighbor))
+                    self.assertEqual(links[direction]["/A"]["/URI"],
+                                     "https://calc.rcocwiki.org/certMap/" + navigation.filename(neighbor))
                     self.assertTrue((self.folder / navigation.filename(neighbor)).is_file())
                     self.assertEqual(navigation.neighbors(neighbor)[opposite[direction]], sheet)
                 self.assertEqual(self.navigation_text(page).count("N/A (county boundary)"), 4 - len(links))
@@ -102,8 +104,8 @@ class CertificationNavigationTests(unittest.TestCase):
             with self.subTest(sheet=sheet):
                 original = self.sheets[sheet].pages[0]
                 writer = PdfWriter(clone_from=self.sheets[sheet])
-                navigation.add_navigation(writer, 0, sheet)
-                navigation.add_navigation(writer, 0, sheet)
+                navigation.add_navigation(writer, 0, sheet, base_url="https://example.org/certMap/")
+                navigation.add_navigation(writer, 0, sheet, base_url="https://example.org/certMap/")
                 output = BytesIO()
                 writer.write(output)
                 rebuilt = PdfReader(BytesIO(output.getvalue())).pages[0]
@@ -111,6 +113,28 @@ class CertificationNavigationTests(unittest.TestCase):
                 self.assertEqual(self.navigation_text(rebuilt), self.navigation_text(original))
                 self.assertEqual(len(rebuilt["/Annots"]), len(original["/Annots"]))
                 self.assertEqual(set(self.links(rebuilt)), set(self.links(original)))
+
+    def test_downloaded_sheet_links_use_absolute_server_urls(self):
+        writer = PdfWriter(clone_from=self.sheets["Springfield"])
+        navigation.add_navigation(writer, 0, "Springfield", base_url="https://example.org/maps/certMap")
+        output = BytesIO()
+        writer.write(output)
+        page = PdfReader(BytesIO(output.getvalue())).pages[0]
+        for direction, link in self.links(page).items():
+            neighbor = navigation.neighbors("Springfield")[direction]
+            self.assertEqual(link["/A"]["/URI"],
+                             f"https://example.org/maps/certMap/{navigation.filename(neighbor)}")
+            self.assertEqual(urlsplit(link["/A"]["/URI"]).scheme, "https")
+        self.assertEqual(self.links(page)["east"]["/A"]["/URI"],
+                         "https://example.org/maps/certMap/Independence-24-CW.pdf")
+
+    def test_server_url_is_required_and_must_be_absolute(self):
+        for value in ("certMap/", "file:///C:/Downloads/", "https:///certMap/",
+                      "https://example.org/certMap/?query=1", "https://example.org/certMap/#section"):
+            with self.subTest(url=value), self.assertRaises(ValueError):
+                navigation.validate_base_url(value)
+        with self.assertRaises(ValueError):
+            navigation.add_navigation(PdfWriter(clone_from=self.sheets["Holly"]), 0, "Holly", base_url=None)
 
 
 if __name__ == "__main__":
