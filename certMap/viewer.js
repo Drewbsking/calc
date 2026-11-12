@@ -7,6 +7,8 @@ const vendor = new URL('../calculators/mdot-ttc/vendor/pdfjs/', import.meta.url)
 let pdf, pdfUrl, pageNumber = 1, renderTask, drawVersion = 0, resizeTimer;
 let renderedScale = 0, displayScale = 0, displayedPage = 0, customScale = 1, wheelTimer, pan;
 let suppressClick = false;
+const touches = new Map();
+let pinch;
 
 function viewPoint(clientX, clientY) {
     const page = stage.querySelector('.pdf-page');
@@ -22,22 +24,19 @@ function restorePoint(point) {
     stage.scrollTop += box.top + point.y * box.height - point.clientY;
 }
 
-function zoomWithWheel(event) {
-    if (!pdf || !displayScale || displayedPage !== pageNumber || !event.deltaY
-        || event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
-    event.preventDefault();
-    if (pan?.dragging) return;
-    const scale = wheelZoomScale(displayScale, event.deltaY, event.deltaMode, stage.clientHeight);
-    if (scale === displayScale) return;
-    const point = viewPoint(event.clientX, event.clientY);
+function zoomAt(scale, point) {
     if (!point) return;
+    if (scale === displayScale) {
+        restorePoint(point);
+        return;
+    }
     const container = stage.querySelector('.pdf-page');
     const canvas = container.querySelector('canvas');
     const links = container.querySelector('.map-links');
     const naturalWidth = parseFloat(container.style.width) / displayScale;
     const naturalHeight = parseFloat(container.style.height) / displayScale;
     // Resize the existing drawing immediately, then render it sharply once
-    // wheel events settle. Link hit areas follow the same scale throughout.
+    // zoom gestures settle. Link hit areas follow the same scale throughout.
     container.style.width = canvas.style.width = `${naturalWidth * scale}px`;
     container.style.height = canvas.style.height = `${naturalHeight * scale}px`;
     Object.assign(links.style, {
@@ -63,6 +62,34 @@ function zoomWithWheel(event) {
     wheelTimer = setTimeout(() => draw({ preserveView: true }), 100);
 }
 
+function zoomWithWheel(event) {
+    if (!pdf || !displayScale || displayedPage !== pageNumber || !event.deltaY
+        || event.shiftKey || Math.abs(event.deltaX) > Math.abs(event.deltaY)) return;
+    event.preventDefault();
+    if (pan?.dragging || touches.size) return;
+    zoomAt(wheelZoomScale(displayScale, event.deltaY, event.deltaMode, stage.clientHeight),
+        viewPoint(event.clientX, event.clientY));
+}
+
+function pinchPosition() {
+    const [first, second] = touches.values();
+    return { x: (first.x + second.x) / 2, y: (first.y + second.y) / 2,
+        distance: Math.max(1, Math.hypot(second.x - first.x, second.y - first.y)) };
+}
+
+function startPinch() {
+    const position = pinchPosition();
+    pinch = { distance: position.distance, scale: displayScale,
+        point: viewPoint(position.x, position.y) };
+    pan = null;
+    stage.classList.add('is-panning');
+    for (const id of touches.keys()) stage.setPointerCapture(id);
+}
+
+function startPan(pointerId, x, y, dragging = false) {
+    pan = { pointerId, x, y, left: stage.scrollLeft, top: stage.scrollTop, dragging };
+}
+
 function endPan(event) {
     if (!pan || (event && event.pointerId !== pan.pointerId)) return;
     const previous = pan;
@@ -75,11 +102,42 @@ function endPan(event) {
     }
 }
 
+function endPointer(event) {
+    touches.delete(event.pointerId);
+    if (!pinch) {
+        endPan(event);
+        return;
+    }
+    pinch = null;
+    if (stage.hasPointerCapture(event.pointerId)) stage.releasePointerCapture(event.pointerId);
+    if (touches.size >= 2) startPinch();
+    else if (touches.size === 1) {
+        const [id, point] = touches.entries().next().value;
+        // Continuing with one finger pans from its current position, without a
+        // jump or an accidental link tap when the pinch finishes.
+        startPan(id, point.x, point.y, true);
+    } else stage.classList.remove('is-panning');
+}
+
+function resetView() {
+    endPan();
+    for (const id of touches.keys()) {
+        if (stage.hasPointerCapture(id)) stage.releasePointerCapture(id);
+    }
+    touches.clear();
+    pinch = null;
+    stage.classList.remove('is-panning');
+    $('zoom').value = 'page';
+    draw();
+}
+
 function controls(busy = false) {
     $('previous').disabled = busy || !pdf || pageNumber <= 1;
     $('next').disabled = busy || !pdf || pageNumber >= pdf.numPages;
     $('page-number').disabled = busy || !pdf;
     $('zoom').disabled = busy || !pdf;
+    // Keep recovery available while a zoom render is in progress.
+    $('reset-view').disabled = !pdf;
     $('page-number').value = pageNumber;
     $('page-number').max = pdf?.numPages || 1;
     $('page-count').textContent = `of ${pdf?.numPages || 1}`;
@@ -89,6 +147,8 @@ function failed(message, retry = true) {
     clearTimeout(wheelTimer);
     displayScale = renderedScale = displayedPage = 0;
     endPan();
+    touches.clear();
+    pinch = null;
     stage.replaceChildren();
     stage.setAttribute('aria-busy', 'false');
     $('status').textContent = message;
@@ -243,16 +303,36 @@ $('page-controls').addEventListener('submit', event => {
     goToPage(Number($('page-number').value));
 });
 $('page-number').addEventListener('change', () => goToPage(Number($('page-number').value)));
-$('zoom').addEventListener('change', () => draw({ preserveView: true }));
+$('zoom').addEventListener('change', () => draw({ preserveView: !['page', 'width'].includes($('zoom').value) }));
+$('reset-view').addEventListener('click', resetView);
 $('retry').addEventListener('click', () => location.reload());
 stage.addEventListener('wheel', zoomWithWheel, { passive: false });
 stage.addEventListener('pointerdown', event => {
-    if (event.button !== 0 || event.pointerType === 'touch' || !displayScale) return;
-    suppressClick = false;
-    pan = { pointerId: event.pointerId, x: event.clientX, y: event.clientY,
-        left: stage.scrollLeft, top: stage.scrollTop, dragging: false };
+    if (event.button !== 0 || !displayScale || displayedPage !== pageNumber) return;
+    const bounds = stage.getBoundingClientRect();
+    if (event.clientX >= bounds.left + stage.clientWidth || event.clientY >= bounds.top + stage.clientHeight) return;
+    if (!touches.size) suppressClick = false;
+    if (event.pointerType === 'touch') {
+        touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        if (touches.size >= 2) {
+            startPinch();
+            return;
+        }
+    }
+    startPan(event.pointerId, event.clientX, event.clientY);
 });
 stage.addEventListener('pointermove', event => {
+    if (touches.has(event.pointerId)) {
+        touches.set(event.pointerId, { x: event.clientX, y: event.clientY });
+        if (pinch && touches.size >= 2) {
+            event.preventDefault();
+            const position = pinchPosition();
+            const scale = Math.max(10 / 75, Math.min(400 / 75,
+                pinch.scale * position.distance / pinch.distance));
+            zoomAt(scale, { ...pinch.point, clientX: position.x, clientY: position.y });
+            return;
+        }
+    }
     if (!pan || event.pointerId !== pan.pointerId) return;
     const dx = event.clientX - pan.x, dy = event.clientY - pan.y;
     if (!pan.dragging && Math.hypot(dx, dy) < 5) return;
@@ -265,10 +345,18 @@ stage.addEventListener('pointermove', event => {
     stage.scrollLeft = pan.left - dx;
     stage.scrollTop = pan.top - dy;
 });
-stage.addEventListener('pointerup', endPan);
-stage.addEventListener('pointercancel', endPan);
-stage.addEventListener('lostpointercapture', endPan);
-stage.addEventListener('pointerleave', event => { if (pan && !pan.dragging) endPan(event); });
+stage.addEventListener('pointerup', endPointer);
+stage.addEventListener('pointercancel', endPointer);
+stage.addEventListener('lostpointercapture', event => {
+    // Touch starts with implicit capture on the canvas/link. Its capture-loss
+    // event bubbles when we transfer capture to the stage; that is not a cancel.
+    if (event.target !== stage || stage.hasPointerCapture(event.pointerId)) return;
+    if (touches.has(event.pointerId)) endPointer(event);
+    else endPan(event);
+});
+stage.addEventListener('pointerleave', event => {
+    if (event.pointerType !== 'touch' && pan && !pan.dragging) endPan(event);
+});
 stage.addEventListener('dragstart', event => event.preventDefault());
 stage.addEventListener('click', event => {
     if (!suppressClick || event.detail === 0) return;
