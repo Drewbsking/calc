@@ -1,200 +1,166 @@
-const advisorySpeeds = [0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80];
-const tableRows = [
-  { posted: 20, conditionA: 225, values: [115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115, 115] },
-  { posted: 25, conditionA: 325, values: [155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155, 155] },
-  { posted: 30, conditionA: 460, values: [200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200, 200] },
-  { posted: 35, conditionA: 565, values: [250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250, 250] },
-  { posted: 40, conditionA: 670, values: [305, 246, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100] },
-  { posted: 45, conditionA: 775, values: [360, 293, 125, 112, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100] },
-  { posted: 50, conditionA: 885, values: [425, 361, 200, 188, 175, 150, 125, 112, 100, 100, 100, 100, 100, 100, 100, 100, 100] },
-  { posted: 55, conditionA: 990, values: [495, 432, 275, 250, 225, 212, 200, 162, 125, 125, 125, 125, 125, 125, 125, 125, 125] },
-  { posted: 60, conditionA: 1100, values: [570, 507, 350, 338, 325, 300, 275, 238, 200, 150, 100, 100, 100, 100, 100, 100, 100] },
-  { posted: 65, conditionA: 1200, values: [645, 589, 450, 425, 400, 375, 350, 312, 275, 238, 200, 150, 100, 100, 100, 100, 100] },
-  { posted: 70, conditionA: 1250, values: [730, 671, 525, 512, 500, 475, 450, 412, 375, 325, 275, 212, 150, 150, 150, 150, 150] },
-  { posted: 75, conditionA: 1350, values: [820, 764, 625, 612, 600, 575, 550, 512, 475, 425, 375, 312, 250, 175, 100, 100, 100] },
-  { posted: 80, conditionA: 1475, values: [910, 857, 725, 712, 700, 662, 625, 588, 550, 500, 450, 400, 350, 275, 200, 200, 200] },
-  { posted: 85, conditionA: 1600, values: [1010, 957, 825, 812, 800, 775, 750, 712, 675, 625, 575, 512, 450, 375, 300, 225, 150] }
-];
-
-let currentMode = 'formula';
-const manualOverrides = {
-  '45-35': 125
-};
-
-function setMode(mode) {
-  currentMode = mode;
-  document.getElementById('modeToggle').checked = mode === 'table';
-  document.getElementById('formula-panel').classList.toggle('hidden', mode !== 'formula');
-  document.querySelectorAll('.formula-only').forEach((el) => el.classList.toggle('hidden', mode !== 'formula'));
-  document.getElementById('table-panel').classList.toggle('hidden', mode !== 'table');
-  runCalculation();
-}
-
-function buildTable() {
-  const table = document.getElementById('sign-placement-table');
-  const headerCells = advisorySpeeds.map((mph) => `<th data-advisory="${mph}">${mph === 0 ? 'Stop' : mph}</th>`).join('');
-  table.innerHTML = `
-    <thead>
-      <tr>
-        <th>Posted Speed (mph)</th>
-        <th>Condition A (ft)</th>
-        ${headerCells}
-      </tr>
-    </thead>
-    <tbody>
-      ${tableRows.map((row) => `
-        <tr data-posted="${row.posted}">
-          <th scope="row">${row.posted}</th>
-          <td class="condition-a-cell" data-posted="${row.posted}">${row.conditionA}</td>
-          ${row.values.map((val, idx) => {
-            const advisory = advisorySpeeds[idx];
-            const override = manualOverrides[`${row.posted}-${advisory}`];
-            const displayVal = override ?? val;
-            const text = Number.isFinite(displayVal) ? displayVal : '—';
-            return `<td data-posted="${row.posted}" data-advisory="${advisory}">${text}</td>`;
-          }).join('')}
-        </tr>
-      `).join('')}
-    </tbody>
-  `;
-}
-
-function calculateFormula() {
-  const initialVelocityMPH = parseFloat(document.getElementById('initial-velocity').value);
-  const finalVelocityMPH = parseFloat(document.getElementById('final-velocity').value);
-  const gForce = parseFloat(document.getElementById('g-force').value);
-  const prTime = parseFloat(document.getElementById('pr-time').value) || 1.5;
-  const gravity = 32.174; // ft/s²
-
-  if ([initialVelocityMPH, finalVelocityMPH, gForce].some((n) => Number.isNaN(n) || n < 0)) {
-    return;
-  }
-
-  const initialVelocityFPS = initialVelocityMPH * 1.467;
-  const finalVelocityFPS = finalVelocityMPH * 1.467;
-
-  const prDistance = initialVelocityFPS * prTime;
-
-  const deceleration = gForce * gravity;
-  const brakingDistance = Math.abs((Math.pow(finalVelocityFPS, 2) - Math.pow(initialVelocityFPS, 2)) / (2 * deceleration));
-
-  const totalDistance = prDistance + brakingDistance;
-  const textHeight = prDistance / 30;
-
-  document.getElementById('pr-distance').textContent = `${prDistance.toFixed(2)} ft`;
-  document.getElementById('distance-traveled').textContent = `${totalDistance.toFixed(2)} ft`;
-  document.getElementById('text-height').textContent = `${textHeight.toFixed(2)} ft`;
-}
-
-function findNearest(values, target) {
-  return values.reduce((best, val) => {
-    const currentDiff = Math.abs(val - target);
-    const bestDiff = Math.abs(best - target);
-    return currentDiff < bestDiff ? val : best;
+(function () {
+  'use strict';
+  const core = window.SignPlacement;
+  const byId = (id) => document.getElementById(id);
+  const text = (id, value) => { byId(id).textContent = value; };
+  const format = (value, digits = 0) => value.toLocaleString('en-US', {
+    minimumFractionDigits: digits, maximumFractionDigits: digits
   });
-}
+  const conditionHelp = {
+    speed: 'Turn, Curve, Reverse Turn, or Reverse Curve with an advisory speed.',
+    stop: 'Stop Ahead, Yield Ahead, Signal Ahead, or an applicable intersection warning.',
+    A: 'Complex maneuvers in heavy traffic, such as Merge or Lane Ends.'
+  };
+  const remembered = { mmutcd: { approach: '50', advisory: '20' }, mdot: { approach: '50', advisory: '25' } };
+  let activeSource = 'mmutcd';
 
-function updateTableHighlight(posted, advisory) {
-  const table = document.getElementById('sign-placement-table');
-  table.querySelectorAll('tr').forEach((tr) => tr.classList.remove('table-highlight-row'));
-  table.querySelectorAll('th[data-advisory]').forEach((th) => th.classList.remove('table-highlight-col'));
-  table.querySelectorAll('td').forEach((td) => td.classList.remove('table-highlight-cell'));
-
-  const row = table.querySelector(`tr[data-posted="${posted}"]`);
-  if (row) {
-    row.classList.add('table-highlight-row');
-  }
-  const header = table.querySelector(`th[data-advisory="${advisory}"]`);
-  if (header) {
-    header.classList.add('table-highlight-col');
-  }
-  const cell = table.querySelector(`td[data-posted="${posted}"][data-advisory="${advisory}"]`);
-  if (cell) {
-    cell.classList.add('table-highlight-cell');
-  }
-}
-
-function interpolateDistance(rowData, advisoryIndex) {
-  const values = rowData.values;
-  let lower = advisoryIndex;
-  while (lower >= 0 && values[lower] == null) {
-    lower -= 1;
-  }
-  let upper = advisoryIndex;
-  while (upper < values.length && values[upper] == null) {
-    upper += 1;
-  }
-  if (lower >= 0 && upper < values.length && values[lower] != null && values[upper] != null) {
-    const lowerVal = values[lower];
-    const upperVal = values[upper];
-    const lowerAdv = advisorySpeeds[lower];
-    const upperAdv = advisorySpeeds[upper];
-    const targetAdv = advisorySpeeds[advisoryIndex];
-    const ratio = (targetAdv - lowerAdv) / (upperAdv - lowerAdv);
-    return Math.round(lowerVal + (upperVal - lowerVal) * ratio);
-  }
-  return null;
-}
-
-function calculateTableLookup() {
-  const postedInput = parseFloat(document.getElementById('initial-velocity').value);
-  const advisoryInput = parseFloat(document.getElementById('final-velocity').value);
-  const resultEl = document.getElementById('table-distance');
-  const contextEl = document.getElementById('table-context');
-
-  if ([postedInput, advisoryInput].some((n) => Number.isNaN(n) || n < 0)) {
-    resultEl.textContent = '—';
-    contextEl.textContent = 'Enter posted and advisory speeds to see the table distance.';
-    return;
+  function setMode(mode) {
+    for (const name of ['table', 'formula']) {
+      byId(`${name}-panel`).hidden = name !== mode;
+      byId(`${name}-mode`).setAttribute('aria-pressed', String(name === mode));
+    }
   }
 
-  const postedSpeeds = tableRows.map((row) => row.posted);
-  const nearestPosted = findNearest(postedSpeeds, postedInput);
-  const nearestAdvisory = findNearest(advisorySpeeds, advisoryInput);
-
-  const rowData = tableRows.find((row) => row.posted === nearestPosted);
-  const advisoryIndex = advisorySpeeds.indexOf(nearestAdvisory);
-  const overrideKey = `${nearestPosted}-${nearestAdvisory}`;
-  let distance = manualOverrides[overrideKey] ?? rowData?.values[advisoryIndex];
-  if (distance == null && rowData) {
-    distance = interpolateDistance(rowData, advisoryIndex);
+  function options(id, values, selected) {
+    byId(id).replaceChildren(...values.map((value) => new Option(String(value), String(value))));
+    byId(id).value = selected;
   }
 
-  updateTableHighlight(nearestPosted, nearestAdvisory);
-
-  if (distance == null) {
-    resultEl.textContent = 'N/A';
-    contextEl.textContent = `No table value for posted ${nearestPosted} mph and advisory ${nearestAdvisory} mph. Try a lower advisory speed or use the formula mode.`;
-    return;
+  function loadSource() {
+    remembered[activeSource] = { approach: byId('table-approach').value || '50', advisory: byId('table-advisory').value || '20' };
+    activeSource = byId('table-source').value;
+    const source = core.sources[activeSource];
+    const selected = remembered[activeSource];
+    options('table-approach', source.rows.map((row) => row[0]), selected.approach);
+    options('table-advisory', source.advisorySpeeds, selected.advisory);
+    const isMMUTCD = activeSource === 'mmutcd';
+    byId('legibility-adjustment').hidden = !isMMUTCD;
+    byId('extra-legibility').disabled = !isMMUTCD;
+    byId('mmutcd-notes').hidden = !isMMUTCD;
+    byId('mdot-notes').hidden = isMMUTCD;
+    text('source-help', isMMUTCD ? 'Approach speeds: 20–85 mph. Advisory columns: 10 mph increments.' : 'Approach speeds: 25–75 mph. Advisory columns: 5 mph increments.');
+    text('approach-help', isMMUTCD ? 'Use the posted or 85th-percentile approach speed, as identified in Table 2C-3.' : 'Use the posted speed, as identified in MDOT Table 3.');
+    text('table-caption-note', `${source.label}, ${source.table}. Distances are in feet, before any added legibility distance. The selected cell is highlighted. Scroll horizontally for all columns. Each source keeps its own speed selections.`);
+    const link = byId('table-source-link');
+    link.href = source.reference;
+    link.textContent = `Open ${source.table} (PDF)`;
+    buildTable();
+    renderTableResult();
   }
 
-  resultEl.textContent = `${distance} ft`;
-  const roundingNote = postedInput === nearestPosted && advisoryInput === nearestAdvisory
-    ? ''
-    : ` (rounded to ${nearestPosted}/${nearestAdvisory} mph)`;
-  contextEl.textContent = `Condition B placement from Table 2-1 for posted ${nearestPosted} mph and advisory ${nearestAdvisory} mph${roundingNote}. Condition A (heavy traffic) at ${rowData.conditionA} ft shown in the yellow column.`;
-}
-
-function runCalculation() {
-  if (currentMode === 'table') {
-    calculateTableLookup();
-  } else {
-    calculateFormula();
+  function buildTable() {
+    const source = core.sources[activeSource];
+    const footnote = activeSource === 'mmutcd' ? '6' : '4';
+    function cellText(value, advisory) {
+      if (value === null) return '<span title="Site-dependent placement: Note 5">N/A<sup>5</sup></span>';
+      if (value === undefined) return '<span title="No published value">—</span>';
+      return `${format(value)}${advisory && value === 100 ? `<sup>${footnote}</sup>` : ''}`;
+    }
+    byId('sign-placement-table').innerHTML = `
+      <caption>${source.label} · ${source.table} · Advance placement (ft)</caption>
+      <thead>
+        <tr><th rowspan="2" scope="col">Approach<br>(mph)</th><th rowspan="2" scope="col" data-column="A">A<br>Lane change</th><th colspan="${source.advisorySpeeds.length + 1}" scope="colgroup">B · Decelerate to listed speed (mph)</th></tr>
+        <tr><th scope="col" data-column="stop">0 · Stop</th>${source.advisorySpeeds.map((speed) => `<th scope="col" data-column="${speed}">${speed}</th>`).join('')}</tr>
+      </thead>
+      <tbody>${source.rows.map((row) => `<tr>
+        <th scope="row" data-row="${row[0]}">${row[0]}</th>
+        <td data-row="${row[0]}" data-column="A">${cellText(row[1], false)}</td>
+        <td data-row="${row[0]}" data-column="stop">${cellText(row[2], false)}</td>
+        ${source.advisorySpeeds.map((speed, index) => `<td data-row="${row[0]}" data-column="${speed}">${cellText(row[index + 3], true)}</td>`).join('')}
+      </tr>`).join('')}</tbody>`;
   }
-}
 
-function wireModeToggle() {
-  const toggle = document.getElementById('modeToggle');
-  toggle.addEventListener('change', (e) => setMode(e.target.checked ? 'table' : 'formula'));
-}
+  function clearHighlight() {
+    byId('sign-placement-table').querySelectorAll('.is-selected, .is-selected-heading').forEach((cell) => {
+      cell.classList.remove('is-selected', 'is-selected-heading');
+      cell.removeAttribute('aria-current');
+    });
+  }
 
-document.addEventListener('DOMContentLoaded', () => {
-  buildTable();
-  wireModeToggle();
-  setMode('formula');
-});
+  function highlight(approach, column) {
+    const table = byId('sign-placement-table');
+    const cell = table.querySelector(`td[data-row="${approach}"][data-column="${column}"]`);
+    if (cell) {
+      cell.classList.add('is-selected');
+      cell.setAttribute('aria-current', 'true');
+    }
+    table.querySelector(`th[data-row="${approach}"]`)?.classList.add('is-selected-heading');
+    table.querySelector(`th[data-column="${column}"]`)?.classList.add('is-selected-heading');
+  }
 
-// keep legacy name for inline handlers if any remain
-function calculateDistance() {
-  calculateFormula();
-}
+  function renderTableResult() {
+    const condition = byId('warning-condition').value;
+    const approach = byId('table-approach').value;
+    const advisory = byId('table-advisory').value;
+    const source = core.sources[activeSource];
+    const extraLegibility = byId('extra-legibility').checked;
+    byId('advisory-field').hidden = condition !== 'speed';
+    byId('table-advisory').disabled = condition !== 'speed';
+    text('condition-help', conditionHelp[condition]);
+    text('table-result-label', activeSource === 'mmutcd' ? 'Suggested advance placement' : 'Minimum advance placement');
+    text('table-breakdown', '');
+    text('table-guidance', '');
+    clearHighlight();
+    byId('table-distance').classList.remove('is-message');
+    try {
+      const result = core.lookup({ source: activeSource, condition, approach, advisory, extraLegibility });
+      const context = condition === 'A' ? `${approach} mph approach · Condition A` :
+        `${approach} mph approach → ${condition === 'stop' ? 'potential stop' : `${advisory} mph advisory`}`;
+      text('table-context', `${source.label} · ${source.table}. ${context}.`);
+      highlight(approach, condition === 'speed' ? advisory : condition);
+      if (result.status !== 'value') {
+        byId('table-distance').classList.add('is-message');
+        text('table-distance', result.status === 'site' ? 'Site-dependent' : 'Not tabulated');
+        text('table-guidance', result.status === 'site'
+          ? 'Note 5: choose placement using site conditions and other signing. For a curve, place the sign in advance, up to 100 ft before the curve, and at least 100 ft from other signs.'
+          : 'This source has no distance for the selected speed pair. Use engineering judgment; the blank cell is not interpolated or replaced with a distance.');
+        if (activeSource === 'mmutcd' && extraLegibility) text('table-breakdown', 'The Note 1 legibility adjustment must be considered with the site placement; there is no numeric base to adjust here.');
+        return;
+      }
+      text('table-distance', `${format(result.feet)} ft`);
+      text('table-breakdown', result.addition ? `${format(result.baseFeet)} ft table distance + 100 ft minimum legibility adjustment (Note 1).` : 'Measured upstream from the condition to the warning sign.');
+      const minimum = result.minimumSpacing ? `The 100 ft table value includes the spacing allowance (Note ${activeSource === 'mmutcd' ? '6' : '4'}). ` : '';
+      text('table-guidance', minimum + (activeSource === 'mmutcd'
+        ? 'Apply with engineering judgment for visibility, roadway features, and other signs. Table legibility credits are already included.'
+        : `A supplementary plaque is called for if placement must exceed ${format(2 * result.baseFeet)} ft (twice the table minimum). Check the guide for the applicable sign category.`));
+    } catch (error) {
+      text('table-distance', '—');
+      text('table-context', error.message);
+    }
+  }
+
+  function renderFormula() {
+    const fields = { initial: 'initial-velocity', final: 'final-velocity', deceleration: 'deceleration', reaction: 'pr-time', legibility: 'legibility-distance' };
+    const inputs = Object.fromEntries(Object.entries(fields).map(([key, id]) => [key, byId(id).value]));
+    try {
+      const r = core.calculate(inputs);
+      for (const [id, value] of Object.entries({ 'formula-distance': r.placement, 'pr-distance': r.response,
+        'braking-distance': r.braking, 'distance-traveled': r.total, 'legibility-credit': r.legibility })) {
+        text(id, `${format(value, 1)} ft`);
+      }
+      text('formula-context', `${inputs.initial} → ${inputs.final} mph · ${inputs.reaction} s response · ${inputs.deceleration} ft/s² deceleration.`);
+      text('formula-validation', r.clamped
+        ? 'Legibility credit meets or exceeds the total travel distance, so the calculated distance is limited to 0 ft. This does not establish an acceptable field location; apply the relevant table and site requirements.'
+        : 'Total travel minus legibility credit. Confirm minimum spacing and the applicable source guidance before choosing a field location.');
+      text('text-height', r.legibility > 0 ? `${format(r.letterHeight, 2)} in` : '—');
+      text('text-height-context', r.legibility > 0 ? `for ${format(r.legibility, 1)} ft of word-message legibility.` : 'Enter a positive legibility distance for this check.');
+    } catch (error) {
+      for (const id of ['formula-distance', 'pr-distance', 'braking-distance', 'distance-traveled', 'legibility-credit', 'text-height']) text(id, '—');
+      text('formula-context', 'Check the inputs.');
+      text('formula-validation', error.message);
+      text('text-height-context', 'Enter valid inputs for this check.');
+    }
+  }
+
+  byId('table-mode').addEventListener('click', () => setMode('table'));
+  byId('formula-mode').addEventListener('click', () => setMode('formula'));
+  byId('table-form').addEventListener('change', (event) => {
+    if (event.target.id === 'table-source') loadSource();
+    else renderTableResult();
+  });
+  byId('formula-form').addEventListener('input', renderFormula);
+  for (const id of ['table-form', 'formula-form']) byId(id).addEventListener('submit', (event) => event.preventDefault());
+  loadSource();
+  renderFormula();
+  setMode('table');
+})();

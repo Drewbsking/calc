@@ -5,71 +5,163 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign Placement</title>
     <link rel="stylesheet" href="../../shared/styles.css">
+    <link rel="stylesheet" href="signPlacement.css">
 </head>
-<body>
+<body class="sign-placement-page">
     <div id="header-placeholder"></div>
-
-    <div class="container">
-        <div class="calculator content">
+    <main class="container placement-container">
+        <section class="calculator placement-calculator">
             <h1>Sign Placement</h1>
-            <div class="mode-switch" aria-label="Select sign placement method">
-                <span class="mode-label">Formula</span>
-                <label class="switch-toggle">
-                    <input type="checkbox" id="modeToggle" aria-label="Toggle table lookup">
-                    <span class="toggle-slider"></span>
-                </label>
-                <span class="mode-label">Table lookup</span>
+            <p class="placement-lede">Find an advance warning distance, or review a custom response and braking calculation.</p>
+            <div class="placement-methods" role="group" aria-label="Calculation method">
+                <button type="button" id="table-mode" aria-pressed="true" aria-controls="table-panel">Published tables</button>
+                <button type="button" id="formula-mode" aria-pressed="false" aria-controls="formula-panel">Custom calculation</button>
             </div>
-            <p class="note">Switch between physics-based calculation and MUTCD Table 2-1 lookup (advisory speed table shown below).</p>
-            <form oninput="runCalculation()">
-                <div class="form-group">
-                    <label for="initial-velocity">Initial Velocity (MPH):</label>
-                    <input type="number" id="initial-velocity" name="initial-velocity" step="0.1" value="50">
-                </div>
-                <div class="form-group">
-                    <label for="final-velocity">Final Velocity (MPH):</label>
-                    <input type="number" id="final-velocity" name="final-velocity" step="0.1" value="25">
-                </div>
-                <div class="form-group formula-only">
-                    <label for="g-force">G-Force:</label>
-                    <input type="number" id="g-force" name="g-force" step="0.01" value="0.3">
-                    <p class="note">Default 0.3 g (≈9.65 ft/s²). Change only if directed by the engineer.</p>
-                </div>
-                <div class="form-group formula-only">
-                    <label for="pr-time">Perception-Reaction Time (s):</label>
-                    <input type="number" id="pr-time" name="pr-time" step="0.1" value="1.5">
-                    <p class="note">Default is 1.5 seconds.</p>
-                </div>
-                <button type="button" class="calculate-button" onclick="runCalculation()">Refresh</button>
-            </form>
-            <div id="formula-panel" class="mode-panel">
-                <div id="output" class="result">
-                    <h3>Perception-Reaction Distance:</h3>
-                    <p id="pr-distance" class="highlight">0.00 ft</p>
+            <noscript><p>Enable JavaScript to use this calculator. The source PDFs are linked under References below.</p></noscript>
 
-                    <h3>Required Text Height for the Sign:</h3>
-                    <p id="text-height" class="highlight">0.00 ft</p>
-
-                    <h3>Total Distance Traveled:</h3>
-                    <p id="distance-traveled" class="highlight">0.00 ft</p>
+            <div id="table-panel">
+                <div class="placement-grid">
+                    <form id="table-form" class="placement-inputs" novalidate>
+                        <h2>Warning condition</h2>
+                        <div class="placement-field">
+                            <label for="table-source">Reference</label>
+                            <select id="table-source" aria-describedby="source-help">
+                                <option value="mmutcd">2025 MMUTCD · Table 2C-3</option>
+                                <option value="mdot">MDOT Signing Guide (2023) · Table 3</option>
+                            </select>
+                            <p id="source-help" class="placement-help"></p>
+                        </div>
+                        <div class="placement-field">
+                            <label for="warning-condition">Condition</label>
+                            <select id="warning-condition" aria-describedby="condition-help">
+                                <option value="speed">B · Decelerate to advisory speed</option>
+                                <option value="stop">B · Potential stop</option>
+                                <option value="A">A · Speed reduction and lane change</option>
+                            </select>
+                            <p id="condition-help" class="placement-help"></p>
+                        </div>
+                        <div class="placement-field-row">
+                            <div class="placement-field">
+                                <label for="table-approach">Approach speed <span>(mph)</span></label>
+                                <select id="table-approach" aria-describedby="approach-help"></select>
+                            </div>
+                            <div id="advisory-field" class="placement-field">
+                                <label for="table-advisory">Advisory speed <span>(mph)</span></label>
+                                <select id="table-advisory" aria-describedby="table-selection-help"></select>
+                            </div>
+                        </div>
+                        <p id="approach-help" class="placement-help"></p>
+                        <p id="table-selection-help" class="placement-help">Only published rows and columns are offered. Choose a source value explicitly; speeds are not rounded or interpolated.</p>
+                        <label id="legibility-adjustment" class="placement-checkbox">
+                            <input type="checkbox" id="extra-legibility">
+                            <span>Add 100 ft for a word-message sign with letters under 6 in or more than four words.<small>MMUTCD Table 2C-3, Note 1: minimum added distance.</small></span>
+                        </label>
+                    </form>
+                    <div class="placement-result" role="status" aria-live="polite" aria-atomic="true">
+                        <p id="table-result-label" class="placement-eyebrow">Advance placement distance</p>
+                        <p id="table-distance" class="placement-value">—</p>
+                        <p id="table-context" class="placement-result-context"></p>
+                        <div class="placement-distance-line" aria-hidden="true"><span>Warning sign</span><span class="placement-line"></span><span>Condition</span></div>
+                        <p id="table-breakdown" class="placement-result-note"></p>
+                        <p id="table-guidance" class="placement-result-note"></p>
+                        <a id="table-source-link" class="placement-source-link" href="../curve/references/mmutcd-curve-reference.pdf#page=3" target="_blank" rel="noopener">Open source table (PDF)</a>
+                    </div>
                 </div>
+                <details class="placement-details" id="table-details">
+                    <summary>View table and placement notes</summary>
+                    <p id="table-caption-note" class="placement-help"></p>
+                    <div class="placement-table-scroll" tabindex="0" role="region" aria-label="Advance placement table, scroll horizontally to see all columns">
+                        <table id="sign-placement-table"></table>
+                    </div>
+                    <div id="mmutcd-notes" class="placement-notes">
+                        <p><strong>N/A (Note 5):</strong> Placement depends on the site and other signs. For an alignment warning sign, the note allows placement up to 100 ft before the curve, calls for placement in advance of the curve, and at least 100 ft from other signs. No numeric distance is assigned here.</p>
+                        <p><strong>100 ft (Note 6):</strong> These cells include the minimum spacing allowance. A dash means no published value.</p>
+                        <p><strong>Table basis:</strong> Condition A uses a 14.0–14.5 s response time and 180 ft of legibility credit. Condition B uses 2.5 s: the stop column uses 11.2 ft/s² deceleration; advisory-speed columns use 10 ft/s² and 250 ft of symbol-sign legibility credit. These credits are already included in the table.</p>
+                        <p><strong>Site review:</strong> Section 2C.04 calls for engineering judgment, adjustment for roadway features and other signing, and evaluation in daylight and darkness.</p>
+                    </div>
+                    <div id="mdot-notes" class="placement-notes" hidden>
+                        <p><strong>100 ft (Note 4):</strong> These cells include the minimum spacing allowance. A dash represents an empty source cell; it is not a distance.</p>
+                        <p><strong>Placement beyond twice the table distance:</strong> Page 21 calls for a supplementary plaque if the warning sign must be placed more than twice the minimum distance.</p>
+                        <p><strong>Potential stops:</strong> Check visibility before curves and hills. Use the guide's Table 4 to confirm the applicable sign category; advisory speed plaques are not used on signs listed for a stop condition.</p>
+                    </div>
+                </details>
             </div>
-            <div id="table-panel" class="mode-panel hidden">
-                <div id="table-result" class="result">
-                    <h3>Table Distance (Condition B):</h3>
-                    <p id="table-distance" class="highlight">—</p>
-                    <p id="table-context" class="note"></p>
-                </div>
-                <p class="note">Values come from the MUTCD advance-placement table (5 mph increments). If a cell is blank in the published table, the tool interpolates the nearest values. Example: 45 mph posted / 35 mph advisory highlights to 125 ft like the shared graphic.</p>
-                <div class="table-wrapper">
-                    <table id="sign-placement-table" aria-label="Minimum advance placement distance table"></table>
-                </div>
-            </div>
-        </div>
-    </div>
 
+            <div id="formula-panel" hidden>
+                <p class="placement-callout">Level road, constant deceleration. This calculation separates travel distance from sign placement; it does not reproduce table rounding, minimum spacing, or site adjustments.</p>
+                <div class="placement-grid">
+                    <form id="formula-form" class="placement-inputs" novalidate>
+                        <h2>Custom assumptions</h2>
+                        <div class="placement-field-row">
+                            <div class="placement-field">
+                                <label for="initial-velocity">Approach speed <span>(mph)</span></label>
+                                <input type="number" id="initial-velocity" min="0" step="any" value="50" required>
+                            </div>
+                            <div class="placement-field">
+                                <label for="final-velocity">Target speed <span>(mph)</span></label>
+                                <input type="number" id="final-velocity" min="0" step="any" value="25" required aria-describedby="target-help">
+                            </div>
+                        </div>
+                        <p id="target-help" class="placement-help">Use 0 for a stop. The target cannot exceed the approach speed.</p>
+                        <div class="placement-field-row">
+                            <div class="placement-field">
+                                <label for="pr-time">Response time <span>(s)</span></label>
+                                <input type="number" id="pr-time" min="0" step="any" value="2.5" required aria-describedby="formula-defaults">
+                            </div>
+                            <div class="placement-field">
+                                <label for="deceleration">Deceleration <span>(ft/s²)</span></label>
+                                <input type="number" id="deceleration" min="0" step="any" value="10" required aria-describedby="formula-defaults">
+                            </div>
+                        </div>
+                        <p id="formula-defaults" class="placement-help">2.5 s and 10 ft/s² are the MMUTCD advisory-speed assumptions (Note 4). The stop column uses 11.2 ft/s² (Note 3). 10 ft/s² ≈ 0.311 g.</p>
+                        <div class="placement-field">
+                            <label for="legibility-distance">Legibility distance credited <span>(ft)</span></label>
+                            <input type="number" id="legibility-distance" min="0" step="any" value="0" required aria-describedby="legibility-help">
+                            <p id="legibility-help" class="placement-help">Distance before the sign where it can first be read or recognized. Default 0 gives no credit. The MMUTCD advisory-speed table assumes 250 ft for alignment symbols; its stop column has no credit.</p>
+                        </div>
+                    </form>
+                    <div class="placement-result" role="status" aria-live="polite" aria-atomic="true">
+                        <p class="placement-eyebrow">Calculated sign-to-condition distance</p>
+                        <p id="formula-distance" class="placement-value">—</p>
+                        <p id="formula-context" class="placement-result-context"></p>
+                        <dl class="placement-metrics">
+                            <div><dt>Perception-response travel</dt><dd id="pr-distance">—</dd></div>
+                            <div><dt>Braking travel</dt><dd id="braking-distance">—</dd></div>
+                            <div><dt>Total travel from recognition</dt><dd id="distance-traveled">—</dd></div>
+                            <div><dt>Legibility credit</dt><dd id="legibility-credit">—</dd></div>
+                        </dl>
+                        <p id="formula-validation" class="placement-result-note"></p>
+                    </div>
+                </div>
+                <details class="placement-details" open>
+                    <summary>Equations and letter-height check</summary>
+                    <div class="placement-equations">
+                        <p><strong>Speed conversion</strong><code>v = V × (5280 / 3600)</code><span>V in mph; v in ft/s.</span></p>
+                        <p><strong>Response distance</strong><code>D<sub>r</sub> = v<sub>i</sub> × t</code><span>v<sub>i</sub> is approach speed; t is response time in seconds.</span></p>
+                        <p><strong>Braking distance</strong><code>D<sub>b</sub> = (v<sub>i</sub>² − v<sub>f</sub>²) / (2a)</code><span>v<sub>f</sub> is target speed; a is positive deceleration in ft/s².</span></p>
+                        <p><strong>Sign placement estimate</strong><code>D = max(0, D<sub>r</sub> + D<sub>b</sub> − L)</code><span>L is the legibility distance before the sign, in feet.</span></p>
+                    </div>
+                    <div class="placement-letter-check">
+                        <h3>Word-message letter height</h3>
+                        <p><strong id="text-height">—</strong> <span id="text-height-context">Enter a positive legibility distance for this check.</span></p>
+                        <p class="placement-help">H = L / 30, with H in inches and L in feet. This is the legibility ratio from MUTCD §2A.08 ¶08, applied to the distance entered above. It is not a symbol-size calculation or a substitute for prescribed sign lettering. Response distance alone does not set letter height. <a href="../letter-size/">Open Letter Size tool</a>.</p>
+                    </div>
+                </details>
+            </div>
+        </section>
+
+        <section class="references placement-references">
+            <h2>References</h2>
+            <ol>
+                <li><a href="../curve/references/mmutcd-curve-reference.pdf#page=3" target="_blank" rel="noopener">2025 MMUTCD §2C.04 &amp; Table 2C-3, p. 156 (PDF excerpt)</a><p>Warning-sign placement, condition-specific assumptions, legibility adjustments, and Notes 5–6. <a href="https://mdotjboss.state.mi.us/TSSD/getCategoryDocuments.htm?category=MMUTCD&amp;categoryPrjNumbers=2682785,1403854,1403855" target="_blank" rel="noopener">MDOT manual download page</a>.</p></li>
+                <li><a href="../curve/references/mdot-curve-reference.pdf#page=2" target="_blank" rel="noopener">MDOT Traffic Sign Design, Placement, and Application Guidelines, Table 3, p. 21 (PDF excerpt)</a><p>November 2023 table and placement notes. <a href="https://mdotjboss.state.mi.us/TSSD/getTSDocument.htm?docGuid=b6544036-b4a5-428b-b5ca-2a444b5a72c4&amp;fileName=mdot_signing_design_placement_application_guidelines.pdf#page=26" target="_blank" rel="noopener">Full guide</a>.</p></li>
+                <li><a href="https://mutcd.fhwa.dot.gov/pdfs/11th_Editionr1/Chapter2ar1.pdf#page=7" target="_blank" rel="noopener">FHWA MUTCD, 11th Edition with Revision 1, §2A.08 ¶08 (PDF)</a><p>Word-message legibility: 1 inch of letter height per 30 ft of reading distance. The custom braking equation follows constant-acceleration kinematics; it is not a separate MUTCD placement standard.</p></li>
+            </ol>
+        </section>
+    </main>
     <div id="footer-placeholder"></div>
     <script src="../../shared/layout.js"></script>
+    <script src="signPlacementCore.js"></script>
     <script src="signPlacement.js"></script>
 </body>
 </html>
